@@ -24,16 +24,16 @@
 *.la
 *.a
 *.lib
-!Game/Source/External/SDL/libx86/SDL2.lib
-!Game/Source/External/SDL/libx86/SDL2main.lib
-!Game/Source/External/SDL_image/libx86/SDL2_image.lib
-!Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib
-!Game/Source/External/EASTL-3.17.06/lib/Debug/EASTL.lib
-!Game/Source/External/EASTL-3.17.06/lib/Release/EASTL.lib
-!Game/Source/External/Optick/lib/debug/OptickCore.lib
-!Game/Source/External/Optick/lib/release/OptickCore.lib
-!Game/Source/External/PhysFS/libx86/physfs.lib
-!Game/Source/External/PhysFS/libx86/physfs.lib
+!Kebab Engine/Source/External/SDL/libx86/SDL2.lib
+!Kebab Engine/Source/External/SDL/libx86/SDL2main.lib
+!Kebab Engine/Source/External/SDL_image/libx86/SDL2_image.lib
+!Kebab Engine/Source/External/SDL_mixer/libx86/SDL2_mixer.lib
+!Kebab Engine/Source/External/EASTL-3.17.06/lib/Debug/EASTL.lib
+!Kebab Engine/Source/External/EASTL-3.17.06/lib/Release/EASTL.lib
+!Kebab Engine/Source/External/Optick/lib/debug/OptickCore.lib
+!Kebab Engine/Source/External/Optick/lib/release/OptickCore.lib
+!Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
+!Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
 
 # Executables
 *.exe
