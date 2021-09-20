@@ -5,7 +5,7 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
+	sceneIntro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 
@@ -21,7 +21,7 @@ Application::Application()
 	AddModule(audio);
 	
 	// Scenes
-	AddModule(scene_intro);
+	AddModule(sceneIntro);
 }
 
 Application::~Application()
@@ -65,6 +65,8 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	dt = (float)ms_timer.Read() / 1000.0f;
+	ms_timer.Start();
 }
 
 // ---------------------------------------------
@@ -82,7 +84,7 @@ update_status Application::Update()
 	
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PreUpdate();
+		ret = item->data->PreUpdate(dt);
 		item = item->next;
 	}
 
@@ -90,7 +92,7 @@ update_status Application::Update()
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->Update();
+		ret = item->data->Update(dt);
 		item = item->next;
 	}
 
@@ -98,7 +100,7 @@ update_status Application::Update()
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PostUpdate();
+		ret = item->data->PostUpdate(dt);
 		item = item->next;
 	}
 
