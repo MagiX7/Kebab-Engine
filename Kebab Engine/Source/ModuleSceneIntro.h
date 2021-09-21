@@ -3,6 +3,8 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 
+#include "imgui/imgui.h"
+
 #define BOUNCER_TIME 200
 
 struct PhysBody3D;
@@ -18,5 +20,5 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-public:
+private:
 };
