@@ -68,20 +68,26 @@ update_status MainScene::Update(float dt)
     static float f = 0.0f;
     static int counter = 0;
 
-    static bool showDemoWindow = false;
+    // Menu ============================================
 
-    static bool windowClosed = true;
     ImGuiWindowFlags flags = 0;
-    flags |= ImGuiWindowFlags_MenuBar;
+    //flags |= ImGuiWindowFlags_MenuBar;
     //flags |= ImGuiWindowFlags_NoMove;
 
-    ImGui::Begin("Options..", &windowClosed, flags);
+    //ImGui::SetWindowPos(p);
+    //ImGui::SetWindowSize(s);
 
-    /*ImVec2 p = { 100,100 };
-    ImVec2 s = { 350,100 };
+    static bool showDemoWindow = false;
 
-    ImGui::SetWindowPos(p);
-    ImGui::SetWindowSize(s);*/
+    if (ImGui::Begin("Options..", NULL, flags))
+    {
+        if (ImGui::BeginChild("Framerate"))
+        {
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::EndChild();
+        }
+    }
+    ImGui::End();
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -90,7 +96,6 @@ update_status MainScene::Update(float dt)
             if (ImGui::MenuItem("Exit"))
             {
                 ImGui::EndMenu();
-                windowClosed = false;
                 return UPDATE_STOP;
             }
             ImGui::EndMenu();
@@ -109,20 +114,11 @@ update_status MainScene::Update(float dt)
 
     if (showDemoWindow)
     {
-        bool windowShouldClose = true;
-        ImGui::ShowDemoWindow(&windowShouldClose);
-        if (!windowShouldClose)
-        {
-            showDemoWindow = false;
-        }
-
+        bool demoShouldClose = true;
+        ImGui::ShowDemoWindow(&demoShouldClose);
+        if (!demoShouldClose) showDemoWindow = false;
     }
 
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();
- 
-
-    
     // Rendering ===============================
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -139,6 +135,6 @@ update_status MainScene::Update(float dt)
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
     //SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
-    
-	return UPDATE_CONTINUE;
+
+    return UPDATE_CONTINUE;
 }
