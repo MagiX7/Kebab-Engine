@@ -16,10 +16,13 @@
     <Filter Include="Source Files\Modules">
       <UniqueIdentifier>{c86a3425-dd78-45ef-a7dd-db0c512bf188}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3d Parties">
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{fe35c421-5e78-4552-a253-5c856066e5a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties">
       <UniqueIdentifier>{042b91da-eb02-46a9-8001-7a723d4814ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3d Parties\Imgui">
+    <Filter Include="Source Files\3rd Parties\Imgui">
       <UniqueIdentifier>{65da66a7-037f-4c11-a4b1-1f9126242bf2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -27,142 +30,142 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\glmath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Primitive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleAudio.cpp">
+    <ClCompile Include="Source\Audio.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleCamera3D.cpp">
+    <ClCompile Include="Source\Camera3D.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
+    <ClCompile Include="Source\Input.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleRenderer3D.cpp">
+    <ClCompile Include="Source\Renderer3D.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleSceneIntro.cpp">
+    <ClCompile Include="Source\MainScene.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
+    <ClCompile Include="Source\Window.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_demo.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_draw.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_impl_opengl2.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_tables.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glmath.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\log.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitive.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Color.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\glmath.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Globals.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Module.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\p2DynArray.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2List.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Point.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Primitive.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleAudio.h">
+    <ClInclude Include="Source\Audio.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleCamera3D.h">
+    <ClInclude Include="Source\Camera3D.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
+    <ClInclude Include="Source\Input.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleRenderer3D.h">
+    <ClInclude Include="Source\Renderer3D.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleSceneIntro.h">
+    <ClInclude Include="Source\MainScene.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
+    <ClInclude Include="Source\Window.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imconfig.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_opengl2.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_sdl.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_internal.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_rectpack.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_textedit.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_truetype.h">
-      <Filter>Source Files\3d Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\glmath.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Globals.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\p2DynArray.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\p2List.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\p2Point.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitive.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,16 +1,16 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleAudio.h"
+#include "Audio.h"
 
-ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, start_enabled), music(NULL)
+Audio::Audio(Application* app, bool start_enabled) : Module(app, start_enabled), music(NULL)
 {}
 
 // Destructor
-ModuleAudio::~ModuleAudio()
+Audio::~Audio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool Audio::Init()
 {
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -43,7 +43,7 @@ bool ModuleAudio::Init()
 }
 
 // Called before quitting
-bool ModuleAudio::CleanUp()
+bool Audio::CleanUp()
 {
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
@@ -67,7 +67,7 @@ bool ModuleAudio::CleanUp()
 }
 
 // Play a music file
-bool ModuleAudio::PlayMusic(const char* path, float fade_time)
+bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 	
@@ -118,7 +118,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int ModuleAudio::LoadFx(const char* path)
+unsigned int Audio::LoadFx(const char* path)
 {
 	unsigned int ret = 0;
 
@@ -138,7 +138,7 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool ModuleAudio::PlayFx(unsigned int id, int repeat)
+bool Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
 

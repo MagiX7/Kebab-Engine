@@ -12,12 +12,12 @@ enum KEY_STATE
 	KEY_UP
 };
 
-class ModuleInput : public Module
+class Input : public Module
 {
 public:
 	
-	ModuleInput(Application* app, bool start_enabled = true);
-	~ModuleInput();
+	Input(Application* app, bool start_enabled = true);
+	~Input();
 
 	bool Init();
 	update_status PreUpdate(float dt);

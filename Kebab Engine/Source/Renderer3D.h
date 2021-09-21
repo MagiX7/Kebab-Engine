@@ -6,11 +6,11 @@
 
 #define MAX_LIGHTS 8
 
-class ModuleRenderer3D : public Module
+class Renderer3D : public Module
 {
 public:
-	ModuleRenderer3D(Application* app, bool start_enabled = true);
-	~ModuleRenderer3D();
+	Renderer3D(Application* app, bool start_enabled = true);
+	~Renderer3D();
 
 	bool Init();
 	update_status PreUpdate(float dt);

@@ -4,26 +4,27 @@
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleAudio.h"
-#include "ModuleSceneIntro.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
+#include "Window.h"
+#include "Input.h"
+#include "Audio.h"
+#include "MainScene.h"
+#include "Renderer3D.h"
+#include "Camera3D.h"
 
 class Application
 {
 public:
-	ModuleWindow* window;
-	ModuleInput* input;
-	ModuleAudio* audio;
-	ModuleSceneIntro* sceneIntro;
-	ModuleRenderer3D* renderer3D;
-	ModuleCamera3D* camera;
+	Window* window;
+	Input* input;
+	Audio* audio;
+	MainScene* scene;
+	Renderer3D* renderer3D;
+	Camera3D* camera;
 
 private:
 
 	Timer	ms_timer;
+	float   pastDt = 63355;
 	float	dt;
 	p2List<Module*> list_modules;
 

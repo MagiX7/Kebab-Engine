@@ -6,12 +6,12 @@
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
-class ModuleAudio : public Module
+class Audio : public Module
 {
 public:
 
-	ModuleAudio(Application* app, bool start_enabled = true);
-	~ModuleAudio();
+	Audio(Application* app, bool start_enabled = true);
+	~Audio();
 
 	bool Init();
 	bool CleanUp();

@@ -10,11 +10,11 @@
 struct PhysBody3D;
 class Cube;
 
-class ModuleSceneIntro : public Module
+class MainScene : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
-	~ModuleSceneIntro();
+	MainScene(Application* app, bool start_enabled = true);
+	~MainScene();
 
 	bool Start();
 	update_status Update(float dt);

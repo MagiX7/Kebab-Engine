@@ -1,23 +1,23 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleInput.h"
+#include "Input.h"
 
 #define MAX_KEYS 300
 
-ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)
+Input::Input(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
 }
 
 // Destructor
-ModuleInput::~ModuleInput()
+Input::~Input()
 {
 	delete[] keyboard;
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool Input::Init()
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
@@ -33,7 +33,7 @@ bool ModuleInput::Init()
 }
 
 // Called every draw update
-update_status ModuleInput::PreUpdate(float dt)
+update_status Input::PreUpdate(float dt)
 {
 	SDL_PumpEvents();
 
@@ -120,7 +120,7 @@ update_status ModuleInput::PreUpdate(float dt)
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp()
+bool Input::CleanUp()
 {
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
