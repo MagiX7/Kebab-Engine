@@ -3,11 +3,13 @@
 #include "MainScene.h"
 #include "Primitive.h"
 
+#include "GL/glew.h"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl2.h"
+#include "imgui/imgui_impl_opengl3.h"
 
-#include "glut.h"
+//#include "glut.h"
 
 #include <iostream>
 
@@ -40,7 +42,7 @@ bool MainScene::Start()
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
-    ImGui_ImplOpenGL2_Init();
+    ImGui_ImplOpenGL3_Init();
 
 
 	return ret;
@@ -61,7 +63,7 @@ update_status MainScene::Update(float dt)
     ImVec4 clear_color = ImVec4(0.1, 0.1, 0.1, 0.1);
 
     // Start the Dear ImGui frame
-    ImGui_ImplOpenGL2_NewFrame();
+    ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
@@ -132,7 +134,7 @@ update_status MainScene::Update(float dt)
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
-    ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     //SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
 
