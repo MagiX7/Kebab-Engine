@@ -33,9 +33,6 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Audio.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera3D.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -97,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="Source\Module.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio.h">
-      <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera3D.h">
       <Filter>Source Files\Modules</Filter>
