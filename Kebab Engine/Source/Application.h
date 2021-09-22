@@ -6,7 +6,6 @@
 #include "Module.h"
 #include "Window.h"
 #include "Input.h"
-#include "Audio.h"
 #include "MainScene.h"
 #include "Renderer3D.h"
 #include "Camera3D.h"
@@ -16,7 +15,6 @@ class Application
 public:
 	Window* window;
 	Input* input;
-	Audio* audio;
 	MainScene* scene;
 	Renderer3D* renderer3D;
 	Camera3D* camera;

@@ -4,7 +4,6 @@ Application::Application()
 {
 	window = new Window(this);
 	input = new Input(this);
-	audio = new Audio(this, true);
 	scene = new MainScene(this);
 	renderer3D = new Renderer3D(this);
 	camera = new Camera3D(this);
@@ -18,7 +17,6 @@ Application::Application()
 	AddModule(renderer3D);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(audio);
 	
 	// Scenes
 	AddModule(scene);
