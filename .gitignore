@@ -27,16 +27,14 @@
 !Kebab Engine/Source/External/SDL/libx86/SDL2.lib
 !Kebab Engine/Source/External/SDL/libx86/SDL2main.lib
 !Kebab Engine/Source/External/glew/libx86/glew32s.lib
-!Kebab Engine/Source/External/EASTL-3.17.06/lib/Debug/EASTL.lib
-!Kebab Engine/Source/External/EASTL-3.17.06/lib/Release/EASTL.lib
 !Kebab Engine/Source/External/Optick/lib/debug/OptickCore.lib
 !Kebab Engine/Source/External/Optick/lib/release/OptickCore.lib
 !Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
 !Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
+!Kebab Engine/Source/External/MathGeoLib/lib/MathGeoLib.lib
 
 # Executables
 *.exe
-!Output/the_hunter_odyssey.exe
 *.out
 *.app
 
@@ -70,7 +68,6 @@ Thumbs.db
 [Bb]uild
 [Bb]in
 [Dd]ebug/
-!Game/Source/External/EASTL-3.17.06/lib/[Dd]ebug/
 !Game/Source/External/Optick/lib/[Dd]ebug/
 *.sbr
 *.sdf
