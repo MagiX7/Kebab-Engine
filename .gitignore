@@ -26,8 +26,7 @@
 *.lib
 !Kebab Engine/Source/External/SDL/libx86/SDL2.lib
 !Kebab Engine/Source/External/SDL/libx86/SDL2main.lib
-!Kebab Engine/Source/External/SDL_mixer/libx86/SDL2_mixer.lib
-!Kebab Engine/Source/External/glut/glut32.lib
+!Kebab Engine/Source/External/glew/libx86/glew32s.lib
 !Kebab Engine/Source/External/EASTL-3.17.06/lib/Debug/EASTL.lib
 !Kebab Engine/Source/External/EASTL-3.17.06/lib/Release/EASTL.lib
 !Kebab Engine/Source/External/Optick/lib/debug/OptickCore.lib
