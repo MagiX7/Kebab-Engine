@@ -69,6 +69,8 @@ Thumbs.db
 [Bb]in
 [Dd]ebug/
 !Game/Source/External/Optick/lib/[Dd]ebug/
+!Kebab Engine/Source/External/MathGeoLib/src/
+!Kebab Engine/Source/External/MathGeoLib/test/
 *.sbr
 *.sdf
 obj/

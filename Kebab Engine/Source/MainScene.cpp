@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "MainScene.h"
 //#include "Primitive.h"
-#include "MathGeoLib/src/Geometry/Plane.h"
+//#include "MathGeoLib/src/Geometry/Plane.h"
+#include "Geometry/Plane.h"
 
 
 #include "GL/glew.h"
@@ -84,6 +85,8 @@ update_status MainScene::Update(float dt)
     //ImGui::SetWindowSize(s);
 
     static bool showDemoWindow = false;
+
+    ImGui::SetWindowCollapsed(true);
 
     if (ImGui::Begin("Options..", NULL, flags))
     {
