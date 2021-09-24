@@ -84,9 +84,6 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Primitive.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui_impl_opengl3.cpp">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
@@ -150,9 +147,6 @@
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Primitive.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_opengl3.h">

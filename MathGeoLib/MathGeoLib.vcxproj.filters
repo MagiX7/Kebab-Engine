@@ -1,365 +1,126 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\GJK.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\GJK2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\Random\LCG.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\SAT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\AABB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Capsule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Circle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Circle2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Frustum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Line.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\LineSegment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\LineSegment2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\OBB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\PBVolume.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Plane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Polygon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Polyhedron.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Ray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Sphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Triangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Triangle2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\TriangleMesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\BitOps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Callstack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathFunc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathOps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MiniFloat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Polynomial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Quat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\SSEMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\TransformOps.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3x3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\grisu3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\grisu3_cpp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Time\Clock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="$(ProjectDir)src\Algorithm\GJK.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Algorithm\GJK2D.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Algorithm\Random\LCG.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Algorithm\SAT.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\AABB.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Capsule.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Circle.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Circle2D.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Frustum.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Line.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\LineSegment.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\LineSegment2D.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\OBB.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\PBVolume.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Plane.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Polygon.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Polyhedron.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Ray.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Sphere.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Triangle.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\Triangle2D.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Geometry\TriangleMesh.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\BitOps.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\Callstack.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\MathFunc.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\MathLog.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\MathOps.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\MiniFloat.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\Polynomial.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\Quat.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\SSEMath.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\TransformOps.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float2.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float3.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float3x3.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float3x4.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float4.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float4d.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\float4x4.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Math\grisu3.c" />
+    <ClCompile Include="$(ProjectDir)src\Math\grisu3_cpp.cpp" />
+    <ClCompile Include="$(ProjectDir)src\Time\Clock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\GJK.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\GJK2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\Random\LCG.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Algorithm\SAT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\AABB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\AABB2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Capsule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Circle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Circle2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Frustum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\GeomType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\GeometryAll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\HitInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\KDTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Line.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\LineSegment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\LineSegment2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\OBB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\OBB2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\PBVolume.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Polygon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Polygon2DRef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Polyhedron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\QuadTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Ray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\Triangle2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Geometry\TriangleMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\BitFuncs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\BitOps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Callstack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\FixedPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\FloatCmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\InclWindows.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Interpolate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathAll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathFunc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathLog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathNamespace.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MathTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MatrixProxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MiniFloat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\MultiLineMacro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Polynomial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Quat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Reinterpret.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\SSEMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\Swap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\TransformOps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\assume.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3x3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float3x4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4_neon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4_sse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4x4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4x4_neon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\float4x4_sse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\grisu3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\myassert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\quat_simd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\simd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\sse_mathfun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Math\vec2d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\MathBuildConfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\MathGeoLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\MathGeoLibFwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\Time\Clock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\src\emscripten\library_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\davidgl6\Desktop\MathGeoLib-master\MathGeoLib-master\CMakeLists.txt" />
+    <ClInclude Include="$(ProjectDir)src\Algorithm\GJK.h" />
+    <ClInclude Include="$(ProjectDir)src\Algorithm\GJK2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Algorithm\Random\LCG.h" />
+    <ClInclude Include="$(ProjectDir)src\Algorithm\SAT.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\AABB.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\AABB2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Capsule.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Circle.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Circle2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Frustum.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\GeomType.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\GeometryAll.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\HitInfo.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\KDTree.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Line.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\LineSegment.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\LineSegment2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\OBB.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\OBB2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\PBVolume.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Plane.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Polygon.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Polygon2DRef.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Polyhedron.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\QuadTree.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Ray.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Sphere.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Triangle.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\Triangle2D.h" />
+    <ClInclude Include="$(ProjectDir)src\Geometry\TriangleMesh.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\BitFuncs.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\BitOps.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Callstack.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\FixedPoint.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\FloatCmp.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\InclWindows.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Interpolate.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathAll.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathConstants.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathFunc.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathLog.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathNamespace.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MathTypes.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MatrixProxy.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MiniFloat.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\MultiLineMacro.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Polynomial.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Quat.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Rect.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Reinterpret.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\SSEMath.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\Swap.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\TransformOps.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\assume.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float2.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float3.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float3x3.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float3x4.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4_neon.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4_sse.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4d.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4x4.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4x4_neon.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\float4x4_sse.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\grisu3.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\myassert.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\quat_simd.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\simd.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\sse_mathfun.h" />
+    <ClInclude Include="$(ProjectDir)src\Math\vec2d.h" />
+    <ClInclude Include="$(ProjectDir)src\MathBuildConfig.h" />
+    <ClInclude Include="$(ProjectDir)src\MathGeoLib.h" />
+    <ClInclude Include="$(ProjectDir)src\MathGeoLibFwd.h" />
+    <ClInclude Include="$(ProjectDir)src\Time\Clock.h" />
+    <ClInclude Include="$(ProjectDir)src\emscripten\library_system.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

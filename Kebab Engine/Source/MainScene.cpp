@@ -1,7 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "MainScene.h"
-#include "Primitive.h"
+//#include "Primitive.h"
+#include "MathGeoLib/src/Geometry/Plane.h"
+
 
 #include "GL/glew.h"
 
@@ -33,6 +35,8 @@ bool MainScene::Start()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -125,9 +129,10 @@ update_status MainScene::Update(float dt)
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Plane p(0, 1, 0, 0);
-    p.axis = true;
-    p.Render();
+    //Plane p(0, 1, 0, 0);
+    math::Plane p(math::vec(0, 1, 0), 0);
+    
+    //p.Render();
 
     ImGui::Render();
     ImGuiIO& io = ImGui::GetIO();
