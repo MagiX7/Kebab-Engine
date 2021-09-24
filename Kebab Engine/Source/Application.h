@@ -1,6 +1,5 @@
 #pragma once
 
-#include "p2List.h"
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -9,6 +8,7 @@
 #include "MainScene.h"
 #include "Renderer3D.h"
 #include "Camera3D.h"
+#include <list>
 
 class Application
 {
@@ -24,7 +24,7 @@ private:
 	Timer	ms_timer;
 	float   pastDt = 63355;
 	float	dt;
-	p2List<Module*> list_modules;
+	std::list<Module*> listModules;
 
 public:
 

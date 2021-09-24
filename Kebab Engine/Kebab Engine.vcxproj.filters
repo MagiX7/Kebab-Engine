@@ -149,15 +149,6 @@
     <ClInclude Include="Source\Light.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\p2DynArray.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2List.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Point.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>

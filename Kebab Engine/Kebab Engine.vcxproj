@@ -63,9 +63,6 @@
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Window.h" />
-    <ClInclude Include="Source\p2DynArray.h" />
-    <ClInclude Include="Source\p2List.h" />
-    <ClInclude Include="Source\p2Point.h" />
     <ClInclude Include="Source\Primitive.h" />
     <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
