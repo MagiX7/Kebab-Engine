@@ -2,10 +2,10 @@
 #include "Application.h"
 #include "Window.h"
 
-Window::Window(Application* app, bool start_enabled) : Module(app, start_enabled)
+Window::Window(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	window = NULL;
-	screen_surface = NULL;
+	screenSurface = NULL;
 }
 
 // Destructor
@@ -65,7 +65,7 @@ bool Window::Init()
 		else
 		{
 			//Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
+			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
 

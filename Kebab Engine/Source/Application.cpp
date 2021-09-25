@@ -63,8 +63,8 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
-	ms_timer.Start();
+	dt = (float)msTimer.Read() / 1000.0f;
+	msTimer.Start();
 }
 
 // ---------------------------------------------
@@ -72,15 +72,15 @@ void Application::FinishUpdate()
 {
 }
 
-// Call PreUpdate, Update and PostUpdate on all modules
-update_status Application::Update()
+// Call PreUpdate, Update and Draw on all modules
+bool Application::Update()
 {
-	update_status ret = UPDATE_CONTINUE;
+	bool ret = true;
 	PrepareUpdate();
 
 	std::list<Module*>::iterator it = listModules.begin();
 
-	while (it != listModules.end() && ret == UPDATE_CONTINUE)
+	while (it != listModules.end() && ret == true)
 	{
 		ret = (*it)->PreUpdate(dt);
 		it++;
@@ -88,7 +88,7 @@ update_status Application::Update()
 
 	it = listModules.begin();
 
-	while (it != listModules.end() && ret == UPDATE_CONTINUE)
+	while (it != listModules.end() && ret == true)
 	{
 		ret = (*it)->Update(dt);
 		it++;
@@ -96,9 +96,9 @@ update_status Application::Update()
 
 	it = listModules.begin();
 
-	while (it != listModules.end() && ret == UPDATE_CONTINUE)
+	while (it != listModules.end() && ret == true)
 	{
-		ret = (*it)->PostUpdate(dt);
+		ret = (*it)->Draw(dt);
 		it++;
 	}
 

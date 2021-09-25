@@ -6,11 +6,11 @@
 class Camera3D : public Module
 {
 public:
-	Camera3D(Application* app, bool start_enabled = true);
+	Camera3D(Application* app, bool startEnabled = true);
 	~Camera3D();
 
 	bool Start();
-	update_status Update(float dt);
+	bool Update(float dt);
 	bool CleanUp();
 
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
@@ -24,9 +24,9 @@ private:
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference;
+	vec3 x, y, z, position, reference;
 
 private:
 
-	mat4x4 ViewMatrix, ViewMatrixInverse;
+	mat4x4 viewMatrix, viewMatrixInverse;
 };

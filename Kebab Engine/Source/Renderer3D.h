@@ -9,12 +9,12 @@
 class Renderer3D : public Module
 {
 public:
-	Renderer3D(Application* app, bool start_enabled = true);
+	Renderer3D(Application* app, bool startEnabled = true);
 	~Renderer3D();
 
 	bool Init();
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
+	bool PreUpdate(float dt);
+	bool Draw(float dt);
 	bool CleanUp();
 
 	void OnResize(int width, int height);
@@ -23,6 +23,6 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	mat3x3 normalMatrix;
+	mat4x4 modelMatrix, viewMatrix, projectionMatrix;
 };

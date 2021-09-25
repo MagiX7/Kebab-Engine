@@ -10,7 +10,7 @@ class Window : public Module
 {
 public:
 
-	Window(Application* app, bool start_enabled = true);
+	Window(Application* app, bool startEnabled = true);
 
 	// Destructor
 	virtual ~Window();
@@ -25,7 +25,7 @@ public:
 	SDL_Window* window;
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface;
+	SDL_Surface* screenSurface;
 };
 
 #endif // __ModuleWindow_H__

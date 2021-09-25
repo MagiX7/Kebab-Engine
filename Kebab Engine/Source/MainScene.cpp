@@ -1,10 +1,8 @@
-#include "Globals.h"
 #include "Application.h"
 #include "MainScene.h"
 //#include "Primitive.h"
 //#include "MathGeoLib/src/Geometry/Plane.h"
 #include "Geometry/Plane.h"
-
 
 #include "GL/glew.h"
 
@@ -16,7 +14,7 @@
 
 #include <iostream>
 
-MainScene::MainScene(Application* app, bool start_enabled) : Module(app, start_enabled)
+MainScene::MainScene(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 }
 
@@ -53,20 +51,9 @@ bool MainScene::Start()
 	return ret;
 }
 
-// Load assets
-bool MainScene::CleanUp()
-{
-	LOG("Unloading Intro scene");
-
-	return true;
-}
-
 // Update: draw background
-update_status MainScene::Update(float dt)
+bool MainScene::Update(float dt)
 {
-    // ImGui Stuff
-    ImVec4 clear_color = ImVec4(0.1, 0.1, 0.1, 0.1);
-
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -105,7 +92,7 @@ update_status MainScene::Update(float dt)
             if (ImGui::MenuItem("Exit"))
             {
                 ImGui::EndMenu();
-                return UPDATE_STOP;
+                return false;
             }
             ImGui::EndMenu();
         }
@@ -114,7 +101,6 @@ update_status MainScene::Update(float dt)
             if (ImGui::MenuItem("Demo"))
             {
                 showDemoWindow = !showDemoWindow;
-                //showDemoWindow = true;
             }
             ImGui::EndMenu();
         }
@@ -134,17 +120,27 @@ update_status MainScene::Update(float dt)
 
     //Plane p(0, 1, 0, 0);
     math::Plane p(math::vec(0, 1, 0), 0);
-    
+
     //p.Render();
+
+    // ImGui Stuff
+    ImVec4 clearColor = ImVec4(0.1, 0.1, 0.1, 0.1);
 
     ImGui::Render();
     ImGuiIO& io = ImGui::GetIO();
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+    glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
     //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     //SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
+    return true;
+}
 
-    return UPDATE_CONTINUE;
+// Load assets
+bool MainScene::CleanUp()
+{
+    LOG("Unloading Intro scene");
+
+    return true;
 }

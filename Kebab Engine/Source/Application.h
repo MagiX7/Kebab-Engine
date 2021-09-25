@@ -21,7 +21,7 @@ public:
 
 private:
 
-	Timer	ms_timer;
+	Timer	msTimer;
 	float   pastDt = 63355;
 	float	dt;
 	std::list<Module*> listModules;
@@ -32,7 +32,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	bool Update();
 	bool CleanUp();
 
 private:

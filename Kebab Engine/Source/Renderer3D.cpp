@@ -1,14 +1,10 @@
-#include "Globals.h"
 #include "Application.h"
 #include "Renderer3D.h"
 #include "SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-//#pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
-//#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-
-Renderer3D::Renderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+Renderer3D::Renderer3D(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 }
 
@@ -103,7 +99,7 @@ bool Renderer3D::Init()
 }
 
 // PreUpdate: clear buffer
-update_status Renderer3D::PreUpdate(float dt)
+bool Renderer3D::PreUpdate(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -112,19 +108,19 @@ update_status Renderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->position.x, App->camera->position.y, App->camera->position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
-	return UPDATE_CONTINUE;
+	return true;
 }
 
-// PostUpdate present buffer to screen
-update_status Renderer3D::PostUpdate(float dt)
+// Draw present buffer to screen
+bool Renderer3D::Draw(float dt)
 {
 	SDL_GL_SwapWindow(App->window->window);
-	return UPDATE_CONTINUE;
+	return true;
 }
 
 // Called before quitting
@@ -143,8 +139,8 @@ void Renderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	projectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf(&projectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

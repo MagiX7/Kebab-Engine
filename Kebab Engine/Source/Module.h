@@ -10,7 +10,7 @@ private :
 public:
 	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent)
+	Module(Application* parent, bool startEnabled = true) : App(parent)
 	{}
 
 	virtual ~Module()
@@ -26,19 +26,19 @@ public:
 		return true;
 	}
 
-	virtual update_status PreUpdate(float dt)
+	virtual bool PreUpdate(float dt)
 	{
-		return UPDATE_CONTINUE;
+		return true;
 	}
 
-	virtual update_status Update(float dt)
+	virtual bool Update(float dt)
 	{
-		return UPDATE_CONTINUE;
+		return true;
 	}
 
-	virtual update_status PostUpdate(float dt)
+	virtual bool Draw(float dt)
 	{
-		return UPDATE_CONTINUE;
+		return true;
 	}
 
 	virtual bool CleanUp() 
