@@ -2,6 +2,8 @@
 
 #include "Module.h"
 
+#define MAX_IT_HIST 100
+
 class Editor : public Module
 {
 public:
@@ -16,8 +18,8 @@ public:
 private:
 	bool showCase;
 
-	float fpsLog[50];
-	float msLog[50];
+	float fpsLog[MAX_IT_HIST];
+	float msLog[MAX_IT_HIST];
 	int i;
 
 };
