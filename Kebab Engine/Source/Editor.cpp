@@ -20,10 +20,17 @@ bool Editor::Start()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -90,15 +97,15 @@ bool Editor::Update(float dt)
             }
             if (ImGui::MenuItem("Documentation"))
             {
-
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine", NULL, NULL, SW_SHOWNORMAL);
             }
             if (ImGui::MenuItem("Download Latest"))
             {
-
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/archive/refs/heads/main.zip", NULL, NULL, SW_SHOWNORMAL);
             }
             if (ImGui::MenuItem("Report a bug"))
             {
-
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
             }
             if (ImGui::MenuItem("About"))
             {
@@ -122,7 +129,6 @@ bool Editor::Update(float dt)
     consolePanel.Update(dt);
     configPanel.Update(dt);
 
-
 	return true;
 }
 
@@ -140,10 +146,23 @@ bool Editor::Draw(float dt)
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     //SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+        SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+    }
+
 	return true;
 }
 
 bool Editor::CleanUp()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
 	return true;
 }

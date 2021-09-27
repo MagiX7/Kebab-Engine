@@ -51,27 +51,6 @@
     <ClCompile Include="Source\Window.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_demo.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_draw.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_impl_opengl2.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_tables.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Color.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
@@ -87,9 +66,6 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Editor.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -98,6 +74,27 @@
     </ClCompile>
     <ClCompile Include="Source\PanelConsole.cpp">
       <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_demo.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_draw.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_tables.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,13 +116,46 @@
     <ClInclude Include="Source\Window.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\glmath.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Globals.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panel.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelConfiguration.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelConsole.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
     <ClInclude Include="Source\External\imgui\imconfig.h">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui.h">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\External\imgui\imgui_impl_opengl2.h">
+    <ClInclude Include="Source\External\imgui\imgui_impl_opengl3.h">
+      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\imgui\imgui_impl_opengl3_loader.h">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_sdl.h">
@@ -142,42 +172,6 @@
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_truetype.h">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Color.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\glmath.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Globals.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\imgui\imgui_impl_opengl3.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Editor.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Panel.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelConfiguration.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelConsole.h">
-      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
