@@ -2,7 +2,10 @@
 
 #include "Module.h"
 
-#define MAX_IT_HIST 100
+#include "PanelConfiguration.h"
+#include "PanelConsole.h"
+
+//#define MAX_IT_HIST 100
 
 class Editor : public Module
 {
@@ -18,8 +21,11 @@ public:
 private:
 	bool showCase;
 
-	float fpsLog[MAX_IT_HIST];
+	ConfigPanel configPanel;
+	ConsolePanel consolePanel;
+
+	/*float fpsLog[MAX_IT_HIST];
 	float msLog[MAX_IT_HIST];
-	int i;
+	int i;*/
 
 };

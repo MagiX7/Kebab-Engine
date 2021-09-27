@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\External\imgui\imgui.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_demo.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Camera3D.cpp" />
     <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\PanelConsole.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -44,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
+    <ClInclude Include="Source\PanelConfiguration.h" />
     <ClInclude Include="Source\Editor.h" />
     <ClInclude Include="Source\External\imgui\imconfig.h" />
     <ClInclude Include="Source\External\imgui\imgui.h" />
@@ -61,15 +64,12 @@
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Camera3D.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\Panel.h" />
+    <ClInclude Include="Source\PanelConsole.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MathGeoLib\MathGeoLib.vcxproj">
-      <Project>{d4f59a3d-3135-32ac-80df-7507099a7481}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

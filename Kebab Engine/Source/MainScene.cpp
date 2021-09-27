@@ -119,7 +119,7 @@ bool MainScene::Update(float dt)
     //glClear(GL_COLOR_BUFFER_BIT);
 
     //Plane p(0, 1, 0, 0);
-    math::Plane p(math::vec(0, 1, 0), 0);
+    //math::Plane p(math::vec(0, 1, 0), 0);
 
     //p.Render();
 
