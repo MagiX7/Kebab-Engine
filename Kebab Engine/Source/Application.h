@@ -8,6 +8,8 @@
 #include "MainScene.h"
 #include "Renderer3D.h"
 #include "Camera3D.h"
+#include "Editor.h"
+
 #include <list>
 
 class Application
@@ -18,6 +20,7 @@ public:
 	MainScene* scene;
 	Renderer3D* renderer3D;
 	Camera3D* camera;
+	Editor* editor;
 
 private:
 
