@@ -16,5 +16,6 @@ public:
 private:
 	float fpsLog[MAX_IT_HIST];
 	float msLog[MAX_IT_HIST];
+	float memCost[MAX_IT_HIST];
 	int i;
 };

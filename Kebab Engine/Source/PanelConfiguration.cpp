@@ -1,5 +1,6 @@
 #include "PanelConfiguration.h"
 
+#include "SDL.h"
 #include <stdio.h>
 
 ConfigPanel::ConfigPanel()
@@ -40,19 +41,27 @@ bool ConfigPanel::Update(float dt)
                     fpsLog[i] = ImGui::GetIO().Framerate;
                     msLog[y] = msLog[aux];
                     msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
+                    memCost[y] = memCost[aux];
+                    memCost[i] = SDL_GetSystemRAM();
                 }
             }
             else
             {
                 fpsLog[i] = ImGui::GetIO().Framerate;
                 msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
+                memCost[i] = SDL_GetSystemRAM();
                 i++;
             }
             char title[25];
-            sprintf_s(title, 25, "Framerate %.1f", ImGui::GetIO().Framerate);
+            sprintf_s(title, 25, "Framerate: %.1f", ImGui::GetIO().Framerate);
             ImGui::PlotHistogram("##framerate", fpsLog, IM_ARRAYSIZE(fpsLog), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-            sprintf_s(title, 25, "Milliseconds %.3f", 1000.0f / ImGui::GetIO().Framerate);
+            sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f / ImGui::GetIO().Framerate);
             ImGui::PlotHistogram("##milliseconds", msLog, IM_ARRAYSIZE(msLog), 0, title, 0.0f, 50.0f, ImVec2(310, 100));
+            sprintf_s(title, 25, "Memory Consumption");
+            ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));
+
+            //SDL_Log();
+            
         }
         if (ImGui::CollapsingHeader("Window"))
         {
