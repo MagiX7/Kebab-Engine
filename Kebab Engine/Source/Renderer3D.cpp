@@ -90,6 +90,16 @@ bool Renderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+
+
+		// GLEW initialization
+		GLenum err = glewInit();
+		if (err != GLEW_OK)
+		{
+			LOG("Error loading GLEW: %s", glewGetErrorString(err));
+		}
+		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+
 	}
 
 	// Projection matrix for
@@ -101,6 +111,7 @@ bool Renderer3D::Init()
 // PreUpdate: clear buffer
 bool Renderer3D::PreUpdate(float dt)
 {
+	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 

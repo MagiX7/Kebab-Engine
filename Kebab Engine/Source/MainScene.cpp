@@ -27,6 +27,8 @@ bool MainScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+    vbo = new VertexBuffer();
+
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
@@ -133,6 +135,19 @@ bool MainScene::Update(float dt)
     ////glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     ////SDL_GL_SwapWindow(App->window->window); -> Done in Render
+
+
+    float vertices[3 * 3] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f, 0.5f, 0.0f
+    };
+    vbo->SetData(vertices, sizeof(vertices));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+    vbo->Bind();
+    glDrawArrays(GL_TRIANGLES, vertices[0], 9);
+
 
     return true;
 }

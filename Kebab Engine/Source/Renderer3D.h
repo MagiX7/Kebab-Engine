@@ -4,6 +4,8 @@
 #include "glmath.h"
 #include "Light.h"
 
+#include "Buffer.h"
+
 #define MAX_LIGHTS 8
 
 class Renderer3D : public Module
@@ -25,4 +27,8 @@ public:
 	SDL_GLContext context;
 	mat3x3 normalMatrix;
 	mat4x4 modelMatrix, viewMatrix, projectionMatrix;
+
+private:
+	VertexBuffer* vbo;
+	IndexBuffer* ibo;
 };
