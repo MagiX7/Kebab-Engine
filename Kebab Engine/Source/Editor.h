@@ -22,6 +22,8 @@ private:
 	bool showCase;
 
 	ConfigPanel configPanel;
+
+public:
 	ConsolePanel consolePanel;
 
 	/*float fpsLog[MAX_IT_HIST];

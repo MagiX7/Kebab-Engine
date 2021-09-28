@@ -11,8 +11,7 @@ public:
 	bool Update(float dt) override;
 	void Draw() override;
 
-    ImGuiTextBuffer     Buf;
-    bool                ScrollToBottom;
+    ImGuiTextBuffer     buf;
 
 	void ClearConsole();
 

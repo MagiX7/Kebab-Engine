@@ -14,7 +14,7 @@ bool ConsolePanel::Update(float dt)
 {
     if (ImGui::Begin("Console", NULL))
     {
-        ImGui::TextUnformatted(Buf.begin(), "\n");
+        ImGui::TextUnformatted(buf.begin());
         ImGui::SetScrollY(ImGui::GetWindowHeight());
     }
     ImGui::End();
@@ -29,11 +29,11 @@ void ConsolePanel::AddLog(const char* fmt)
 {
     va_list args;
     va_start(args, fmt);
-    Buf.appendfv(fmt, args);
+    buf.appendfv(fmt, args);
     va_end(args);
 }
 
 void ConsolePanel::ClearConsole()
 {
-    Buf.clear();
+    buf.clear();
 }
