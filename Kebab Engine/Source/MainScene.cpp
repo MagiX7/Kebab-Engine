@@ -29,7 +29,7 @@ bool MainScene::Start()
 
     vbo = new VertexBuffer();
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->Move(vec3(1.5f, 2.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
     //// Setup Dear ImGui context
@@ -137,17 +137,59 @@ bool MainScene::Update(float dt)
     ////SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
 
-    float vertices[3 * 3] = {
+
+    // TRIANGLE
+    /*float vertices[3 * 3] = {
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
          0.0f, 0.5f, 0.0f
-    };
-    vbo->SetData(vertices, sizeof(vertices));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
-    vbo->Bind();
-    glDrawArrays(GL_TRIANGLES, vertices[0], 9);
+    };*/
 
+    // CUBE
+    float vertices2[] = {
+        -0.5f,-0.5f,-0.5f,
+        -0.5f,-0.5f, 0.5f,
+        -0.5f, 0.5f, 0.5f,
+         0.5f, 0.5f,-0.5f,
+        -0.5f,-0.5f,-0.5f,
+        -0.5f, 0.5f,-0.5f,
+         0.5f,-0.5f, 0.5f,
+        -0.5f,-0.5f,-0.5f,
+         0.5f,-0.5f,-0.5f,
+         0.5f, 0.5f,-0.5f,
+         0.5f,-0.5f,-0.5f,
+        -0.5f,-0.5f,-0.5f,
+        -0.5f,-0.5f,-0.5f,
+        -0.5f, 0.5f, 0.5f,
+        -0.5f, 0.5f,-0.5f,
+         0.5f,-0.5f, 0.5f,
+        -0.5f,-0.5f, 0.5f,
+        -0.5f,-0.5f,-0.5f,
+        -0.5f, 0.5f, 0.5f,
+        -0.5f,-0.5f, 0.5f,
+         0.5f,-0.5f, 0.5f,
+         0.5f, 0.5f, 0.5f,
+         0.5f,-0.5f,-0.5f,
+         0.5f, 0.5f,-0.5f,
+         0.5f,-0.5f,-0.5f,
+         0.5f, 0.5f, 0.5f,
+         0.5f,-0.5f, 0.5f,
+         0.5f, 0.5f, 0.5f,
+         0.5f, 0.5f,-0.5f,
+        -0.5f, 0.5f,-0.5f,
+         0.5f, 0.5f, 0.5f,
+        -0.5f, 0.5f,-0.5f,
+        -0.5f, 0.5f, 0.5f,
+         0.5f, 0.5f, 0.5f,
+        -0.5f, 0.5f, 0.5f,
+         0.5f,-0.5f, 0.5f
+    };
+
+    vbo->SetData(vertices2, sizeof(vertices2));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    vbo->Bind();
+    glDrawArrays(GL_TRIANGLES, vertices2[0], 12 * 3);
 
     return true;
 }
