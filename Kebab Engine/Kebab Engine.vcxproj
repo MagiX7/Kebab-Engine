@@ -29,6 +29,7 @@
     <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\External\parson\src\parson.c" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="Source\External\imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\External\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\External\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\External\parson\src\parson.h" />
     <ClInclude Include="Source\PanelConfiguration.h" />
     <ClInclude Include="Source\Editor.h" />
     <ClInclude Include="Source\glmath.h" />
@@ -143,9 +145,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,9 +162,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\pcg-cpp\include;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

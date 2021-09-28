@@ -10,6 +10,8 @@
 #include "Camera3D.h"
 #include "Editor.h"
 
+#include "parson.h"
+
 #include <list>
 
 class Application
@@ -43,4 +45,6 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+	void PrintCommitsInfo(const char* username, const char* repo);
 };

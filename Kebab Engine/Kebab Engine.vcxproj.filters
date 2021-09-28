@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Render">
       <UniqueIdentifier>{a95807cd-2ad4-4127-bb1b-98ae6ae636e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\3rd Parties\parson">
+      <UniqueIdentifier>{2687f952-2c4e-4235-99c3-0342d2c00bf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="Source\Buffer.cpp">
       <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\parson\src\parson.c">
+      <Filter>Source Files\3rd Parties\parson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Source\Buffer.h">
       <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\parson\src\parson.h">
+      <Filter>Source Files\3rd Parties\parson</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
