@@ -1,5 +1,9 @@
 #pragma once
 
+#include "parson.h"
+
+#include <string> // to_string used in save function
+
 class Application;
 
 class Module
@@ -45,4 +49,17 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual JSON_Object* Save(JSON_Object* root)
+	{
+		return NULL;
+	}
+
+	virtual void Load()
+	{
+
+	}
+
+public:
+	std::string name;
 };

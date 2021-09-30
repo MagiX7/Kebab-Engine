@@ -31,6 +31,10 @@ private:
 	float	dt;
 	std::list<Module*> listModules;
 
+	bool saveReq;
+	bool loadReq;
+	JSON_Value* value;
+
 public:
 
 	Application();
@@ -40,6 +44,9 @@ public:
 	bool Update();
 	bool CleanUp();
 
+	void RequestSave();
+	void RequestLoad();
+
 private:
 
 	void AddModule(Module* mod);
@@ -47,4 +54,8 @@ private:
 	void FinishUpdate();
 
 	void PrintCommitsInfo(const char* username, const char* repo);
+
+	void Load();
+	void Save();
+
 };

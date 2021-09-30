@@ -6,6 +6,8 @@ Window::Window(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	window = NULL;
 	screenSurface = NULL;
+
+	name = "window";
 }
 
 // Destructor
@@ -27,8 +29,8 @@ bool Window::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -91,4 +93,17 @@ bool Window::CleanUp()
 void Window::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+JSON_Object* Window::Save(JSON_Object* root)
+{
+	value = json_value_init_object();
+	JSON_Object* window = json_value_get_object(value);
+
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	std::string tmp = "height: ";
+	tmp += std::to_string(height);
+	json_object_set_string(root, name.c_str(), tmp.c_str());
+	
+	return window;
 }

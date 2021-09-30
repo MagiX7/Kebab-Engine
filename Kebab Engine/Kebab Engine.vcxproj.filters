@@ -191,5 +191,8 @@
     <ClInclude Include="Source\External\parson\src\parson.h">
       <Filter>Source Files\3rd Parties\parson</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Parser.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

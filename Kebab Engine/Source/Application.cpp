@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "Parser.h"
+
 Application::Application()
 {
 	window = new Window(this);
@@ -23,6 +25,9 @@ Application::Application()
 	AddModule(scene);
 
 	AddModule(renderer3D);
+
+	saveReq = false;
+	loadReq = false;
 }
 
 Application::~Application()
@@ -75,6 +80,16 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (saveReq)
+	{
+		saveReq = false;
+		Save();
+	}
+	if (loadReq)
+	{
+		loadReq = false;
+		Load();
+	}
 }
 
 void Application::PrintCommitsInfo(const char* username, const char* repo)
@@ -116,6 +131,50 @@ void Application::PrintCommitsInfo(const char* username, const char* repo)
 	/* cleanup code */
 	json_value_free(root_value);
 	system(cleanup_command);
+}
+
+void Application::Load()
+{
+	std::list<Module*>::iterator it = listModules.begin();
+
+	while (it != listModules.end())
+	{
+		(*it)->Load();
+		it++;
+	}
+}
+
+void Application::Save()
+{
+	value = json_value_init_object();
+	JSON_Object* root = json_value_get_object(value);
+
+	json_object_set_value(root, "App", json_value_init_object());
+
+	std::list<Module*>::iterator it = listModules.begin();
+	while (it != listModules.end())
+	{
+		json_object_set_value(root, (*it)->name.c_str(), json_value_init_object());
+		JSON_Object* ob = (*it)->Save(root);
+
+		
+
+		//JSON_Value* v = json_object_get_value(ob, (*it)->name.c_str());
+		//json_object_set_value(root, (*it)->name.c_str(), v);
+		
+		it++;
+	}
+
+	json_serialize_to_file(value, "FILE.json");
+
+	/*value = json_value_init_object();
+	JSON_Object* root = json_value_get_object(value);
+
+	json_object_set_value(root, "Window", json_value_init_object());
+	JSON_Object* window = json_object_get_object(root, "Window");
+	json_object_set_string(json_object(value), "Height", "99");
+
+	json_serialize_to_file(value, "FILE.json");*/
 }
 
 // Call PreUpdate, Update and Draw on all modules
@@ -165,6 +224,16 @@ bool Application::CleanUp()
 	}
 
 	return ret;
+}
+
+void Application::RequestSave()
+{
+	saveReq = true;
+}
+
+void Application::RequestLoad()
+{
+	loadReq = true;
 }
 
 void Application::AddModule(Module* mod)
