@@ -48,7 +48,7 @@ bool Editor::Start()
 
 bool Editor::Update(float dt)
 {
-    LOG("EDITOR UPDATE");
+    //LOG("EDITOR UPDATE");
 
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -139,7 +139,7 @@ bool Editor::Update(float dt)
 
 bool Editor::Draw(float dt)
 {
-    LOG("EDITOR DRAW");
+    //LOG("EDITOR DRAW");
 
     ImVec4 clearColor = ImVec4(0.1, 0.1, 0.1, 0.1);
 

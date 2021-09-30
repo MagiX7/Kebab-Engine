@@ -50,9 +50,9 @@ public:
 		return true; 
 	}
 
-	virtual JSON_Object* Save(JSON_Object* root)
+	virtual void Save(JSON_Object* root)
 	{
-		return NULL;
+
 	}
 
 	virtual void Load()

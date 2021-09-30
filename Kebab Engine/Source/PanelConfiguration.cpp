@@ -1,3 +1,6 @@
+#include "Application.h"
+#include "Window.h"
+
 #include "PanelConfiguration.h"
 
 #include "SDL.h"
@@ -54,7 +57,10 @@ bool ConfigPanel::Update(float dt)
             // Slider ============
 
             static float limFPS = 0;
-            ImGui::SliderFloat("Max FPS", &limFPS, 0.0f, 120.0f, "%.1f");
+            if (ImGui::SliderFloat("Max FPS", &limFPS, 0.0f, 120.0f, "%.1f"))
+            {
+                app->SetMaxFPS(limFPS);
+            }
 
             ImGui::Text("Limit Framerate: %.1f", limFPS);
 
@@ -74,15 +80,19 @@ bool ConfigPanel::Update(float dt)
             }
             else
             {
-                fpsLog[i] = ImGui::GetIO().Framerate;
-                msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
+                //fpsLog[i] = ImGui::GetIO().Framerate;
+                fpsLog[i] = app->GetDeltaTime();
+                //msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
+                msLog[i] = app->GetFPS();
                 memCost[i] = SDL_GetSystemRAM();
                 i++;
             }
             char title[25];
-            sprintf_s(title, 25, "Framerate: %.1f", ImGui::GetIO().Framerate);
+            //sprintf_s(title, 25, "Framerate: %.1f", ImGui::GetIO().Framerate);
+            sprintf_s(title, 25, "Framerate: %i", app->GetFPS());
             ImGui::PlotHistogram("##framerate", fpsLog, IM_ARRAYSIZE(fpsLog), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-            sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f / ImGui::GetIO().Framerate);
+            //sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f / ImGui::GetIO().Framerate);
+            sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f * app->GetDeltaTime());
             ImGui::PlotHistogram("##milliseconds", msLog, IM_ARRAYSIZE(msLog), 0, title, 0.0f, 50.0f, ImVec2(310, 100));
             sprintf_s(title, 25, "Memory Consumption");
             ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));            
@@ -93,17 +103,16 @@ bool ConfigPanel::Update(float dt)
             SDL_GetWindowSize(windowConfig->window, &width, &height);
             if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
             {
-                SDL_SetWindowBrightness(windowConfig->window, brightness);
-            }            
+                app->window->SetBrightness(brightness);
+            }
             if (ImGui::SliderInt("Width", &width, 0, 1920))
             {
-                SDL_SetWindowSize(windowConfig->window, width, height);
-                renderConfig->OnResize(width, height);
+                app->window->SetWindowSize(width, height);
+                //renderConfig->OnResize(width, height); -> Done in SetWindowSize()
             }           
             if (ImGui::SliderInt("Height", &height, 0, 1080))
             {
-                SDL_SetWindowSize(windowConfig->window, width, height);
-                renderConfig->OnResize(width, height);
+                app->window->SetWindowSize(width, height);
             }
 
             ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
@@ -115,10 +124,14 @@ bool ConfigPanel::Update(float dt)
                 ImGui::TableNextColumn(); ImGui::Checkbox("Borderless", &borderless);
                 ImGui::TableNextColumn(); ImGui::Checkbox("Full Desktop", &fulldesktop);
 
-                SDL_SetWindowFullscreen(windowConfig->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-                SDL_SetWindowResizable(windowConfig->window, resizable ? SDL_TRUE : SDL_FALSE);
-                SDL_SetWindowBordered(windowConfig->window, borderless ? SDL_FALSE : SDL_TRUE);
-                SDL_SetWindowFullscreen(windowConfig->window, fulldesktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+                app->window->SetFullscreen(fullscreen);
+                app->window->SetFullscreenDesktop(fulldesktop);
+                app->window->SetBordered(borderless);
+                app->window->SetFullscreenDesktop(fulldesktop);
+                //SDL_SetWindowFullscreen(windowConfig->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+                //SDL_SetWindowResizable(windowConfig->window, resizable ? SDL_TRUE : SDL_FALSE);
+                //SDL_SetWindowBordered(windowConfig->window, borderless ? SDL_FALSE : SDL_TRUE);
+                //SDL_SetWindowFullscreen(windowConfig->window, fulldesktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 
                 ImGui::EndTable();
             }
@@ -134,14 +147,7 @@ bool ConfigPanel::Update(float dt)
         if (ImGui::CollapsingHeader("Hardware"))
         {
             SDL_version compiled;
-            SDL_version linked;
-
             SDL_VERSION(&compiled);
-            SDL_GetVersion(&linked);
-            /*printf("We compiled against SDL version %d.%d.%d ...\n",
-                compiled.major, compiled.minor, compiled.patch);
-            printf("But we are linking against SDL version %d.%d.%d.\n",
-                linked.major, linked.minor, linked.patch);*/
 
             ImGui::Text("SDL Version:");
             ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);

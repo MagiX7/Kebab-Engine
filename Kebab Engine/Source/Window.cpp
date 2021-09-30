@@ -95,15 +95,54 @@ void Window::SetTitle(const char* title)
 	SDL_SetWindowTitle(window, title);
 }
 
-JSON_Object* Window::Save(JSON_Object* root)
+void Window::Save(JSON_Object* root)
 {
-	value = json_value_init_object();
-	JSON_Object* window = json_value_get_object(value);
-
 	json_object_set_value(root, name.c_str(), json_value_init_object());
-	std::string tmp = "height: ";
-	tmp += std::to_string(height);
-	json_object_set_string(root, name.c_str(), tmp.c_str());
-	
-	return window;
+	JSON_Object* winObj = json_object_get_object(root, name.c_str());
+
+	json_object_set_number(winObj, "width", width);
+	json_object_set_number(winObj, "height", height);
+	json_object_set_number(winObj, "brightness", brightness);
+	json_object_set_boolean(winObj, "fullwindow", fullscreen);
+	json_object_set_boolean(winObj, "fulldesktop", fulldesktop);
+	json_object_set_boolean(winObj, "resizable", resizable);
+	json_object_set_boolean(winObj, "bordered", borderless);
+}
+
+void Window::SetBrightness(float value)
+{
+	SDL_SetWindowBrightness(window, value);
+	brightness = value;
+}
+
+void Window::SetWindowSize(float w, float h)
+{
+	SDL_SetWindowSize(window, w, h);
+	width = w;
+	height = h;
+	app->renderer3D->OnResize(w, h);
+}
+
+void Window::SetFullscreen(bool value)
+{
+	SDL_SetWindowFullscreen(window, value ? SDL_WINDOW_FULLSCREEN : 0);
+	fullscreen = value;
+}
+
+void Window::SetFullscreenDesktop(bool value)
+{
+	SDL_SetWindowFullscreen(window, value ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+	fulldesktop = value;
+}
+
+void Window::SetResizable(bool value)
+{
+	SDL_SetWindowResizable(window, value ? SDL_TRUE : SDL_FALSE);
+	resizable = value;
+}
+
+void Window::SetBordered(bool value)
+{
+	SDL_SetWindowBordered(window, value ? SDL_FALSE : SDL_TRUE);
+	borderless = value;
 }

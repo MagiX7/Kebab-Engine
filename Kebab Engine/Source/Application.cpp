@@ -75,20 +75,33 @@ void Application::PrepareUpdate()
 {
 	dt = (float)msTimer.Read() / 1000.0f;
 	msTimer.Start();
+
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	if (saveReq)
+	if (saveReq) Save();
+	if (loadReq) Load();
+
+	if (lastSecFrameTime.Read() > 1000)
 	{
-		saveReq = false;
-		Save();
+		lastSecFrameTime.Start();
+		prevLastSecFrameCount = lastSecFrameCount;
+		lastSecFrameCount = 0;
 	}
-	if (loadReq)
+
+	//float averageFps = float(frameCount) / (startupTime.Read() / 1000.0f);
+	//float secondsSinceStartup = startupTime.Read() / 1000.0f;
+	uint32 lastFrameMs = msTimer.Read();
+	uint32 framesOnLastUpdate = prevLastSecFrameCount;
+
+	LOG("%i", lastFrameMs);
+	LOG("%i", cappedMs);
+
+	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
 	{
-		loadReq = false;
-		Load();
+		SDL_Delay(cappedMs - lastFrameMs);
 	}
 }
 
@@ -135,8 +148,9 @@ void Application::PrintCommitsInfo(const char* username, const char* repo)
 
 void Application::Load()
 {
-	std::list<Module*>::iterator it = listModules.begin();
+	loadReq = false;
 
+	std::list<Module*>::iterator it = listModules.begin();
 	while (it != listModules.end())
 	{
 		(*it)->Load();
@@ -146,35 +160,29 @@ void Application::Load()
 
 void Application::Save()
 {
+	saveReq = false;
+
 	value = json_value_init_object();
 	JSON_Object* root = json_value_get_object(value);
 
 	json_object_set_value(root, "App", json_value_init_object());
+	json_object_set_number(root, "dt", dt);
+	json_object_set_number(root, "max fps", 1000.0f / cappedMs);
 
 	std::list<Module*>::iterator it = listModules.begin();
 	while (it != listModules.end())
 	{
-		json_object_set_value(root, (*it)->name.c_str(), json_value_init_object());
-		JSON_Object* ob = (*it)->Save(root);
-
-		
-
-		//JSON_Value* v = json_object_get_value(ob, (*it)->name.c_str());
-		//json_object_set_value(root, (*it)->name.c_str(), v);
-		
+		(*it)->Save(root);
 		it++;
 	}
 
 	json_serialize_to_file(value, "FILE.json");
 
-	/*value = json_value_init_object();
-	JSON_Object* root = json_value_get_object(value);
-
-	json_object_set_value(root, "Window", json_value_init_object());
-	JSON_Object* window = json_object_get_object(root, "Window");
-	json_object_set_string(json_object(value), "Height", "99");
-
-	json_serialize_to_file(value, "FILE.json");*/
+	json_value_free(value);
+	
+	/*char cleanup_command[256];
+	sprintf(cleanup_command, "rm -f %s", "FILE.json");
+	system(cleanup_command);*/
 }
 
 // Call PreUpdate, Update and Draw on all modules
@@ -234,6 +242,24 @@ void Application::RequestSave()
 void Application::RequestLoad()
 {
 	loadReq = true;
+}
+
+void Application::SetMaxFPS(int fps)
+{
+	if (fps != 0)
+		cappedMs = 1000 / fps;
+}
+
+int& Application::GetFPS()
+{
+	int res = 1 / dt;
+	return res;
+}
+
+float& Application::GetMaxFPS()
+{
+	float ret = cappedMs * 1000;
+	return ret;
 }
 
 void Application::AddModule(Module* mod)

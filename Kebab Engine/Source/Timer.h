@@ -16,11 +16,12 @@ public:
 
 	Uint32 Read();
 
+
 private:
 
 	bool	running;
-	Uint32	startedAt;
-	Uint32	stoppedAt;
+	uint32	startedAt;
+	uint32	stoppedAt;
 };
 
 #endif //__TIMER_H__

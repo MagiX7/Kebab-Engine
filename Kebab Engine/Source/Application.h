@@ -25,11 +25,18 @@ public:
 	Editor* editor;
 
 private:
-
-	Timer	msTimer;
-	float   pastDt = 63355;
-	float	dt;
 	std::list<Module*> listModules;
+
+	Timer msTimer;
+	//Timer startupTime;
+	//Timer frameTime;
+	Timer lastSecFrameTime;
+	uint32 lastSecFrameCount = 0;
+	uint32 prevLastSecFrameCount = 0;
+	uint64 frameCount = 0;
+
+	float dt;
+	int	cappedMs = -1;
 
 	bool saveReq;
 	bool loadReq;
@@ -47,6 +54,11 @@ public:
 	void RequestSave();
 	void RequestLoad();
 
+	void SetMaxFPS(int fps);
+	inline float& GetDeltaTime() { return dt; }
+	int& GetFPS();
+	float& GetMaxFPS();
+
 private:
 
 	void AddModule(Module* mod);
@@ -59,3 +71,4 @@ private:
 	void Save();
 
 };
+extern Application* app;

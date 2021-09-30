@@ -20,7 +20,15 @@ public:
 
 	void SetTitle(const char* title);
 
-	JSON_Object* Save(JSON_Object* root) override;
+	void Save(JSON_Object* root) override;
+
+	void SetBrightness(float value);
+	void SetWindowSize(float w, float h);
+	void SetFullscreen(bool value);
+	void SetFullscreenDesktop(bool value);
+	void SetResizable(bool value);
+	void SetBordered(bool value);
+
 
 public:
 	//The window we'll be rendering to
@@ -33,8 +41,13 @@ private:
 	int width;
 	int height;
 
-	JSON_Value* value;
+	float brightness;
+	bool fullscreen;
+	bool resizable;
+	bool borderless;
+	bool fulldesktop;
 
+	JSON_Value* value;
 };
 
 #endif // __ModuleWindow_H__
