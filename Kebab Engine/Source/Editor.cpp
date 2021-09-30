@@ -21,7 +21,7 @@ bool Editor::Start()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -131,6 +131,8 @@ bool Editor::Update(float dt)
 
     if (consolePanel.active) consolePanel.Update(dt);
     if (configPanel.active) configPanel.Update(dt);
+
+    ImGui::EndFrame();
 
 	return true;
 }
