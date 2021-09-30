@@ -9,6 +9,11 @@
 
 ConfigPanel::ConfigPanel()
 {
+    active = true;
+
+    brightness = 0;
+    width = 0;
+    height = 0;
 }
 
 ConfigPanel::~ConfigPanel()
@@ -19,6 +24,24 @@ bool ConfigPanel::Update(float dt)
 {
     if (ImGui::Begin("Configuration", NULL, 0))
     {
+        if (ImGui::BeginMenu("Options"))
+        {
+            if (ImGui::MenuItem("Set Defaults"))
+            {
+
+            }
+            if (ImGui::MenuItem("Load"))
+            {
+
+            }
+            if (ImGui::MenuItem("Save"))
+            {
+
+            }
+
+            ImGui::EndMenu();
+        }
+
         if (ImGui::CollapsingHeader("Application"))
         {
             // Input Text ===========
@@ -33,7 +56,7 @@ bool ConfigPanel::Update(float dt)
             static float limFPS = 0;
             ImGui::SliderFloat("Max FPS", &limFPS, 0.0f, 120.0f, "%.1f");
 
-            ImGui::BulletText("Limit Framerate: %.1f", limFPS);
+            ImGui::Text("Limit Framerate: %.1f", limFPS);
 
             // Histogram ============
             if (i == (MAX_IT_HIST - 1))
@@ -62,14 +85,43 @@ bool ConfigPanel::Update(float dt)
             sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f / ImGui::GetIO().Framerate);
             ImGui::PlotHistogram("##milliseconds", msLog, IM_ARRAYSIZE(msLog), 0, title, 0.0f, 50.0f, ImVec2(310, 100));
             sprintf_s(title, 25, "Memory Consumption");
-            ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));
-
-            //SDL_Log();
-            
+            ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));            
         }
         if (ImGui::CollapsingHeader("Window"))
-        {
+        {            
+            brightness = SDL_GetWindowBrightness(windowConfig->window);
+            SDL_GetWindowSize(windowConfig->window, &width, &height);
+            if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
+            {
+                SDL_SetWindowBrightness(windowConfig->window, brightness);
+            }            
+            if (ImGui::SliderInt("Width", &width, 0, 1920))
+            {
+                SDL_SetWindowSize(windowConfig->window, width, height);
+                renderConfig->OnResize(width, height);
+            }           
+            if (ImGui::SliderInt("Height", &height, 0, 1080))
+            {
+                SDL_SetWindowSize(windowConfig->window, width, height);
+                renderConfig->OnResize(width, height);
+            }
 
+            ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
+
+            if (ImGui::BeginTable("Window Config Table", 2))
+            {
+                ImGui::TableNextColumn(); ImGui::Checkbox("Fullscreen", &fullscreen);
+                ImGui::TableNextColumn(); ImGui::Checkbox("Resizable", &resizable);
+                ImGui::TableNextColumn(); ImGui::Checkbox("Borderless", &borderless);
+                ImGui::TableNextColumn(); ImGui::Checkbox("Full Desktop", &fulldesktop);
+
+                SDL_SetWindowFullscreen(windowConfig->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+                SDL_SetWindowResizable(windowConfig->window, resizable ? SDL_TRUE : SDL_FALSE);
+                SDL_SetWindowBordered(windowConfig->window, borderless ? SDL_FALSE : SDL_TRUE);
+                SDL_SetWindowFullscreen(windowConfig->window, fulldesktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+
+                ImGui::EndTable();
+            }
         }
         if (ImGui::CollapsingHeader("File System"))
         {

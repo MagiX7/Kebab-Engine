@@ -18,13 +18,8 @@ public:
 	bool Draw(float dt) override;
 	bool CleanUp() override;
 
-private:
-	bool showCase;
-
-	ConfigPanel configPanel;
-
-public:
 	ConsolePanel consolePanel;
+	ConfigPanel configPanel;
 
 	/*float fpsLog[MAX_IT_HIST];
 	float msLog[MAX_IT_HIST];

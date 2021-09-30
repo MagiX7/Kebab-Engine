@@ -2,6 +2,7 @@
 
 ConsolePanel::ConsolePanel()
 {
+    active = true;
     ClearConsole();
 }
 

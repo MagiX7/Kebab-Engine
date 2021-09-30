@@ -40,7 +40,8 @@ bool Editor::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
 
-	showCase = false;
+    configPanel.windowConfig = App->window;
+    configPanel.renderConfig = App->renderer3D;
 
 	return true;
 }
@@ -79,20 +80,22 @@ bool Editor::Update(float dt)
             }
             ImGui::EndMenu();
         }
-        /*if (ImGui::BeginMenu("Examples"))
+        if (ImGui::BeginMenu("View"))
         {
-            if (ImGui::MenuItem("Demo"))
+            if (ImGui::MenuItem("Console"))
             {
-                showDemoWindow = !showDemoWindow;
+                consolePanel.active = !consolePanel.active;
+            }
+            if (ImGui::MenuItem("Configuration"))
+            {
+                configPanel.active = !configPanel.active;
             }
             ImGui::EndMenu();
-        }*/
-
+        }
         if (ImGui::BeginMenu("Help"))
         {
             if (ImGui::MenuItem("Gui Demo"))
             {
-                //showCase = !showCase;
                 showDemoWindow = !showDemoWindow;
             }
             if (ImGui::MenuItem("Documentation"))
@@ -126,8 +129,8 @@ bool Editor::Update(float dt)
         if (!demoShouldClose) showDemoWindow = false;
     }
 
-    consolePanel.Update(dt);
-    configPanel.Update(dt);
+    if (consolePanel.active) consolePanel.Update(dt);
+    if (configPanel.active) configPanel.Update(dt);
 
 	return true;
 }

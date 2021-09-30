@@ -13,6 +13,8 @@ public:
 	virtual void Draw() {}
 	//bool CleanUp();
 
+	bool active;
+
 private:
 
 };
