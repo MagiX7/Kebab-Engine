@@ -37,5 +37,3 @@ Uint32 Timer::Read()
 		return stoppedAt - startedAt;
 	}
 }
-
-

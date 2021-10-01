@@ -55,7 +55,7 @@ public:
 
 	}
 
-	virtual void Load()
+	virtual void Load(JSON_Object* root)
 	{
 
 	}

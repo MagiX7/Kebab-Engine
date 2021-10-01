@@ -15,8 +15,8 @@ public:
 	bool Update(float dt) override;
 	void Draw() override;
 
-	Window* windowConfig;
-	Renderer3D* renderConfig;
+	/*Window* windowConfig;
+	Renderer3D* renderConfig;*/
 
 private:
 	float fpsLog[MAX_IT_HIST];

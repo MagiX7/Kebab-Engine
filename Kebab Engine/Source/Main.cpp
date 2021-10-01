@@ -74,7 +74,7 @@ int main(int argc, char ** argv)
 		}
 	}
 
-	delete app;
+	RELEASE(app);
 	LOG("Exiting game '%s'...\n", TITLE);
 	return mainReturn;
 }

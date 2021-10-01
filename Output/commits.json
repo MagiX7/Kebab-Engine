@@ -1,5 +1,84 @@
 [
   {
+    "sha": "6d0b3e18eaa90cb879152ec203da064bade636b0",
+    "node_id": "C_kwDOGFauT9oAKDZkMGIzZTE4ZWFhOTBjYjg3OTE1MmVjMjAzZGEwNjRiYWRlNjM2YjA",
+    "commit": {
+      "author": {
+        "name": "David González",
+        "email": "DavidGonzalez2001-9@hotmail.com",
+        "date": "2021-10-01T12:06:23Z"
+      },
+      "committer": {
+        "name": "David González",
+        "email": "DavidGonzalez2001-9@hotmail.com",
+        "date": "2021-10-01T12:06:23Z"
+      },
+      "message": "Writing to console simplified\n\nCrash when closing the app, access viol.",
+      "tree": {
+        "sha": "b1844c9f68386857c7ac2189b408ab8405f38ff0",
+        "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/git/trees/b1844c9f68386857c7ac2189b408ab8405f38ff0"
+      },
+      "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/git/commits/6d0b3e18eaa90cb879152ec203da064bade636b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/6d0b3e18eaa90cb879152ec203da064bade636b0",
+    "html_url": "https://github.com/MagiX7/Kebab-Engine/commit/6d0b3e18eaa90cb879152ec203da064bade636b0",
+    "comments_url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/6d0b3e18eaa90cb879152ec203da064bade636b0/comments",
+    "author": {
+      "login": "MagiX7",
+      "id": 61042946,
+      "node_id": "MDQ6VXNlcjYxMDQyOTQ2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61042946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MagiX7",
+      "html_url": "https://github.com/MagiX7",
+      "followers_url": "https://api.github.com/users/MagiX7/followers",
+      "following_url": "https://api.github.com/users/MagiX7/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MagiX7/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MagiX7/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MagiX7/subscriptions",
+      "organizations_url": "https://api.github.com/users/MagiX7/orgs",
+      "repos_url": "https://api.github.com/users/MagiX7/repos",
+      "events_url": "https://api.github.com/users/MagiX7/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MagiX7/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "MagiX7",
+      "id": 61042946,
+      "node_id": "MDQ6VXNlcjYxMDQyOTQ2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61042946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MagiX7",
+      "html_url": "https://github.com/MagiX7",
+      "followers_url": "https://api.github.com/users/MagiX7/followers",
+      "following_url": "https://api.github.com/users/MagiX7/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MagiX7/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MagiX7/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MagiX7/subscriptions",
+      "organizations_url": "https://api.github.com/users/MagiX7/orgs",
+      "repos_url": "https://api.github.com/users/MagiX7/repos",
+      "events_url": "https://api.github.com/users/MagiX7/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MagiX7/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0babc9790c38c47f89156663c25cb0385ccc046b",
+        "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/0babc9790c38c47f89156663c25cb0385ccc046b",
+        "html_url": "https://github.com/MagiX7/Kebab-Engine/commit/0babc9790c38c47f89156663c25cb0385ccc046b"
+      }
+    ]
+  },
+  {
     "sha": "0babc9790c38c47f89156663c25cb0385ccc046b",
     "node_id": "C_kwDOGFauT9oAKDBiYWJjOTc5MGMzOGM0N2Y4OTE1NjY2M2MyNWNiMDM4NWNjYzA0NmI",
     "commit": {
@@ -2292,85 +2371,6 @@
         "sha": "b260282dca6930e37c568b1710fc5fb3a7b66e75",
         "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/b260282dca6930e37c568b1710fc5fb3a7b66e75",
         "html_url": "https://github.com/MagiX7/Kebab-Engine/commit/b260282dca6930e37c568b1710fc5fb3a7b66e75"
-      }
-    ]
-  },
-  {
-    "sha": "b260282dca6930e37c568b1710fc5fb3a7b66e75",
-    "node_id": "C_kwDOGFauT9oAKGIyNjAyODJkY2E2OTMwZTM3YzU2OGIxNzEwZmM1ZmIzYTdiNjZlNzU",
-    "commit": {
-      "author": {
-        "name": "Chuchocoronel",
-        "email": "carlosmegia1@gmail.com",
-        "date": "2021-09-21T21:28:10Z"
-      },
-      "committer": {
-        "name": "Chuchocoronel",
-        "email": "carlosmegia1@gmail.com",
-        "date": "2021-09-21T21:28:10Z"
-      },
-      "message": "Options problems solved, and organizating code",
-      "tree": {
-        "sha": "f5fcfad14efaaa33af5c72440457f5ccd01aa6c2",
-        "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/git/trees/f5fcfad14efaaa33af5c72440457f5ccd01aa6c2"
-      },
-      "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/git/commits/b260282dca6930e37c568b1710fc5fb3a7b66e75",
-      "comment_count": 0,
-      "verification": {
-        "verified": false,
-        "reason": "unsigned",
-        "signature": null,
-        "payload": null
-      }
-    },
-    "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/b260282dca6930e37c568b1710fc5fb3a7b66e75",
-    "html_url": "https://github.com/MagiX7/Kebab-Engine/commit/b260282dca6930e37c568b1710fc5fb3a7b66e75",
-    "comments_url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/b260282dca6930e37c568b1710fc5fb3a7b66e75/comments",
-    "author": {
-      "login": "Chuchocoronel",
-      "id": 61042926,
-      "node_id": "MDQ6VXNlcjYxMDQyOTI2",
-      "avatar_url": "https://avatars.githubusercontent.com/u/61042926?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/Chuchocoronel",
-      "html_url": "https://github.com/Chuchocoronel",
-      "followers_url": "https://api.github.com/users/Chuchocoronel/followers",
-      "following_url": "https://api.github.com/users/Chuchocoronel/following{/other_user}",
-      "gists_url": "https://api.github.com/users/Chuchocoronel/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/Chuchocoronel/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/Chuchocoronel/subscriptions",
-      "organizations_url": "https://api.github.com/users/Chuchocoronel/orgs",
-      "repos_url": "https://api.github.com/users/Chuchocoronel/repos",
-      "events_url": "https://api.github.com/users/Chuchocoronel/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/Chuchocoronel/received_events",
-      "type": "User",
-      "site_admin": false
-    },
-    "committer": {
-      "login": "Chuchocoronel",
-      "id": 61042926,
-      "node_id": "MDQ6VXNlcjYxMDQyOTI2",
-      "avatar_url": "https://avatars.githubusercontent.com/u/61042926?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/Chuchocoronel",
-      "html_url": "https://github.com/Chuchocoronel",
-      "followers_url": "https://api.github.com/users/Chuchocoronel/followers",
-      "following_url": "https://api.github.com/users/Chuchocoronel/following{/other_user}",
-      "gists_url": "https://api.github.com/users/Chuchocoronel/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/Chuchocoronel/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/Chuchocoronel/subscriptions",
-      "organizations_url": "https://api.github.com/users/Chuchocoronel/orgs",
-      "repos_url": "https://api.github.com/users/Chuchocoronel/repos",
-      "events_url": "https://api.github.com/users/Chuchocoronel/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/Chuchocoronel/received_events",
-      "type": "User",
-      "site_admin": false
-    },
-    "parents": [
-      {
-        "sha": "fc78b4f05ca85520f5aa35f11280097e2f48a294",
-        "url": "https://api.github.com/repos/MagiX7/Kebab-Engine/commits/fc78b4f05ca85520f5aa35f11280097e2f48a294",
-        "html_url": "https://github.com/MagiX7/Kebab-Engine/commit/fc78b4f05ca85520f5aa35f11280097e2f48a294"
       }
     ]
   }

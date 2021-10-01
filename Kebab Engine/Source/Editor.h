@@ -24,7 +24,7 @@ private:
 
 public:
 
-	ConsolePanel consolePanel;
+	ConsolePanel* consolePanel;
 	ConfigPanel configPanel;
 
 	bool showAboutPanel;

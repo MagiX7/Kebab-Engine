@@ -1,10 +1,14 @@
 #include "Application.h"
 #include "Input.h"
 
+#include "mmgr/mmgr.h"
+
 #define MAX_KEYS 300
 
 Input::Input(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
+	name = "input";
+
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 }
@@ -12,7 +16,7 @@ Input::Input(Application* app, bool startEnabled) : Module(app, startEnabled)
 // Destructor
 Input::~Input()
 {
-	delete[] keyboard;
+	RELEASE_ARRAY(keyboard);
 }
 
 // Called before render is available

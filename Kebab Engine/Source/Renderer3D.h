@@ -20,6 +20,14 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height);
+	
+	void SetDepth(bool value);
+	void SetCullFace(bool value);
+	void SetLighting(bool value);
+	void SetColorMaterial(bool value);
+	void SetTexture2D(bool value);
+
+	void Save(JSON_Object* root) override;
 
 public:
 
@@ -31,4 +39,10 @@ public:
 private:
 	VertexBuffer* vbo;
 	IndexBuffer* ibo;
+
+	bool depth;
+	bool cullFace;
+	bool lighting;
+	bool colorMaterial;
+	bool texture2D;
 };

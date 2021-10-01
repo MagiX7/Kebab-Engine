@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include "Parser.h"
+#include "mmgr/mmgr.h"
 
 Application::Application()
 {
@@ -32,24 +32,22 @@ Application::Application()
 
 Application::~Application()
 {
-	std::list<Module*>::reverse_iterator it = listModules.rbegin();
-
-	while (it != listModules.rend())
+	std::list<Module*>::reverse_iterator it = modules.rbegin();
+	while (it != modules.rend())
 	{
-		delete (*it);
+		RELEASE(*it);
 		it++;
 	}
+	modules.clear();
 }
 
 bool Application::Init()
 {
 	bool ret = true;
 
-	PrintCommitsInfo("magix7", "Kebab-Engine");
-
-	std::list<Module*>::iterator it = listModules.begin();
+	std::list<Module*>::iterator it = modules.begin();
 	
-	while (it != listModules.end() && ret == true)
+	while (it != modules.end() && ret == true)
 	{
 		ret = (*it)->Init();
 		it++;
@@ -58,9 +56,9 @@ bool Application::Init()
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
 
-	it = listModules.begin();
+	it = modules.begin();
 
-	while (it != listModules.end() && ret == true)
+	while (it != modules.end() && ret == true)
 	{
 		ret = (*it)->Start();
 		it++;
@@ -102,55 +100,14 @@ void Application::FinishUpdate()
 	}
 }
 
-void Application::PrintCommitsInfo(const char* username, const char* repo)
-{
-	JSON_Value* root_value;
-	JSON_Array* commits;
-	JSON_Object* commit;
-	size_t i;
-
-	char curl_command[512];
-	char cleanup_command[256];
-	char output_filename[] = "commits.json";
-
-	/* It ain't pretty, but it's what it is */
-	sprintf(curl_command,
-		"curl -s \"https://api.github.com/repos/%s/%s/commits\" > %s",
-		username, repo, output_filename);
-	sprintf(cleanup_command, "rm -f %s", output_filename);
-	system(curl_command);
-
-	/* parsing json and validating output */
-	root_value = json_parse_file(output_filename);
-	if (json_value_get_type(root_value) != JSONArray) {
-		system(cleanup_command);
-		return;
-	}
-
-	/* getting array from root value and printing commit info */
-	commits = json_value_get_array(root_value);
-	printf("%-10.10s %-10.10s %s\n", "Date", "SHA", "Author");
-	for (i = 0; i < json_array_get_count(commits); i++) {
-		commit = json_array_get_object(commits, i);
-		printf("%.10s %.10s %s\n",
-			json_object_dotget_string(commit, "commit.author.date"),
-			json_object_get_string(commit, "sha"),
-			json_object_dotget_string(commit, "commit.author.name"));
-	}
-
-	/* cleanup code */
-	json_value_free(root_value);
-	system(cleanup_command);
-}
-
 void Application::Load()
 {
 	loadReq = false;
 
-	std::list<Module*>::iterator it = listModules.begin();
-	while (it != listModules.end())
+	std::list<Module*>::iterator it = modules.begin();
+	while (it != modules.end())
 	{
-		(*it)->Load();
+		(*it)->Load(NULL);
 		it++;
 	}
 }
@@ -166,14 +123,14 @@ void Application::Save()
 	json_object_set_number(root, "dt", dt);
 	json_object_set_number(root, "max fps", 1000.0f / cappedMs);
 
-	std::list<Module*>::iterator it = listModules.begin();
-	while (it != listModules.end())
+	std::list<Module*>::iterator it = modules.begin();
+	while (it != modules.end())
 	{
 		(*it)->Save(root);
 		it++;
 	}
 
-	json_serialize_to_file(value, "FILE.json");
+	json_serialize_to_file_pretty(value, "FILE.json");
 
 	json_value_free(value);
 	
@@ -188,25 +145,25 @@ bool Application::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	std::list<Module*>::iterator it = listModules.begin();
+	std::list<Module*>::iterator it = modules.begin();
 
-	while (it != listModules.end() && ret == true)
+	while (it != modules.end() && ret == true)
 	{
 		ret = (*it)->PreUpdate(dt);
 		it++;
 	}
 
-	it = listModules.begin();
+	it = modules.begin();
 
-	while (it != listModules.end() && ret == true)
+	while (it != modules.end() && ret == true)
 	{
 		ret = (*it)->Update(dt);
 		it++;
 	}
 
-	it = listModules.begin();
+	it = modules.begin();
 
-	while (it != listModules.end() && ret == true)
+	while (it != modules.end() && ret == true)
 	{
 		ret = (*it)->Draw(dt);
 		it++;
@@ -220,9 +177,9 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	std::list<Module*>::reverse_iterator it = listModules.rbegin();
+	std::list<Module*>::reverse_iterator it = modules.rbegin();
 
-	while (it != listModules.rend())
+	while (it != modules.rend())
 	{
 		ret = (*it)->CleanUp();
 		it++;
@@ -261,5 +218,5 @@ float& Application::GetMaxFPS()
 
 void Application::AddModule(Module* mod)
 {
-	listModules.push_back(mod);
+	modules.push_back(mod);
 }

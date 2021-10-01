@@ -7,8 +7,13 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "mmgr/mmgr.h"
+
 Editor::Editor(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
+    name = "editor";
+
+    consolePanel = new ConsolePanel();
 }
 
 Editor::~Editor()
@@ -40,8 +45,8 @@ bool Editor::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
 
-    configPanel.windowConfig = App->window;
-    configPanel.renderConfig = App->renderer3D;
+   /* configPanel.windowConfig = App->window;
+    configPanel.renderConfig = App->renderer3D;*/
 
     //LOG("Creating ImGui Panels system\n");
 
@@ -83,7 +88,7 @@ bool Editor::Update(float dt)
         {
             if (ImGui::MenuItem("Console"))
             {
-                consolePanel.active = !consolePanel.active;
+                consolePanel->active = !consolePanel->active;
             }
             if (ImGui::MenuItem("Configuration"))
             {
@@ -133,7 +138,7 @@ bool Editor::Update(float dt)
         ShowAboutPanel();
     }
 
-    if (consolePanel.active) consolePanel.Update(dt);
+    if (consolePanel->active) consolePanel->Update(dt);
     if (configPanel.active) configPanel.Update(dt);
 
     ImGui::EndFrame();
@@ -169,9 +174,12 @@ bool Editor::Draw(float dt)
 
 bool Editor::CleanUp()
 {
+    RELEASE(consolePanel);
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+
 
 	return true;
 }

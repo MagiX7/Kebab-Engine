@@ -18,6 +18,8 @@ public:
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 
+	void Save(JSON_Object* root) override;
+
 private:
 
 	void CalculateViewMatrix();

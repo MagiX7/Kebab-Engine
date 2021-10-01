@@ -1,8 +1,12 @@
 #include "Application.h"
 #include "Camera3D.h"
 
+#include "mmgr/mmgr.h"
+
 Camera3D::Camera3D(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
+	name = "camera3D";
+
 	CalculateViewMatrix();
 
 	x = vec3(1.0f, 0.0f, 0.0f);
@@ -142,6 +146,18 @@ void Camera3D::Move(const vec3 &Movement)
 float* Camera3D::GetViewMatrix()
 {
 	return &viewMatrix;
+}
+
+void Camera3D::Save(JSON_Object* root)
+{
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+
+	json_object_set_number(camObj, "pos x", position.x);
+	json_object_set_number(camObj, "pos y", position.y);
+	json_object_set_number(camObj, "pos z", position.z);
+
+
 }
 
 // -----------------------------------------------------------------

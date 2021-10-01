@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Window.h"
 
+#include "mmgr/mmgr.h"
+
 Window::Window(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	window = NULL;
@@ -19,7 +21,7 @@ Window::~Window()
 bool Window::Init()
 {
 	LOG("Init SDL window & surface");
-	LOG("Creating SDL window & surface\n");
+
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -33,6 +35,7 @@ bool Window::Init()
 		width = SCREEN_WIDTH * SCREEN_SIZE;
 		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		flags |= SDL_WINDOW_RESIZABLE;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -113,6 +116,10 @@ void Window::Save(JSON_Object* root)
 	json_object_set_boolean(winObj, "fulldesktop", fulldesktop);
 	json_object_set_boolean(winObj, "resizable", resizable);
 	json_object_set_boolean(winObj, "bordered", borderless);
+}
+
+void Window::Load(JSON_Object* root)
+{
 }
 
 void Window::SetBrightness(float value)

@@ -3,9 +3,30 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) {log(__FILE__, __LINE__, format, __VA_ARGS__); if(app != nullptr) app->editor->consolePanel.AddLog(format); }
+#define LOG(format, ...) Log(__FILE__, __LINE__, format, __VA_ARGS__);
 
-void log(const char file[], int line, const char* format, ...);
+void Log(const char file[], int line, const char* format, ...);
+
+// Deletes a buffer
+#define RELEASE( x ) \
+	{						\
+	if( x != NULL )		\
+		{					  \
+	  delete x;			\
+	  x = NULL;			  \
+		}					  \
+	}
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x ) \
+	{							  \
+	if( x != NULL )			  \
+		{							\
+	  delete[] x;				\
+	  x = NULL;					\
+		}							\
+							  \
+	}
 
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )

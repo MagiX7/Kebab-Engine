@@ -21,6 +21,7 @@ public:
 	void SetTitle(const char* title);
 
 	void Save(JSON_Object* root) override;
+	void Load(JSON_Object* root) override;
 
 	void SetBrightness(float value);
 	void SetWindowSize(float w, float h);
@@ -29,6 +30,8 @@ public:
 	void SetResizable(bool value);
 	void SetBordered(bool value);
 
+	inline float& GetBrightness() { return brightness; }
+	inline void GetWindowSize(int& w, int& h) { w = width; h = height; }
 
 public:
 	//The window we'll be rendering to

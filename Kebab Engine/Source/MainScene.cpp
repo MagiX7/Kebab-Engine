@@ -1,24 +1,19 @@
 #include "Application.h"
 #include "Input.h"
 #include "MainScene.h"
-//#include "Primitive.h"
-//#include "MathGeoLib/src/Geometry/Plane.h"
 #include "Geometry/Plane.h"
 
-#include "parson/src/parson.h"
+#include "parson.h"
 
 #include "GL/glew.h"
 
-//#include "imgui/imgui.h"
-//#include "imgui/imgui_impl_sdl.h"
-//#include "imgui/imgui_impl_opengl3.h"
-
-//#include "glut.h"
+#include "mmgr/mmgr.h"
 
 #include <iostream>
 
 MainScene::MainScene(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
+    name = "mainscene";
 }
 
 MainScene::~MainScene()
@@ -114,6 +109,7 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG("Unloading scene");
+    RELEASE(vbo);
 
     return true;
 }

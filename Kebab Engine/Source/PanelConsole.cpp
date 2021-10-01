@@ -1,5 +1,7 @@
 #include "PanelConsole.h"
 
+#include "mmgr/mmgr.h"
+
 ConsolePanel::ConsolePanel()
 {
     active = true;

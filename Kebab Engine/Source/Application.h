@@ -27,7 +27,7 @@ public:
 	Editor* editor;
 
 private:
-	std::list<Module*> listModules;
+	std::list<Module*> modules;
 
 	Timer msTimer;
 	//Timer startupTime;
@@ -66,8 +66,6 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
-
-	void PrintCommitsInfo(const char* username, const char* repo);
 
 	void Load();
 	void Save();

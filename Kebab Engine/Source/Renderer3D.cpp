@@ -4,8 +4,17 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "mmgr/mmgr.h"
+
 Renderer3D::Renderer3D(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
+	name = "renderer";
+
+	depth = false;
+	cullFace = false;
+	lighting = false;
+	colorMaterial = false;
+	texture2D = false;
 }
 
 // Destructor
@@ -158,4 +167,51 @@ void Renderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void Renderer3D::SetDepth(bool value)
+{
+	depth = value;
+	value ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
+	LOG("-- GL_DEPTH_TEST -- set to %d", value);
+}
+
+void Renderer3D::SetCullFace(bool value)
+{
+	cullFace = value;
+	value ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
+	LOG("-- GL_CULL_FACE -- set to %d", value);
+}
+
+void Renderer3D::SetLighting(bool value)
+{
+	lighting = value;
+	value ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
+	LOG("-- GL_LIGHTING -- set to %d", value);
+}
+
+void Renderer3D::SetColorMaterial(bool value)
+{
+	colorMaterial = value;
+	value ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
+	LOG("-- GL_COLOR_MATERIAL -- set to %d", value);
+}
+
+void Renderer3D::SetTexture2D(bool value)
+{
+	texture2D = value;
+	value ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
+	LOG("-- GL_TEXTURE_2D -- set to %d", value);
+}
+
+void Renderer3D::Save(JSON_Object* root)
+{
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	JSON_Object* renObj = json_object_get_object(root, name.c_str());
+
+	json_object_set_boolean(renObj, "depth", depth);
+	json_object_set_boolean(renObj, "cullface", cullFace);
+	json_object_set_boolean(renObj, "lighting", lighting);
+	json_object_set_boolean(renObj, "color material", colorMaterial);
+	json_object_set_boolean(renObj, "texture2D", texture2D);
 }

@@ -7,6 +7,8 @@
 #include "SDL_cpuinfo.h"
 #include "GL/glew.h"
 
+#include "mmgr/mmgr.h"
+
 #include <stdio.h>
 #include <string>
 
@@ -106,23 +108,20 @@ bool ConfigPanel::Update(float dt)
         }
         if (ImGui::CollapsingHeader("Window"))
         {            
-            brightness = SDL_GetWindowBrightness(windowConfig->window);
-            SDL_GetWindowSize(windowConfig->window, &width, &height);
+            brightness = app->window->GetBrightness();
+            app->window->GetWindowSize(width, height);
+
             if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
-            {
                 app->window->SetBrightness(brightness);
-            }
+
             if (ImGui::SliderInt("Width", &width, 0, 1920))
-            {
                 app->window->SetWindowSize(width, height);
-                //renderConfig->OnResize(width, height); -> Done in SetWindowSize()
-            }           
+
             if (ImGui::SliderInt("Height", &height, 0, 1080))
-            {
                 app->window->SetWindowSize(width, height);
-            }
 
             ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
+            //ImGui::Text("Refresh rate: %.0f", app->GetFPS());
 
             if (ImGui::BeginTable("Window Config Table", 2))
             {
@@ -135,10 +134,6 @@ bool ConfigPanel::Update(float dt)
                 app->window->SetResizable(resizable);
                 app->window->SetFullscreenDesktop(fulldesktop);
                 app->window->SetBordered(borderless);
-                //SDL_SetWindowFullscreen(windowConfig->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-                //SDL_SetWindowResizable(windowConfig->window, resizable ? SDL_TRUE : SDL_FALSE);
-                //SDL_SetWindowBordered(windowConfig->window, borderless ? SDL_FALSE : SDL_TRUE);
-                //SDL_SetWindowFullscreen(windowConfig->window, fulldesktop ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 
                 ImGui::EndTable();
             }
@@ -157,34 +152,27 @@ bool ConfigPanel::Update(float dt)
             {
                 ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Depth", &depth))
-                {
-                    depth ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
-                    LOG("-- GL_DEPTH_TEST -- set to %d", depth);
-                }
+                    app->renderer3D->SetDepth(depth);
+
                 ImGui::TableNextColumn();
-                if (ImGui::Checkbox("Cull", &cullFace))
-                {
-                    cullFace ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
-                    LOG("-- GL_CULL_FACE -- set to %d", cullFace);
-                }
+                if (ImGui::Checkbox("Cull Face", &cullFace))
+                    app->renderer3D->SetCullFace(cullFace);
+
                 ImGui::TableNextColumn();
+
                 if (ImGui::Checkbox("Lighting", &lighting))
-                {
-                    cullFace ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
-                    LOG("-- GL_LIGHTING -- set to %d", lighting);
-                }
+                    app->renderer3D->SetLighting(lighting);
+                
                 ImGui::TableNextColumn();
+                
                 if (ImGui::Checkbox("Color Material", &colorMaterial))
-                {
-                    colorMaterial ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
-                    LOG("-- GL_COLOR_MATERIAL -- set to %d", colorMaterial);
-                }
+                    app->renderer3D->SetColorMaterial(colorMaterial);
+
                 ImGui::TableNextColumn();
+
                 if (ImGui::Checkbox("Texture 2D", &texture2D))
-                {
-                    texture2D ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
-                    LOG("-- GL_TEXTURE_2D -- set to %d", texture2D);
-                }
+                    app->renderer3D->SetTexture2D(texture2D);
+
                 ImGui::EndTable();
             }
         }
