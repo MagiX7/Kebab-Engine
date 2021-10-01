@@ -44,7 +44,6 @@ int main(int argc, char ** argv)
 			{
 				state = MAIN_UPDATE;
 				LOG("-------------- Application Update --------------");
-				app->editor->consolePanel.AddLog("-------------- Application Update --------------\n");
 			}
 
 			break;

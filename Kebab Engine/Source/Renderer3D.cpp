@@ -16,7 +16,7 @@ Renderer3D::~Renderer3D()
 bool Renderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
-	app->editor->consolePanel.AddLog("Creating Renderer context\n");
+	LOG("Creating Renderer context\n");
 	bool ret = true;
 	
 	//Create context
@@ -101,7 +101,7 @@ bool Renderer3D::Init()
 		{
 			LOG("Error loading GLEW: %s", glewGetErrorString(err));
 		}
-		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+		else LOG("GLEW initialization correct. Version %s", glGetString(GLEW_VERSION));
 
 	}
 

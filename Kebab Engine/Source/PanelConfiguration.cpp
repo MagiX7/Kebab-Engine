@@ -159,31 +159,31 @@ bool ConfigPanel::Update(float dt)
                 if (ImGui::Checkbox("Depth", &depth))
                 {
                     depth ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
-                    app->editor->consolePanel.AddLog("-- GL_DEPTH_TEST -- set to %d\n", depth);
+                    LOG("-- GL_DEPTH_TEST -- set to %d", depth);
                 }
                 ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Cull", &cullFace))
                 {
                     cullFace ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
-                    app->editor->consolePanel.AddLog("-- GL_CULL_FACE -- set to %d\n", cullFace);
+                    LOG("-- GL_CULL_FACE -- set to %d", cullFace);
                 }
                 ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Lighting", &lighting))
                 {
                     cullFace ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
-                    app->editor->consolePanel.AddLog("-- GL_LIGHTING -- set to %d\n", lighting);
+                    LOG("-- GL_LIGHTING -- set to %d", lighting);
                 }
                 ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Color Material", &colorMaterial))
                 {
                     colorMaterial ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
-                    app->editor->consolePanel.AddLog("-- GL_COLOR_MATERIAL -- set to %d\n", colorMaterial);
+                    LOG("-- GL_COLOR_MATERIAL -- set to %d", colorMaterial);
                 }
                 ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Texture 2D", &texture2D))
                 {
                     texture2D ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
-                    app->editor->consolePanel.AddLog("-- GL_TEXTURE_2D -- set to %d\n", texture2D);
+                    LOG("-- GL_TEXTURE_2D -- set to %d", texture2D);
                 }
                 ImGui::EndTable();
             }

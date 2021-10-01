@@ -28,7 +28,7 @@ MainScene::~MainScene()
 bool MainScene::Start()
 {
 	LOG("Loading assets");
-    app->editor->consolePanel.AddLog("Creating Scene\n");
+    //LOG("Creating Scene\n");
 	bool ret = true;
 
     vbo = new VertexBuffer();
