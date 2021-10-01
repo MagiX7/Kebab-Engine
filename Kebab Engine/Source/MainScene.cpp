@@ -27,7 +27,8 @@ MainScene::~MainScene()
 // Load assets
 bool MainScene::Start()
 {
-	LOG("Loading Intro assets");
+	LOG("Loading assets");
+    app->editor->consolePanel.AddLog("Creating Scene\n");
 	bool ret = true;
 
     vbo = new VertexBuffer();
@@ -112,7 +113,7 @@ bool MainScene::Update(float dt)
 // Load assets
 bool MainScene::CleanUp()
 {
-    LOG("Unloading Intro scene");
+    LOG("Unloading scene");
 
     return true;
 }

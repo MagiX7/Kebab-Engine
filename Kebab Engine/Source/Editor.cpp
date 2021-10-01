@@ -43,6 +43,8 @@ bool Editor::Start()
     configPanel.windowConfig = App->window;
     configPanel.renderConfig = App->renderer3D;
 
+    app->editor->consolePanel.AddLog("Creating ImGui Panels system\n");
+
 	return true;
 }
 

@@ -16,6 +16,7 @@ Renderer3D::~Renderer3D()
 bool Renderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
+	app->editor->consolePanel.AddLog("Creating Renderer context\n");
 	bool ret = true;
 	
 	//Create context

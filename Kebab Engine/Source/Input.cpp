@@ -19,6 +19,7 @@ Input::~Input()
 bool Input::Init()
 {
 	LOG("Init SDL input event system");
+	app->editor->consolePanel.AddLog("Creating SDL input event system\n");
 	bool ret = true;
 	SDL_Init(0);
 

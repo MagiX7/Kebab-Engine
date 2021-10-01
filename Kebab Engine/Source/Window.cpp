@@ -19,6 +19,7 @@ Window::~Window()
 bool Window::Init()
 {
 	LOG("Init SDL window & surface");
+	app->editor->consolePanel.AddLog("Creating SDL window & surface\n");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)

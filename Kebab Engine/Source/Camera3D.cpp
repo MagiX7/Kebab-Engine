@@ -20,6 +20,7 @@ Camera3D::~Camera3D()
 bool Camera3D::Start()
 {
 	LOG("Setting up the camera");
+	app->editor->consolePanel.AddLog("Creating Camera\n");
 	bool ret = true;
 
 	return ret;

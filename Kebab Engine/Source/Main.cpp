@@ -17,7 +17,7 @@ Application* app = NULL;
 
 int main(int argc, char ** argv)
 {
-	LOG("Starting game '%s'...", TITLE);
+	LOG("Starting '%s'...", TITLE);
 	int mainReturn = EXIT_FAILURE;
 	MainStates state = MAIN_CREATION;
 
@@ -44,6 +44,7 @@ int main(int argc, char ** argv)
 			{
 				state = MAIN_UPDATE;
 				LOG("-------------- Application Update --------------");
+				app->editor->consolePanel.AddLog("-------------- Application Update --------------\n");
 			}
 
 			break;
