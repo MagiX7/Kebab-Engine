@@ -64,9 +64,6 @@ bool Editor::Update(float dt)
     //flags |= ImGuiWindowFlags_MenuBar;
     //flags |= ImGuiWindowFlags_NoMove;
 
-    //ImGui::SetWindowPos(p);
-    //ImGui::SetWindowSize(s);
-
     static bool showDemoWindow = false;
 
     //ImGui::SetWindowCollapsed(true);
@@ -114,7 +111,7 @@ bool Editor::Update(float dt)
             }
             if (ImGui::MenuItem("About"))
             {
-
+                showAboutPanel = !showAboutPanel;
             }
 
             ImGui::EndMenu();
@@ -129,6 +126,11 @@ bool Editor::Update(float dt)
         bool demoShouldClose = true;
         ImGui::ShowDemoWindow(&demoShouldClose);
         if (!demoShouldClose) showDemoWindow = false;
+    }
+
+    if (showAboutPanel)
+    {
+        ShowAboutPanel();
     }
 
     if (consolePanel.active) consolePanel.Update(dt);
@@ -172,4 +174,35 @@ bool Editor::CleanUp()
     ImGui::DestroyContext();
 
 	return true;
+}
+
+void Editor::ShowAboutPanel()
+{
+    ImGui::Begin("About Kebab Engine");
+    ImGui::SetWindowSize({ 800,600 });
+
+    ImGui::Text("Kebab Engine v0.1");
+    ImGui::NewLine();
+    ImGui::Text("Description here.");
+    ImGui::NewLine();
+
+    ImGui::Text("Created by Carlos Megia and David Gonzalez.");
+    ImGui::NewLine();
+
+    ImGui::Text("Third party libraries used:");
+
+    SDL_version ver;
+    SDL_VERSION(&ver);
+    ImGui::BulletText("SDL Version: %d.%d.%d", ver.major, ver.minor, ver.patch);
+    ImGui::BulletText("OpenGL %s", glGetString(GL_VERSION));
+    ImGui::BulletText("ImGui %s", ImGui::GetVersion());
+    ImGui::BulletText("MathGeoLib");
+    
+    ImGui::NewLine();
+
+    ImGui::Text("License: ");
+
+    // TODO: Read file with JSON and print it
+
+    ImGui::End();
 }

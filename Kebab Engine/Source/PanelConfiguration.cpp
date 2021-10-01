@@ -17,6 +17,12 @@ ConfigPanel::ConfigPanel()
     brightness = 0;
     width = 0;
     height = 0;
+
+    depth = false;
+    cullFace = false;
+    lighting = false;
+    colorMaterial = false;
+    texture2D = false;
 }
 
 ConfigPanel::~ConfigPanel()
@@ -82,6 +88,7 @@ bool ConfigPanel::Update(float dt)
             {
                 //fpsLog[i] = ImGui::GetIO().Framerate;
                 fpsLog[i] = app->GetDeltaTime();
+                ImGuiIO& io = ImGui::GetIO();
                 //msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
                 msLog[i] = app->GetFPS();
                 memCost[i] = SDL_GetSystemRAM();
@@ -125,9 +132,9 @@ bool ConfigPanel::Update(float dt)
                 ImGui::TableNextColumn(); ImGui::Checkbox("Full Desktop", &fulldesktop);
 
                 app->window->SetFullscreen(fullscreen);
+                app->window->SetResizable(resizable);
                 app->window->SetFullscreenDesktop(fulldesktop);
                 app->window->SetBordered(borderless);
-                app->window->SetFullscreenDesktop(fulldesktop);
                 //SDL_SetWindowFullscreen(windowConfig->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
                 //SDL_SetWindowResizable(windowConfig->window, resizable ? SDL_TRUE : SDL_FALSE);
                 //SDL_SetWindowBordered(windowConfig->window, borderless ? SDL_FALSE : SDL_TRUE);
@@ -143,6 +150,43 @@ bool ConfigPanel::Update(float dt)
         if (ImGui::CollapsingHeader("Input"))
         {
 
+        }
+        if (ImGui::CollapsingHeader("Render"))
+        {
+            if (ImGui::BeginTable("Render Config Table", 2))
+            {
+                ImGui::TableNextColumn();
+                if (ImGui::Checkbox("Depth", &depth))
+                {
+                    depth ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
+                    app->editor->consolePanel.AddLog("-- GL_DEPTH_TEST -- set to %d\n", depth);
+                }
+                ImGui::TableNextColumn();
+                if (ImGui::Checkbox("Cull", &cullFace))
+                {
+                    cullFace ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
+                    app->editor->consolePanel.AddLog("-- GL_CULL_FACE -- set to %d\n", cullFace);
+                }
+                ImGui::TableNextColumn();
+                if (ImGui::Checkbox("Lighting", &lighting))
+                {
+                    cullFace ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
+                    app->editor->consolePanel.AddLog("-- GL_LIGHTING -- set to %d\n", lighting);
+                }
+                ImGui::TableNextColumn();
+                if (ImGui::Checkbox("Color Material", &colorMaterial))
+                {
+                    colorMaterial ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
+                    app->editor->consolePanel.AddLog("-- GL_COLOR_MATERIAL -- set to %d\n", colorMaterial);
+                }
+                ImGui::TableNextColumn();
+                if (ImGui::Checkbox("Texture 2D", &texture2D))
+                {
+                    texture2D ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
+                    app->editor->consolePanel.AddLog("-- GL_TEXTURE_2D -- set to %d\n", texture2D);
+                }
+                ImGui::EndTable();
+            }
         }
         if (ImGui::CollapsingHeader("Hardware"))
         {

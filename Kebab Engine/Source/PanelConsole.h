@@ -13,7 +13,7 @@ public:
 
 	void ClearConsole();
 
-	void AddLog(const char* fmt);
+	void AddLog(const char* fmt, ...);
 
 private:
 	ImGuiTextBuffer     buf;

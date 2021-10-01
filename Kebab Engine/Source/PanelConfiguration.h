@@ -24,6 +24,7 @@ private:
 	float memCost[MAX_IT_HIST];
 	int i;
 
+	// Window stuff
 	float brightness;
 	int width;
 	int height;
@@ -32,4 +33,12 @@ private:
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;
+
+	// Render stuff
+	bool depth;
+	bool cullFace;
+	bool lighting;
+	bool colorMaterial;
+	bool texture2D;
+	// TODO: Other two
 };

@@ -32,9 +32,9 @@ Application::Application()
 
 Application::~Application()
 {
-	std::list<Module*>::iterator it = listModules.begin();
+	std::list<Module*>::reverse_iterator it = listModules.rbegin();
 
-	while (it != listModules.end())
+	while (it != listModules.rend())
 	{
 		delete (*it);
 		it++;
@@ -95,9 +95,6 @@ void Application::FinishUpdate()
 	//float secondsSinceStartup = startupTime.Read() / 1000.0f;
 	uint32 lastFrameMs = msTimer.Read();
 	uint32 framesOnLastUpdate = prevLastSecFrameCount;
-
-	LOG("%i", lastFrameMs);
-	LOG("%i", cappedMs);
 
 	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
 	{
@@ -223,9 +220,9 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	std::list<Module*>::iterator it = listModules.begin();
+	std::list<Module*>::reverse_iterator it = listModules.rbegin();
 
-	while (it != listModules.end() && ret == true)
+	while (it != listModules.rend())
 	{
 		ret = (*it)->CleanUp();
 		it++;
