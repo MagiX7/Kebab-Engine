@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-MainScene::MainScene(Application* app, bool startEnabled) : Module(app, startEnabled)
+MainScene::MainScene(bool startEnabled) : Module(startEnabled)
 {
     name = "mainscene";
 }
@@ -112,8 +112,8 @@ bool MainScene::Start()
     indexBuffer = new IndexBuffer(indices, sizeof(indices) / sizeof(uint32_t));
     vertexArray->SetIndexBuffer(*indexBuffer);
 
-	App->camera->Move(vec3(1.5f, 2.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
+	app->camera->LookAt(vec3(0, 0, 0));
 
 	return ret;
 }
@@ -121,7 +121,7 @@ bool MainScene::Start()
 // Update: draw background
 bool MainScene::Update(float dt)
 {
-    if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) App->RequestSave();
+    if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
 
     //vbo->Bind();
     vertexArray->Bind();

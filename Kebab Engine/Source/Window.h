@@ -10,9 +10,7 @@ class Window : public Module
 {
 public:
 
-	Window(Application* app, bool startEnabled = true);
-
-	// Destructor
+	Window(bool startEnabled = true);
 	virtual ~Window();
 
 	bool Init();
@@ -44,7 +42,7 @@ private:
 	int width;
 	int height;
 
-	float brightness;
+	float brightness = 1;
 	bool fullscreen;
 	bool resizable;
 	bool borderless;

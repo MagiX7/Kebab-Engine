@@ -16,7 +16,7 @@ class Input : public Module
 {
 public:
 	
-	Input(Application* app, bool startEnabled = true);
+	Input(bool startEnabled = true);
 	~Input();
 
 	bool Init();

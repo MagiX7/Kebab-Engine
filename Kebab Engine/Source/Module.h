@@ -12,9 +12,9 @@ private :
 	bool enabled;
 
 public:
-	Application* App;
+	//Application* App;
 
-	Module(Application* parent, bool startEnabled = true) : App(parent)
+	Module(bool startEnabled = true)
 	{}
 
 	virtual ~Module()

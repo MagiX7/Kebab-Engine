@@ -9,7 +9,7 @@
 
 #include "mmgr/mmgr.h"
 
-Editor::Editor(Application* app, bool startEnabled) : Module(app, startEnabled)
+Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
     name = "editor";
 
@@ -42,13 +42,8 @@ bool Editor::Start()
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
+	ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
-
-   /* configPanel.windowConfig = App->window;
-    configPanel.renderConfig = App->renderer3D;*/
-
-    //LOG("Creating ImGui Panels system\n");
 
 	return true;
 }
@@ -70,8 +65,6 @@ bool Editor::Update(float dt)
     //flags |= ImGuiWindowFlags_NoMove;
 
     static bool showDemoWindow = false;
-
-    //ImGui::SetWindowCollapsed(true);
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -158,7 +151,6 @@ bool Editor::Draw(float dt)
     glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
     //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    //SDL_GL_SwapWindow(App->window->window); -> Done in Render
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -179,7 +171,6 @@ bool Editor::CleanUp()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
-
 
 	return true;
 }

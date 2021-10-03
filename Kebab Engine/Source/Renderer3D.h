@@ -11,7 +11,7 @@
 class Renderer3D : public Module
 {
 public:
-	Renderer3D(Application* app, bool startEnabled = true);
+	Renderer3D(bool startEnabled = true);
 	~Renderer3D();
 
 	bool Init();

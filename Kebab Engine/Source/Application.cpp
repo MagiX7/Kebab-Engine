@@ -4,12 +4,12 @@
 
 Application::Application()
 {
-	window = new Window(this);
-	input = new Input(this);
-	scene = new MainScene(this);
-	renderer3D = new Renderer3D(this);
-	camera = new Camera3D(this);
-	editor = new Editor(this);
+	window = new Window();
+	input = new Input();
+	scene = new MainScene();
+	renderer3D = new Renderer3D();
+	camera = new Camera3D();
+	editor = new Editor();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -44,6 +44,20 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+
+	JSON_Value* file = json_parse_file("FILE.json");
+	value = file;
+	if (!value)
+	{
+		LOG("Could not load or there is no file to load FILE.json");
+	}
+	else
+	{
+		// Load the saved file
+		//JSON_Value* app = json_object_get_value((JSON_Object*)file, "App");
+		Load(); // Maybe it is needed to do this before Init, just to ensure everything is initialized and data is not overwritten
+	}
+
 
 	std::list<Module*>::iterator it = modules.begin();
 	
@@ -103,6 +117,9 @@ void Application::FinishUpdate()
 void Application::Load()
 {
 	loadReq = false;
+
+	value = json_value_init_object();
+	JSON_Object* root = json_value_get_object(value);
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())

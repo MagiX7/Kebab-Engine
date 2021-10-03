@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Kebab Engine", "Kebab Engine\Kebab Engine.vcxproj", "{23BF3FDB-9790-46A0-AFBF-41C11F54736B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathGeoLib", "MathGeoLib\MathGeoLib.vcxproj", "{D4F59A3D-3135-32AC-80DF-7507099A7481}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathGeoLib", "Kebab Engine\Source\External\MathGeoLib\MathGeoLib.vcxproj", "{D4F59A3D-3135-32AC-80DF-7507099A7481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

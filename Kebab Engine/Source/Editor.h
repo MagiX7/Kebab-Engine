@@ -10,7 +10,7 @@
 class Editor : public Module
 {
 public:
-	Editor(Application* app, bool startEnabled = true);
+	Editor(bool startEnabled = true);
 	virtual ~Editor();
 
 	bool Start() override;

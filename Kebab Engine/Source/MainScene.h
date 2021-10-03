@@ -9,7 +9,7 @@
 class MainScene : public Module
 {
 public:
-	MainScene(Application* app, bool startEnabled = true);
+	MainScene(bool startEnabled = true);
 	~MainScene();
 
 	bool Start();

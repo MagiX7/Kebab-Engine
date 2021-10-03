@@ -4,7 +4,7 @@
 
 #include "mmgr/mmgr.h"
 
-Window::Window(Application* app, bool startEnabled) : Module(app, startEnabled)
+Window::Window(bool startEnabled) : Module(startEnabled)
 {
 	window = NULL;
 	screenSurface = NULL;
