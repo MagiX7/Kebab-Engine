@@ -6,11 +6,11 @@
 // VertexBuffer ////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-VertexBuffer::VertexBuffer(/*float* vertex, unsigned int size*/)
+VertexBuffer::VertexBuffer(float* vertices, uint32_t size)
 {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//glBufferData(GL_ARRAY_BUFFER, size, vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
 VertexBuffer::~VertexBuffer()
@@ -18,9 +18,11 @@ VertexBuffer::~VertexBuffer()
 	glDeleteBuffers(1, &vbo);
 }
 
-void VertexBuffer::SetData(float* vertices, unsigned int size)
+void VertexBuffer::SetData(float* vertices, uint32_t size)
 {
+	/*glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 }
 
 void VertexBuffer::Bind() const
@@ -28,7 +30,7 @@ void VertexBuffer::Bind() const
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 }
 
-void VertexBuffer::UnBind() const
+void VertexBuffer::Unbind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -37,12 +39,11 @@ void VertexBuffer::UnBind() const
 // IndexBuffer /////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-IndexBuffer::IndexBuffer(/*float* indices, unsigned int size*/)
+IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) : count(count)
 {
 	glCreateBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	count = 0;
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer()
@@ -50,11 +51,10 @@ IndexBuffer::~IndexBuffer()
 	glDeleteBuffers(1, &ibo);
 }
 
-void IndexBuffer::SetData(float* indices, unsigned int count)
+void IndexBuffer::SetData(float* indices, uint32_t count)
 {
 	this->count = count;
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW); // TODO: Change unsigned int to uint32_t
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 }
 
 void IndexBuffer::Bind() const

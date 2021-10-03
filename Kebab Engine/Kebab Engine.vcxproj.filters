@@ -114,6 +114,9 @@
     <ClCompile Include="Source\External\mmgr\mmgr.cpp">
       <Filter>Source Files\3rd Parties\mmgr</Filter>
     </ClCompile>
+    <ClCompile Include="Source\VertexArray.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\mmgr\nommgr.h">
       <Filter>Source Files\3rd Parties\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VertexArray.h">
+      <Filter>Source Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -42,6 +42,7 @@
     <ClCompile Include="Source\PanelConsole.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
+    <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
@@ -73,6 +74,7 @@
     <ClInclude Include="Source\PanelConsole.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
+    <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />
   </ItemGroup>

@@ -203,6 +203,7 @@ void Editor::ShowAboutPanel()
     SDL_VERSION(&ver);
     ImGui::BulletText("SDL Version: %d.%d.%d", ver.major, ver.minor, ver.patch);
     ImGui::BulletText("OpenGL %s", glGetString(GL_VERSION));
+    ImGui::BulletText("GLEW %s", glewGetString(GLEW_VERSION));
     ImGui::BulletText("ImGui %s", ImGui::GetVersion());
     ImGui::BulletText("MathGeoLib");
     

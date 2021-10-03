@@ -26,38 +26,7 @@ bool MainScene::Start()
     //LOG("Creating Scene\n");
 	bool ret = true;
 
-    vbo = new VertexBuffer();
-
-	App->camera->Move(vec3(1.5f, 2.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
-
-    //// Setup Dear ImGui context
-    //IMGUI_CHECKVERSION();
-    //ImGui::CreateContext();
-    //ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ////io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-    ////io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    ////io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    ////io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    //// Setup Dear ImGui style
-    //ImGui::StyleColorsDark();
-    ////ImGui::StyleColorsClassic();
-
-    //// Setup Platform/Renderer backends
-    //ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
-    //ImGui_ImplOpenGL3_Init();
-
-	return ret;
-}
-
-// Update: draw background
-bool MainScene::Update(float dt)
-{
-    if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) App->RequestSave();
-
-    // CUBE
-    float vertices2[] = {
+    /*float vertices[] = {
         -0.5f,-0.5f,-0.5f,
         -0.5f,-0.5f, 0.5f,
         -0.5f, 0.5f, 0.5f,
@@ -94,13 +63,72 @@ bool MainScene::Update(float dt)
          0.5f, 0.5f, 0.5f,
         -0.5f, 0.5f, 0.5f,
          0.5f,-0.5f, 0.5f
+    };*/
+
+    float vertices[] = {
+        // front
+        -0.5, -0.5,  0.5,
+         0.5, -0.5,  0.5,
+         0.5,  0.5,  0.5,
+        -0.5,  0.5,  0.5,
+        // back
+        -0.5, -0.5, -0.5,
+         0.5, -0.5, -0.5,
+         0.5,  0.5, -0.5,
+        -0.5,  0.5, -0.5
+    };
+    uint32_t indices[] = {
+        // front
+        0, 1, 2,
+        2, 3, 0,
+        // right
+        1, 5, 6,
+        6, 2, 1,
+        // back
+        7, 6, 5,
+        5, 4, 7,
+        // left
+        4, 0, 3,
+        3, 7, 4,
+        // bottom
+        4, 5, 1,
+        1, 0, 4,
+        // top
+        3, 2, 6,
+        6, 7, 3
     };
 
-    vbo->SetData(vertices2, sizeof(vertices2));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    vbo->Bind();
-    glDrawArrays(GL_TRIANGLES, vertices2[0], 12 * 3);
+    vertexArray = new VertexArray();
+    vertexBuffer = new VertexBuffer(vertices, sizeof(vertices));
+
+    BufferLayout layout =
+    {
+        {ShaderDataType::VEC3F, "position"}
+    };
+
+    vertexBuffer->SetLayout(layout);
+    vertexArray->AddVertexBuffer(*vertexBuffer);
+
+    indexBuffer = new IndexBuffer(indices, sizeof(indices) / sizeof(uint32_t));
+    vertexArray->SetIndexBuffer(*indexBuffer);
+
+	App->camera->Move(vec3(1.5f, 2.0f, 0.0f));
+	App->camera->LookAt(vec3(0, 0, 0));
+
+	return ret;
+}
+
+// Update: draw background
+bool MainScene::Update(float dt)
+{
+    if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) App->RequestSave();
+
+    //vbo->Bind();
+    vertexArray->Bind();
+    //glDrawArrays(GL_TRIANGLES, , 36 * 3);
+    //glDrawArrays(GL_TRIANGLES, vertexArray->GetVertexBuffers().data()[0], )
+    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+    vertexArray->Unbind();
 
     return true;
 }
@@ -109,7 +137,8 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG("Unloading scene");
-    RELEASE(vbo);
+    RELEASE(vertexBuffer);
+    RELEASE(vertexArray);
 
     return true;
 }

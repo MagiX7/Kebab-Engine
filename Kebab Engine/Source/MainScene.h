@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
-#include "Buffer.h"
+#include "VertexArray.h"
 
 #define BOUNCER_TIME 200
 
@@ -17,6 +17,7 @@ public:
 	bool CleanUp();
 
 private:
-	VertexBuffer* vbo;
-
+	VertexBuffer* vertexBuffer;
+	VertexArray* vertexArray;
+	IndexBuffer* indexBuffer;
 };
