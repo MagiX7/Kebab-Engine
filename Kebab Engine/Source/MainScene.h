@@ -4,6 +4,8 @@
 
 #include "VertexArray.h"
 
+#include "Cube.h"
+
 #define BOUNCER_TIME 200
 
 class MainScene : public Module
@@ -20,4 +22,6 @@ private:
 	VertexBuffer* vertexBuffer;
 	VertexArray* vertexArray;
 	IndexBuffer* indexBuffer;
+
+	Cube* cube;
 };

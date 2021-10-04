@@ -7,7 +7,7 @@
 
 #include "GL/glew.h"
 
-#include "mmgr/mmgr.h"
+//#include "mmgr/mmgr.h"
 
 #include <iostream>
 
@@ -26,7 +26,7 @@ bool MainScene::Start()
     //LOG("Creating Scene\n");
 	bool ret = true;
 
-    /*float vertices[] = {
+    /*float vertices2[] = {
         -0.5f,-0.5f,-0.5f,
         -0.5f,-0.5f, 0.5f,
         -0.5f, 0.5f, 0.5f,
@@ -98,8 +98,11 @@ bool MainScene::Start()
         6, 7, 3
     };
 
+    cube = new Cube({ 1,1,0 }, { 1,1,1 });
+
     vertexArray = new VertexArray();
-    vertexBuffer = new VertexBuffer(vertices, sizeof(vertices));
+    vertexBuffer = new VertexBuffer(cube->GetVertices().data(), sizeof(cube->GetVertices().data()));
+    //vertexBuffer = new VertexBuffer(vertices, sizeof(vertices));
 
     BufferLayout layout =
     {
@@ -109,8 +112,8 @@ bool MainScene::Start()
     vertexBuffer->SetLayout(layout);
     vertexArray->AddVertexBuffer(*vertexBuffer);
 
-    indexBuffer = new IndexBuffer(indices, sizeof(indices) / sizeof(uint32_t));
-    vertexArray->SetIndexBuffer(*indexBuffer);
+    /*indexBuffer = new IndexBuffer(indices, sizeof(indices) / sizeof(uint32_t));
+    vertexArray->SetIndexBuffer(*indexBuffer);*/
 
 	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
 	app->camera->LookAt(vec3(0, 0, 0));
@@ -123,11 +126,9 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
 
-    //vbo->Bind();
     vertexArray->Bind();
-    //glDrawArrays(GL_TRIANGLES, , 36 * 3);
-    //glDrawArrays(GL_TRIANGLES, vertexArray->GetVertexBuffers().data()[0], )
-    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawArrays(GL_TRIANGLES, 0, cube->GetVertices().size());
+    //glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
     vertexArray->Unbind();
 
     return true;
