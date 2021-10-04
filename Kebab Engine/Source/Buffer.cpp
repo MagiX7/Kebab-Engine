@@ -41,7 +41,7 @@ void VertexBuffer::Unbind() const
 
 IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) : count(count)
 {
-	glCreateBuffers(1, &ibo);
+	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }

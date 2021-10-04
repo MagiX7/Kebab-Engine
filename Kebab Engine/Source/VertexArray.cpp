@@ -5,7 +5,7 @@
 VertexArray::VertexArray()
 {
     // We do not bind it here because if we later create a vertex array and its bound, they are linked together and that may be dangerous.
-	glCreateVertexArrays(1, &vao);
+	glGenVertexArrays(1, &vao);
 
     //indexBuffer = new IndexBuffer();
 }

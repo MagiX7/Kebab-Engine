@@ -33,7 +33,7 @@ ConfigPanel::~ConfigPanel()
 
 bool ConfigPanel::Update(float dt)
 {
-    if (ImGui::Begin("Configuration", NULL, 0))
+    if (ImGui::Begin("Configuration", &active, 0))
     {
         if (ImGui::BeginMenu("Options"))
         {

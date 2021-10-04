@@ -177,7 +177,7 @@ bool Editor::CleanUp()
 
 void Editor::ShowAboutPanel()
 {
-    ImGui::Begin("About Kebab Engine");
+    ImGui::Begin("About Kebab Engine", &showAboutPanel);
     ImGui::SetWindowSize({ 800,600 });
 
     ImGui::Text("Kebab Engine v0.1");

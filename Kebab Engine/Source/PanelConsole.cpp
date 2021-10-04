@@ -15,7 +15,7 @@ ConsolePanel::~ConsolePanel()
 
 bool ConsolePanel::Update(float dt)
 {
-    if (ImGui::Begin("Console", NULL))
+    if (ImGui::Begin("Console", &active))
     {
         ImGui::TextUnformatted(buf.begin());
         ImGui::SetScrollY(ImGui::GetWindowHeight());
