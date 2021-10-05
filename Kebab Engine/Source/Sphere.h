@@ -2,11 +2,11 @@
 
 #include "Geometry.h"
 
-class MySphere : public Geometry
+class KebabSphere : public KebabGeometry
 {
 public:
 	// Stack is for the verticals division and sectors is for the horizontal divisions
-	MySphere(float3 pos, float radius, float rings, float sectors) : Geometry(pos)
+	KebabSphere(float3 pos, float radius, float rings, float sectors) : KebabGeometry(pos)
 	{
         float const R = 1./(float)(rings-1);
         float const S = 1./(float)(sectors-1);
@@ -45,7 +45,7 @@ public:
         }
     }
 
-	virtual ~MySphere()
+	virtual ~KebabSphere()
 	{
 		vertices.clear();
 		normals.clear();

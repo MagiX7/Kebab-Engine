@@ -24,5 +24,5 @@ private:
 	VertexArray* vertexArray;
 	IndexBuffer* indexBuffer;
 
-	Geometry* primitive;
+	KebabGeometry* primitive;
 };

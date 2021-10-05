@@ -2,11 +2,11 @@
 
 #include "Geometry.h"
 
-class Pyramid : public Geometry
+class KebabPyramid : public KebabGeometry
 {
 public:
 	// Position is the middle of the base
-	Pyramid(float3 pos, float height, float baseWidth) : Geometry(pos)
+	KebabPyramid(float3 pos, float height, float baseWidth) : KebabGeometry(pos)
 	{
 		float ap = sqrt(pow(height, 2) + pow(baseWidth / 2, 2));
 
@@ -19,7 +19,7 @@ public:
 
 		vertices.resize(5 * 3); // Tris
 		indices.resize(6 * 3);
-		float v[] =
+		vertices =
 		{
 			pos.x, pos.y + height,pos.z, // Up
 			frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z, // Bottom left
@@ -28,7 +28,7 @@ public:
 			backLeftCorner.x, backLeftCorner.y, backLeftCorner.z, // Bottom back left
 		};
 		
-		uint32_t in[] =
+		indices =
 		{
 			// Front
 			0,1,2,
@@ -46,16 +46,9 @@ public:
 			1,3,4,
 			2,3,1
 		};
-
-		for (int i = 0; i < vertices.size(); ++i)
-			vertices[i] = v[i];
-
-		for (int i = 0; i < indices.size(); ++i)
-			indices[i] = in[i];
-		
 	}
 
-	virtual ~Pyramid()
+	virtual ~KebabPyramid()
 	{
 		vertices.clear();
 		normals.clear();

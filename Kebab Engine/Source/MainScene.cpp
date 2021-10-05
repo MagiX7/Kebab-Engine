@@ -1,9 +1,10 @@
 #include "Application.h"
 #include "Input.h"
 #include "MainScene.h"
-#include "Geometry/Plane.h"
+//#include "Geometry/Plane.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "Plane.h"
 
 #include "parson.h"
 
@@ -28,8 +29,9 @@ bool MainScene::Start()
 	bool ret = true;
 
     //primitive = new Cube({ 0,0,0 }, { 1,1,1 });
-    primitive = new Pyramid({ 0,0,0 }, 1.5f, 1.0f);
+    //primitive = new Pyramid({ 0,0,0 }, 1.5f, 1.0f);
     //primitive = new MySphere({ 0,0,0 }, 2, 50, 30);
+    primitive = new KebabPlane({ -5,0,0 }, { 10,5 });
 
     vertexArray = new VertexArray();
     vertexBuffer = new VertexBuffer(primitive->GetVertices().data(), sizeof(primitive->GetVertices().data()[0]) * primitive->GetVertices().size());

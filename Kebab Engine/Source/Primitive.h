@@ -37,22 +37,22 @@ protected:
 };
 
 // ============================================
-class Cube : public Primitive
+class KebabCube : public Primitive
 {
 public :
-	Cube();
-	Cube(float sizeX, float sizeY, float sizeZ);
+	KebabCube();
+	KebabCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
 	vec3 size;
 };
 
 // ============================================
-class MySphere : public Primitive
+class KebabSphere : public Primitive
 {
 public:
-	MySphere();
-	MySphere(float radius);
+	KebabSphere();
+	KebabSphere(float radius);
 	void InnerRender() const;
 public:
 	float radius;

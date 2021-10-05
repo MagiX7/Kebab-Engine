@@ -46,4 +46,6 @@ private:
 	bool lighting;
 	bool colorMaterial;
 	bool texture2D;
+
+	bool wireframe;
 };

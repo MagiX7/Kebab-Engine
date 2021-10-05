@@ -15,6 +15,7 @@ Renderer3D::Renderer3D(bool startEnabled) : Module(startEnabled)
 	lighting = true;
 	colorMaterial = true;
 	texture2D = true;
+	wireframe = true;
 }
 
 // Destructor
@@ -103,6 +104,8 @@ bool Renderer3D::Init(JSON_Object* root)
 		if (colorMaterial) SetColorMaterial(colorMaterial);
 		if (texture2D) SetTexture2D(texture2D);
 
+		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 		/*if (depth) glEnable(GL_DEPTH_TEST);
 		if (cullFace) glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
@@ -136,6 +139,12 @@ bool Renderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->GetViewMatrix());
+
+	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		wireframe = !wireframe;
+		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);

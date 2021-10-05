@@ -100,17 +100,17 @@ void Primitive::Scale(float x, float y, float z)
 }
 
 // CUBE ============================================
-Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
+KebabCube::KebabCube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-Cube::Cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
+KebabCube::KebabCube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-void Cube::InnerRender() const
+void KebabCube::InnerRender() const
 {	
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
@@ -158,17 +158,17 @@ void Cube::InnerRender() const
 }
 
 // SPHERE ============================================
-MySphere::MySphere() : Primitive(), radius(1.0f)
+KebabSphere::KebabSphere() : Primitive(), radius(1.0f)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 }
 
-MySphere::MySphere(float radius) : Primitive(), radius(radius)
+KebabSphere::KebabSphere(float radius) : Primitive(), radius(radius)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 }
 
-void MySphere::InnerRender() const
+void KebabSphere::InnerRender() const
 {
 	//glutSolidSphere(radius, 25, 25);
 }

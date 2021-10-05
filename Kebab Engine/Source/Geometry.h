@@ -1,14 +1,21 @@
 #pragma once
 
 #include "MathGeoLib/src/Math/float3.h"
+#include "MathGeoLib/src/Math/float2.h"
 
 #include <vector>
 
-class Geometry
+class KebabGeometry
 {
 public:
-	Geometry(math::float3 pos) : position(pos) {}
-	virtual ~Geometry() {};
+	KebabGeometry(math::float3 pos) : position(pos) {}
+	virtual ~KebabGeometry()
+	{
+		vertices.clear();
+		normals.clear();
+		texCoords.clear();
+		indices.clear();
+	};
 
 	inline void SetPos(const math::float3& pos) { position = pos; }
 	inline const math::float3& GetPosition() { return position; }
