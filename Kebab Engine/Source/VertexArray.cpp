@@ -13,13 +13,7 @@ VertexArray::VertexArray()
 VertexArray::~VertexArray()
 {
     glDeleteVertexArrays(1, &vao);
-    for (auto& v : vertexBuffers)
-    {
-        v->~VertexBuffer();
-        v++;
-    }
     vertexBuffers.clear();
-    indexBuffer->~IndexBuffer();
 }
 
 void VertexArray::Bind() const
@@ -62,5 +56,4 @@ void VertexArray::SetIndexBuffer(IndexBuffer& indexBuf)
     glBindVertexArray(vao);
     indexBuf.Bind();
     indexBuffer = &indexBuf;
-
 }

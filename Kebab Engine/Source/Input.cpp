@@ -20,10 +20,10 @@ Input::~Input()
 }
 
 // Called before render is available
-bool Input::Init()
+bool Input::Init(JSON_Object* root)
 {
 	LOG("Init SDL input event system");
-	LOG("Creating SDL input event system\n");
+
 	bool ret = true;
 	SDL_Init(0);
 

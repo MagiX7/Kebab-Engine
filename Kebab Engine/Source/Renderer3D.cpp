@@ -10,11 +10,11 @@ Renderer3D::Renderer3D(bool startEnabled) : Module(startEnabled)
 {
 	name = "renderer";
 
-	depth = false;
-	cullFace = false;
-	lighting = false;
-	colorMaterial = false;
-	texture2D = false;
+	depth = true;
+	cullFace = true;
+	lighting = true;
+	colorMaterial = true;
+	texture2D = true;
 }
 
 // Destructor
@@ -22,7 +22,7 @@ Renderer3D::~Renderer3D()
 {}
 
 // Called before render is available
-bool Renderer3D::Init()
+bool Renderer3D::Init(JSON_Object* root)
 {
 	LOG("Creating 3D Renderer context");
 	LOG("Creating Renderer context\n");
@@ -96,12 +96,19 @@ bool Renderer3D::Init()
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		if (depth) SetDepth(depth);
+		if (cullFace) SetCullFace(cullFace);
 		lights[0].Active(true);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
-		glEnable(GL_TEXTURE_2D);
+		if (lighting) SetLighting(lighting);
+		if (colorMaterial) SetColorMaterial(colorMaterial);
+		if (texture2D) SetTexture2D(texture2D);
+
+		/*if (depth) glEnable(GL_DEPTH_TEST);
+		if (cullFace) glEnable(GL_CULL_FACE);
+		lights[0].Active(true);
+		if (lighting) glEnable(GL_LIGHTING);
+		if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
+		if (texture2D) glEnable(GL_TEXTURE_2D);*/
 
 		LOG("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
@@ -214,4 +221,8 @@ void Renderer3D::Save(JSON_Object* root)
 	json_object_set_boolean(renObj, "lighting", lighting);
 	json_object_set_boolean(renObj, "color material", colorMaterial);
 	json_object_set_boolean(renObj, "texture2D", texture2D);
+}
+
+void Renderer3D::Load(JSON_Object* root)
+{
 }

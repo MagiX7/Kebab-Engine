@@ -20,6 +20,12 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 Camera3D::~Camera3D()
 {}
 
+bool Camera3D::Init(JSON_Object* root)
+{
+
+	return true;
+}
+
 // -----------------------------------------------------------------
 bool Camera3D::Start()
 {

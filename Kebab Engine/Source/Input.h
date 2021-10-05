@@ -19,7 +19,7 @@ public:
 	Input(bool startEnabled = true);
 	~Input();
 
-	bool Init();
+	bool Init(JSON_Object* root);
 	bool PreUpdate(float dt);
 	bool CleanUp();
 

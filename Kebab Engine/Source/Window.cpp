@@ -18,7 +18,7 @@ Window::~Window()
 }
 
 // Called before render is available
-bool Window::Init()
+bool Window::Init(JSON_Object* root)
 {
 	LOG("Init SDL window & surface");
 
@@ -31,9 +31,18 @@ bool Window::Init()
 	}
 	else
 	{
+		JSON_Object* winObj = json_object_get_object(root, name.c_str());
+		width = json_object_get_number(winObj, "width");
+		height = json_object_get_number(winObj, "height");
+		brightness = json_object_get_number(winObj, "brightness");
+		fullscreen = json_object_get_boolean(winObj, "fullscreen");
+		fulldesktop = json_object_get_boolean(winObj, "fulldesktop");
+		resizable = json_object_get_boolean(winObj, "resizable");
+		borderless = json_object_get_boolean(winObj, "bordered");
+
 		//Create window
-		width = SCREEN_WIDTH * SCREEN_SIZE;
-		height = SCREEN_HEIGHT * SCREEN_SIZE;
+		/*width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;*/
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 		flags |= SDL_WINDOW_RESIZABLE;
 
@@ -46,22 +55,22 @@ bool Window::Init()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(WIN_FULLSCREEN == true)
+		if(fullscreen == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(WIN_RESIZABLE == true)
+		if(resizable == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(WIN_BORDERLESS == true)
+		if(borderless == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(WIN_FULLSCREEN_DESKTOP == true)
+		if(fulldesktop == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
@@ -112,7 +121,7 @@ void Window::Save(JSON_Object* root)
 	json_object_set_number(winObj, "width", width);
 	json_object_set_number(winObj, "height", height);
 	json_object_set_number(winObj, "brightness", brightness);
-	json_object_set_boolean(winObj, "fullwindow", fullscreen);
+	json_object_set_boolean(winObj, "fullscreen", fullscreen);
 	json_object_set_boolean(winObj, "fulldesktop", fulldesktop);
 	json_object_set_boolean(winObj, "resizable", resizable);
 	json_object_set_boolean(winObj, "bordered", borderless);
@@ -120,6 +129,16 @@ void Window::Save(JSON_Object* root)
 
 void Window::Load(JSON_Object* root)
 {
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	JSON_Object* winObj = json_object_get_object(root, name.c_str());
+
+	width = json_object_get_number(winObj, "width");
+	height = json_object_get_number(winObj, "height");
+	brightness = json_object_get_number(winObj, "brightness");
+	fullscreen = json_object_get_boolean(winObj, "fullscreen");
+	fulldesktop = json_object_get_boolean(winObj, "fulldesktop");
+	resizable = json_object_get_boolean(winObj, "resizable");
+	borderless = json_object_get_boolean(winObj, "bordered");
 }
 
 void Window::SetBrightness(float value)

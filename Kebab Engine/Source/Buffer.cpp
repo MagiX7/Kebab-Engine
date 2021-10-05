@@ -39,7 +39,7 @@ void VertexBuffer::Unbind() const
 // IndexBuffer /////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) : count(count)
+IndexBuffer::IndexBuffer(const uint32_t* indices, uint32_t count) : count(count)
 {
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);

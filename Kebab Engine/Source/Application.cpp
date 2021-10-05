@@ -45,30 +45,29 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	JSON_Value* file = json_parse_file("FILE.json");
-	value = file;
+	std::list<Module*>::iterator it = modules.begin();
+
+	value = json_parse_file("config.json");
 	if (!value)
 	{
-		LOG("Could not load or there is no file to load FILE.json");
+		LOG("Could not load or there is no file to load config.json");
+		ret = false;
 	}
 	else
 	{
-		// Load the saved file
-		//JSON_Value* app = json_object_get_value((JSON_Object*)file, "App");
-		Load(); // Maybe it is needed to do this before Init, just to ensure everything is initialized and data is not overwritten
+		JSON_Object* root = json_value_get_object(value);
+		JSON_Object* appObj = json_object_get_object(root, "App");
+		dt = json_object_get_number(appObj, "dt");
+		cappedMs = 1000.0f / json_object_get_number(appObj, "max fps");
+
+		while (it != modules.end() && ret == true)
+		{
+			ret = (*it)->Init(root);
+			it++;
+		}
 	}
-
-
-	std::list<Module*>::iterator it = modules.begin();
-	
-	while (it != modules.end() && ret == true)
-	{
-		ret = (*it)->Init();
-		it++;
-	}
-
 	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
+	//LOG("Application Start --------------");
 
 	it = modules.begin();
 
@@ -77,7 +76,7 @@ bool Application::Init()
 		ret = (*it)->Start();
 		it++;
 	}
-	
+
 	return ret;
 }
 
@@ -118,13 +117,12 @@ void Application::Load()
 {
 	loadReq = false;
 
-	value = json_value_init_object();
 	JSON_Object* root = json_value_get_object(value);
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())
 	{
-		(*it)->Load(NULL);
+		(*it)->Load(root);
 		it++;
 	}
 }
@@ -137,8 +135,9 @@ void Application::Save()
 	JSON_Object* root = json_value_get_object(value);
 
 	json_object_set_value(root, "App", json_value_init_object());
-	json_object_set_number(root, "dt", dt);
-	json_object_set_number(root, "max fps", 1000.0f / cappedMs);
+	JSON_Object* appObj = json_object_get_object(root, "App");
+	json_object_set_number(appObj, "dt", dt);
+	json_object_set_number(appObj, "max fps", 1000.0f / cappedMs);
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())
@@ -147,7 +146,7 @@ void Application::Save()
 		it++;
 	}
 
-	json_serialize_to_file_pretty(value, "FILE.json");
+	json_serialize_to_file_pretty(value, "config.json");
 
 	json_value_free(value);
 	

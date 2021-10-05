@@ -5,6 +5,7 @@
 #include "VertexArray.h"
 
 #include "Cube.h"
+#include "Pyramid.h"
 
 #define BOUNCER_TIME 200
 
@@ -23,5 +24,5 @@ private:
 	VertexArray* vertexArray;
 	IndexBuffer* indexBuffer;
 
-	Cube* cube;
+	Geometry* primitive;
 };

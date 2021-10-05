@@ -14,7 +14,7 @@ public:
 	Renderer3D(bool startEnabled = true);
 	~Renderer3D();
 
-	bool Init();
+	bool Init(JSON_Object* root);
 	bool PreUpdate(float dt);
 	bool Draw(float dt);
 	bool CleanUp();
@@ -28,6 +28,7 @@ public:
 	void SetTexture2D(bool value);
 
 	void Save(JSON_Object* root) override;
+	void Load(JSON_Object* root) override;
 
 public:
 

@@ -7,7 +7,7 @@
 class Geometry
 {
 public:
-	Geometry() {};
+	Geometry(math::float3 pos) : position(pos) {}
 	virtual ~Geometry() {};
 
 	inline void SetPos(const math::float3& pos) { position = pos; }

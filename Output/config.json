@@ -1,0 +1,27 @@
+{
+    "App": {
+        "dt": 0.017000000923871994,
+        "max fps": 62.5
+    },
+    "window": {
+        "width": 1024,
+        "height": 720,
+        "brightness": 1,
+        "fullscreen": false,
+        "fulldesktop": false,
+        "resizable": false,
+        "bordered": false
+    },
+    "camera3D": {
+        "pos x": 1.5,
+        "pos y": 2,
+        "pos z": 5
+    },
+    "renderer": {
+        "depth": true,
+        "cullface": true,
+        "lighting": true,
+        "color material": true,
+        "texture2D": true
+    }
+}

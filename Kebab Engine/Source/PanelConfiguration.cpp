@@ -20,11 +20,11 @@ ConfigPanel::ConfigPanel()
     width = 0;
     height = 0;
 
-    depth = false;
-    cullFace = false;
-    lighting = false;
-    colorMaterial = false;
-    texture2D = false;
+    depth = true;
+    cullFace = true;
+    lighting = true;
+    colorMaterial = true;
+    texture2D = true;
 }
 
 ConfigPanel::~ConfigPanel()

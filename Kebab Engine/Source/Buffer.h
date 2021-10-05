@@ -141,7 +141,7 @@ class IndexBuffer
 {
 public:
 	IndexBuffer() {}
-	IndexBuffer(uint32_t* indices, uint32_t count);
+	IndexBuffer(const uint32_t* indices, uint32_t count);
 	virtual ~IndexBuffer();
 	
 	void SetData(float* indices, uint32_t count);

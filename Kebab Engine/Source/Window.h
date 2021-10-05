@@ -13,7 +13,7 @@ public:
 	Window(bool startEnabled = true);
 	virtual ~Window();
 
-	bool Init();
+	bool Init(JSON_Object* root);
 	bool CleanUp();
 
 	void SetTitle(const char* title);
@@ -43,7 +43,7 @@ private:
 	int height;
 
 	float brightness = 1;
-	bool fullscreen;
+	bool fullscreen = false;
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;

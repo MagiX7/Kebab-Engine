@@ -9,7 +9,8 @@ public:
 	Camera3D(bool startEnabled = true);
 	~Camera3D();
 
-	bool Start();
+	bool Init(JSON_Object* root) override;
+	bool Start() override;
 	bool Update(float dt);
 	bool CleanUp();
 

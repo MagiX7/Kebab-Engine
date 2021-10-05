@@ -126,6 +126,9 @@
     <ClCompile Include="Source\Cube.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Primitive.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -222,6 +225,15 @@
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Source\Cube.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitive.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pyramid.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sphere.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
