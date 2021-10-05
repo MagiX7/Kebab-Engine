@@ -140,11 +140,16 @@ bool ConfigPanel::Update(float dt)
         }
         if (ImGui::CollapsingHeader("File System"))
         {
-
+            char path[100];
+            GetModuleFileNameA(NULL, path, 100);
+            ImGui::Text("Base Path:");
+            ImGui::TextColored({ 200,200,0,255 }, path);
         }
         if (ImGui::CollapsingHeader("Input"))
         {
-
+            ImGui::Text("Mouse Position: "); ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%i, %i", app->input->GetMouseX(), app->input->GetMouseY());
+            ImGui::Text("Mouse Motion: "); ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%i,%i", app->input->GetMouseXMotion(), app->input->GetMouseYMotion());
+            ImGui::Text("Mouse Wheel: "); ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%i", app->input->GetMouseZ());
         }
         if (ImGui::CollapsingHeader("Render"))
         {
