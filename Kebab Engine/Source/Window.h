@@ -30,6 +30,7 @@ public:
 
 	inline float& GetBrightness() { return brightness; }
 	inline void GetWindowSize(int& w, int& h) { w = width; h = height; }
+	SDL_Rect GetViewport();
 
 public:
 	//The window we'll be rendering to

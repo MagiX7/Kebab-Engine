@@ -24,6 +24,22 @@ public:
 			0,1,2,
 			3,2,1
 		};
+
+		vertexArray = new VertexArray();
+		vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+
+		BufferLayout layout =
+		{
+			{ShaderDataType::VEC3F, "position"}
+		};
+
+		vertexBuffer->SetLayout(layout);
+		vertexArray->AddVertexBuffer(*vertexBuffer);
+
+		//indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
+		indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
+		vertexArray->SetIndexBuffer(*indexBuffer);
+
 	}
 
 	virtual ~KebabPlane()
@@ -32,5 +48,12 @@ public:
 		normals.clear();
 		texCoords.clear();
 		indices.clear();
+	}
+
+	void Draw() override
+	{
+		vertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+		vertexArray->Unbind();
 	}
 };

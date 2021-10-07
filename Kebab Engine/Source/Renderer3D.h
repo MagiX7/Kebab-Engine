@@ -4,7 +4,7 @@
 #include "glmath.h"
 #include "Light.h"
 
-#include "Buffer.h"
+#include "Geometry.h"
 
 #define MAX_LIGHTS 8
 
@@ -26,9 +26,12 @@ public:
 	void SetLighting(bool value);
 	void SetColorMaterial(bool value);
 	void SetTexture2D(bool value);
+	void SetWireframe(bool value);
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
+
+	void Submit(KebabGeometry* geometry);
 
 public:
 
@@ -38,8 +41,7 @@ public:
 	mat4x4 modelMatrix, viewMatrix, projectionMatrix;
 
 private:
-	VertexBuffer* vbo;
-	IndexBuffer* ibo;
+	std::vector<KebabGeometry*> geometries;
 
 	bool depth;
 	bool cullFace;

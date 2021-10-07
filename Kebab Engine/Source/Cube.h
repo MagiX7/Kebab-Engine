@@ -10,56 +10,6 @@ public:
         vertices.resize(8 * 3); // TRIANGLES
         indices.resize(12 * 3); // 4 Vertex for each face
 
-        //float v[] = {
-        //    // Front face
-        //    pos.x, pos.y, pos.z,          // Top Left
-        //    pos.x, pos.y + size.y,pos.z,  // Bottom left
-        //    pos.x + size.x, pos.y,pos.z,  // Top Right
-        //    pos.x + size.x, pos.y + size.y, pos.z,  // Bottom right
-        //    pos.x + size.x, pos.y,pos.z,  // Top right
-        //    pos.x, pos.y + size.y,pos.z,  // Bottom left
-
-        //    // Right face
-        //    pos.x + size.x, pos.y,pos.z,           // Top right
-        //    pos.x + size.x, pos.y + size.y,pos.z,  // Bottom right
-        //    pos.x + size.x, pos.y,pos.z + size.z,  // Top Back Right
-        //    pos.x + size.x, pos.y + size.y,pos.z + size.z,  // Bottom Back right
-        //    pos.x + size.x, pos.y,pos.z + size.z,  // Top Back Right
-        //    pos.x + size.x, pos.y + size.y,pos.z,  // Bottom right
-
-        //    // Back face
-        //    pos.x, pos.y + size.y,pos.z + size.z,  // Bottom back left
-        //    pos.x + size.x, pos.y + size.y,pos.z + size.z,   // Bottom Back right
-        //    pos.x, pos.y, pos.z + size.z,          // Top back Left
-        //    pos.x + size.x, pos.y,pos.z + size.z,  // Top Back Right
-        //    pos.x, pos.y, pos.z + size.z,          // Top back Left
-        //    pos.x + size.x, pos.y + size.y,pos.z + size.z,   // Bottom Back right
-
-        //    // Left face
-        //    pos.x, pos.y + size.y,pos.z,           // Bottom left
-        //    pos.x, pos.y + size.y,pos.z + size.z,  // Bottom back left
-        //    pos.x, pos.y, pos.z,                   // Top left
-        //    pos.x, pos.y, pos.z + size.z,          // Top back Left
-        //    pos.x, pos.y, pos.z + size.z,          // Top back Left
-        //    pos.x, pos.y + size.y,pos.z + size.z,  // Bottom back left
-
-        //    // Top face
-        //    pos.x, pos.y, pos.z,                    // Top left
-        //    pos.x + size.x, pos.y,pos.z + size.z,   // Top Back right
-        //    pos.x, pos.y, pos.z + size.z,           // Top Back left
-        //    pos.x, pos.y, pos.z,                    // Top left
-        //    pos.x + size.x, pos.y,pos.z,            // Top Right
-        //    pos.x + size.x, pos.y,pos.z + size.z,   // Top Back right
-
-        //    // Bottom face
-        //    pos.x, pos.y + size.y, pos.z,                   // Bottom left
-        //    pos.x + size.x, pos.y + size.y,pos.z + size.z,  // Top Back right
-        //    pos.x, pos.y + size.y, pos.z + size.z,          // Top Back left
-        //    pos.x, pos.y + size.y, pos.z,                   // Top left
-        //    pos.x + size.x, pos.y + size.y,pos.z,           // Top Right
-        //    pos.x + size.x, pos.y + size.y,pos.z + size.z,  // Top Back right
-        //};
-
         vertices =
         {
             pos.x, pos.y, pos.z,          // Top Left
@@ -100,6 +50,21 @@ public:
             1,5,7,
             3,5,1
         };
+
+        vertexArray = new VertexArray();
+        vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+
+        BufferLayout layout =
+        {
+            {ShaderDataType::VEC3F, "position"}
+        };
+
+        vertexBuffer->SetLayout(layout);
+        vertexArray->AddVertexBuffer(*vertexBuffer);
+
+        //indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
+        indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
+        vertexArray->SetIndexBuffer(*indexBuffer);
 	}
 
     virtual ~KebabCube()
@@ -108,5 +73,12 @@ public:
         normals.clear();
         texCoords.clear();
         indices.clear();
+    }
+
+    void Draw() override
+    {
+        vertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+        vertexArray->Unbind();
     }
 };

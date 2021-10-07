@@ -177,3 +177,8 @@ void Window::SetBordered(bool value)
 	SDL_SetWindowBordered(window, value ? SDL_FALSE : SDL_TRUE);
 	borderless = value;
 }
+
+SDL_Rect Window::GetViewport()
+{
+	return { 0,0,width,height };
+}

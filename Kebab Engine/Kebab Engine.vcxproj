@@ -41,7 +41,6 @@
     <ClCompile Include="Source\Camera3D.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\PanelConsole.cpp" />
-    <ClCompile Include="Source\Primitive.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
@@ -78,7 +77,6 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
-    <ClInclude Include="Source\Primitive.h" />
     <ClInclude Include="Source\Pyramid.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />

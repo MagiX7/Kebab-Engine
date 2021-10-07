@@ -104,14 +104,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		if (colorMaterial) SetColorMaterial(colorMaterial);
 		if (texture2D) SetTexture2D(texture2D);
 
-		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		/*if (depth) glEnable(GL_DEPTH_TEST);
-		if (cullFace) glEnable(GL_CULL_FACE);
-		lights[0].Active(true);
-		if (lighting) glEnable(GL_LIGHTING);
-		if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
-		if (texture2D) glEnable(GL_TEXTURE_2D);*/
+		SetWireframe(true);
 
 		LOG("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
@@ -159,6 +152,10 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
+	for (const auto& g : geometries)
+		g->Draw();
+
+
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
 }
@@ -167,6 +164,8 @@ bool Renderer3D::Draw(float dt)
 bool Renderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+
+	geometries.clear();
 
 	SDL_GL_DeleteContext(context);
 
@@ -223,6 +222,12 @@ void Renderer3D::SetTexture2D(bool value)
 	LOG("-- GL_TEXTURE_2D -- set to %d", value);
 }
 
+void Renderer3D::SetWireframe(bool value)
+{
+	wireframe = value;
+	wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void Renderer3D::Save(JSON_Object* root)
 {
 	json_object_set_value(root, name.c_str(), json_value_init_object());
@@ -237,4 +242,9 @@ void Renderer3D::Save(JSON_Object* root)
 
 void Renderer3D::Load(JSON_Object* root)
 {
+}
+
+void Renderer3D::Submit(KebabGeometry* geometry)
+{
+	geometries.push_back(geometry);
 }

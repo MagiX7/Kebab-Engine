@@ -14,6 +14,9 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     name = "editor";
 
     consolePanel = new ConsolePanel();
+
+    showAboutPanel = false;
+    wireframe = true;
 }
 
 Editor::~Editor()
@@ -22,13 +25,51 @@ Editor::~Editor()
 
 bool Editor::Start()
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    InitImGui();
+
+	return true;
+}
+
+bool Editor::Update(float dt)
+{
+
+    // Start the Dear ImGui frame
+    if (!UpdateImGui(dt))
+        return false;
+
+
+
+
+	return true;
+}
+
+bool Editor::Draw(float dt)
+{
+    DrawImGui();
+
+	return true;
+}
+
+bool Editor::CleanUp()
+{
+    RELEASE(consolePanel);
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+	return true;
+}
+
+void Editor::InitImGui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -37,22 +78,17 @@ bool Editor::Start()
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
 
-	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->renderer3D->context);
-	ImGui_ImplOpenGL3_Init();
-
-	return true;
+    // Setup Platform/Renderer backends
+    ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->renderer3D->context);
+    ImGui_ImplOpenGL3_Init();
 }
 
-bool Editor::Update(float dt)
+bool Editor::UpdateImGui(float dt)
 {
-    //LOG("EDITOR UPDATE");
-
-    // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
@@ -65,6 +101,8 @@ bool Editor::Update(float dt)
     //flags |= ImGuiWindowFlags_NoMove;
 
     static bool showDemoWindow = false;
+
+    ImGui::DockSpaceOverViewport();
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -86,6 +124,11 @@ bool Editor::Update(float dt)
             if (ImGui::MenuItem("Configuration"))
             {
                 configPanel.active = !configPanel.active;
+            }
+            if (ImGui::Checkbox(" Wireframe", &wireframe))
+            {
+                //wireframe = !wireframe;
+                app->renderer3D->SetWireframe(wireframe);
             }
             ImGui::EndMenu();
         }
@@ -136,13 +179,11 @@ bool Editor::Update(float dt)
 
     ImGui::EndFrame();
 
-	return true;
+    return true;
 }
 
-bool Editor::Draw(float dt)
+void Editor::DrawImGui()
 {
-    //LOG("EDITOR DRAW");
-
     ImVec4 clearColor = ImVec4(0.1, 0.1, 0.1, 0.1);
 
     ImGui::Render();
@@ -160,19 +201,6 @@ bool Editor::Draw(float dt)
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
-
-	return true;
-}
-
-bool Editor::CleanUp()
-{
-    RELEASE(consolePanel);
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
-
-	return true;
 }
 
 void Editor::ShowAboutPanel()

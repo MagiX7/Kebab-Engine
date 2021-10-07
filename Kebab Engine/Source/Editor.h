@@ -20,6 +20,10 @@ public:
 
 
 private:
+	void InitImGui();
+	bool UpdateImGui(float dt);
+	void DrawImGui();
+	
 	void ShowAboutPanel();
 
 public:
@@ -28,6 +32,7 @@ public:
 	ConfigPanel configPanel;
 
 	bool showAboutPanel;
+	bool wireframe;
 
 	/*float fpsLog[MAX_IT_HIST];
 	float msLog[MAX_IT_HIST];

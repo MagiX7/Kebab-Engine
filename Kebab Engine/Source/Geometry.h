@@ -1,5 +1,7 @@
 #pragma once
 
+#include "VertexArray.h"
+
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
 
@@ -25,7 +27,14 @@ public:
 	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
 	inline const std::vector<uint32_t>& GetIndices() { return indices; }
 
+	virtual void Draw() {}
+
 protected:
+	VertexArray* vertexArray;
+	VertexBuffer* vertexBuffer;
+	IndexBuffer* indexBuffer;
+
+
 	std::vector<float>vertices;
 	std::vector<float>normals;
 	std::vector<float>texCoords;
