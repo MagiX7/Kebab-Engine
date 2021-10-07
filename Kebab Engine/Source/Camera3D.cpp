@@ -22,6 +22,60 @@ Camera3D::~Camera3D()
 
 bool Camera3D::Init(JSON_Object* root)
 {
+	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	JSON_Object* posObj = json_object_get_object(camObj, "position");
+	position.x = json_object_get_number(posObj, "x");
+	position.y = json_object_get_number(posObj, "y");
+	position.z = json_object_get_number(posObj, "z");
+
+	JSON_Object* refObj = json_object_get_object(camObj, "reference");
+	reference.x = json_object_get_number(refObj, "x");
+	reference.y = json_object_get_number(refObj, "y");
+	reference.z = json_object_get_number(refObj, "z");
+
+	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
+	JSON_Object* xObj = json_object_get_object(rotObj, "x");
+	x.x = json_object_get_number(xObj, "x");
+	x.y = json_object_get_number(xObj, "y");
+	x.z = json_object_get_number(xObj, "z");
+
+	JSON_Object* yObj = json_object_get_object(rotObj, "y");
+	y.x = json_object_get_number(yObj, "x");
+	y.y = json_object_get_number(yObj, "y");
+	y.z = json_object_get_number(yObj, "z");
+
+	JSON_Object* zObj = json_object_get_object(rotObj, "z");
+	z.x = json_object_get_number(zObj, "x");
+	z.y = json_object_get_number(zObj, "y");
+	z.z = json_object_get_number(zObj, "z");
+
+
+	JSON_Object* viewObj = json_object_get_object(camObj, "view matrix");
+	JSON_Object* vec1Obj = json_object_get_object(viewObj, "vector 1");
+	viewMatrix.M[0] = json_object_get_number(vec1Obj, "x");
+	viewMatrix.M[4] = json_object_get_number(vec1Obj, "y");
+	viewMatrix.M[8] = json_object_get_number(vec1Obj, "z");
+	viewMatrix.M[12] = json_object_get_number(vec1Obj, "w");
+
+	JSON_Object* vec2Obj = json_object_get_object(viewObj, "vector 2");
+	viewMatrix.M[1] = json_object_get_number(vec2Obj, "x");
+	viewMatrix.M[5] = json_object_get_number(vec2Obj, "y");
+	viewMatrix.M[9] = json_object_get_number(vec2Obj, "z");
+	viewMatrix.M[13] = json_object_get_number(vec2Obj, "w");
+
+	JSON_Object* vec3Obj = json_object_get_object(viewObj, "vector 3");
+	viewMatrix.M[2] = json_object_get_number(vec3Obj, "x");
+	viewMatrix.M[6] = json_object_get_number(vec3Obj, "y");
+	viewMatrix.M[10] = json_object_get_number(vec3Obj, "z");
+	viewMatrix.M[14] = json_object_get_number(vec3Obj, "w");
+
+	JSON_Object* vec4Obj = json_object_get_object(viewObj, "vector 4");
+	viewMatrix.M[3] = json_object_get_number(vec4Obj, "x");
+	viewMatrix.M[7] = json_object_get_number(vec4Obj, "y");
+	viewMatrix.M[11] = json_object_get_number(vec4Obj, "z");
+	viewMatrix.M[15] = json_object_get_number(vec4Obj, "w");
+
+	viewMatrixInverse = inverse(viewMatrix);
 
 	return true;
 }
@@ -158,10 +212,74 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_value(root, name.c_str(), json_value_init_object());
 	JSON_Object* camObj = json_object_get_object(root, name.c_str());
 
-	json_object_set_number(camObj, "pos x", position.x);
-	json_object_set_number(camObj, "pos y", position.y);
-	json_object_set_number(camObj, "pos z", position.z);
+	json_object_set_value(camObj, "position", json_value_init_object());
+	JSON_Object* posObj = json_object_get_object(camObj, "position");
+	json_object_set_number(posObj, "x", position.x);
+	json_object_set_number(posObj, "y", position.y);
+	json_object_set_number(posObj, "z", position.z);
 
+
+	json_object_set_value(camObj, "rotation", json_value_init_object());
+	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
+	
+	json_object_set_value(rotObj, "x", json_value_init_object());
+	JSON_Object* xObj = json_object_get_object(rotObj, "x");
+	json_object_set_number(xObj, "x", x.x);
+	json_object_set_number(xObj, "y", x.y);
+	json_object_set_number(xObj, "z", x.z);
+
+	json_object_set_value(rotObj, "y", json_value_init_object());
+	JSON_Object* yObj = json_object_get_object(rotObj, "y");
+	json_object_set_number(yObj, "x", y.x);
+	json_object_set_number(yObj, "y", y.y);
+	json_object_set_number(yObj, "z", y.z);
+
+	json_object_set_value(rotObj, "z", json_value_init_object());
+	JSON_Object* zObj = json_object_get_object(rotObj, "z");
+	json_object_set_number(zObj, "x", z.x);
+	json_object_set_number(zObj, "y", z.y);
+	json_object_set_number(zObj, "z", z.z);
+
+	json_object_set_value(camObj, "reference", json_value_init_object());
+	JSON_Object* refObj = json_object_get_object(camObj, "reference");
+	json_object_set_number(refObj, "x", reference.x);
+	json_object_set_number(refObj, "y", reference.y);
+	json_object_set_number(refObj, "z", reference.z);
+
+
+	json_object_set_value(camObj, "view matrix", json_value_init_object());
+	JSON_Object* viewObj = json_object_get_object(camObj, "view matrix");
+	json_object_set_value(viewObj, "vector 1", json_value_init_object());
+	JSON_Object* vec1Obj = json_object_get_object(viewObj, "vector 1");
+
+	json_object_set_number(vec1Obj, "x", viewMatrix.M[0]);
+	json_object_set_number(vec1Obj, "y", viewMatrix.M[4]);
+	json_object_set_number(vec1Obj, "z", viewMatrix.M[8]);
+	json_object_set_number(vec1Obj, "w", viewMatrix.M[12]);
+
+	json_object_set_value(viewObj, "vector 2", json_value_init_object());
+	JSON_Object* vec2Obj = json_object_get_object(viewObj, "vector 2");
+
+	json_object_set_number(vec2Obj, "x", viewMatrix.M[1]);
+	json_object_set_number(vec2Obj, "y", viewMatrix.M[5]);
+	json_object_set_number(vec2Obj, "z", viewMatrix.M[9]);
+	json_object_set_number(vec2Obj, "w", viewMatrix.M[13]);
+
+	json_object_set_value(viewObj, "vector 3", json_value_init_object());
+	JSON_Object* vec3Obj = json_object_get_object(viewObj, "vector 3");
+
+	json_object_set_number(vec3Obj, "x", viewMatrix.M[2]);
+	json_object_set_number(vec3Obj, "y", viewMatrix.M[6]);
+	json_object_set_number(vec3Obj, "z", viewMatrix.M[10]);
+	json_object_set_number(vec3Obj, "w", viewMatrix.M[14]);
+
+	json_object_set_value(viewObj, "vector 4", json_value_init_object());
+	JSON_Object* vec4Obj = json_object_get_object(viewObj, "vector 4");
+
+	json_object_set_number(vec4Obj, "x", viewMatrix.M[3]);
+	json_object_set_number(vec4Obj, "y", viewMatrix.M[7]);
+	json_object_set_number(vec4Obj, "z", viewMatrix.M[11]);
+	json_object_set_number(vec4Obj, "w", viewMatrix.M[15]);
 
 }
 

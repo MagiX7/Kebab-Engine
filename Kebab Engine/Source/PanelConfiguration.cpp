@@ -115,10 +115,10 @@ bool ConfigPanel::Update(float dt)
                 app->window->SetBrightness(brightness);
 
             if (ImGui::SliderInt("Width", &width, 0, 1920))
-                app->window->SetWindowSize(width, height);
+                app->renderer3D->OnResize(width, height);
 
             if (ImGui::SliderInt("Height", &height, 0, 1080))
-                app->window->SetWindowSize(width, height);
+                app->renderer3D->OnResize(width, height);
 
             ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
             //ImGui::Text("Refresh rate: %.0f", app->GetFPS());

@@ -124,8 +124,9 @@ bool Renderer3D::Init(JSON_Object* root)
 		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
 	}
 
-	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	int w, h;
+	app->window->GetWindowSize(w, h);
+	OnResize(w, h);
 
 	return ret;
 }
@@ -183,6 +184,8 @@ void Renderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	app->window->SetWindowSize(width, height);
 }
 
 void Renderer3D::SetDepth(bool value)

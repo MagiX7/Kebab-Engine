@@ -31,6 +31,7 @@
     <ClCompile Include="Source\External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\External\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\External\parson\src\parson.c" />
+    <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Cube.h" />
+    <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\Plane.h" />
     <ClInclude Include="Source\External\imgui\imconfig.h" />
     <ClInclude Include="Source\External\imgui\imgui.h" />
@@ -159,13 +161,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WIN32;_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp.lib;PhysFS.lib;MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -176,15 +178,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WIN32;_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp.lib;PhysFS.lib;MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

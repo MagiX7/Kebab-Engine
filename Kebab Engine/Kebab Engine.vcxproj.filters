@@ -123,6 +123,9 @@
     <ClCompile Include="Source\Primitive.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FileSystem.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="Source\Plane.h">
       <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FileSystem.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

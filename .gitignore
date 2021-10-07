@@ -30,8 +30,7 @@
 !Kebab Engine/Source/External/glew/lib/Release/Win32/glew32s.lib
 !Kebab Engine/Source/External/Optick/lib/debug/OptickCore.lib
 !Kebab Engine/Source/External/Optick/lib/release/OptickCore.lib
-!Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
-!Kebab Engine/Source/External/PhysFS/libx86/physfs.lib
+!Kebab Engine/Source/External/PhysFS/lib/PhysFS.lib
 !Kebab Engine/Source/External/MathGeoLib/lib/MathGeoLib.lib
 
 # Executables

@@ -152,7 +152,6 @@ void Window::SetWindowSize(float w, float h)
 	SDL_SetWindowSize(window, w, h);
 	width = w;
 	height = h;
-	app->renderer3D->OnResize(w, h);
 }
 
 void Window::SetFullscreen(bool value)
