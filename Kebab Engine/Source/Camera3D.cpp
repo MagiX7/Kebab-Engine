@@ -7,14 +7,14 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 {
 	name = "camera3D";
 
-	CalculateViewMatrix();
-
 	x = vec3(1.0f, 0.0f, 0.0f);
 	y = vec3(0.0f, 1.0f, 0.0f);
 	z = vec3(0.0f, 0.0f, 1.0f);
 
 	position = vec3(0.0f, 0.0f, 5.0f);
 	reference = vec3(0.0f, 0.0f, 0.0f);
+
+	CalculateViewMatrix();
 }
 
 Camera3D::~Camera3D()

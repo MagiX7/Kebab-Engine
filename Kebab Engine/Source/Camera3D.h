@@ -2,6 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "Geometry/Frustum.h"
+
+class Camera;
 
 class Camera3D : public Module
 {
@@ -28,6 +31,9 @@ private:
 public:
 	
 	vec3 x, y, z, position, reference;
+
+	Camera* cam;
+	Frustum* frustum;
 
 private:
 
