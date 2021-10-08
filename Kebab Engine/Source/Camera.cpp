@@ -14,9 +14,7 @@ Camera::Camera()
 
 	frustum.SetViewPlaneDistances(planeNear, planeFar);
 
-	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumLeftHanded);
-
-	frustum.ComputeViewProjMatrix();
+	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumRightHanded);
 }
 
 Camera::~Camera()
@@ -72,12 +70,13 @@ Frustum* Camera::GetFrustum()
 
 float4x4 Camera::GetProjectionMatrix() const
 {
-	return frustum.ProjectionMatrix();
+	return frustum.ProjectionMatrix().Transposed();
 }
 
-float3x4 Camera::GetViewMatrix() const
+float4x4 Camera::GetViewMatrix() const
 {
-	return frustum.ViewMatrix();
+	float4x4 mat = frustum.ViewMatrix();
+	return mat.Transposed();
 }
 
 float Camera::GetVerticalFov() const

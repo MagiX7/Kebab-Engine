@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
-#include "Geometry/Frustum.h"
 
 class Camera;
 
@@ -32,8 +31,9 @@ public:
 	
 	vec3 x, y, z, position, reference;
 
+	float3 reference2, position2;
+
 	Camera* cam;
-	Frustum* frustum;
 
 private:
 

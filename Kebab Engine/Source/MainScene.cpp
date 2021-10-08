@@ -36,8 +36,8 @@ bool MainScene::Start()
     app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));
 
-	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
-	app->camera->LookAt(vec3(0, 0, 0));
+	//app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
+	//app->camera->LookAt(vec3(0, 0, 0));
 
 	return ret;
 }

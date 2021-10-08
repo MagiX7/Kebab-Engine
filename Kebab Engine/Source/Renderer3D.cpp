@@ -141,10 +141,10 @@ bool Renderer3D::PreUpdate(float dt)
 	}
 
 	// light 0 on cam pos
-	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
+	/*lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();
+		lights[i].Render();*/
 
 	return true;
 }
