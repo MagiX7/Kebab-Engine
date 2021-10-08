@@ -8,6 +8,8 @@
 
 VertexBuffer::VertexBuffer(const float* vertices, uint32_t size)
 {
+	layout = { {ShaderDataType::VEC3F, "position"} };
+
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);

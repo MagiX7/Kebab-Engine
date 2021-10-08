@@ -33,8 +33,8 @@ bool MainScene::Start()
     //primitive = new KebabPyramid({ 0,0,0 }, 5.f, 4.0f);
     //primitive = new KebabSphere({ 0,0,0 }, 2, 50, 30);
     //primitive = new KebabPlane({ -5,0,0 }, { 10,5 });
-    primitive = new KebabGeometry();
-    *primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
+    //primitive = new KebabGeometry();
+    primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
     app->renderer3D->Submit(primitive);
 
     app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));

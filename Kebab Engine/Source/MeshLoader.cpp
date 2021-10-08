@@ -34,9 +34,9 @@ bool MeshLoader::CleanUp()
 	return true;
 }
 
-KebabGeometry MeshLoader::LoadMesh(const char* filePath)
+KebabGeometry* MeshLoader::LoadMesh(const char* filePath)
 {
-	mesh = KebabGeometry();
+	currentMesh = KebabGeometry();
 
 	const aiScene* scene = aiImportFile(filePath, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
@@ -44,39 +44,41 @@ KebabGeometry MeshLoader::LoadMesh(const char* filePath)
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; ++i)
 		{
-			aiMesh* m = scene->mMeshes[i];
+			aiMesh* mesh = scene->mMeshes[i];
 
-			vertices.resize(scene->mMeshes[i]->mNumVertices);
-			vertices.push_back(scene->mMeshes[i]->mVertices->x);
-			vertices.push_back(scene->mMeshes[i]->mVertices->y);
-			vertices.push_back(scene->mMeshes[i]->mVertices->z);
+			currentMesh.vertices.resize(mesh->mNumVertices);
+			/*currentMesh.vertices.push_back(scene->mMeshes[i]->mVertices->x);
+			currentMesh.vertices.push_back(scene->mMeshes[i]->mVertices->y);
+			currentMesh.vertices.push_back(scene->mMeshes[i]->mVertices->z);*/
+			//memcpy(&currentMesh.vertices, &mesh->mVertices, sizeof(mesh->mNumVertices));
 
-			mesh.vertices = vertices;
-			meshes.push_back(mesh);
-			vertices.clear();
-
-			if (m->HasFaces())
+			for (int k = 0; k < mesh->mNumVertices; k += 3)
 			{
-				mesh.indices.resize(m->mNumFaces * 3);
-				//ourMesh.indices = new uint[m.num_indices]; // assume each face is a triangle
-				for (uint j = 0; j < m->mNumFaces; ++j)
+				currentMesh.vertices[k] = mesh->mVertices[k].x;
+				currentMesh.vertices[k + 1] = mesh->mVertices[k].y;
+				currentMesh.vertices[k + 2] = mesh->mVertices[k].z;
+			}
+
+			if (mesh->HasFaces())
+			{
+				currentMesh.indices.resize(mesh->mNumFaces * 3);
+				
+				for (uint j = 0; j < mesh->mNumFaces; ++j)
 				{
-					if (m->mFaces[j].mNumIndices != 3)
+					if (mesh->mFaces[j].mNumIndices != 3)
 						LOG("WARNING, geometry face with != 3 indices!");
 					else
 					{
-						indices.resize(scene->mMeshes[i]->mNumFaces);
-						indices[j] = (uint32_t)scene->mMeshes[i]->mFaces->mIndices[j];
-						mesh.indices = indices;
-						//memcpy(&m->mFaces->mIndices[j * 3], &mesh.indices, 3 * sizeof(uint32_t));
+						memcpy(&currentMesh.indices[j * 3], mesh->mFaces[j].mIndices, 3 * sizeof(uint));
 					}
-					//memcpy(&m.indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 				}
 			}
+
+			currentMesh.SetUpBuffers();
+			meshes.push_back(currentMesh);
+			return &currentMesh;
 		}
 		aiReleaseImport(scene);
-
-		return mesh;
 	}
 	else
 		LOG(“Error loading scene % s”, file_path);

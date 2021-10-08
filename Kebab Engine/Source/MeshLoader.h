@@ -18,13 +18,10 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	KebabGeometry LoadMesh(const char* filePath);
+	KebabGeometry* LoadMesh(const char* filePath);
 
 private:
 
-	std::vector<float> vertices;
-	std::vector<uint32_t> indices;
-
-	KebabGeometry mesh;
+	KebabGeometry currentMesh;
 	std::vector<KebabGeometry> meshes;
 };
