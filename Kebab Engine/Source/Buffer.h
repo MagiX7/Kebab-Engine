@@ -121,6 +121,7 @@ private:
 class VertexBuffer
 {
 public:
+	VertexBuffer() {};
 	VertexBuffer(const float* vertices, uint32_t size);
 	virtual ~VertexBuffer();
 

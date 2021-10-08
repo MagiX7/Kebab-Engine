@@ -10,6 +10,7 @@ Application::Application()
 	renderer3D = new Renderer3D();
 	camera = new Camera3D();
 	editor = new Editor();
+	fileSystem = new FileSystem();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -20,6 +21,7 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(editor);
+	AddModule(fileSystem);
 	
 	// Scenes
 	AddModule(scene);

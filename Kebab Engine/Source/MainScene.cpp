@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "Input.h"
 #include "MainScene.h"
-//#include "Geometry/Plane.h"
 #include "Cube.h"
 #include "Sphere.h"
 #include "Plane.h"
@@ -28,10 +27,15 @@ bool MainScene::Start()
     //LOG("Creating Scene\n");
 	bool ret = true;
 
+    meshLoader = new MeshLoader();
+
     //primitive = new KebabCube({ 0,0,0 }, { 1,1,1 });
-    primitive = new KebabPyramid({ 0,0,0 }, 5.f, 4.0f);
+    //primitive = new KebabPyramid({ 0,0,0 }, 5.f, 4.0f);
     //primitive = new KebabSphere({ 0,0,0 }, 2, 50, 30);
     //primitive = new KebabPlane({ -5,0,0 }, { 10,5 });
+    primitive = new KebabGeometry();
+    *primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
+    app->renderer3D->Submit(primitive);
 
     app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));

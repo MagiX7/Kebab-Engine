@@ -10,6 +10,12 @@
 class KebabGeometry
 {
 public:
+	KebabGeometry()
+	{
+		vertexArray = new VertexArray();
+		vertexBuffer = new VertexBuffer();
+		indexBuffer = new IndexBuffer();
+	}
 	KebabGeometry(math::float3 pos) : position(pos) {}
 	virtual ~KebabGeometry()
 	{
@@ -27,9 +33,14 @@ public:
 	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
 	inline const std::vector<uint32_t>& GetIndices() { return indices; }
 
-	virtual void Draw() {}
+	void Draw()
+	{
+		vertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+		vertexArray->Unbind();
+	}
 
-protected:
+public:
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;

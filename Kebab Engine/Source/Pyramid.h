@@ -70,13 +70,4 @@ public:
 		texCoords.clear();
 		indices.clear();
 	}
-
-	void Draw() override
-	{
-		vertexArray->Bind();
-		//indexBuffer->Bind();
-		glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
-		//indexBuffer->UnBind();
-		vertexArray->Unbind();
-	}
 };
