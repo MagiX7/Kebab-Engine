@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math/float3.h"
+
 #include "GL/glew.h"
 
 #include <stdint.h>
@@ -121,11 +123,11 @@ private:
 class VertexBuffer
 {
 public:
-	VertexBuffer() {};
-	VertexBuffer(const float* vertices, uint32_t size);
+	VertexBuffer();
+	VertexBuffer(const float3* vertices, uint32_t size);
 	virtual ~VertexBuffer();
 
-	void SetData(float* vertices, uint32_t size);
+	void SetData(const float3* vertices, uint32_t size);
 	void Bind() const;
 	void Unbind() const;
 
@@ -141,13 +143,13 @@ private:
 class IndexBuffer
 {
 public:
-	IndexBuffer() {}
+	IndexBuffer();
 	IndexBuffer(const uint32_t* indices, uint32_t count);
 	virtual ~IndexBuffer();
 	
-	void SetData(float* indices, uint32_t count);
+	void SetData(const uint32_t* indices, uint32_t count);
 	void Bind() const;
-	void UnBind() const;
+	void Unbind() const;
 
 	inline uint32_t GetCount() const { return count; }
 

@@ -32,6 +32,7 @@ public:
 	void Load(JSON_Object* root) override;
 
 	void Submit(KebabGeometry* geometry);
+	void Submit(std::vector<KebabGeometry*> geos);
 
 public:
 

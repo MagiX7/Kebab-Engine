@@ -27,18 +27,18 @@ bool MainScene::Start()
     //LOG("Creating Scene\n");
 	bool ret = true;
 
-    meshLoader = new MeshLoader();
-
     //primitive = new KebabCube({ 0,0,0 }, { 1,1,1 });
     //primitive = new KebabPyramid({ 0,0,0 }, 5.f, 4.0f);
     //primitive = new KebabSphere({ 0,0,0 }, 2, 50, 30);
     //primitive = new KebabPlane({ -5,0,0 }, { 10,5 });
     //primitive = new KebabGeometry();
-    primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
-    app->renderer3D->Submit(primitive);
+    /*primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
+    app->renderer3D->Submit(primitive);*/
 
-    app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
-    app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/warrior.fbx"));
+
+    //app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
+    //app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));
 
 	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
 	app->camera->LookAt(vec3(0, 0, 0));
@@ -51,8 +51,6 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
-    if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-        app->camera->LookAt(vec3(primitive->GetPosition().x, primitive->GetPosition().y, primitive->GetPosition().z));
 
     //primitive->Draw();
 
@@ -67,8 +65,6 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG("Unloading scene");
-    RELEASE(vertexBuffer);
-    RELEASE(vertexArray);
 
     return true;
 }

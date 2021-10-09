@@ -7,67 +7,40 @@
 
 #include <vector>
 
+#include <iostream>
+
 class KebabGeometry
 {
 public:
-	KebabGeometry()
-	{
-		vertexArray = new VertexArray();
-		vertexBuffer = new VertexBuffer();
-		indexBuffer = new IndexBuffer();
-	}
+	KebabGeometry() {};
 	KebabGeometry(math::float3 pos) : position(pos) {}
-	virtual ~KebabGeometry()
-	{
-		vertices.clear();
-		normals.clear();
-		texCoords.clear();
-		indices.clear();
-	};
+	
+	virtual ~KebabGeometry();
 
 	inline void SetPos(const math::float3& pos) { position = pos; }
 	inline const math::float3& GetPosition() { return position; }
 
-	inline const std::vector<float>& GetVertices() { return vertices; }
+	inline const float3* GetVertices() { return vertices; }
 	inline const std::vector<float>& GetNormals() { return normals; }
 	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
-	inline const std::vector<uint32_t>& GetIndices() { return indices; }
+	inline const uint32_t* GetIndices() { return indices; }
 
-	void SetUpBuffers()
-	{
-		vertexArray = new VertexArray();
-		vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+	void SetUpBuffers();
 
-		/*BufferLayout layout =
-		{
-			{ShaderDataType::VEC3F, "position"}
-		};
-
-		vertexBuffer->SetLayout(layout);*/
-		vertexArray->AddVertexBuffer(*vertexBuffer);
-
-		//indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
-		indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
-		vertexArray->SetIndexBuffer(*indexBuffer);
-	}
-
-	void Draw()
-	{
-		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
-		vertexArray->Unbind();
-	}
+	void Draw();
 
 public:
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 
+	float3* vertices;
+	uint32_t verticesCount = 0;
+	uint32_t* indices;
+	uint32_t indicesCount = 0;
 
-	std::vector<float>vertices;
 	std::vector<float>normals;
 	std::vector<float>texCoords;
-	std::vector<uint32_t>indices;
 
 	math::float3 position;
 };

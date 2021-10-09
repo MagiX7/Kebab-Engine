@@ -6,16 +6,16 @@
 
 #include "mmgr/mmgr.h"
 
-Renderer3D::Renderer3D(bool startEnabled) : Module(startEnabled)
+Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
 
-	depth = true;
+	/*depth = true;
 	cullFace = true;
 	lighting = true;
 	colorMaterial = true;
 	texture2D = true;
-	wireframe = true;
+	wireframe = true;*/
 }
 
 // Destructor
@@ -26,9 +26,9 @@ Renderer3D::~Renderer3D()
 bool Renderer3D::Init(JSON_Object* root)
 {
 	LOG("Creating 3D Renderer context");
-	LOG("Creating Renderer context\n");
-	bool ret = true;
 	
+	bool ret = true;
+
 	//Create context
 	context = SDL_GL_CreateContext(app->window->window);
 	if(context == NULL)
@@ -96,15 +96,6 @@ bool Renderer3D::Init(JSON_Object* root)
 
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
-		
-		if (depth) SetDepth(depth);
-		if (cullFace) SetCullFace(cullFace);
-		lights[0].Active(true);
-		if (lighting) SetLighting(lighting);
-		if (colorMaterial) SetColorMaterial(colorMaterial);
-		if (texture2D) SetTexture2D(texture2D);
-
-		SetWireframe(true);
 
 		LOG("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
@@ -116,6 +107,16 @@ bool Renderer3D::Init(JSON_Object* root)
 		}
 		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
 	}
+
+	Load(root);
+
+	if (depth) SetDepth(depth);
+	if (cullFace) SetCullFace(cullFace);
+	lights[0].Active(true);
+	if (lighting) SetLighting(lighting);
+	if (colorMaterial) SetColorMaterial(colorMaterial);
+	if (texture2D) SetTexture2D(texture2D);
+	if (wireframe) SetWireframe(wireframe);
 
 	int w, h;
 	app->window->GetWindowSize(w, h);
@@ -238,13 +239,28 @@ void Renderer3D::Save(JSON_Object* root)
 	json_object_set_boolean(renObj, "lighting", lighting);
 	json_object_set_boolean(renObj, "color material", colorMaterial);
 	json_object_set_boolean(renObj, "texture2D", texture2D);
+	json_object_set_boolean(renObj, "wireframe", wireframe);
 }
 
 void Renderer3D::Load(JSON_Object* root)
 {
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	JSON_Object* renObj = json_object_get_object(root, name.c_str());
+
+	depth = json_object_get_boolean(renObj, "depth");
+	cullFace = json_object_get_boolean(renObj, "cullface");
+	lighting = json_object_get_boolean(renObj, "lighting");
+	colorMaterial = json_object_get_boolean(renObj, "color material");
+	texture2D = json_object_get_boolean(renObj, "texture2D");
+	wireframe = json_object_get_boolean(renObj, "wireframe");
 }
 
 void Renderer3D::Submit(KebabGeometry* geometry)
 {
 	geometries.push_back(geometry);
+}
+
+void Renderer3D::Submit(std::vector<KebabGeometry*> g)
+{
+	geometries.insert(geometries.end(), g.begin(), g.end());
 }

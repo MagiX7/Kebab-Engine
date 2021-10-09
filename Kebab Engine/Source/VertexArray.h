@@ -20,7 +20,7 @@ public:
 	std::vector<VertexBuffer*>& GetVertexBuffers() { return vertexBuffers; }
 
 private:
-	uint32_t vao = 0;
+	uint32_t vao;
 
 	std::vector<VertexBuffer*> vertexBuffers;
 	IndexBuffer* indexBuffer;

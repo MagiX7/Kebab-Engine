@@ -11,17 +11,26 @@
 class MeshLoader
 {
 public:
-	MeshLoader();
+	static MeshLoader* GetInstance();
+
 	virtual ~MeshLoader();
 
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
 
-	KebabGeometry* LoadMesh(const char* filePath);
+	// This loads every mesh in the scene (FBX), thur it returns a vector
+	std::vector<KebabGeometry*> LoadMesh(const char* filePath);
+	inline std::vector<KebabGeometry*> GetMeshes() { return meshes; }
 
 private:
+	MeshLoader();
+	MeshLoader(const MeshLoader&);
+	MeshLoader& operator=(const MeshLoader&);
+
+private:
+	static MeshLoader* instance;
 
 	KebabGeometry currentMesh;
-	std::vector<KebabGeometry> meshes;
+	std::vector<KebabGeometry*> meshes;
 };

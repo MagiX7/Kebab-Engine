@@ -17,18 +17,22 @@ public:
 		float3 frontLeftCorner = { pos.x + distToCorner, pos.y, pos.z + distToCorner };
 		float3 backLeftCorner = { pos.x + distToCorner, pos.y, pos.z - distToCorner };
 
-		vertices.resize(5 * 3); // Tris
-		indices.resize(6 * 3);
-		vertices =
+		vertices = new float3[5 * 3];
+		verticesCount = 5 * 3;
+		float3 v[]=
 		{
-			pos.x, pos.y + height,pos.z, // Up
-			frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z, // Bottom left
-			frontRightCorner.x, frontRightCorner.y, frontRightCorner.z, // Bottom right
-			backRightCorner.x, backRightCorner.y, backRightCorner.z, // Bottom back right
-			backLeftCorner.x, backLeftCorner.y, backLeftCorner.z, // Bottom back left
+			{pos.x, pos.y + height,pos.z}, // Up
+			{frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z}, // Bottom left
+			{frontRightCorner.x, frontRightCorner.y, frontRightCorner.z}, // Bottom right
+			{backRightCorner.x, backRightCorner.y, backRightCorner.z}, // Bottom back right
+			{backLeftCorner.x, backLeftCorner.y, backLeftCorner.z} // Bottom back left
 		};
+		//memcpy(vertices, v, sizeof(float3) * verticesCount);
+		std::copy(v, v + verticesCount, vertices);
 		
-		indices =
+		indices = new uint32_t[6 * 3];
+		indicesCount = 6 * 3;
+		uint32_t in[] =
 		{
 			// Front
 			0,1,2,
@@ -46,28 +50,24 @@ public:
 			1,3,4,
 			2,3,1
 		};
+		//memcpy(indices, in, sizeof(uint32_t) * indicesCount);
+		std::copy(in, in + verticesCount, indices);
 
-		vertexArray = new VertexArray();
-		vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+		SetUpBuffers();
 
-		BufferLayout layout =
-		{
-			{ShaderDataType::VEC3F, "position"}
-		};
+		//vertexArray = new VertexArray();
+		////vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
 
-		vertexBuffer->SetLayout(layout);
-		vertexArray->AddVertexBuffer(*vertexBuffer);
+		//BufferLayout layout =
+		//{
+		//	{ShaderDataType::VEC3F, "position"}
+		//};
 
-		//indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
-		indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
-		vertexArray->SetIndexBuffer(*indexBuffer);
-	}
+		//vertexBuffer->SetLayout(layout);
+		//vertexArray->AddVertexBuffer(*vertexBuffer);
 
-	virtual ~KebabPyramid()
-	{
-		vertices.clear();
-		normals.clear();
-		texCoords.clear();
-		indices.clear();
+		////indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
+		////indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
+		//vertexArray->SetIndexBuffer(*indexBuffer);
 	}
 };

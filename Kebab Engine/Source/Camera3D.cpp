@@ -101,9 +101,9 @@ bool Camera3D::CleanUp()
 bool Camera3D::Update(float dt)
 {	
 	vec3 newPos(0, 0, 0);
-	float speed = 3.0f * dt;
+	float speed = 20.0f * dt;
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 8.0f * dt;
+		speed = 40.0f * dt;
 
 	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;

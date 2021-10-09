@@ -94,25 +94,44 @@ bool Input::PreUpdate(float dt)
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
-			mouseZ = e.wheel.y;
-			break;
+			{
+				mouseZ = e.wheel.y;
+				break;
+			}
 
 			case SDL_MOUSEMOTION:
-			mouseX = e.motion.x / SCREEN_SIZE;
-			mouseY = e.motion.y / SCREEN_SIZE;
+			{
+				mouseX = e.motion.x / SCREEN_SIZE;
+				mouseY = e.motion.y / SCREEN_SIZE;
 
-			mouseXMotion = e.motion.xrel / SCREEN_SIZE;
-			mouseYMotion = e.motion.yrel / SCREEN_SIZE;
-			break;
-
+				mouseXMotion = e.motion.xrel / SCREEN_SIZE;
+				mouseYMotion = e.motion.yrel / SCREEN_SIZE;
+				break;
+			}
 			case SDL_QUIT:
-			quit = true;
-			break;
-
+			{
+				quit = true;
+				break;
+			}
 			case SDL_WINDOWEVENT:
 			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					app->renderer3D->OnResize(e.window.data1, e.window.data2);
+				break;
+			}
+			case SDL_DROPFILE:
+			{
+				char* droppedFiledir = e.drop.file;
+				// Shows directory of dropped file
+				SDL_ShowSimpleMessageBox(
+					SDL_MESSAGEBOX_INFORMATION,
+					"File dropped on window",
+					droppedFiledir,
+					app->window->window
+				);
+				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh(droppedFiledir));
+				SDL_free(droppedFiledir);    // Free droppedFiledir memory
+				break;
 			}
 		}
 	}

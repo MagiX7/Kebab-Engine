@@ -22,12 +22,4 @@ public:
 	bool CleanUp();
 
 private:
-	VertexBuffer* vertexBuffer;
-	VertexArray* vertexArray;
-	IndexBuffer* indexBuffer;
-
-	KebabGeometry* primitive;
-
-
-	MeshLoader* meshLoader;
 };
