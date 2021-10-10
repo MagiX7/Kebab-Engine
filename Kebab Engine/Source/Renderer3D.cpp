@@ -9,13 +9,6 @@
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
-
-	/*depth = true;
-	cullFace = true;
-	lighting = true;
-	colorMaterial = true;
-	texture2D = true;
-	wireframe = true;*/
 }
 
 // Destructor
@@ -71,7 +64,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Check for error
@@ -122,6 +115,11 @@ bool Renderer3D::Init(JSON_Object* root)
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
 
+
+	vertexArray = new VertexArray();
+	indexBuffer = new IndexBuffer();
+	vertexBuffer = new VertexBuffer();
+
 	return ret;
 }
 
@@ -153,9 +151,8 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
-	for (const auto& g : geometries)
-		g->Draw();
-
+	/*for (const auto& g : geometries)
+		g->Draw();*/
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -167,6 +164,13 @@ bool Renderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	geometries.clear();
+	/*delete vertexArray;
+	delete vertexBuffer;
+	delete indexBuffer;*/
+
+	RELEASE(vertexArray);
+	RELEASE(vertexBuffer);
+	RELEASE(indexBuffer);
 
 	SDL_GL_DeleteContext(context);
 
@@ -258,9 +262,36 @@ void Renderer3D::Load(JSON_Object* root)
 void Renderer3D::Submit(KebabGeometry* geometry)
 {
 	geometries.push_back(geometry);
+	numVertices += geometry->verticesCount;
+	numIndices += geometry->indicesCount;
+	vertexBuffer->AddData(geometry->vertices, sizeof(geometry->vertices) * geometry->verticesCount);
+	indexBuffer->AddData(geometry->indices, geometry->indicesCount);
+
+	vertexArray->AddVertexBuffer(*vertexBuffer);
+	vertexArray->SetIndexBuffer(*indexBuffer);
+
+	// TODO: Almacenar todo, inicializar buffers vacios y antes de drawear, hacer un AddData y luego
 }
 
-void Renderer3D::Submit(std::vector<KebabGeometry*> g)
+void Renderer3D::Submit(std::vector<KebabGeometry*> geos)
 {
-	geometries.insert(geometries.end(), g.begin(), g.end());
+	//geometries.insert(geometries.end(), geos.begin(), geos.end());
+	for (const auto& g : geos)
+		Submit(g);
+}
+
+void Renderer3D::DoDraw()
+{
+	//frameBuffer->Bind();
+	glClearColor(0.05f, 0.05f, 0.05f, 1);
+
+
+	/*vertexArray->AddVertexBuffer(*vertexBuffer);
+	vertexArray->SetIndexBuffer(*indexBuffer);*/
+
+	vertexArray->Bind();
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+	vertexArray->Unbind();
+
+	//frameBuffer->Unbind();
 }

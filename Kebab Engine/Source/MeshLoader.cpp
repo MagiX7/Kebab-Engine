@@ -18,6 +18,7 @@ MeshLoader::MeshLoader()
 
 MeshLoader::~MeshLoader()
 {
+	if(instance != nullptr) RELEASE(instance)
 }
 
 bool MeshLoader::Start()
@@ -70,8 +71,20 @@ std::vector<KebabGeometry*> MeshLoader::LoadMesh(const char* filePath)
 				}
 			}
 
+			if (mesh->HasNormals())
+			{
+				currentMesh.normalsCount = mesh->mNumVertices;
+				currentMesh.normals = new float3[mesh->mNumVertices * 3];
+				for (uint j = 0; j < mesh->mNumVertices; ++j)
+				{
+					memcpy(&currentMesh.normals[j * 3], mesh->mNormals, 3 * sizeof(float3));
+				}
+			}
+
 			currentMesh.SetUpBuffers();
+			currentMesh.vertexBuffer->AddData(currentMesh.normals, sizeof(float3) * currentMesh.normalsCount);
 			meshes.push_back(&currentMesh);
+			LOG("New Mesh loaded and added to the list");
 		}
 		aiReleaseImport(scene);
 		return meshes;

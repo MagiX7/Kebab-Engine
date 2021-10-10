@@ -1,10 +1,12 @@
 #pragma once
+
 #include "Module.h"
 #include "Globals.h"
-#include "glmath.h"
 #include "Light.h"
 
 #include "Geometry.h"
+
+#include "glmath.h"
 
 #define MAX_LIGHTS 8
 
@@ -34,6 +36,8 @@ public:
 	void Submit(KebabGeometry* geometry);
 	void Submit(std::vector<KebabGeometry*> geos);
 
+	void DoDraw();
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -41,14 +45,22 @@ public:
 	mat3x3 normalMatrix;
 	mat4x4 modelMatrix, viewMatrix, projectionMatrix;
 
-private:
-	std::vector<KebabGeometry*> geometries;
-
 	bool depth;
 	bool cullFace;
 	bool lighting;
 	bool colorMaterial;
 	bool texture2D;
-
 	bool wireframe;
+
+private:
+	std::vector<KebabGeometry*> geometries;
+	
+	VertexArray* vertexArray;
+	VertexBuffer* vertexBuffer;
+	IndexBuffer* indexBuffer;
+
+	std::vector<float3> vertices;
+	std::vector<uint32_t> indices;
+	uint32_t numIndices;
+	uint32_t numVertices;
 };

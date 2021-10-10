@@ -21,7 +21,7 @@ public:
 	inline const math::float3& GetPosition() { return position; }
 
 	inline const float3* GetVertices() { return vertices; }
-	inline const std::vector<float>& GetNormals() { return normals; }
+	inline const float3* GetNormals() { return normals; }
 	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
 	inline const uint32_t* GetIndices() { return indices; }
 
@@ -30,7 +30,7 @@ public:
 	void Draw();
 
 public:
-	VertexArray* vertexArray;
+	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 
@@ -39,7 +39,9 @@ public:
 	uint32_t* indices;
 	uint32_t indicesCount = 0;
 
-	std::vector<float>normals;
+	float3* normals;
+	uint32_t normalsCount;
+	//std::vector<float>normals;
 	std::vector<float>texCoords;
 
 	math::float3 position;

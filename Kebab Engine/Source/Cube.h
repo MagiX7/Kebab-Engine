@@ -27,15 +27,6 @@ public:
         };
         std::copy(v, v + verticesCount, vertices);
 
-        printf("vertices count %i\n\n", verticesCount);
-        for (int i = 0; i < verticesCount; i += 3)
-        {
-            printf("%f ", vertices[i].x);
-            printf("%f ", vertices[i].y);
-            printf("%f\n", vertices[i].z);
-        }
-
-
         indices = new uint32_t[12 * 3];
         indicesCount = 12 * 3;
         uint32_t in[] =
@@ -65,12 +56,6 @@ public:
             3,5,1
         };
         std::copy(in, in + indicesCount, indices);
-
-        printf("\nindices count %i\n", indicesCount);
-        for (int i = 0; i < indicesCount; i+=3)
-        {
-            printf("%i %i %i\n", indices[i], indices[i + 1], indices[i + 2]);
-        }
 
         SetUpBuffers();
         //vertexArray = new VertexArray();

@@ -15,14 +15,13 @@ public:
 
 	bool Start() override;
 	bool Update(float dt) override;
-	bool Draw(float dt) override;
+	bool Draw(float dt);
 	bool CleanUp() override;
 
 
 private:
 	void InitImGui();
-	bool UpdateImGui(float dt);
-	void DrawImGui();
+	bool OnImGuiRender(float dt);
 	
 	void ShowAboutPanel();
 
@@ -30,6 +29,9 @@ public:
 
 	ConsolePanel* consolePanel;
 	ConfigPanel configPanel;
+
+	FrameBuffer* frameBuffer;
+	float2 viewportSize = { 0,0 };
 
 	bool showAboutPanel;
 	bool wireframe;
