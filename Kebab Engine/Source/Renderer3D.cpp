@@ -129,10 +129,12 @@ bool Renderer3D::PreUpdate(float dt)
 {
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	//glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
+	//glMatrixMode(GL_MODELVIEW);
+	
 	glLoadMatrixf(app->camera->GetViewMatrix());
+	
 
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
@@ -141,10 +143,10 @@ bool Renderer3D::PreUpdate(float dt)
 	}
 
 	// light 0 on cam pos
-	/*lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
+	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();*/
+		lights[i].Render();
 
 	return true;
 }

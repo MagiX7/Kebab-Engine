@@ -3,7 +3,7 @@
 Camera::Camera()
 {
 	fovVertical = 60.0f;
-	fovHorizontal = 91.0f;
+	fovHorizontal = 60.0f;
 
 	planeFar = 200.f;
 	planeNear = 0.1f;

@@ -9,22 +9,13 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 {
 	name = "camera3D";
 
-	x = vec3(1.0f, 0.0f, 0.0f);
-	y = vec3(0.0f, 1.0f, 0.0f);
-	z = vec3(0.0f, 0.0f, 1.0f);
-
-	position = vec3(0.0f, 0.0f, 5.0f);
-	reference = vec3(0.0f, 0.0f, 0.0f);
-
-	reference2 = vec(0.0f, 0.0f, 0.0f);
-	position2 = vec(0.0f, 0.0f, 0.0f);
+	position = vec(0.0f, 0.0f, 0.0f);
+	reference = vec(0.0f, 0.0f, 0.0f);
 
 	cam = new Camera();
 
-	//CalculateViewMatrix();
-
-	cam->SetCameraPosition(vec(0.0f, 0.0f, 5.0f));
-	cam->Look(reference2);
+	cam->SetCameraPosition(position);
+	cam->Look(reference);
 }
 
 Camera3D::~Camera3D()
@@ -32,7 +23,7 @@ Camera3D::~Camera3D()
 
 bool Camera3D::Init(JSON_Object* root)
 {
-	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	/*JSON_Object* camObj = json_object_get_object(root, name.c_str());
 	JSON_Object* posObj = json_object_get_object(camObj, "position");
 	position.x = json_object_get_number(posObj, "x");
 	position.y = json_object_get_number(posObj, "y");
@@ -85,7 +76,7 @@ bool Camera3D::Init(JSON_Object* root)
 	viewMatrix.M[11] = json_object_get_number(vec4Obj, "z");
 	viewMatrix.M[15] = json_object_get_number(vec4Obj, "w");
 
-	viewMatrixInverse = inverse(viewMatrix);
+	viewMatrixInverse = inverse(viewMatrix);*/
 
 	return true;
 }
@@ -110,154 +101,69 @@ bool Camera3D::CleanUp()
 // -----------------------------------------------------------------
 bool Camera3D::Update(float dt)
 {	
-	//vec3 newPos(0, 0, 0);
-	//float speed = 3.0f * dt;
-	//if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-	//	speed = 8.0f * dt;
-
-	//if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	//if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
-
-	//if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= z * speed;
-	//if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += z * speed;
-
-
-	//if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= x * speed;
-	//if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += x * speed;
-
-	//position += newPos;
-	//reference += newPos;
-
-	//// Mouse motion ----------------
-	//if(app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-	//{
-	//	int dx = -app->input->GetMouseXMotion();
-	//	int dy = -app->input->GetMouseYMotion();
-
-	//	float sensitivity = 0.25f;
-
-	//	position -= reference;
-
-	//	if (dx != 0)
-	//	{
-	//		float deltaX = (float)dx * sensitivity;
-
-	//		x = rotate(x, deltaX, vec3(0.0f, 1.0f, 0.0f));
-	//		y = rotate(y, deltaX, vec3(0.0f, 1.0f, 0.0f));
-	//		z = rotate(z, deltaX, vec3(0.0f, 1.0f, 0.0f));
-	//	}
-
-	//	if (dy != 0)
-	//	{
-	//		float DeltaY = (float)dy * sensitivity;
-
-	//		y = rotate(y, DeltaY, x);
-	//		z = rotate(z, DeltaY, x);
-
-	//		if (y.y < 0.0f)
-	//		{
-	//			z = vec3(0.0f, z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-	//			y = cross(z, x);
-	//		}
-	//	}
-
-	//	position = reference + z * length(position);
-	//}
-
-	//// Recalculate matrix -------------
-	//CalculateViewMatrix();
-
 	float3 newPos(0, 0, 0);
 
-	float speed = 2.0f;
+	float speed = 8.0f * dt;
 
+	// Movement of camera ====================================================================================
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
 
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= cam->frustum.Up() * speed * 0.7f;
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.7f;
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= cam->frustum.Up() * speed * 0.5f;
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.5f;
 
-	position2 += newPos;
-	reference2 += newPos;
+	position += newPos;
+	reference += newPos;
 
-	cam->SetCameraPosition(position2);
+	cam->SetCameraPosition(position);
 
+	// Rotation of camera ================================================================================
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT) 
 	{
-		float dx = -app->input->GetMouseXMotion() * speed;
-		float dy = -app->input->GetMouseYMotion() * speed;
+		float dx = -app->input->GetMouseXMotion();
+		float dy = -app->input->GetMouseYMotion();
 
 		math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
 		math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
 		math::Quat finalRotation = rotationX * rotationY;
 
-		cam->frustum.SetUp(finalRotation.Mul(cam->frustum.Up()).Normalized());
-		cam->frustum.SetFront(finalRotation.Mul(cam->frustum.Front()).Normalized());
-
-		float distance = (cam->frustum.Pos() - reference2).Length();
-		cam->frustum.SetPos(reference2 + (-cam->frustum.Front() * distance));
-
-		if (!cam->GetCameraPosition().Equals(reference2))
-			reference2 = cam->GetCameraPosition() + cam->frustum.Front() * (cam->GetCameraPosition()).Length();
+		cam->frustum.Transform(finalRotation);
 	}
 
 	return true;
 }
 
-// -----------------------------------------------------------------
-void Camera3D::Look(const vec3& pos, const vec3& ref, bool rotateAroundReference)
+void Camera3D::LookAt( const float3& point)
 {
-	this->position = pos;
-	this->reference = ref;
-
-	z = normalize(pos - ref);
-	x = normalize(cross(vec3(0.0f, 1.0f, 0.0f), z));
-	y = cross(z, x);
-
-	if(!rotateAroundReference)
-	{
-		this->reference = this->position;
-		this->position += z * 0.05f;
-	}
-
-	CalculateViewMatrix();
+	cam->Look(point);
+	reference = point;
 }
 
-// -----------------------------------------------------------------
-void Camera3D::LookAt( const vec3& spot)
+void Camera3D::MoveTo(const float3& pos)
 {
-	reference = spot;
-
-	z = normalize(position - reference);
-	x = normalize(cross(vec3(0.0f, 1.0f, 0.0f), z));
-	y = cross(z, x);
-
-	CalculateViewMatrix();
+	cam->SetCameraPosition(pos);
+	position = pos;
 }
 
-
-// -----------------------------------------------------------------
-void Camera3D::Move(const vec3& movement)
+void Camera3D::SetPosLook(const float3& pos, float3& point)
 {
-	position += movement;
-	reference += movement;
-
-	CalculateViewMatrix();
+	cam->Look(point);
+	reference = point;
+	cam->SetCameraPosition(pos);
+	position = pos;
 }
 
-// -----------------------------------------------------------------
 float* Camera3D::GetViewMatrix()
 {
-	//return &viewMatrix;
 	return cam->GetViewMatrix().ptr();
 }
 
 void Camera3D::Save(JSON_Object* root)
 {
-	json_object_set_value(root, name.c_str(), json_value_init_object());
+	/*json_object_set_value(root, name.c_str(), json_value_init_object());
 	JSON_Object* camObj = json_object_get_object(root, name.c_str());
 
 	json_object_set_value(camObj, "position", json_value_init_object());
@@ -327,13 +233,6 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_number(vec4Obj, "x", viewMatrix.M[3]);
 	json_object_set_number(vec4Obj, "y", viewMatrix.M[7]);
 	json_object_set_number(vec4Obj, "z", viewMatrix.M[11]);
-	json_object_set_number(vec4Obj, "w", viewMatrix.M[15]);
+	json_object_set_number(vec4Obj, "w", viewMatrix.M[15]);*/
 
-}
-
-// -----------------------------------------------------------------
-void Camera3D::CalculateViewMatrix()
-{
-	viewMatrix = mat4x4(x.x, y.x, z.x, 0.0f, x.y, y.y, z.y, 0.0f, x.z, y.z, z.z, 0.0f, -dot(x, position), -dot(y, position), -dot(z, position), 1.0f);
-	viewMatrixInverse = inverse(viewMatrix);
 }

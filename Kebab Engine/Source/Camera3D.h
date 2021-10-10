@@ -16,26 +16,16 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	void Look(const vec3& pos, const vec3 &ref, bool rotateAroundReference = false);
-	void LookAt(const vec3& spot);
-	void Move(const vec3& movement);
+	void LookAt(const float3& point);
+	void MoveTo(const float3& movement);
+	void SetPosLook(const float3& pos, float3& pointLook);
 	float* GetViewMatrix();
 
 	void Save(JSON_Object* root) override;
 
+	float3 reference, position;
+
 private:
-
-	void CalculateViewMatrix();
-
-public:
-	
-	vec3 x, y, z, position, reference;
-
-	float3 reference2, position2;
 
 	Camera* cam;
-
-private:
-
-	mat4x4 viewMatrix, viewMatrixInverse;
 };
