@@ -8,52 +8,44 @@ public:
 	// Position is the top left corner.
 	KebabPlane(float3 position, float2 size) : KebabGeometry(position)
 	{
-		vertices.resize(4);
+		/*vertices.resize(4);
 		indices.resize(6);
 
 		vertices =
 		{
-			position.x, position.y, position.z,
-			position.x, position.y, position.z + size.y,
-			position.x + size.x, position.y, position.z,
-			position.x+size.x, position.y, position.z + size.y
+			{position.x, position.y, position.z},
+			{position.x, position.y, position.z + size.y},
+			{position.x + size.x, position.y, position.z},
+			{position.x + size.x, position.y, position.z + size.y}
 		};
-		
-		indices =
+		*/
+		/*indices =
 		{
 			0,1,2,
 			3,2,1
-		};
+		};*/
 
-		vertexArray = new VertexArray();
-		vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+		//vertexArray = new VertexArray();
+		//vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
 
-		BufferLayout layout =
+		/*BufferLayout layout =
 		{
 			{ShaderDataType::VEC3F, "position"}
 		};
 
-		vertexBuffer->SetLayout(layout);
-		vertexArray->AddVertexBuffer(*vertexBuffer);
+		vertexBuffer->SetLayout(layout);*/
+		//vertexArray->AddVertexBuffer(*vertexBuffer);
 
 		//indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
-		indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
-		vertexArray->SetIndexBuffer(*indexBuffer);
+		//indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
+		//vertexArray->SetIndexBuffer(*indexBuffer);
 
 	}
 
-	virtual ~KebabPlane()
+	~KebabPlane()
 	{
-		vertices.clear();
-		normals.clear();
-		texCoords.clear();
-		indices.clear();
-	}
-
-	void Draw() override
-	{
-		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
-		vertexArray->Unbind();
+		RELEASE_ARRAY(vertices);
+		RELEASE_ARRAY(indices);
+		RELEASE_ARRAY(normals);
 	}
 };

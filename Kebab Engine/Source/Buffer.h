@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math/float3.h"
+
 #include "GL/glew.h"
 
 #include <stdint.h>
@@ -121,10 +123,11 @@ private:
 class VertexBuffer
 {
 public:
-	VertexBuffer(const float* vertices, uint32_t size);
+	VertexBuffer();
+	VertexBuffer(const float3* vertices, uint32_t size);
 	virtual ~VertexBuffer();
 
-	void SetData(float* vertices, uint32_t size);
+	void AddData(const float3* vertices, uint32_t size);
 	void Bind() const;
 	void Unbind() const;
 
@@ -134,23 +137,60 @@ public:
 
 private:
 	GLuint vbo;
+	uint32_t count;
 	BufferLayout layout;
+
+	std::vector<float3> vertices;
 };
 
 class IndexBuffer
 {
 public:
-	IndexBuffer() {}
+	IndexBuffer();
 	IndexBuffer(const uint32_t* indices, uint32_t count);
 	virtual ~IndexBuffer();
 	
-	void SetData(float* indices, uint32_t count);
+	void AddData(const uint32_t* indices, uint32_t count);
 	void Bind() const;
-	void UnBind() const;
+	void Unbind() const;
 
 	inline uint32_t GetCount() const { return count; }
 
 private:
 	GLuint ibo;
 	uint32_t count;
+	std::vector<uint32_t> indices;
+};
+
+
+struct FrameBufferProperties
+{
+	unsigned int width, height;
+	unsigned int samples = 1;
+
+	// In case you want to draw to the screen, set this to true
+	bool swapChainTarget = false;
+};
+
+class FrameBuffer
+{
+public:
+	FrameBuffer(const FrameBufferProperties& props);
+	virtual ~FrameBuffer();
+
+	void Create();
+	void Resize(unsigned int width, unsigned int height);
+	
+	void Bind() const;
+	void Unbind() const;
+
+	inline const FrameBufferProperties& GetProperties() const { return properties; }
+	inline const uint32_t GetColorAttachment() const { return colorAttachment; }
+
+
+private:
+	uint32_t fbo = 0;
+	uint32_t colorAttachment = 0;
+	uint32_t depthAttachment = 0;
+	FrameBufferProperties properties;
 };

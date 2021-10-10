@@ -7,38 +7,42 @@
 
 #include <vector>
 
+#include <iostream>
+
 class KebabGeometry
 {
 public:
+	KebabGeometry() {};
 	KebabGeometry(math::float3 pos) : position(pos) {}
-	virtual ~KebabGeometry()
-	{
-		vertices.clear();
-		normals.clear();
-		texCoords.clear();
-		indices.clear();
-	};
+	
+	virtual ~KebabGeometry();
 
 	inline void SetPos(const math::float3& pos) { position = pos; }
 	inline const math::float3& GetPosition() { return position; }
 
-	inline const std::vector<float>& GetVertices() { return vertices; }
-	inline const std::vector<float>& GetNormals() { return normals; }
+	inline const float3* GetVertices() { return vertices; }
+	inline const float3* GetNormals() { return normals; }
 	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
-	inline const std::vector<uint32_t>& GetIndices() { return indices; }
+	inline const uint32_t* GetIndices() { return indices; }
 
-	virtual void Draw() {}
+	void SetUpBuffers();
 
-protected:
-	VertexArray* vertexArray;
+	void Draw();
+
+public:
+	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 
+	float3* vertices;
+	uint32_t verticesCount = 0;
+	uint32_t* indices;
+	uint32_t indicesCount = 0;
 
-	std::vector<float>vertices;
-	std::vector<float>normals;
+	float3* normals;
+	uint32_t normalsCount;
+	//std::vector<float>normals;
 	std::vector<float>texCoords;
-	std::vector<uint32_t>indices;
 
 	math::float3 position;
 };

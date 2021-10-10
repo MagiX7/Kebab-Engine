@@ -9,6 +9,7 @@
 #include "Renderer3D.h"
 #include "Camera3D.h"
 #include "Editor.h"
+#include "FileSystem.h"
 
 #include "parson.h"
 
@@ -25,6 +26,7 @@ public:
 	Renderer3D* renderer3D;
 	Camera3D* camera;
 	Editor* editor;
+	FileSystem* fileSystem;
 
 private:
 	std::list<Module*> modules;

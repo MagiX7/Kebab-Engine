@@ -8,7 +8,7 @@ public:
 	// Stack is for the verticals division and sectors is for the horizontal divisions
 	KebabSphere(float3 pos, float radius, float rings, float sectors) : KebabGeometry(pos)
 	{
-        float const R = 1./(float)(rings-1);
+        /*float const R = 1./(float)(rings-1);
         float const S = 1./(float)(sectors-1);
         int r, s;
 
@@ -42,14 +42,6 @@ public:
                 *i++ = r * sectors + (s+1);
                 *i++ = (r+1) * sectors + (s+1);
                 *i++ = (r+1) * sectors + s;
-        }
+        }*/
     }
-
-	virtual ~KebabSphere()
-	{
-		vertices.clear();
-		normals.clear();
-		texCoords.clear();
-		indices.clear();
-	}
 };

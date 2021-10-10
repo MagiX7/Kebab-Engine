@@ -16,5 +16,5 @@ public:
 	void AddLog(const char* fmt, ...);
 
 private:
-	ImGuiTextBuffer     buf;
+	ImGuiTextBuffer buf;
 };

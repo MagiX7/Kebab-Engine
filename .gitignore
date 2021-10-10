@@ -29,10 +29,7 @@
 !Kebab Engine/Source/External/glew/lib/Release/Win32/glew32s.lib
 !Kebab Engine/Source/External/PhysFS/lib/PhysFS.lib
 !Kebab Engine/Source/External/MathGeoLib/lib/MathGeoLib.lib
-!Kebab Engine/Source/External/Assimp/lib/assimp.lib
-!Kebab Engine/Source/External/Assimp/lib/IrrXML.lib
-!Kebab Engine/Source/External/Assimp/lib/unit.lib
-!Kebab Engine/Source/External/Assimp/lib/zlibstatic.lib
+!Kebab Engine/Source/External/Assimp/lib/assimp-vc142-mt.lib
 
 # Executables
 *.exe

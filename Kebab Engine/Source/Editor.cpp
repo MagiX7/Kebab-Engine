@@ -27,25 +27,39 @@ bool Editor::Start()
 {
     InitImGui();
 
+    int w, h;
+    app->window->GetWindowSize(w, h);
+    FrameBufferProperties props;
+    props.width = w;
+    props.height = h;
+    frameBuffer = new FrameBuffer(props);
+
+    //viewportPanel = new ViewportPanel();
+
 	return true;
 }
 
 bool Editor::Update(float dt)
 {
 
-    // Start the Dear ImGui frame
-    if (!UpdateImGui(dt))
-        return false;
-
-
-
-
 	return true;
 }
 
 bool Editor::Draw(float dt)
 {
-    DrawImGui();
+    OnImGuiRender(dt);
+
+    frameBuffer->Bind();
+
+    glClearColor(0.1f, 0.1f, 0.1f, 1);
+    //glClearDepth(1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 
+    app->renderer3D->DoDraw();
+
+    frameBuffer->Unbind();
+
+    
 
 	return true;
 }
@@ -53,6 +67,7 @@ bool Editor::Draw(float dt)
 bool Editor::CleanUp()
 {
     RELEASE(consolePanel);
+    RELEASE(frameBuffer);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -87,7 +102,7 @@ void Editor::InitImGui()
     ImGui_ImplOpenGL3_Init();
 }
 
-bool Editor::UpdateImGui(float dt)
+bool Editor::OnImGuiRender(float dt)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -161,6 +176,21 @@ bool Editor::UpdateImGui(float dt)
         ImGui::EndMainMenuBar();
     }
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
+    ImGui::Begin("Viewport");
+    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+
+    if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
+    {
+        frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
+        viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+    }
+    uint32_t image = frameBuffer->GetColorAttachment();
+    ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
+    ImGui::End();
+    ImGui::PopStyleVar();
+
 
     if (showDemoWindow)
     {
@@ -179,20 +209,12 @@ bool Editor::UpdateImGui(float dt)
 
     ImGui::EndFrame();
 
-    return true;
-}
 
-void Editor::DrawImGui()
-{
-    ImVec4 clearColor = ImVec4(0.1, 0.1, 0.1, 0.1);
 
     ImGui::Render();
-    ImGuiIO& io = ImGui::GetIO();
-    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-    glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
-    //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+    ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
@@ -201,7 +223,12 @@ void Editor::DrawImGui()
         ImGui::RenderPlatformWindowsDefault();
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
+
+    //frameBuffer->Unbind();
+
+    return true;
 }
+
 
 void Editor::ShowAboutPanel()
 {

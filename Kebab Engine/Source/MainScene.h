@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "MeshLoader.h"
+
 #include "VertexArray.h"
 
 #include "Cube.h"
@@ -20,9 +22,4 @@ public:
 	bool CleanUp();
 
 private:
-	VertexBuffer* vertexBuffer;
-	VertexArray* vertexArray;
-	IndexBuffer* indexBuffer;
-
-	KebabGeometry* primitive;
 };

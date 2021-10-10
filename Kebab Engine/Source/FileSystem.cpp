@@ -3,13 +3,15 @@
 #include "FileSystem.h"
 //#include "ModuleResources.h"
 #include "PhysFS/include/physfs.h"
-#include <assimp/cfileio.h>
+#include "assimp/cfileio.h"
 #include "assimp/types.h"
 
 using namespace std;
 
 FileSystem::FileSystem(const char* game_path)
 {
+	name = "filesystem";
+
 	// needs to be created before Init so other modules can use it
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
@@ -18,7 +20,7 @@ FileSystem::FileSystem(const char* game_path)
 	// workaround VS string directory mess
 	AddPath(".");
 
-	if(0&&game_path != nullptr)
+	if (0 && game_path != nullptr)
 		AddPath(game_path);
 
 	// Dump list of paths
@@ -251,7 +253,7 @@ void FileSystem::NormalizePath(std::string & full_path) const
 	}
 }
 
-unsigned int FileSystem::Load(const char * path, const char * file, char ** buffer) const
+unsigned int FileSystem::Load(const char* path, const char* file, char** buffer) const
 {
 	string full_path(path);
 	full_path += file;

@@ -6,16 +6,9 @@
 
 #include "mmgr/mmgr.h"
 
-Renderer3D::Renderer3D(bool startEnabled) : Module(startEnabled)
+Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
-
-	depth = true;
-	cullFace = true;
-	lighting = true;
-	colorMaterial = true;
-	texture2D = true;
-	wireframe = true;
 }
 
 // Destructor
@@ -26,9 +19,9 @@ Renderer3D::~Renderer3D()
 bool Renderer3D::Init(JSON_Object* root)
 {
 	LOG("Creating 3D Renderer context");
-	LOG("Creating Renderer context\n");
-	bool ret = true;
 	
+	bool ret = true;
+
 	//Create context
 	context = SDL_GL_CreateContext(app->window->window);
 	if(context == NULL)
@@ -71,7 +64,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Check for error
@@ -96,15 +89,6 @@ bool Renderer3D::Init(JSON_Object* root)
 
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
-		
-		if (depth) SetDepth(depth);
-		if (cullFace) SetCullFace(cullFace);
-		lights[0].Active(true);
-		if (lighting) SetLighting(lighting);
-		if (colorMaterial) SetColorMaterial(colorMaterial);
-		if (texture2D) SetTexture2D(texture2D);
-
-		SetWireframe(true);
 
 		LOG("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
@@ -117,9 +101,24 @@ bool Renderer3D::Init(JSON_Object* root)
 		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
 	}
 
+	Load(root);
+
+	if (depth) SetDepth(depth);
+	if (cullFace) SetCullFace(cullFace);
+	lights[0].Active(true);
+	if (lighting) SetLighting(lighting);
+	if (colorMaterial) SetColorMaterial(colorMaterial);
+	if (texture2D) SetTexture2D(texture2D);
+	if (wireframe) SetWireframe(wireframe);
+
 	int w, h;
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
+
+
+	vertexArray = new VertexArray();
+	indexBuffer = new IndexBuffer();
+	vertexBuffer = new VertexBuffer();
 
 	return ret;
 }
@@ -154,9 +153,8 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
-	for (const auto& g : geometries)
-		g->Draw();
-
+	/*for (const auto& g : geometries)
+		g->Draw();*/
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -168,6 +166,13 @@ bool Renderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	geometries.clear();
+	/*delete vertexArray;
+	delete vertexBuffer;
+	delete indexBuffer;*/
+
+	RELEASE(vertexArray);
+	RELEASE(vertexBuffer);
+	RELEASE(indexBuffer);
 
 	SDL_GL_DeleteContext(context);
 
@@ -240,13 +245,55 @@ void Renderer3D::Save(JSON_Object* root)
 	json_object_set_boolean(renObj, "lighting", lighting);
 	json_object_set_boolean(renObj, "color material", colorMaterial);
 	json_object_set_boolean(renObj, "texture2D", texture2D);
+	json_object_set_boolean(renObj, "wireframe", wireframe);
 }
 
 void Renderer3D::Load(JSON_Object* root)
 {
+	json_object_set_value(root, name.c_str(), json_value_init_object());
+	JSON_Object* renObj = json_object_get_object(root, name.c_str());
+
+	depth = json_object_get_boolean(renObj, "depth");
+	cullFace = json_object_get_boolean(renObj, "cullface");
+	lighting = json_object_get_boolean(renObj, "lighting");
+	colorMaterial = json_object_get_boolean(renObj, "color material");
+	texture2D = json_object_get_boolean(renObj, "texture2D");
+	wireframe = json_object_get_boolean(renObj, "wireframe");
 }
 
 void Renderer3D::Submit(KebabGeometry* geometry)
 {
 	geometries.push_back(geometry);
+	numVertices += geometry->verticesCount;
+	numIndices += geometry->indicesCount;
+	vertexBuffer->AddData(geometry->vertices, sizeof(geometry->vertices) * geometry->verticesCount);
+	indexBuffer->AddData(geometry->indices, geometry->indicesCount);
+
+	vertexArray->AddVertexBuffer(*vertexBuffer);
+	vertexArray->SetIndexBuffer(*indexBuffer);
+
+	// TODO: Almacenar todo, inicializar buffers vacios y antes de drawear, hacer un AddData y luego
+}
+
+void Renderer3D::Submit(std::vector<KebabGeometry*> geos)
+{
+	//geometries.insert(geometries.end(), geos.begin(), geos.end());
+	for (const auto& g : geos)
+		Submit(g);
+}
+
+void Renderer3D::DoDraw()
+{
+	//frameBuffer->Bind();
+	glClearColor(0.05f, 0.05f, 0.05f, 1);
+
+
+	/*vertexArray->AddVertexBuffer(*vertexBuffer);
+	vertexArray->SetIndexBuffer(*indexBuffer);*/
+
+	vertexArray->Bind();
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+	vertexArray->Unbind();
+
+	//frameBuffer->Unbind();
 }

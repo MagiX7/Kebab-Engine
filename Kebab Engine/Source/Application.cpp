@@ -10,6 +10,7 @@ Application::Application()
 	renderer3D = new Renderer3D();
 	camera = new Camera3D();
 	editor = new Editor();
+	fileSystem = new FileSystem();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -20,6 +21,7 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(editor);
+	AddModule(fileSystem);
 	
 	// Scenes
 	AddModule(scene);
@@ -67,7 +69,7 @@ bool Application::Init()
 		}
 	}
 	// After all Init calls we call Start() in all modules
-	//LOG("Application Start --------------");
+	LOG("Application Start --------------");
 
 	it = modules.begin();
 
@@ -200,6 +202,8 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 		it++;
 	}
+
+	MeshLoader::GetInstance()->CleanUp();
 
 	return ret;
 }

@@ -7,24 +7,29 @@ class KebabCube : public KebabGeometry
 public:
 	KebabCube(math::float3 pos, math::float3 size) : KebabGeometry(pos)
 	{
-        vertices.resize(8 * 3); // TRIANGLES
-        indices.resize(12 * 3); // 4 Vertex for each face
+        //vertices.resize(8 * 3); // TRIANGLES
+        //indices.resize(12 * 3); // 4 Vertex for each face
 
-        vertices =
+        vertices = new float3[8 * 3];
+        verticesCount = 8 * 3;
+        float3 v[]=
         {
-            pos.x, pos.y, pos.z,          // Top Left
-            pos.x, pos.y + size.y,pos.z,  // Bottom left
-            pos.x + size.x, pos.y,pos.z,  // Top Right
-            pos.x + size.x, pos.y + size.y, pos.z,  // Bottom right
+            {pos.x, pos.y, pos.z },          // Top Left
+            {pos.x, pos.y + size.y,pos.z},  // Bottom left
+            {pos.x + size.x, pos.y,pos.z},  // Top Right
+            {pos.x + size.x, pos.y + size.y, pos.z},  // Bottom right
 
-            pos.x + size.x, pos.y,pos.z + size.z,  // Top Back Right
-            pos.x + size.x, pos.y + size.y,pos.z + size.z,   // Bottom Back right
+            {pos.x + size.x, pos.y,pos.z + size.z},  // Top Back Right
+            {pos.x + size.x, pos.y + size.y,pos.z + size.z},   // Bottom Back right
 
-            pos.x, pos.y, pos.z + size.z,          // Top back Left
-            pos.x, pos.y + size.y,pos.z + size.z,  // Bottom back left
+            {pos.x, pos.y, pos.z + size.z},          // Top back Left
+            {pos.x, pos.y + size.y,pos.z + size.z}  // Bottom back left
         };
+        std::copy(v, v + verticesCount, vertices);
 
-        indices =
+        indices = new uint32_t[12 * 3];
+        indicesCount = 12 * 3;
+        uint32_t in[] =
         {
             // Front
             0,1,2,
@@ -50,35 +55,23 @@ public:
             1,5,7,
             3,5,1
         };
+        std::copy(in, in + indicesCount, indices);
 
-        vertexArray = new VertexArray();
-        vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
+        SetUpBuffers();
+        //vertexArray = new VertexArray();
+        //vertexBuffer = new VertexBuffer(vertices.data(), sizeof(vertices.data()[0]) * vertices.size());
 
-        BufferLayout layout =
-        {
-            {ShaderDataType::VEC3F, "position"}
-        };
+        //vertexArray->AddVertexBuffer(*vertexBuffer);
 
-        vertexBuffer->SetLayout(layout);
-        vertexArray->AddVertexBuffer(*vertexBuffer);
-
-        //indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
-        indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
-        vertexArray->SetIndexBuffer(*indexBuffer);
+        ////indexBuffer = new IndexBuffer(primitive->GetIndices().data() , sizeof(primitive->GetIndices().data()) / sizeof(uint32_t));
+        //indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
+        //vertexArray->SetIndexBuffer(*indexBuffer);
 	}
 
-    virtual ~KebabCube()
+    ~KebabCube()
     {
-        vertices.clear();
-        normals.clear();
-        texCoords.clear();
-        indices.clear();
-    }
-
-    void Draw() override
-    {
-        vertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
-        vertexArray->Unbind();
+        RELEASE_ARRAY(vertices);
+        RELEASE_ARRAY(indices);
+        RELEASE_ARRAY(normals);
     }
 };
