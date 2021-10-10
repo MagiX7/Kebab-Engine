@@ -18,7 +18,6 @@ MeshLoader::MeshLoader()
 
 MeshLoader::~MeshLoader()
 {
-	if(instance != nullptr) RELEASE(instance)
 }
 
 bool MeshLoader::Start()

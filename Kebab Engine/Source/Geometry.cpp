@@ -9,6 +9,9 @@ KebabGeometry::~KebabGeometry()
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(normals);
+
+	RELEASE(vertexBuffer);
+	RELEASE(indexBuffer);
 }
 
 void KebabGeometry::SetUpBuffers()

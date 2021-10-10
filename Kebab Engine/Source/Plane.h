@@ -41,4 +41,11 @@ public:
 		//vertexArray->SetIndexBuffer(*indexBuffer);
 
 	}
+
+	~KebabPlane()
+	{
+		RELEASE_ARRAY(vertices);
+		RELEASE_ARRAY(indices);
+		RELEASE_ARRAY(normals);
+	}
 };

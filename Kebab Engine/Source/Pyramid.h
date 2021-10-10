@@ -70,4 +70,11 @@ public:
 		////indexBuffer = new IndexBuffer(indices.data(), sizeof(indices.data()[0]) * indices.size());
 		//vertexArray->SetIndexBuffer(*indexBuffer);
 	}
+
+	~KebabPyramid()
+	{
+		RELEASE_ARRAY(vertices);
+		RELEASE_ARRAY(indices);
+		RELEASE_ARRAY(normals);
+	}
 };
