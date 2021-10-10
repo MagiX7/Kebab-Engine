@@ -40,8 +40,9 @@ bool MainScene::Start()
     /*app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));*/
 
-	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
-	app->camera->LookAt(vec3(0, 0, 0));
+    float3 pos = { 4.0f, 1.0f, 12.0f };
+    float3 reference = { 0.0f, 0.0f, -1.0f };
+    app->camera->SetPosLook(pos, reference);
 
 	return ret;
 }

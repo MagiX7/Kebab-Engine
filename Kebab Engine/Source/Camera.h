@@ -17,7 +17,7 @@ public:
 	Frustum* GetFrustum();
 
 	float4x4 GetProjectionMatrix() const;
-	float3x4 GetViewMatrix() const;
+	float4x4 GetViewMatrix() const;
 
 	void SetVerticalFov(const float fovVert);
 	void SetHorizontalFov(const float fovHoriz);
@@ -29,9 +29,9 @@ public:
 	float GetFarPlane() const;
 	float GetNearPlane() const;
 
-private:
 	Frustum frustum;
-	
+
+private:	
 	float fovVertical;
 	float fovHorizontal;
 
