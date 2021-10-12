@@ -132,6 +132,12 @@
     <ClCompile Include="Source\Geometry.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -247,6 +253,15 @@
     </ClInclude>
     <ClInclude Include="Source\MeshLoader.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vertex.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

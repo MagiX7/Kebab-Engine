@@ -8,7 +8,7 @@
 #include "parson.h"
 
 
-#include "mmgr/mmgr.h"
+//#include "mmgr/mmgr.h"
 
 #include <iostream>
 
@@ -35,13 +35,17 @@ bool MainScene::Start()
     /*primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
     app->renderer3D->Submit(primitive);*/
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/warrior.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/heavy.fbx"));
+
+    model = new KbModel("Assets/3D Models/heavy.fbx");
+    app->renderer3D->Submit(model);
 
     /*app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));*/
 
-	app->camera->Move(vec3(1.5f, 2.0f, 0.0f));
-	app->camera->LookAt(vec3(0, 0, 0));
+    float3 pos = { 0.0f, 0.0f, 0.0f };
+    float3 reference = { 0.0f, 0.0f, 1.0f };
+    app->camera->SetPosLook(pos, reference);
 
 	return ret;
 }
@@ -54,6 +58,8 @@ bool MainScene::Update(float dt)
 
     //primitive->Draw();
 
+    //model->Draw();
+
     /*vertexArray->Bind();
     glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
     vertexArray->Unbind();*/
@@ -65,6 +71,7 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG("Unloading scene");
+    RELEASE(model);
 
     return true;
 }

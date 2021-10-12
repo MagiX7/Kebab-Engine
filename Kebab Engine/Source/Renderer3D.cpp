@@ -115,10 +115,14 @@ bool Renderer3D::Init(JSON_Object* root)
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
 
-
-	vertexArray = new VertexArray();
+	/*vertexArray = new VertexArray();
 	indexBuffer = new IndexBuffer();
-	vertexBuffer = new VertexBuffer();
+	vertexBuffer = new VertexBuffer();*/
+
+	FrameBufferProperties props;
+	props.width = w;
+	props.height = h;
+	frameBuffer = new FrameBuffer(props);
 
 	return ret;
 }
@@ -151,8 +155,21 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
-	/*for (const auto& g : geometries)
-		g->Draw();*/
+	app->editor->OnImGuiRender(dt, frameBuffer);
+
+	frameBuffer->Bind();
+
+	glClearColor(0.1f, 0.1f, 0.1f, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	for (const auto& g : geometries)
+		g->Draw();
+
+	for (const auto& m : models)
+		m->Draw();
+
+	frameBuffer->Unbind();
+
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -171,6 +188,7 @@ bool Renderer3D::CleanUp()
 	RELEASE(vertexArray);
 	RELEASE(vertexBuffer);
 	RELEASE(indexBuffer);
+	RELEASE(frameBuffer);
 
 	SDL_GL_DeleteContext(context);
 
@@ -259,21 +277,25 @@ void Renderer3D::Load(JSON_Object* root)
 	wireframe = json_object_get_boolean(renObj, "wireframe");
 }
 
-void Renderer3D::Submit(KebabGeometry* geometry)
+void Renderer3D::Submit(KbGeometry geometry)
 {
-	geometries.push_back(geometry);
-	numVertices += geometry->verticesCount;
+	geometries.push_back(&geometry);
+
+	/*numVertices += geometry->verticesCount;
 	numIndices += geometry->indicesCount;
 	vertexBuffer->AddData(geometry->vertices, sizeof(geometry->vertices) * geometry->verticesCount);
 	indexBuffer->AddData(geometry->indices, geometry->indicesCount);
 
 	vertexArray->AddVertexBuffer(*vertexBuffer);
-	vertexArray->SetIndexBuffer(*indexBuffer);
-
-	// TODO: Almacenar todo, inicializar buffers vacios y antes de drawear, hacer un AddData y luego
+	vertexArray->SetIndexBuffer(*indexBuffer);*/
 }
 
-void Renderer3D::Submit(std::vector<KebabGeometry*> geos)
+void Renderer3D::Submit(KbModel* model)
+{
+	models.push_back(model);
+}
+
+void Renderer3D::Submit(const std::vector<KbGeometry>& geos)
 {
 	//geometries.insert(geometries.end(), geos.begin(), geos.end());
 	for (const auto& g : geos)

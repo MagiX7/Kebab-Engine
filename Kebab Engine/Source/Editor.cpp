@@ -32,7 +32,7 @@ bool Editor::Start()
     FrameBufferProperties props;
     props.width = w;
     props.height = h;
-    frameBuffer = new FrameBuffer(props);
+    //frameBuffer = new FrameBuffer(props);
 
     //viewportPanel = new ViewportPanel();
 
@@ -47,17 +47,17 @@ bool Editor::Update(float dt)
 
 bool Editor::Draw(float dt)
 {
-    OnImGuiRender(dt);
+    //OnImGuiRender(dt);
 
-    frameBuffer->Bind();
+    //frameBuffer->Bind();
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1);
-    //glClearDepth(1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClearColor(0.1f, 0.1f, 0.1f, 1);
+    ////glClearDepth(1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
-    app->renderer3D->DoDraw();
+    //app->renderer3D->DoDraw();
 
-    frameBuffer->Unbind();
+    //frameBuffer->Unbind();
 
     
 
@@ -67,7 +67,7 @@ bool Editor::Draw(float dt)
 bool Editor::CleanUp()
 {
     RELEASE(consolePanel);
-    RELEASE(frameBuffer);
+    //RELEASE(frameBuffer);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -102,7 +102,7 @@ void Editor::InitImGui()
     ImGui_ImplOpenGL3_Init();
 }
 
-bool Editor::OnImGuiRender(float dt)
+bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();

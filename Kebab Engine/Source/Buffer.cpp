@@ -29,7 +29,7 @@ VertexBuffer::~VertexBuffer()
 	glDeleteBuffers(1, &vbo);
 }
 
-void VertexBuffer::AddData(const float3* vertices, uint32_t size)
+void VertexBuffer::SetData(const float3* vertices, uint32_t size)
 {
 	/*this->vertices.resize(count + (size / sizeof(uint32_t)));
 	this->vertices.insert(this->vertices.begin() + this->vertices.size(), vertices, vertices + count);
@@ -40,6 +40,14 @@ void VertexBuffer::AddData(const float3* vertices, uint32_t size)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 	count += (size / sizeof(uint32_t));
+}
+
+void VertexBuffer::SetData(const std::vector<Vertex>& vertices)
+{
+	//size_t s = sizeof(float3) + sizeof(float3) + sizeof(float2);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), &vertices[0], GL_STATIC_DRAW);
+	count += vertices.size();
 }
 
 void VertexBuffer::Bind() const
@@ -74,7 +82,7 @@ IndexBuffer::~IndexBuffer()
 	glDeleteBuffers(1, &ibo);
 }
 
-void IndexBuffer::AddData(const uint32_t* indices, uint32_t count)
+void IndexBuffer::SetData(const uint32_t* indices, uint32_t count)
 {
 	/*this->indices.resize(this->count + count);
 	this->indices.insert(this->indices.begin() + this->indices.size(), indices, indices + this->count);

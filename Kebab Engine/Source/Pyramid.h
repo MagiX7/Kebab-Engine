@@ -2,11 +2,11 @@
 
 #include "Geometry.h"
 
-class KebabPyramid : public KebabGeometry
+class KbPyramid : public KbGeometry
 {
 public:
 	// Position is the middle of the base
-	KebabPyramid(float3 pos, float height, float baseWidth) : KebabGeometry(pos)
+	KbPyramid(float3 pos, float height, float baseWidth) : KbGeometry(pos)
 	{
 		float ap = sqrt(pow(height, 2) + pow(baseWidth / 2, 2));
 
@@ -71,7 +71,7 @@ public:
 		//vertexArray->SetIndexBuffer(*indexBuffer);
 	}
 
-	~KebabPyramid()
+	~KbPyramid()
 	{
 		RELEASE_ARRAY(vertices);
 		RELEASE_ARRAY(indices);

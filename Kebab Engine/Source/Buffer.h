@@ -1,6 +1,11 @@
 #pragma once
 
+//#include "Mesh.h"
+
+#include "Vertex.h"
+
 #include "Math/float3.h"
+#include "Math/float2.h"
 
 #include "GL/glew.h"
 
@@ -127,7 +132,8 @@ public:
 	VertexBuffer(const float3* vertices, uint32_t size);
 	virtual ~VertexBuffer();
 
-	void AddData(const float3* vertices, uint32_t size);
+	void SetData(const float3* vertices, uint32_t size);
+	void SetData(const std::vector<Vertex>&);
 	void Bind() const;
 	void Unbind() const;
 
@@ -140,7 +146,7 @@ private:
 	uint32_t count;
 	BufferLayout layout;
 
-	std::vector<float3> vertices;
+	//std::vector<float3> vertices;
 };
 
 class IndexBuffer
@@ -150,7 +156,7 @@ public:
 	IndexBuffer(const uint32_t* indices, uint32_t count);
 	virtual ~IndexBuffer();
 	
-	void AddData(const uint32_t* indices, uint32_t count);
+	void SetData(const uint32_t* indices, uint32_t count);
 	void Bind() const;
 	void Unbind() const;
 
@@ -159,7 +165,7 @@ public:
 private:
 	GLuint ibo;
 	uint32_t count;
-	std::vector<uint32_t> indices;
+	//std::vector<uint32_t> indices;
 };
 
 

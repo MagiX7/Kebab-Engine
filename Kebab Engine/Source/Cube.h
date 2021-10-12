@@ -2,10 +2,10 @@
 
 #include "Geometry.h"
 
-class KebabCube : public KebabGeometry
+class KbCube : public KbGeometry
 {
 public:
-	KebabCube(math::float3 pos, math::float3 size) : KebabGeometry(pos)
+	KbCube(math::float3 pos, math::float3 size) : KbGeometry(pos)
 	{
         //vertices.resize(8 * 3); // TRIANGLES
         //indices.resize(12 * 3); // 4 Vertex for each face
@@ -68,7 +68,7 @@ public:
         //vertexArray->SetIndexBuffer(*indexBuffer);
 	}
 
-    ~KebabCube()
+    ~KbCube()
     {
         RELEASE_ARRAY(vertices);
         RELEASE_ARRAY(indices);

@@ -203,7 +203,7 @@ bool Application::CleanUp()
 		it++;
 	}
 
-	MeshLoader::GetInstance()->CleanUp();
+	//MeshLoader::GetInstance()->CleanUp();
 
 	return ret;
 }

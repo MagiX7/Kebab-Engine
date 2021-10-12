@@ -129,7 +129,8 @@ bool Input::PreUpdate(float dt)
 					droppedFiledir,
 					app->window->window
 				);
-				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh(droppedFiledir));
+				// TODO: DROP FILE WITH NEW MODEL LOADING SYSTEM
+				//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh(droppedFiledir));
 				SDL_free(droppedFiledir);    // Free droppedFiledir memory
 				break;
 			}

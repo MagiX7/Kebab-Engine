@@ -5,6 +5,7 @@
 #include "Light.h"
 
 #include "Geometry.h"
+#include "Model.h"
 
 #include "glmath.h"
 
@@ -33,8 +34,9 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
-	void Submit(KebabGeometry* geometry);
-	void Submit(std::vector<KebabGeometry*> geos);
+	void Submit(KbGeometry geometry);
+	void Submit(KbModel* model);
+	void Submit(const std::vector<KbGeometry>& geos);
 
 	void DoDraw();
 
@@ -53,11 +55,13 @@ public:
 	bool wireframe;
 
 private:
-	std::vector<KebabGeometry*> geometries;
+	std::vector<KbGeometry*> geometries;
+	std::vector<KbModel*> models;
 	
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
+	FrameBuffer* frameBuffer;
 
 	std::vector<float3> vertices;
 	std::vector<uint32_t> indices;

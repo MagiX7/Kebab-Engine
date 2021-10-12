@@ -2,8 +2,8 @@
 
 Camera::Camera()
 {
-	fovVertical = 60.0f;
-	fovHorizontal = 91.0f;
+	fovVertical = 70.0f;
+	fovHorizontal = 80.0f;
 
 	planeFar = 200.f;
 	planeNear = 0.1f;
@@ -14,16 +14,14 @@ Camera::Camera()
 
 	frustum.SetViewPlaneDistances(planeNear, planeFar);
 
-	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumLeftHanded);
-
-	frustum.ComputeViewProjMatrix();
+	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumRightHanded);
 }
 
 Camera::~Camera()
 {
 }
 
-void Camera::Look(const vec lookPoint)
+void Camera::Look(const vec& lookPoint)
 {
 	if (lookPoint.IsFinite())
 	{
@@ -37,29 +35,29 @@ void Camera::Look(const vec lookPoint)
 }
 
 // SETTERS =============================================
-void Camera::SetVerticalFov(const float fovVert)
+void Camera::SetVerticalFov(const float& fovVert)
 {
 	frustum.SetVerticalFovAndAspectRatio(fovVert, 16 / 9);
 }
 
-void Camera::SetHorizontalFov(const float fovHoriz)
+void Camera::SetHorizontalFov(const float& fovHoriz)
 {
 	frustum.SetHorizontalFovAndAspectRatio(fovHoriz, 16 / 9);
 }
 
-void Camera::SetNearPlane(const float nearPlane)
+void Camera::SetNearPlane(const float& nearPlane)
 {
 	frustum.SetViewPlaneDistances(nearPlane, planeFar);
 	planeNear = nearPlane;
 }
 
-void Camera::SetFarPlane(const float farPlane)
+void Camera::SetFarPlane(const float& farPlane)
 {
 	frustum.SetViewPlaneDistances(planeNear, farPlane);
 	planeFar = farPlane;
 }
 
-void Camera::SetCameraPosition(const vec position)
+void Camera::SetCameraPosition(const vec& position)
 {
 	frustum.SetPos(position);
 }
@@ -72,12 +70,13 @@ Frustum* Camera::GetFrustum()
 
 float4x4 Camera::GetProjectionMatrix() const
 {
-	return frustum.ProjectionMatrix();
+	return frustum.ProjectionMatrix().Transposed();
 }
 
-float3x4 Camera::GetViewMatrix() const
+float4x4 Camera::GetViewMatrix() const
 {
-	return frustum.ViewMatrix();
+	float4x4 mat = frustum.ViewMatrix();
+	return mat.Transposed();
 }
 
 float Camera::GetVerticalFov() const
