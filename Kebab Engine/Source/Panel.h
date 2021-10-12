@@ -15,6 +15,6 @@ public:
 
 	bool active;
 
-private:
-
+protected:
+	float scroll;
 };

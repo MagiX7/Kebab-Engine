@@ -85,6 +85,7 @@ bool Camera3D::Init(JSON_Object* root)
 bool Camera3D::Start()
 {
 	LOG("Setting up the camera");
+	LogConsole("", 0, "Setting up the camera");
 	bool ret = true;
 
 	return ret;
@@ -150,7 +151,7 @@ void Camera3D::MoveTo(const float3& pos)
 	position = pos;
 }
 
-void Camera3D::SetPosLook(const float3& pos, float3& point)
+void Camera3D::SetPosLook(const float3& pos, const float3& point)
 {
 	cam->Look(point);
 	reference = point;
@@ -158,9 +159,20 @@ void Camera3D::SetPosLook(const float3& pos, float3& point)
 	position = pos;
 }
 
+void Camera3D::SetRatio(float ratio)
+{
+	//cam->frustum.SetVerticalFovAndAspectRatio(cam->GetVerticalFov(), ratio);
+	cam->frustum.SetHorizontalFovAndAspectRatio(Atan(ratio * Tan(cam->frustum.VerticalFov() / 2)) * 2, ratio);
+}
+
 float* Camera3D::GetViewMatrix()
 {
 	return cam->GetViewMatrix().ptr();
+}
+
+float* Camera3D::GetProjectionMatrix()
+{
+	return cam->GetProjectionMatrix().ptr();
 }
 
 void Camera3D::Save(JSON_Object* root)

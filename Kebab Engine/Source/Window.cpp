@@ -21,6 +21,7 @@ Window::~Window()
 bool Window::Init(JSON_Object* root)
 {
 	LOG("Init SDL window & surface");
+	LogConsole("", 0, "Init SDL window & surface");
 
 	bool ret = true;
 

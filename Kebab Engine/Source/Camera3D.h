@@ -18,8 +18,11 @@ public:
 
 	void LookAt(const float3& point);
 	void MoveTo(const float3& movement);
-	void SetPosLook(const float3& pos, float3& pointLook);
+	void SetPosLook(const float3& pos, const float3& pointLook);
+	void SetRatio(float ratio);
+
 	float* GetViewMatrix();
+	float* GetProjectionMatrix();
 
 	void Save(JSON_Object* root) override;
 

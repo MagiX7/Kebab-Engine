@@ -3,7 +3,7 @@
 
 #include "Globals.h"
 
-void Log(const char file[], int line, const char* format, ...)
+void LogConsole(const char file[], int line, const char* format, ...)
 {
 	static char tmpString[4096];
 	static char tmpString2[4096];

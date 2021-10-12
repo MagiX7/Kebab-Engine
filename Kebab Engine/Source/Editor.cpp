@@ -59,8 +59,6 @@ bool Editor::Draw(float dt)
 
     frameBuffer->Unbind();
 
-    
-
 	return true;
 }
 
@@ -184,7 +182,7 @@ bool Editor::OnImGuiRender(float dt)
     {
         frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
         viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
+        app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
     }
     uint32_t image = frameBuffer->GetColorAttachment();
     ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });

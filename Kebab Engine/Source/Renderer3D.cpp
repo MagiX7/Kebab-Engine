@@ -4,6 +4,8 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "Math/float4x4.h"
+
 #include "mmgr/mmgr.h"
 
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
@@ -19,6 +21,7 @@ Renderer3D::~Renderer3D()
 bool Renderer3D::Init(JSON_Object* root)
 {
 	LOG("Creating 3D Renderer context");
+	LogConsole("", 0, "Creating 3D Renderer context");
 	
 	bool ret = true;
 
@@ -39,6 +42,8 @@ bool Renderer3D::Init(JSON_Object* root)
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+
+		glLoadMatrixf(app->camera->GetProjectionMatrix());
 
 		//Check for error
 		GLenum error = glGetError();
@@ -115,7 +120,6 @@ bool Renderer3D::Init(JSON_Object* root)
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
 
-
 	vertexArray = new VertexArray();
 	indexBuffer = new IndexBuffer();
 	vertexBuffer = new VertexBuffer();
@@ -133,7 +137,6 @@ bool Renderer3D::PreUpdate(float dt)
 	//glMatrixMode(GL_MODELVIEW);
 	
 	glLoadMatrixf(app->camera->GetViewMatrix());
-	
 
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
@@ -183,15 +186,16 @@ void Renderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
+	float ratio = (float)width / (float)height;
+	app->camera->SetRatio(ratio);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	projectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&projectionMatrix);
+
+	glLoadMatrixf(app->camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	app->window->SetWindowSize(width, height);
 }
 
 void Renderer3D::SetDepth(bool value)
@@ -199,6 +203,7 @@ void Renderer3D::SetDepth(bool value)
 	depth = value;
 	value ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
 	LOG("-- GL_DEPTH_TEST -- set to %d", value);
+	LogConsole("", 0, "-- GL_DEPTH_TEST -- set to %d", value);
 }
 
 void Renderer3D::SetCullFace(bool value)
@@ -206,6 +211,7 @@ void Renderer3D::SetCullFace(bool value)
 	cullFace = value;
 	value ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
 	LOG("-- GL_CULL_FACE -- set to %d", value);
+	LogConsole("", 0, "-- GL_CULL_FACE -- set to %d", value);
 }
 
 void Renderer3D::SetLighting(bool value)
@@ -213,6 +219,7 @@ void Renderer3D::SetLighting(bool value)
 	lighting = value;
 	value ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
 	LOG("-- GL_LIGHTING -- set to %d", value);
+	LogConsole("", 0, "-- GL_LIGHTING -- set to %d", value);
 }
 
 void Renderer3D::SetColorMaterial(bool value)
@@ -220,6 +227,7 @@ void Renderer3D::SetColorMaterial(bool value)
 	colorMaterial = value;
 	value ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
 	LOG("-- GL_COLOR_MATERIAL -- set to %d", value);
+	LogConsole("", 0, "-- GL_COLOR_MATERIAL -- set to %d", value);
 }
 
 void Renderer3D::SetTexture2D(bool value)
@@ -227,6 +235,7 @@ void Renderer3D::SetTexture2D(bool value)
 	texture2D = value;
 	value ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
 	LOG("-- GL_TEXTURE_2D -- set to %d", value);
+	LogConsole("", 0, "-- GL_TEXTURE_2D -- set to %d", value);
 }
 
 void Renderer3D::SetWireframe(bool value)
