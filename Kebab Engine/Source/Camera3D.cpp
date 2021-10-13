@@ -84,8 +84,7 @@ bool Camera3D::Init(JSON_Object* root)
 // -----------------------------------------------------------------
 bool Camera3D::Start()
 {
-	LOG("Setting up the camera");
-	LogConsole("", 0, "Setting up the camera");
+	LOG_CONSOLE("Setting up the camera");
 	bool ret = true;
 
 	return ret;
@@ -94,7 +93,7 @@ bool Camera3D::Start()
 // -----------------------------------------------------------------
 bool Camera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	LOG_CONSOLE("Cleaning camera");
 
 	return true;
 }
@@ -124,7 +123,8 @@ bool Camera3D::Update(float dt)
 	cam->SetCameraPosition(position);
 
 	// Rotation of camera ================================================================================
-	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT) 
+
+	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		float dx = -app->input->GetMouseXMotion();
 		float dy = -app->input->GetMouseYMotion();
@@ -189,7 +189,7 @@ void Camera3D::Save(JSON_Object* root)
 
 	json_object_set_value(camObj, "rotation", json_value_init_object());
 	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
-	
+
 	json_object_set_value(rotObj, "x", json_value_init_object());
 	JSON_Object* xObj = json_object_get_object(rotObj, "x");
 	json_object_set_number(xObj, "x", x.x);

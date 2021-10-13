@@ -18,10 +18,10 @@ public:
 	bool Draw(float dt);
 	bool CleanUp() override;
 
+	bool OnImGuiRender(float dt, FrameBuffer* frameBuffer);
 
 private:
 	void InitImGui();
-	bool OnImGuiRender(float dt);
 	
 	void ShowAboutPanel();
 
@@ -30,7 +30,7 @@ public:
 	ConsolePanel* consolePanel;
 	ConfigPanel configPanel;
 
-	FrameBuffer* frameBuffer;
+	//FrameBuffer* frameBuffer;
 	float2 viewportSize = { 0,0 };
 
 	bool showAboutPanel;

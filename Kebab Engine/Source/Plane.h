@@ -2,11 +2,11 @@
 
 #include "Geometry.h"
 
-class KebabPlane : public KebabGeometry
+class KbPlane : public KbGeometry
 {
 public:
 	// Position is the top left corner.
-	KebabPlane(float3 position, float2 size) : KebabGeometry(position)
+	KbPlane(float3 position, float2 size) : KbGeometry(position)
 	{
 		/*vertices.resize(4);
 		indices.resize(6);
@@ -42,7 +42,7 @@ public:
 
 	}
 
-	~KebabPlane()
+	~KbPlane()
 	{
 		RELEASE_ARRAY(vertices);
 		RELEASE_ARRAY(indices);

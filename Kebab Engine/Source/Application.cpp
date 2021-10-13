@@ -52,7 +52,7 @@ bool Application::Init()
 	value = json_parse_file("config.json");
 	if (!value)
 	{
-		LOG("Could not load or there is no file to load config.json");
+		LOG_CONSOLE("Could not load or there is no file to load config.json");
 		ret = false;
 	}
 	else
@@ -69,9 +69,8 @@ bool Application::Init()
 		}
 	}
 	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
-	LogConsole("", 0, "Application Start--------------");
-
+	LOG_CONSOLE("Application Start --------------");
+  
 	it = modules.begin();
 
 	while (it != modules.end() && ret == true)
@@ -204,7 +203,7 @@ bool Application::CleanUp()
 		it++;
 	}
 
-	MeshLoader::GetInstance()->CleanUp();
+	//MeshLoader::GetInstance()->CleanUp();
 
 	return ret;
 }

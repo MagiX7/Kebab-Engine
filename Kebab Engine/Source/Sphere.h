@@ -2,11 +2,11 @@
 
 #include "Geometry.h"
 
-class KebabSphere : public KebabGeometry
+class KebabSphere : public KbGeometry
 {
 public:
 	// Stack is for the verticals division and sectors is for the horizontal divisions
-	KebabSphere(float3 pos, float radius, float rings, float sectors) : KebabGeometry(pos)
+	KebabSphere(float3 pos, float radius, float rings, float sectors) : KbGeometry(pos)
 	{
         /*float const R = 1./(float)(rings-1);
         float const S = 1./(float)(sectors-1);

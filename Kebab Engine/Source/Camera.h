@@ -31,7 +31,8 @@ public:
 
 	Frustum frustum;
 
-private:	
+private:
+
 	float fovVertical;
 	float fovHorizontal;
 

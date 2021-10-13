@@ -34,7 +34,9 @@
     <ClCompile Include="Source\External\parson\src\parson.c" />
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshLoader.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
@@ -57,7 +59,9 @@
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\FileSystem.h" />
+    <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />
+    <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\Plane.h" />
     <ClInclude Include="Source\External\imgui\imconfig.h" />
     <ClInclude Include="Source\External\imgui\imgui.h" />
@@ -86,6 +90,7 @@
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Sphere.h" />
+    <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />

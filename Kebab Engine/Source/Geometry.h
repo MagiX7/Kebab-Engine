@@ -9,13 +9,13 @@
 
 #include <iostream>
 
-class KebabGeometry
+class KbGeometry
 {
 public:
-	KebabGeometry() {};
-	KebabGeometry(math::float3 pos) : position(pos) {}
+	KbGeometry() {};
+	KbGeometry(math::float3 pos) : position(pos) {}
 	
-	virtual ~KebabGeometry();
+	virtual ~KbGeometry();
 
 	inline void SetPos(const math::float3& pos) { position = pos; }
 	inline const math::float3& GetPosition() { return position; }
@@ -30,7 +30,7 @@ public:
 	void Draw();
 
 public:
-	//VertexArray* vertexArray;
+	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 
@@ -40,7 +40,7 @@ public:
 	uint32_t indicesCount = 0;
 
 	float3* normals;
-	uint32_t normalsCount;
+	uint32_t normalsCount = 0;
 	//std::vector<float>normals;
 	std::vector<float>texCoords;
 

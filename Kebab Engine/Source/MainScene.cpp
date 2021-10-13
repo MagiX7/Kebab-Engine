@@ -8,7 +8,7 @@
 #include "parson.h"
 
 
-#include "mmgr/mmgr.h"
+//#include "mmgr/mmgr.h"
 
 #include <iostream>
 
@@ -23,8 +23,8 @@ MainScene::~MainScene()
 // Load assets
 bool MainScene::Start()
 {
-	LOG("Loading assets");
-    //LOG("Creating Scene\n");
+	LOG_CONSOLE("Loading assets");
+    //LOG_CONSOLE("Creating Scene\n");
 	bool ret = true;
 
     //primitive = new KebabCube({ 0,0,0 }, { 1,1,1 });
@@ -35,7 +35,10 @@ bool MainScene::Start()
     /*primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
     app->renderer3D->Submit(primitive);*/
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/warrior.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/heavy.fbx"));
+
+    model = new KbModel("Assets/3D Models/heavy.fbx");
+    app->renderer3D->Submit(model);
 
     /*app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));*/
@@ -55,6 +58,8 @@ bool MainScene::Update(float dt)
 
     //primitive->Draw();
 
+    //model->Draw();
+
     /*vertexArray->Bind();
     glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
     vertexArray->Unbind();*/
@@ -65,7 +70,8 @@ bool MainScene::Update(float dt)
 // Load assets
 bool MainScene::CleanUp()
 {
-    LOG("Unloading scene");
+    LOG_CONSOLE("Unloading scene");
+    RELEASE(model);
 
     return true;
 }

@@ -3,7 +3,6 @@
 #include "Buffer.h"
 
 #include <vector>
-#include <memory>
 
 class VertexArray
 {

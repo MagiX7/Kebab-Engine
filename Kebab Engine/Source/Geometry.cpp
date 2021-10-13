@@ -2,7 +2,7 @@
 
 #include "Globals.h"
 
-KebabGeometry::~KebabGeometry()
+KbGeometry::~KbGeometry()
 {
 	//normals.clear();
 	texCoords.clear();
@@ -12,17 +12,21 @@ KebabGeometry::~KebabGeometry()
 
 	RELEASE(vertexBuffer);
 	RELEASE(indexBuffer);
+	RELEASE(vertexArray);
 }
 
-void KebabGeometry::SetUpBuffers()
+void KbGeometry::SetUpBuffers()
 {
 	vertexBuffer = new VertexBuffer(vertices, sizeof(vertices) * verticesCount);
 	indexBuffer = new IndexBuffer(indices, indicesCount);
+	vertexArray = new VertexArray();
+	vertexArray->AddVertexBuffer(*vertexBuffer);
+	vertexArray->SetIndexBuffer(*indexBuffer);
 }
 
-void KebabGeometry::Draw()
+void KbGeometry::Draw()
 {
-	/*vertexArray->Bind();
+	vertexArray->Bind();
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
-	vertexArray->Unbind();*/
+	vertexArray->Unbind();
 }

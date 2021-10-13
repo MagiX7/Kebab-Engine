@@ -9,6 +9,8 @@
 #include "Cube.h"
 #include "Pyramid.h"
 
+#include "Model.h"
+
 #define BOUNCER_TIME 200
 
 class MainScene : public Module
@@ -22,4 +24,6 @@ public:
 	bool CleanUp();
 
 private:
+	KbModel* model;
+
 };
