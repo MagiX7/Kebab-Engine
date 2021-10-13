@@ -100,10 +100,10 @@ bool Camera3D::CleanUp()
 
 // -----------------------------------------------------------------
 bool Camera3D::Update(float dt)
-{
+{	
 	float3 newPos(0, 0, 0);
 	float speed = 20.0f * dt;
-
+  
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 40.0f * dt;
 
@@ -123,6 +123,7 @@ bool Camera3D::Update(float dt)
 	cam->SetCameraPosition(position);
 
 	// Rotation of camera ================================================================================
+
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		float dx = -app->input->GetMouseXMotion();
@@ -138,7 +139,7 @@ bool Camera3D::Update(float dt)
 	return true;
 }
 
-void Camera3D::LookAt(const float3& point)
+void Camera3D::LookAt( const float3& point)
 {
 	cam->Look(point);
 	reference = point;

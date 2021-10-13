@@ -23,7 +23,7 @@ Input::~Input()
 bool Input::Init(JSON_Object* root)
 {
 	LOG_CONSOLE("Init SDL input event system");
-
+  
 	bool ret = true;
 	SDL_Init(0);
 

@@ -25,6 +25,8 @@ ConfigPanel::ConfigPanel()
     lighting = true;
     colorMaterial = true;
     texture2D = true;
+
+    scroll = 0;
 }
 
 ConfigPanel::~ConfigPanel()
@@ -35,6 +37,13 @@ bool ConfigPanel::Update(float dt)
 {
     if (ImGui::Begin("Configuration", &active, 0))
     {
+        if (app->input->GetMouseZ() < 0)
+            scroll -= app->input->GetMouseZ() * 5;
+        if (app->input->GetMouseZ() > 0)
+            scroll -= app->input->GetMouseZ() * 5;
+            
+        ImGui::SetScrollY(scroll);
+
         if (ImGui::BeginMenu("Options"))
         {
             if (ImGui::MenuItem("Set Defaults"))

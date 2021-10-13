@@ -70,7 +70,7 @@ bool Application::Init()
 	}
 	// After all Init calls we call Start() in all modules
 	LOG_CONSOLE("Application Start --------------");
-
+  
 	it = modules.begin();
 
 	while (it != modules.end() && ret == true)

@@ -17,4 +17,6 @@ public:
 
 private:
 	ImGuiTextBuffer buf;
+
+	bool scrollMax;
 };

@@ -21,7 +21,7 @@ Window::~Window()
 bool Window::Init(JSON_Object* root)
 {
 	LOG_CONSOLE("Init SDL window & surface");
-
+  
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
