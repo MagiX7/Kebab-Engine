@@ -84,8 +84,7 @@ bool Camera3D::Init(JSON_Object* root)
 // -----------------------------------------------------------------
 bool Camera3D::Start()
 {
-	LOG("Setting up the camera");
-	LogConsole("", 0, "Setting up the camera");
+	LOG_CONSOLE("Setting up the camera");
 	bool ret = true;
 
 	return ret;
@@ -94,7 +93,7 @@ bool Camera3D::Start()
 // -----------------------------------------------------------------
 bool Camera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	LOG_CONSOLE("Cleaning camera");
 
 	return true;
 }

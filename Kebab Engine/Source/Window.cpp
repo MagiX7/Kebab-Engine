@@ -20,13 +20,13 @@ Window::~Window()
 // Called before render is available
 bool Window::Init(JSON_Object* root)
 {
-	LOG("Init SDL window & surface");
+	LOG_CONSOLE("Init SDL window & surface");
 
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
+		LOG_CONSOLE("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 	else
@@ -79,7 +79,7 @@ bool Window::Init(JSON_Object* root)
 
 		if(window == NULL)
 		{
-			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			LOG_CONSOLE("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
 		else
@@ -95,7 +95,7 @@ bool Window::Init(JSON_Object* root)
 // Called before quitting
 bool Window::CleanUp()
 {
-	LOG("Destroying SDL window and quitting all SDL systems");
+	LOG_CONSOLE("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
 	if(window != NULL)

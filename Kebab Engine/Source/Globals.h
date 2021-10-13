@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) LogConsole(__FILE__, __LINE__, format, __VA_ARGS__);
+#define LOG_CONSOLE(format, ...) LogConsole(__FILE__, __LINE__, format, __VA_ARGS__);
 
 void LogConsole(const char file[], int line, const char* format, ...);
 

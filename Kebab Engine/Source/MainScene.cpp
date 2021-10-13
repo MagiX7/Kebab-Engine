@@ -23,8 +23,8 @@ MainScene::~MainScene()
 // Load assets
 bool MainScene::Start()
 {
-	LOG("Loading assets");
-    //LOG("Creating Scene\n");
+	LOG_CONSOLE("Loading assets");
+    //LOG_CONSOLE("Creating Scene\n");
 	bool ret = true;
 
     //primitive = new KebabCube({ 0,0,0 }, { 1,1,1 });
@@ -70,7 +70,7 @@ bool MainScene::Update(float dt)
 // Load assets
 bool MainScene::CleanUp()
 {
-    LOG("Unloading scene");
+    LOG_CONSOLE("Unloading scene");
     RELEASE(model);
 
     return true;

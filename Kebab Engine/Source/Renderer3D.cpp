@@ -18,7 +18,7 @@ Renderer3D::~Renderer3D()
 // Called before render is available
 bool Renderer3D::Init(JSON_Object* root)
 {
-	LOG("Creating 3D Renderer context");
+	LOG_CONSOLE("Creating 3D Renderer context");
 	
 	bool ret = true;
 
@@ -26,7 +26,7 @@ bool Renderer3D::Init(JSON_Object* root)
 	context = SDL_GL_CreateContext(app->window->window);
 	if(context == NULL)
 	{
-		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		LOG_CONSOLE("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 	
@@ -34,7 +34,7 @@ bool Renderer3D::Init(JSON_Object* root)
 	{
 		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			LOG_CONSOLE("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -44,7 +44,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
@@ -56,7 +56,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -71,7 +71,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -90,15 +90,15 @@ bool Renderer3D::Init(JSON_Object* root)
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-		LOG("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
+		LOG_CONSOLE("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
 		// GLEW initialization
 		GLenum err = glewInit();
 		if (err != GLEW_OK)
 		{
-			LOG("Error loading GLEW: %s", glewGetErrorString(err));
+			LOG_CONSOLE("Error loading GLEW: %s", glewGetErrorString(err));
 		}
-		else LOG("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+		else LOG_CONSOLE("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
 	}
 
 	Load(root);
@@ -178,7 +178,7 @@ bool Renderer3D::Draw(float dt)
 // Called before quitting
 bool Renderer3D::CleanUp()
 {
-	LOG("Destroying 3D Renderer");
+	LOG_CONSOLE("Destroying 3D Renderer");
 
 	geometries.clear();
 	/*delete vertexArray;
@@ -214,35 +214,35 @@ void Renderer3D::SetDepth(bool value)
 {
 	depth = value;
 	value ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
-	LOG("-- GL_DEPTH_TEST -- set to %d", value);
+	LOG_CONSOLE("-- GL_DEPTH_TEST -- set to %d", value);
 }
 
 void Renderer3D::SetCullFace(bool value)
 {
 	cullFace = value;
 	value ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
-	LOG("-- GL_CULL_FACE -- set to %d", value);
+	LOG_CONSOLE("-- GL_CULL_FACE -- set to %d", value);
 }
 
 void Renderer3D::SetLighting(bool value)
 {
 	lighting = value;
 	value ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
-	LOG("-- GL_LIGHTING -- set to %d", value);
+	LOG_CONSOLE("-- GL_LIGHTING -- set to %d", value);
 }
 
 void Renderer3D::SetColorMaterial(bool value)
 {
 	colorMaterial = value;
 	value ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
-	LOG("-- GL_COLOR_MATERIAL -- set to %d", value);
+	LOG_CONSOLE("-- GL_COLOR_MATERIAL -- set to %d", value);
 }
 
 void Renderer3D::SetTexture2D(bool value)
 {
 	texture2D = value;
 	value ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
-	LOG("-- GL_TEXTURE_2D -- set to %d", value);
+	LOG_CONSOLE("-- GL_TEXTURE_2D -- set to %d", value);
 }
 
 void Renderer3D::SetWireframe(bool value)

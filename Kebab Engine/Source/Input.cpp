@@ -22,14 +22,14 @@ Input::~Input()
 // Called before render is available
 bool Input::Init(JSON_Object* root)
 {
-	LOG("Init SDL input event system");
+	LOG_CONSOLE("Init SDL input event system");
 
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		LOG_CONSOLE("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -146,7 +146,7 @@ bool Input::PreUpdate(float dt)
 // Called before quitting
 bool Input::CleanUp()
 {
-	LOG("Quitting SDL input event subsystem");
+	LOG_CONSOLE("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
