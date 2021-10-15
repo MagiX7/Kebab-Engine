@@ -26,7 +26,10 @@ class KbMesh
 public:
 	KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
 
+
+	void BeginDraw();
 	void Draw(bool showNormals);
+	void EndDraw();
 
 private:
 	void SetUpMesh();
@@ -37,8 +40,7 @@ public:
 	std::vector<Texture>  textures;
 
 private:
-	VertexArray* vertexArray;
+	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-
 };

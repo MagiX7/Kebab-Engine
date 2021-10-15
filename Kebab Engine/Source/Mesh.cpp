@@ -6,10 +6,15 @@ KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std:
 	SetUpMesh();
 }
 
+void KbMesh::BeginDraw()
+{
+	vertexBuffer->Bind();
+	indexBuffer->Bind();
+}
+
 void KbMesh::Draw(bool showNormals)
 {
-	vertexArray->Bind();
-	indexBuffer->Bind();
+
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 	
 	if (showNormals)
@@ -32,7 +37,8 @@ void KbMesh::Draw(bool showNormals)
 		{
 			float3 vec1 = (vertices[i + 1].position - vertices[i + 2].position);
 			float3 vec2 = -(vertices[i].position - vertices[i + 1].position);
-			float3 n = math::Cross(vec1, vec2).Normalized();
+			float3 n = math::Cross(vec1, vec2);
+			n.Normalize();
 
 			float3 cent;
 			cent.x = (vertices[i].position.x + vertices[i + 1].position.x + vertices[i + 2].position.x) / 3;
@@ -44,26 +50,32 @@ void KbMesh::Draw(bool showNormals)
 
 		glEnd();
 	}
+}
 
+void KbMesh::EndDraw()
+{
+	vertexBuffer->Unbind();
 	indexBuffer->Unbind();
-	vertexArray->Unbind();
 }
 
 void KbMesh::SetUpMesh()
 {
-	vertexArray = new VertexArray();
+	//vertexArray = new VertexArray();
 	vertexBuffer = new VertexBuffer();
 	indexBuffer = new IndexBuffer();
 
-	BufferLayout layout = {
-		{ShaderDataType::VEC3F, "position"},
-		{ShaderDataType::VEC3F, "normal"},
-		{ShaderDataType::VEC2F, "texCoords"}
-	};
-	vertexBuffer->SetLayout(layout);
+	//vertexBuffer->Bind();
+	//indexBuffer->Bind();
+
+	//BufferLayout layout = {
+	//	{ShaderDataType::VEC3F, "position"},
+	//	//{ShaderDataType::VEC3F, "normal"},
+	//};
+	//vertexBuffer->SetLayout(layout);
+
 	vertexBuffer->SetData(vertices);
 	indexBuffer->SetData(indices.data(), indices.size());
 
-	vertexArray->AddVertexBuffer(*vertexBuffer);
-	vertexArray->SetIndexBuffer(*indexBuffer);
+	//vertexArray->AddVertexBuffer(*vertexBuffer);
+	//vertexArray->SetIndexBuffer(*indexBuffer);
 }

@@ -12,18 +12,29 @@
 
 KbModel::KbModel(const char* path)
 {
+    glGenVertexArrays(1, &vao);
 	LoadModel(path);
 }
 
 KbModel::~KbModel()
 {
-
+    glDeleteVertexArrays(1, &vao);
 }
 
 void KbModel::Draw(bool showNormals)
 {
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
+    
+    glEnableClientState(GL_VERTEX_ARRAY);
     for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        meshes[i].BeginDraw();
+        glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
         meshes[i].Draw(showNormals);
+        meshes[i].EndDraw();
+    }
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void KbModel::LoadModel(std::string path)
@@ -54,9 +65,6 @@ void KbModel::ProcessNode(aiNode* node, const aiScene* scene)
     {
         ProcessNode(node->mChildren[i], scene);
     }
-
-    int a = 0;
-    a += 3;
 }
 
 std::vector<Texture> KbModel::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)

@@ -34,18 +34,19 @@ void VertexArray::AddVertexBuffer(VertexBuffer& vertexBuf)
         glBindVertexArray(vao);
         vertexBuf.Bind();
 
-        uint32_t index = 0;
+        //uint32_t index = 0;
         const auto& layout = vertexBuf.GetLayout();
         for (const auto& element : layout.GetElements())
         {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer(index,
+            glVertexPointer(element.GetComponentCount(), GetOpenGLRawTypeFromShaderDataType(element.type), layout.GetStride(), 0);
+            //glEnableVertexAttribArray(index);
+            /*glVertexAttribPointer(index,
                 element.GetComponentCount(),
                 GetOpenGLRawTypeFromShaderDataType(element.type),
                 element.normalized ? GL_TRUE : GL_FALSE,
                 layout.GetStride(),
-                (const void*)element.offset);
-            index++;
+                (const void*)element.offset);*/
+            //index++;
         }
         vertexBuffers.push_back(&vertexBuf);
     }

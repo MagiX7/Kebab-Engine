@@ -48,6 +48,8 @@ void VertexBuffer::SetData(const std::vector<Vertex>& vertices)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), &vertices[0], GL_STATIC_DRAW);
 	count += vertices.size();
+
+	//glVertexPointer(vertices.size(), GL_FLOAT, sizeof(Vertex), 0);
 }
 
 void VertexBuffer::Bind() const

@@ -34,7 +34,7 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
-	void Submit(KbGeometry geometry);
+	void Submit(KbGeometry* geometry);
 	void Submit(KbModel* model);
 	void Submit(const std::vector<KbGeometry>& geos);
 

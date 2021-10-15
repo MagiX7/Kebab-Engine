@@ -8,7 +8,7 @@
         "height": 881,
         "brightness": 1,
         "fullscreen": false,
-        "fulldesktop": true,
+        "fulldesktop": false,
         "resizable": true,
         "bordered": false
     },

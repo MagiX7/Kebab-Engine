@@ -2,8 +2,6 @@
 #include "Module.h"
 #include "Globals.h"
 
-#include "MeshLoader.h"
-
 #include "VertexArray.h"
 
 #include "Cube.h"

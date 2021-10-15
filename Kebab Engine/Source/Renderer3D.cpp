@@ -284,9 +284,9 @@ void Renderer3D::Load(JSON_Object* root)
 	showNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
-void Renderer3D::Submit(KbGeometry geometry)
+void Renderer3D::Submit(KbGeometry* geometry)
 {
-	geometries.push_back(&geometry);
+	geometries.push_back(geometry);
 
 	/*numVertices += geometry->verticesCount;
 	numIndices += geometry->indicesCount;
@@ -305,8 +305,8 @@ void Renderer3D::Submit(KbModel* model)
 void Renderer3D::Submit(const std::vector<KbGeometry>& geos)
 {
 	//geometries.insert(geometries.end(), geos.begin(), geos.end());
-	for (const auto& g : geos)
-		Submit(g);
+	for (auto g : geos)
+		Submit(&g);
 }
 
 void Renderer3D::DoDraw()

@@ -20,4 +20,6 @@ private:
 private:
 	std::vector<KbMesh> meshes;
 	std::string directory;
+
+	unsigned int vao;
 };

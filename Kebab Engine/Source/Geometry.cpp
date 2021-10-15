@@ -26,7 +26,9 @@ void KbGeometry::SetUpBuffers()
 
 void KbGeometry::Draw(bool showNormals)
 {
+	glEnableClientState(GL_VERTEX_ARRAY);
 	vertexArray->Bind();
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 	vertexArray->Unbind();
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
