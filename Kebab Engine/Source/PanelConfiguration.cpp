@@ -119,7 +119,19 @@ bool ConfigPanel::Update(float dt)
             sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f * app->GetDeltaTime());
             ImGui::PlotHistogram("##milliseconds", msLog, IM_ARRAYSIZE(msLog), 0, title, 0.0f, 50.0f, ImVec2(310, 100));
             sprintf_s(title, 25, "Memory Consumption");
-            ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));            
+            ImGui::PlotHistogram("##memoryconsumption", memCost, IM_ARRAYSIZE(memCost), 0, title, 0.0f, 30000.0f, ImVec2(310, 100));
+
+            sMStats stats = m_getMemoryStatistics();
+
+            ImGui::Text("Total Reported Mem: %i", stats.totalReportedMemory);
+            ImGui::Text("Total Actual Mem: %i", stats.totalActualMemory);
+            ImGui::Text("Peak Reported Mem: %i", stats.peakReportedMemory);
+            ImGui::Text("Peak Actual Mem: %i", stats.peakActualMemory);
+            ImGui::Text("Accumulated Reported Mem: %i", stats.accumulatedReportedMemory);
+            ImGui::Text("Accumulated Actual Mem: %i", stats.accumulatedActualMemory);
+            ImGui::Text("Accumulated Alloc Unit Count: %i", stats.accumulatedAllocUnitCount);
+            ImGui::Text("Total Alloc Unit Count: %i", stats.totalAllocUnitCount);
+            ImGui::Text("Peak Alloc Unit Count: %i", stats.peakAllocUnitCount);
         }
         if (ImGui::CollapsingHeader("Window"))
         {            

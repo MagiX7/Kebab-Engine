@@ -94,6 +94,8 @@ bool Camera3D::Start()
 bool Camera3D::CleanUp()
 {
 	LOG_CONSOLE("Cleaning camera");
+	
+	RELEASE(cam);
 
 	return true;
 }

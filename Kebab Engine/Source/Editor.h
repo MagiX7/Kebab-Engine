@@ -25,6 +25,8 @@ private:
 	
 	void ShowAboutPanel();
 
+	float scroll;
+
 public:
 
 	ConsolePanel* consolePanel;
