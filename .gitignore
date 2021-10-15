@@ -30,6 +30,9 @@
 !Kebab Engine/Source/External/PhysFS/lib/PhysFS.lib
 !Kebab Engine/Source/External/MathGeoLib/lib/MathGeoLib.lib
 !Kebab Engine/Source/External/Assimp/lib/assimp-vc142-mt.lib
+!Kebab Engine/Source/External/DevIL/lib/DevIL.lib
+!Kebab Engine/Source/External/DevIL/lib/ILU.lib
+!Kebab Engine/Source/External/DevIL/lib/ILUT.lib
 
 # Executables
 *.exe
