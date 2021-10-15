@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VertexArray.h"
+#include "Texture.h"
 
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
@@ -33,6 +34,7 @@ public:
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
+	Texture* texture;
 
 	float3* vertices;
 	uint32_t verticesCount = 0;
@@ -45,4 +47,7 @@ public:
 	std::vector<float>texCoords;
 
 	math::float3 position;
+
+private:
+	unsigned int textureID;
 };

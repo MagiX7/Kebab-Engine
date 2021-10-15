@@ -73,7 +73,7 @@
       "lighting": true,
       "color material": true,
       "texture2D": true,
-      "wireframe": true,
+      "wireframe": false,
       "showNormals": false
   }
 }

@@ -13,6 +13,7 @@ KbGeometry::~KbGeometry()
 	RELEASE(vertexBuffer);
 	RELEASE(indexBuffer);
 	RELEASE(vertexArray);
+	RELEASE(texture);
 }
 
 void KbGeometry::SetUpBuffers()
@@ -27,8 +28,17 @@ void KbGeometry::SetUpBuffers()
 void KbGeometry::Draw(bool showNormals)
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	vertexArray->Bind();
+	texture->Bind();
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+	
+	texture->Unbind();
 	vertexArray->Unbind();
+	
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 }

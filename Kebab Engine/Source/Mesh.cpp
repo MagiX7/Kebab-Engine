@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
+KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Tex> textures)
 	: vertices(vertices), indices(indices), textures(textures)
 {
 	SetUpMesh();

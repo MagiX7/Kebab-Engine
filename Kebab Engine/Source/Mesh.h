@@ -1,11 +1,10 @@
 #pragma once
 
 #include "VertexArray.h"
+#include "Texture.h"
 
 #include "Vertex.h"
 
-#include <Math/float3.h>
-#include <Math/float2.h>
 
 //struct Vertex
 //{
@@ -14,7 +13,7 @@
 //	float2 texCoords;
 //};
 
-struct Texture
+struct Tex
 {
 	unsigned int id;
 	std::string type;
@@ -24,7 +23,7 @@ struct Texture
 class KbMesh
 {
 public:
-	KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
+	KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Tex> textures);
 
 
 	void BeginDraw();
@@ -37,10 +36,11 @@ private:
 public:
 	std::vector<Vertex>   vertices;
 	std::vector<uint32_t> indices;
-	std::vector<Texture>  textures;
+	std::vector<Tex>  textures;
 
 private:
 	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
+	Texture* texture;
 };

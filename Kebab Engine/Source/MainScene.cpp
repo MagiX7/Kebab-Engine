@@ -37,11 +37,11 @@ bool MainScene::Start()
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/heavy.fbx"));
 
-    model = new KbModel("Assets/3D Models/heavy.fbx");
-    app->renderer3D->Submit(model);
+    /*model = new KbModel("Assets/3D Models/heavy.fbx");
+    app->renderer3D->Submit(model);*/
     
-    /*KbGeometry* c = new KbCube({ 0,0,0 }, { 1,1,1 });
-    app->renderer3D->Submit(c);*/
+    KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
+    app->renderer3D->Submit(c);
 
     /*app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
     app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));*/
