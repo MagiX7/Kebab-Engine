@@ -4,6 +4,7 @@
 
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
+#include "PanelViewport.h"
 
 //#define MAX_IT_HIST 100
 
@@ -31,9 +32,10 @@ public:
 
 	ConsolePanel* consolePanel;
 	ConfigPanel configPanel;
+	ViewportPanel* viewportPanel;
 
 	//FrameBuffer* frameBuffer;
-	float2 viewportSize = { 0,0 };
+	//float2 viewportSize = { 0,0 };
 
 	bool showAboutPanel;
 	bool wireframe;

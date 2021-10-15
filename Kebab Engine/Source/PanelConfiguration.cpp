@@ -25,6 +25,7 @@ ConfigPanel::ConfigPanel()
     lighting = true;
     colorMaterial = true;
     texture2D = true;
+    showNormals = false;
 
     scroll = 0;
 }
@@ -33,7 +34,7 @@ ConfigPanel::~ConfigPanel()
 {
 }
 
-bool ConfigPanel::Update(float dt)
+void ConfigPanel::OnRender(float dt)
 {
     if (ImGui::Begin("Configuration", &active, 0))
     {
@@ -204,6 +205,16 @@ bool ConfigPanel::Update(float dt)
 
                 if (ImGui::Checkbox("Texture 2D", &texture2D))
                     app->renderer3D->SetTexture2D(texture2D);
+                
+                ImGui::TableNextColumn();
+
+                if (ImGui::Checkbox("Draw normals", &showNormals))
+                    app->renderer3D->showNormals = showNormals;
+
+                ImGui::TableNextColumn();
+
+                if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
+                    app->renderer3D->SetWireframe(app->renderer3D->wireframe);
 
                 ImGui::EndTable();
             }
@@ -248,10 +259,4 @@ bool ConfigPanel::Update(float dt)
         ImGui::BulletText("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     }
     ImGui::End();
-
-	return true;
-}
-
-void ConfigPanel::Draw()
-{
 }

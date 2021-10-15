@@ -9,7 +9,7 @@ public:
 	KbModel(const char* path);
 	virtual ~KbModel();
 
-	void Draw();
+	void Draw(bool showNormals);
 
 private:
 	void LoadModel(std::string path);

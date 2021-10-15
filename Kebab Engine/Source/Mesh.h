@@ -26,7 +26,7 @@ class KbMesh
 public:
 	KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
 
-	void Draw();
+	void Draw(bool showNormals);
 
 private:
 	void SetUpMesh();

@@ -138,6 +138,9 @@
     <ClCompile Include="Source\Model.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelViewport.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vertex.h">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelViewport.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,8 +8,8 @@
         "height": 881,
         "brightness": 1,
         "fullscreen": false,
-        "fulldesktop": false,
-        "resizable": false,
+        "fulldesktop": true,
+        "resizable": true,
         "bordered": false
     },
     "camera3D": {
@@ -68,11 +68,12 @@
         }
     },
     "renderer": {
-        "depth": true,
-        "cullface": true,
-        "lighting": true,
-        "color material": true,
-        "texture2D": true,
-        "wireframe": false
-    }
+      "depth": true,
+      "cullface": true,
+      "lighting": true,
+      "color material": true,
+      "texture2D": true,
+      "wireframe": true,
+      "showNormals": false
+  }
 }

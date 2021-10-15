@@ -46,6 +46,7 @@
     <ClCompile Include="Source\Camera3D.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\PanelConsole.cpp" />
+    <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />
     <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\PanelViewport.h" />
     <ClInclude Include="Source\Plane.h" />
     <ClInclude Include="Source\External\imgui\imconfig.h" />
     <ClInclude Include="Source\External\imgui\imgui.h" />

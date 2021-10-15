@@ -20,10 +20,10 @@ KbModel::~KbModel()
 
 }
 
-void KbModel::Draw()
+void KbModel::Draw(bool showNormals)
 {
     for (unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw();
+        meshes[i].Draw(showNormals);
 }
 
 void KbModel::LoadModel(std::string path)

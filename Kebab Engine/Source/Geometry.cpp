@@ -24,7 +24,7 @@ void KbGeometry::SetUpBuffers()
 	vertexArray->SetIndexBuffer(*indexBuffer);
 }
 
-void KbGeometry::Draw()
+void KbGeometry::Draw(bool showNormals)
 {
 	vertexArray->Bind();
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);

@@ -16,7 +16,7 @@ ConsolePanel::~ConsolePanel()
     ClearConsole();
 }
 
-bool ConsolePanel::Update(float dt)
+void ConsolePanel::OnRender(float dt)
 {
     if (ImGui::Begin("Console", &active))
     {
@@ -41,12 +41,6 @@ bool ConsolePanel::Update(float dt)
         ImGui::SetScrollY(scroll);
     }
     ImGui::End();
-
-	return true;
-}
-
-void ConsolePanel::Draw()
-{
 }
 
 void ConsolePanel::AddLog(const char* fmt, ...)

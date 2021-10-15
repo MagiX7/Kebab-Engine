@@ -8,10 +8,7 @@ public:
 	Panel() {}
 	virtual ~Panel() {}
 
-	//bool Start();
-	virtual bool Update(float dt) { return true; }
-	virtual void Draw() {}
-	//bool CleanUp();
+	virtual void OnRender(float dt) {}
 
 	bool active;
 

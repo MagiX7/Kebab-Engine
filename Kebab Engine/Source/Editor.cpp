@@ -14,6 +14,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     name = "editor";
 
     consolePanel = new ConsolePanel();
+    viewportPanel = new ViewportPanel();
 
     showAboutPanel = false;
     wireframe = true;
@@ -26,15 +27,6 @@ Editor::~Editor()
 bool Editor::Start()
 {
     InitImGui();
-
-    int w, h;
-    app->window->GetWindowSize(w, h);
-    FrameBufferProperties props;
-    props.width = w;
-    props.height = h;
-    //frameBuffer = new FrameBuffer(props);
-
-    //viewportPanel = new ViewportPanel();
 
 	return true;
 }
@@ -65,7 +57,7 @@ bool Editor::Draw(float dt)
 bool Editor::CleanUp()
 {
     RELEASE(consolePanel);
-    //RELEASE(frameBuffer);
+    RELEASE(viewportPanel);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -176,20 +168,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    ImGui::Begin("Viewport");
-    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-
-    if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
-    {
-        frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
-        viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-        app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
-    }
-    uint32_t image = frameBuffer->GetColorAttachment();
-    ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
-    ImGui::End();
+    viewportPanel->OnRender(frameBuffer);
     ImGui::PopStyleVar();
-
 
     if (showDemoWindow)
     {
@@ -203,8 +183,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         ShowAboutPanel();
     }
 
-    if (consolePanel->active) consolePanel->Update(dt);
-    if (configPanel.active) configPanel.Update(dt);
+    if (consolePanel->active) consolePanel->OnRender(dt);
+    if (configPanel.active) configPanel.OnRender(dt);
 
     ImGui::EndFrame();
 

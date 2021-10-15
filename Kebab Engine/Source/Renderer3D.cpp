@@ -168,10 +168,10 @@ bool Renderer3D::Draw(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (const auto& g : geometries)
-		g->Draw();
+		g->Draw(showNormals);
 
 	for (const auto& m : models)
-		m->Draw();
+		m->Draw(showNormals);
 
 	frameBuffer->Unbind();
 
@@ -272,7 +272,7 @@ void Renderer3D::Save(JSON_Object* root)
 
 void Renderer3D::Load(JSON_Object* root)
 {
-	json_object_set_value(root, name.c_str(), json_value_init_object());
+	json_object_set_value(root, name.c_str(), json_object_get_value(root, name.c_str()));
 	JSON_Object* renObj = json_object_get_object(root, name.c_str());
 
 	depth = json_object_get_boolean(renObj, "depth");
@@ -281,6 +281,7 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
+	showNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
 void Renderer3D::Submit(KbGeometry geometry)

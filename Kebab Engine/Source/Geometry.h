@@ -27,7 +27,7 @@ public:
 
 	void SetUpBuffers();
 
-	void Draw();
+	void Draw(bool showNormals);
 
 public:
 	VertexArray* vertexArray;

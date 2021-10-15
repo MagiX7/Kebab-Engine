@@ -8,8 +8,7 @@ public:
 	ConsolePanel();
 	virtual ~ConsolePanel();
 
-	bool Update(float dt) override;
-	void Draw() override;
+	void OnRender(float dt) override;
 
 	void ClearConsole();
 

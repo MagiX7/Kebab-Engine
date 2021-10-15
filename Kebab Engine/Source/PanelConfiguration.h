@@ -12,11 +12,7 @@ public:
 	ConfigPanel();
 	~ConfigPanel();
 
-	bool Update(float dt) override;
-	void Draw() override;
-
-	/*Window* windowConfig;
-	Renderer3D* renderConfig;*/
+	void OnRender(float dt) override;
 
 private:
 	float fpsLog[MAX_IT_HIST];
@@ -40,5 +36,6 @@ private:
 	bool lighting;
 	bool colorMaterial;
 	bool texture2D;
+	bool showNormals;
 	// TODO: Other two
 };
