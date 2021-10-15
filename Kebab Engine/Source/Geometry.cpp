@@ -31,12 +31,12 @@ void KbGeometry::Draw(bool showNormals)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	vertexArray->Bind();
-	texture->Bind();
+	//texture->Bind();
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 	
-	texture->Unbind();
+	//texture->Unbind();
 	vertexArray->Unbind();
 	
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
