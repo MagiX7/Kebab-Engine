@@ -10,6 +10,7 @@
 #include "Camera3D.h"
 #include "Editor.h"
 #include "FileSystem.h"
+#include "TextureManager.h"
 
 #include "parson.h"
 
@@ -27,6 +28,7 @@ public:
 	Camera3D* camera;
 	Editor* editor;
 	FileSystem* fileSystem;
+	TextureManager* textures;
 
 private:
 	std::list<Module*> modules;

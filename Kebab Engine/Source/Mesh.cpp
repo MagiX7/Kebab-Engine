@@ -1,20 +1,51 @@
 #include "Mesh.h"
 
-KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Tex> textures)
+KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures, std::vector<float2> texCoords)
 	: vertices(vertices), indices(indices), textures(textures)
 {
+	glGenBuffers(1, &texBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+	glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float2), texCoords.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	SetUpMesh();
+	if (textures.size() == 0)
+	{
+		texture = new Texture("Assets/3D Models/lenna.png");
+	}
+}
+
+KbMesh::~KbMesh()
+{
+	//delete texture;
+	glDeleteBuffers(1, &texBuffer);
 }
 
 void KbMesh::BeginDraw()
 {
-	vertexBuffer->Bind();
 	indexBuffer->Bind();
+	vertexBuffer->Bind();
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+	glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+	if (textures.size() > 0)
+	{
+		for (int i = 0; i < textures.size(); ++i)
+		{
+			textures[i].Bind(i);
+		}
+	}
+	else
+		texture->Bind();
+
+
+	//if(texture != nullptr) texture->Bind();
 }
 
 void KbMesh::Draw(bool showNormals)
 {
-
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 	
 	if (showNormals)
@@ -54,6 +85,17 @@ void KbMesh::Draw(bool showNormals)
 
 void KbMesh::EndDraw()
 {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	if (textures.size() > 0)
+	{
+		for (int i = 0; i < textures.size(); ++i)
+		{
+			textures[i].Unbind();
+		}
+	}
+	else texture->Unbind();
+	
 	vertexBuffer->Unbind();
 	indexBuffer->Unbind();
 }
@@ -67,11 +109,12 @@ void KbMesh::SetUpMesh()
 	//vertexBuffer->Bind();
 	//indexBuffer->Bind();
 
-	//BufferLayout layout = {
-	//	{ShaderDataType::VEC3F, "position"},
-	//	//{ShaderDataType::VEC3F, "normal"},
-	//};
-	//vertexBuffer->SetLayout(layout);
+	BufferLayout layout = {
+		{ShaderDataType::VEC3F, "position"},
+		{ShaderDataType::VEC3F, "normal"},
+		{ShaderDataType::VEC2F, "texCoords"},
+	};
+	vertexBuffer->SetLayout(layout);
 
 	vertexBuffer->SetData(vertices);
 	indexBuffer->SetData(indices.data(), indices.size());

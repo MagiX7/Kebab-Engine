@@ -12,16 +12,27 @@ public:
 
         vertices = new float3[8 * 3];
         verticesCount = 8 * 3;
-        float3 v[]=
+        //float3 v[]=
+        //{
+        //    {pos.x, pos.y, pos.z },          // Top Left
+        //    {pos.x, pos.y + size.y,pos.z},  // Bottom left
+        //    {pos.x + size.x, pos.y,pos.z},  // Top Right
+        //    {pos.x + size.x, pos.y + size.y, pos.z},  // Bottom right
+
+        //    {pos.x + size.x, pos.y,pos.z + size.z},  // Top Back Right
+        //    {pos.x + size.x, pos.y + size.y,pos.z + size.z},   // Bottom Back right
+
+        //    {pos.x, pos.y, pos.z + size.z},          // Top back Left
+        //    {pos.x, pos.y + size.y,pos.z + size.z}  // Bottom back left
+        //};
+        float3 v[] =
         {
-            {pos.x, pos.y, pos.z },          // Top Left
-            {pos.x, pos.y + size.y,pos.z},  // Bottom left
             {pos.x + size.x, pos.y,pos.z},  // Top Right
+            {pos.x, pos.y, pos.z },         // Top Left
+            {pos.x, pos.y + size.y,pos.z},  // Bottom left
             {pos.x + size.x, pos.y + size.y, pos.z},  // Bottom right
-
-            {pos.x + size.x, pos.y,pos.z + size.z},  // Top Back Right
             {pos.x + size.x, pos.y + size.y,pos.z + size.z},   // Bottom Back right
-
+            {pos.x + size.x, pos.y,pos.z + size.z},  // Top Back Right
             {pos.x, pos.y, pos.z + size.z},          // Top back Left
             {pos.x, pos.y + size.y,pos.z + size.z}  // Bottom back left
         };
@@ -33,27 +44,27 @@ public:
         {
             // Front
             0,1,2,
-            3,2,1,
+            2,3,0,
 
             // Right
-            2,3,4,
-            5,4,3,
+            5,0,3,
+            3,4,5,
 
             // Back
-            4,5,6,
-            7,6,5,
+            5,6,7,
+            7,4,5,
 
             // Left
-            6,7,0,
-            1,0,7,
+            6,1,2,
+            2,7,6,
 
             // Top
-            0,4,6,
-            2,4,0,
+            5,6,1,
+            1,0,5,
 
             // Bottom
-            1,5,7,
-            3,5,1
+            4,7,2,
+            2,3,4,
         };
         std::copy(in, in + indicesCount, indices);
 

@@ -18,7 +18,7 @@ VertexBuffer::VertexBuffer(const float3* vertices, uint32_t size) : count(0)
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	count = size / sizeof(uint32_t);
@@ -36,20 +36,28 @@ void VertexBuffer::SetData(const float3* vertices, uint32_t size)
 	*/
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 	count += (size / sizeof(uint32_t));
 }
 
+void VertexBuffer::SetData(const float2* vertices, uint32_t size)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	count += (size / sizeof(uint32_t));
+}
+
 void VertexBuffer::SetData(const std::vector<Vertex>& vertices)
 {
-	//size_t s = sizeof(float3) + sizeof(float3) + sizeof(float2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+	//glBufferData()
+	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices, GL_STATIC_DRAW);
 	count += vertices.size();
-
-	//glVertexPointer(vertices.size(), GL_FLOAT, sizeof(Vertex), 0);
 }
 
 void VertexBuffer::Bind() const
@@ -75,7 +83,7 @@ IndexBuffer::IndexBuffer(const uint32_t* indices, uint32_t count) : count(count)
 {
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -91,7 +99,7 @@ void IndexBuffer::SetData(const uint32_t* indices, uint32_t count)
 	*/
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	//glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, count, count * sizeof(uint32_t), indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	this->count += count;

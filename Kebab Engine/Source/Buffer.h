@@ -133,6 +133,7 @@ public:
 	virtual ~VertexBuffer();
 
 	void SetData(const float3* vertices, uint32_t size);
+	void SetData(const float2* vertices, uint32_t size);
 	void SetData(const std::vector<Vertex>&);
 	void Bind() const;
 	void Unbind() const;
@@ -160,7 +161,9 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	inline uint32_t GetCount() const { return count; }
+	inline const uint32_t &GetCount() const { return count; }
+	inline const GLuint &GetID() const { return ibo; }
+
 
 private:
 	GLuint ibo;
