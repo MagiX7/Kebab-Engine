@@ -23,12 +23,10 @@ KbMesh::~KbMesh()
 
 void KbMesh::BeginDraw()
 {
-	indexBuffer->Bind();
 	vertexBuffer->Bind();
-	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
-	glTexCoordPointer(2, GL_FLOAT, 0, 0);
+	indexBuffer->Bind();
+
+	//glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
 
 	if (textures.size() > 0)
 	{
@@ -40,6 +38,9 @@ void KbMesh::BeginDraw()
 	else
 		texture->Bind();
 
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
+	glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 	//if(texture != nullptr) texture->Bind();
 }
@@ -85,7 +86,7 @@ void KbMesh::Draw(bool showNormals)
 
 void KbMesh::EndDraw()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	if (textures.size() > 0)
 	{
@@ -96,8 +97,8 @@ void KbMesh::EndDraw()
 	}
 	else texture->Unbind();
 	
-	vertexBuffer->Unbind();
 	indexBuffer->Unbind();
+	vertexBuffer->Unbind();
 }
 
 void KbMesh::SetUpMesh()

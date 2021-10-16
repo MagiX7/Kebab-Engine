@@ -11,6 +11,9 @@ Texture::Texture(const char* fileName)
 	char* f = (char*)fileName;
 	rendererID = ilutGLLoadImage(f);
 
+	ILinfo info;
+	iluGetImageInfo(&info);
+
 	width = ilGetInteger(IL_IMAGE_WIDTH);
 	height = ilGetInteger(IL_IMAGE_HEIGHT);
 	bpp = ilGetInteger(IL_IMAGE_BPP);
@@ -18,6 +21,8 @@ Texture::Texture(const char* fileName)
 	data = ilGetData();
 
 	//iluFlipImage();
+
+
 
 	glBindTexture(GL_TEXTURE_2D, rendererID);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

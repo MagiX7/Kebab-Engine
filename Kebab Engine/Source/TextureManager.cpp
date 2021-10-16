@@ -10,6 +10,7 @@ TextureManager::TextureManager() : Module(true)
 
 	ilInit();
 	iluInit();
+	ilutInit();
 
 	ilEnable(IL_CONV_PAL);
 	ilutEnable(ILUT_OPENGL_CONV);

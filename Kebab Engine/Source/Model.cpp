@@ -88,7 +88,7 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> textures;
     std::vector<float2> texCoords;
 
-    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+    for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
     {
         Vertex vertex;
         vertex.position.x = mesh->mVertices[i].x;
@@ -102,6 +102,7 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             vertex.normal.z = mesh->mNormals[i].z;
         }
         
+
         if (mesh->mTextureCoords[0])
         {
             vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
@@ -114,8 +115,6 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             texCoords.push_back(tc);
 
         }
-        else vertex.texCoords = { 0,0 };
-
 
         vertices.push_back(vertex);
     }
