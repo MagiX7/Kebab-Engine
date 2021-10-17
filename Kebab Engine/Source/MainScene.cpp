@@ -60,7 +60,7 @@ bool MainScene::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
 
     //primitive->Draw();
-
+    
     //model->Draw();
 
     /*vertexArray->Bind();

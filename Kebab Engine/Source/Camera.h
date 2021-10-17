@@ -14,8 +14,6 @@ public:
 
 	void Look(const vec& lookPoint);
 
-	Frustum* GetFrustum();
-
 	float4x4 GetProjectionMatrix() const;
 	float4x4 GetViewMatrix() const;
 

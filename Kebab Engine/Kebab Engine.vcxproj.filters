@@ -141,6 +141,9 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelHierarchy.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelHierarchy.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

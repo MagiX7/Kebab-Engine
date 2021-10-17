@@ -5,6 +5,7 @@
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
 #include "PanelViewport.h"
+#include "PanelHierarchy.h"
 
 //#define MAX_IT_HIST 100
 
@@ -33,6 +34,7 @@ public:
 	ConsolePanel* consolePanel;
 	ConfigPanel configPanel;
 	ViewportPanel* viewportPanel;
+	HierarchyPanel* hierarchyPanel;
 
 	//FrameBuffer* frameBuffer;
 	//float2 viewportSize = { 0,0 };
