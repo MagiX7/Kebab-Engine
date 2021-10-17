@@ -107,13 +107,13 @@ bool Renderer3D::Init(JSON_Object* root)
 
 	Load(root);
 
-	if (depth) SetDepth(depth);
-	if (cullFace) SetCullFace(cullFace);
+	SetDepth();
+	SetCullFace();
 	lights[0].Active(true);
-	if (lighting) SetLighting(lighting);
-	if (colorMaterial) SetColorMaterial(colorMaterial);
-	if (texture2D) SetTexture2D(texture2D);
-	if (wireframe) SetWireframe(wireframe);
+	SetLighting();
+	SetColorMaterial();
+	SetTexture2D();
+	SetWireframe();
 
 	int w, h;
 	app->window->GetWindowSize(w, h);
@@ -167,6 +167,8 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	DrawGrid();
+
 	for (const auto& g : geometries)
 		g->Draw(showNormals);
 
@@ -216,45 +218,40 @@ void Renderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 }
 
-void Renderer3D::SetDepth(bool value)
+void Renderer3D::SetDepth()
 {
-	depth = value;
-	value ? glDisable(GL_DEPTH_TEST) : glEnable(GL_DEPTH_TEST);
-	LOG_CONSOLE("-- GL_DEPTH_TEST -- set to %d", value);
+	depth ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+	LOG_CONSOLE("-- GL_DEPTH_TEST -- set to %d", depth);
 }
 
-void Renderer3D::SetCullFace(bool value)
+void Renderer3D::SetCullFace()
 {
-	cullFace = value;
-	value ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
-	LOG_CONSOLE("-- GL_CULL_FACE -- set to %d", value);
+	cullFace ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
+	LOG_CONSOLE("-- GL_CULL_FACE -- set to %d", cullFace);
 }
 
-void Renderer3D::SetLighting(bool value)
+void Renderer3D::SetLighting()
 {
-	lighting = value;
-	value ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
-	LOG_CONSOLE("-- GL_LIGHTING -- set to %d", value);
+	lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+	LOG_CONSOLE("-- GL_LIGHTING -- set to %d", lighting);
 }
 
-void Renderer3D::SetColorMaterial(bool value)
+void Renderer3D::SetColorMaterial()
 {
-	colorMaterial = value;
-	value ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
-	LOG_CONSOLE("-- GL_COLOR_MATERIAL -- set to %d", value);
+	colorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+	LOG_CONSOLE("-- GL_COLOR_MATERIAL -- set to %d", colorMaterial);
 }
 
-void Renderer3D::SetTexture2D(bool value)
+void Renderer3D::SetTexture2D()
 {
-	texture2D = value;
-	value ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
-	LOG_CONSOLE("-- GL_TEXTURE_2D -- set to %d", value);
+	texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+	LOG_CONSOLE("-- GL_TEXTURE_2D -- set to %d", texture2D);
 }
 
-void Renderer3D::SetWireframe(bool value)
+void Renderer3D::SetWireframe()
 {
-	wireframe = value;
 	wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	LOG_CONSOLE("-- WIREFRAME -- set to %d", wireframe);
 }
 
 void Renderer3D::Save(JSON_Object* root)
@@ -323,4 +320,48 @@ void Renderer3D::DoDraw()
 	vertexArray->Unbind();
 
 	//frameBuffer->Unbind();
+}
+
+void Renderer3D::DrawGrid()
+{
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+
+	float d = 200.0f;
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+	glLineWidth(1.0f);
+
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
+
+	glEnd();
+
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }

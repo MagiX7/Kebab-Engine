@@ -3,12 +3,13 @@
 KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures, std::vector<float2> texCoords)
 	: vertices(vertices), indices(indices), textures(textures)
 {
-	glGenBuffers(1, &texBuffer);
+	SetUpMesh();
+
+	/*glGenBuffers(1, &texBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
 	glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float2), texCoords.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
-	SetUpMesh();
 	if (textures.size() == 0)
 	{
 		texture = new Texture("Assets/3D Models/lenna.png");
@@ -39,10 +40,9 @@ void KbMesh::BeginDraw()
 		texture->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
-	glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
-	//if(texture != nullptr) texture->Bind();
 }
 
 void KbMesh::Draw(bool showNormals)
@@ -61,6 +61,7 @@ void KbMesh::Draw(bool showNormals)
 			n.x = vertices[i].position.x + vertices[i].normal.x;
 			n.y = vertices[i].position.y + vertices[i].normal.y;
 			n.z = vertices[i].position.z + vertices[i].normal.z;
+			n.Normalize();
 			glVertex3f(n.x, n.y, n.z);
 		}
 
@@ -105,7 +106,9 @@ void KbMesh::SetUpMesh()
 {
 	//vertexArray = new VertexArray();
 	vertexBuffer = new VertexBuffer();
-	indexBuffer = new IndexBuffer();
+	vertexBuffer->SetData(vertices);
+
+	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
 	//vertexBuffer->Bind();
 	//indexBuffer->Bind();
@@ -117,8 +120,7 @@ void KbMesh::SetUpMesh()
 	};
 	vertexBuffer->SetLayout(layout);
 
-	vertexBuffer->SetData(vertices);
-	indexBuffer->SetData(indices.data(), indices.size());
+	//indexBuffer->SetData(indices.data(), indices.size());
 
 	//vertexArray->AddVertexBuffer(*vertexBuffer);
 	//vertexArray->SetIndexBuffer(*indexBuffer);

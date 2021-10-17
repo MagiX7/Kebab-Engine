@@ -142,7 +142,7 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> diffuseMaps;
     std::vector<Texture> specularMaps;
     
-    if (mesh->mMaterialIndex > 0)
+    /*if (mesh->mMaterialIndex > 0)
     {
         aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
@@ -163,7 +163,7 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             specularMaps.push_back(*texSpecular);
             textures.push_back(*texSpecular);
         }
-    }
+    }*/
 
     return KbMesh(vertices, indices, textures, texCoords);
 }

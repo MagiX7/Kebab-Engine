@@ -31,11 +31,11 @@ private:
 	bool fulldesktop;
 
 	// Render stuff
-	bool depth;
+	/*bool depth;
 	bool cullFace;
 	bool lighting;
 	bool colorMaterial;
 	bool texture2D;
-	bool showNormals;
+	bool showNormals;*/
 	// TODO: Other two
 };

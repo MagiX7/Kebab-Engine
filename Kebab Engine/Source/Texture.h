@@ -19,6 +19,7 @@ class Texture
 {
 public:
 	//Texture(unsigned char* pixels, int width, int height);
+	Texture(void* data, int width, int height);
 	Texture(const char* fileName);
 	virtual ~Texture();
 

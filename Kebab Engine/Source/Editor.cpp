@@ -133,7 +133,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             if (ImGui::Checkbox(" Wireframe", &wireframe))
             {
                 //wireframe = !wireframe;
-                app->renderer3D->SetWireframe(wireframe);
+                app->renderer3D->SetWireframe();
             }
             ImGui::EndMenu();
         }

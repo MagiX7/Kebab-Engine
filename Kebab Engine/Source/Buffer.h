@@ -138,7 +138,10 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+	inline const uint32_t& GetCount() const { return count; }
+
 	inline const BufferLayout& GetLayout() const { return layout; }
+
 	// Make sure to do this BEFORE adding the VertexBuffer into the VertexArray.
 	inline void SetLayout(const BufferLayout& l) { layout = l; }
 
