@@ -13,6 +13,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
     name = "editor";
 
+    configPanel = new ConfigPanel();
     consolePanel = new ConsolePanel();
     viewportPanel = new ViewportPanel();
     hierarchyPanel = new HierarchyPanel();
@@ -59,6 +60,8 @@ bool Editor::CleanUp()
 {
     RELEASE(consolePanel);
     RELEASE(viewportPanel);
+    RELEASE(hierarchyPanel);
+    RELEASE(configPanel);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -129,7 +132,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             }
             if (ImGui::MenuItem("Configuration"))
             {
-                configPanel.active = !configPanel.active;
+                configPanel->active = !configPanel->active;
             }
             if (ImGui::MenuItem("Hierarchy"))
             {
@@ -187,7 +190,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
 
     if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
     if (consolePanel->active) consolePanel->OnRender(dt);
-    if (configPanel.active) configPanel.OnRender(dt);
+    if (configPanel->active) configPanel->OnRender(dt);
 
     ImGui::EndFrame();
 

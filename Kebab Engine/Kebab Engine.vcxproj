@@ -34,6 +34,7 @@
     <ClCompile Include="Source\External\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\External\parson\src\parson.c" />
     <ClCompile Include="Source\FileSystem.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\Model.cpp" />
@@ -61,8 +62,10 @@
     <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Color.h" />
+    <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\FileSystem.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />

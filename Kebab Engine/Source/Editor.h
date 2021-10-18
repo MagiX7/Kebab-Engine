@@ -32,7 +32,7 @@ private:
 public:
 
 	ConsolePanel* consolePanel;
-	ConfigPanel configPanel;
+	ConfigPanel* configPanel;
 	ViewportPanel* viewportPanel;
 	HierarchyPanel* hierarchyPanel;
 
