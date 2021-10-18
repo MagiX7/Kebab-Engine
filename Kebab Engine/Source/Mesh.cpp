@@ -1,20 +1,52 @@
 #include "Mesh.h"
 
-KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Tex> textures)
+KbMesh::KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures, std::vector<float2> texCoords)
 	: vertices(vertices), indices(indices), textures(textures)
 {
 	SetUpMesh();
+
+	/*glGenBuffers(1, &texBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+	glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float2), texCoords.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+
+	if (textures.size() == 0)
+	{
+		texture = new Texture("Assets/3D Models/lenna.png");
+	}
+}
+
+KbMesh::~KbMesh()
+{
+	//delete texture;
+	glDeleteBuffers(1, &texBuffer);
 }
 
 void KbMesh::BeginDraw()
 {
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
+
+	//glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+
+	if (textures.size() > 0)
+	{
+		for (int i = 0; i < textures.size(); ++i)
+		{
+			textures[i].Bind(i);
+		}
+	}
+	else
+		texture->Bind();
+
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
+	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+
 }
 
 void KbMesh::Draw(bool showNormals)
 {
-
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 	
 	if (showNormals)
@@ -29,6 +61,7 @@ void KbMesh::Draw(bool showNormals)
 			n.x = vertices[i].position.x + vertices[i].normal.x;
 			n.y = vertices[i].position.y + vertices[i].normal.y;
 			n.z = vertices[i].position.z + vertices[i].normal.z;
+			n.Normalize();
 			glVertex3f(n.x, n.y, n.z);
 		}
 
@@ -54,27 +87,40 @@ void KbMesh::Draw(bool showNormals)
 
 void KbMesh::EndDraw()
 {
-	vertexBuffer->Unbind();
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	if (textures.size() > 0)
+	{
+		for (int i = 0; i < textures.size(); ++i)
+		{
+			textures[i].Unbind();
+		}
+	}
+	else texture->Unbind();
+	
 	indexBuffer->Unbind();
+	vertexBuffer->Unbind();
 }
 
 void KbMesh::SetUpMesh()
 {
 	//vertexArray = new VertexArray();
 	vertexBuffer = new VertexBuffer();
-	indexBuffer = new IndexBuffer();
+	vertexBuffer->SetData(vertices);
+
+	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
 	//vertexBuffer->Bind();
 	//indexBuffer->Bind();
 
-	//BufferLayout layout = {
-	//	{ShaderDataType::VEC3F, "position"},
-	//	//{ShaderDataType::VEC3F, "normal"},
-	//};
-	//vertexBuffer->SetLayout(layout);
+	BufferLayout layout = {
+		{ShaderDataType::VEC3F, "position"},
+		{ShaderDataType::VEC3F, "normal"},
+		{ShaderDataType::VEC2F, "texCoords"},
+	};
+	vertexBuffer->SetLayout(layout);
 
-	vertexBuffer->SetData(vertices);
-	indexBuffer->SetData(indices.data(), indices.size());
+	//indexBuffer->SetData(indices.data(), indices.size());
 
 	//vertexArray->AddVertexBuffer(*vertexBuffer);
 	//vertexArray->SetIndexBuffer(*indexBuffer);

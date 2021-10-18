@@ -23,30 +23,37 @@ public:
 
 	inline const float3* GetVertices() { return vertices; }
 	inline const float3* GetNormals() { return normals; }
-	inline const std::vector<float>& GetTextureCoords() { return texCoords; }
+	//inline const std::vector<float>& GetTextureCoords() { return texCoords; }
+	inline const float2* GetTexCoords() { return texCoords; }
 	inline const uint32_t* GetIndices() { return indices; }
 
 	void SetUpBuffers();
 
 	void Draw(bool showNormals);
 
+	void SetCheckerTexture();
+
 public:
-	VertexArray* vertexArray;
+	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	Texture* texture;
 
 	float3* vertices;
 	uint32_t verticesCount = 0;
+
 	uint32_t* indices;
 	uint32_t indicesCount = 0;
 
 	float3* normals;
 	uint32_t normalsCount = 0;
-	//std::vector<float>normals;
-	std::vector<float>texCoords;
+	
+	float2* texCoords;
+	uint32_t texCoordsCount = 0;
 
 	math::float3 position;
+
+	unsigned int texBuffer;
 
 private:
 	unsigned int textureID;

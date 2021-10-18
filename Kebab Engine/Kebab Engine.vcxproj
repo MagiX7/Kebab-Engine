@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Buffer.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\Cube.cpp" />
     <ClCompile Include="Source\External\imgui\imgui.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_draw.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
@@ -94,6 +96,7 @@
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Sphere.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />

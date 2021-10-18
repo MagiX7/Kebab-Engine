@@ -1,4 +1,4 @@
-
+#include "Application.h"
 #include "Model.h"
 
 //#include "assimp/cimport.h"
@@ -12,28 +12,26 @@
 
 KbModel::KbModel(const char* path)
 {
-    glGenVertexArrays(1, &vao);
 	LoadModel(path);
 }
 
 KbModel::~KbModel()
 {
-    glDeleteVertexArrays(1, &vao);
 }
 
 void KbModel::Draw(bool showNormals)
-{
-    //glEnableClientState(GL_VERTEX_ARRAY);
-    //glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
-    
+{       
     glEnableClientState(GL_VERTEX_ARRAY);
-    for (unsigned int i = 0; i < meshes.size(); i++)
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+ 
+    for (unsigned int i = 0; i < meshes.size(); ++i)
     {
         meshes[i].BeginDraw();
-        glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
         meshes[i].Draw(showNormals);
         meshes[i].EndDraw();
     }
+
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
@@ -87,9 +85,10 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Tex> textures;
+    std::vector<Texture> textures;
+    std::vector<float2> texCoords;
 
-    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+    for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
     {
         Vertex vertex;
         vertex.position.x = mesh->mVertices[i].x;
@@ -103,13 +102,19 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
             vertex.normal.z = mesh->mNormals[i].z;
         }
         
+
         if (mesh->mTextureCoords[0])
         {
             vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
             vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
-        }
-        else vertex.texCoords = { 0,0 };
 
+            float2 tc;
+            tc.x = mesh->mTextureCoords[0][i].x;
+            tc.y = mesh->mTextureCoords[0][i].y;
+
+            texCoords.push_back(tc);
+
+        }
 
         vertices.push_back(vertex);
     }
@@ -121,16 +126,44 @@ KbMesh KbModel::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         for (unsigned int j = 0; j < face.mNumIndices; ++j)
             indices.push_back(face.mIndices[j]);
     }
-    
+
     // Process material
-    if (mesh->mMaterialIndex >= 0)
+    /*if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
         std::vector<Tex> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         std::vector<Tex> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    }
+    }*/
 
-    return KbMesh(vertices, indices, textures);
+
+    //Texture* texDiffuse = nullptr;
+    std::vector<Texture> diffuseMaps;
+    std::vector<Texture> specularMaps;
+    
+    /*if (mesh->mMaterialIndex > 0)
+    {
+        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+
+        aiString str;
+        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
+        {
+            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+            Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
+
+            diffuseMaps.push_back(*texDiffuse);
+            textures.push_back(*texDiffuse);
+        }
+        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
+        {
+            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+            Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
+
+            specularMaps.push_back(*texSpecular);
+            textures.push_back(*texSpecular);
+        }
+    }*/
+
+    return KbMesh(vertices, indices, textures, texCoords);
 }

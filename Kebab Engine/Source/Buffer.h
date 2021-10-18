@@ -133,11 +133,15 @@ public:
 	virtual ~VertexBuffer();
 
 	void SetData(const float3* vertices, uint32_t size);
+	void SetData(const float2* vertices, uint32_t size);
 	void SetData(const std::vector<Vertex>&);
 	void Bind() const;
 	void Unbind() const;
 
+	inline const uint32_t& GetCount() const { return count; }
+
 	inline const BufferLayout& GetLayout() const { return layout; }
+
 	// Make sure to do this BEFORE adding the VertexBuffer into the VertexArray.
 	inline void SetLayout(const BufferLayout& l) { layout = l; }
 
@@ -160,7 +164,9 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	inline uint32_t GetCount() const { return count; }
+	inline const uint32_t &GetCount() const { return count; }
+	inline const GLuint &GetID() const { return ibo; }
+
 
 private:
 	GLuint ibo;

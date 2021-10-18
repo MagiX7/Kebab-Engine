@@ -20,12 +20,12 @@ ConfigPanel::ConfigPanel()
     width = 0;
     height = 0;
 
-    depth = true;
+    /*depth = true;
     cullFace = true;
     lighting = true;
     colorMaterial = true;
     texture2D = true;
-    showNormals = false;
+    showNormals = false;*/
 
     scroll = 0;
 }
@@ -184,37 +184,36 @@ void ConfigPanel::OnRender(float dt)
             if (ImGui::BeginTable("Render Config Table", 2))
             {
                 ImGui::TableNextColumn();
-                if (ImGui::Checkbox("Depth", &depth))
-                    app->renderer3D->SetDepth(depth);
+                if (ImGui::Checkbox("Depth", &app->renderer3D->depth))
+                    app->renderer3D->SetDepth();
 
                 ImGui::TableNextColumn();
-                if (ImGui::Checkbox("Cull Face", &cullFace))
-                    app->renderer3D->SetCullFace(cullFace);
+                if (ImGui::Checkbox("Cull Face", &app->renderer3D->cullFace))
+                    app->renderer3D->SetCullFace();
 
                 ImGui::TableNextColumn();
 
-                if (ImGui::Checkbox("Lighting", &lighting))
-                    app->renderer3D->SetLighting(lighting);
+                if (ImGui::Checkbox("Lighting", &app->renderer3D->lighting))
+                    app->renderer3D->SetLighting();
                 
                 ImGui::TableNextColumn();
                 
-                if (ImGui::Checkbox("Color Material", &colorMaterial))
-                    app->renderer3D->SetColorMaterial(colorMaterial);
+                if (ImGui::Checkbox("Color Material", &app->renderer3D->colorMaterial))
+                    app->renderer3D->SetColorMaterial();
 
                 ImGui::TableNextColumn();
 
-                if (ImGui::Checkbox("Texture 2D", &texture2D))
-                    app->renderer3D->SetTexture2D(texture2D);
+                if (ImGui::Checkbox("Texture 2D", &app->renderer3D->texture2D))
+                    app->renderer3D->SetTexture2D();
                 
                 ImGui::TableNextColumn();
 
-                if (ImGui::Checkbox("Draw normals", &showNormals))
-                    app->renderer3D->showNormals = showNormals;
+                if (ImGui::Checkbox("Draw normals", &app->renderer3D->showNormals))
 
-                ImGui::TableNextColumn();
+                //ImGui::TableNextColumn();
 
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
-                    app->renderer3D->SetWireframe(app->renderer3D->wireframe);
+                    app->renderer3D->SetWireframe();
 
                 ImGui::EndTable();
             }

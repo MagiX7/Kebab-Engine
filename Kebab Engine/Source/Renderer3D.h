@@ -24,12 +24,12 @@ public:
 
 	void OnResize(int width, int height);
 	
-	void SetDepth(bool value);
-	void SetCullFace(bool value);
-	void SetLighting(bool value);
-	void SetColorMaterial(bool value);
-	void SetTexture2D(bool value);
-	void SetWireframe(bool value);
+	void SetDepth();
+	void SetCullFace();
+	void SetLighting();
+	void SetColorMaterial();
+	void SetTexture2D();
+	void SetWireframe();
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
@@ -39,6 +39,7 @@ public:
 	void Submit(const std::vector<KbGeometry>& geos);
 
 	void DoDraw();
+	void DrawGrid();
 
 public:
 

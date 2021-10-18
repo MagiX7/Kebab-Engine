@@ -141,6 +141,12 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TextureManager.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cube.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
     <ClCompile Include="Source\PanelHierarchy.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
@@ -272,6 +278,9 @@
     <ClInclude Include="Source\Texture.h">
       <Filter>Source Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Source\TextureManager.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
     <ClInclude Include="Source\PanelHierarchy.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>

@@ -104,10 +104,10 @@ bool Camera3D::CleanUp()
 bool Camera3D::Update(float dt)
 {	
 	float3 newPos(0, 0, 0);
-	float speed = 20.0f * dt;
+	float speed = 10.0f * dt;
   
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 40.0f * dt;
+		speed = 20.0f * dt;
 
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
