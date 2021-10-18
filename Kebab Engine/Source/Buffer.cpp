@@ -1,5 +1,7 @@
 #include "Buffer.h"
 
+#include "Globals.h"
+
 #include "mmgr/mmgr.h"
 
 ////////////////////////////////////////////////////////
@@ -118,10 +120,14 @@ void IndexBuffer::Unbind() const
 
 FrameBuffer::FrameBuffer(const FrameBufferProperties& props) : properties(props)
 {
-	glGenFramebuffers(1, &fbo);
+	Create();
+
+
+	/*glGenFramebuffers(1, &fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glDrawBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+
 
 	//glGenFramebuffers(1, &id);
 
@@ -167,6 +173,7 @@ void FrameBuffer::Create()
 
 	glGenTextures(1, &colorAttachment);
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
+	
 	// TODO: Should use glTexStorage? Very useful for 3d graphics shader
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, properties.width, properties.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -174,12 +181,26 @@ void FrameBuffer::Create()
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
 	glGenTextures(1, &depthAttachment);
 	glBindTexture(GL_TEXTURE_2D, depthAttachment);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, properties.width, properties.height);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, properties.width, properties.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, 0);
+	//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, properties.width, properties.height);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) LOG("Framebuffer is Complete");
-	else LOG("Framebuffer is Incomplete");
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachment, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (err != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG_CONSOLE("Framebuffer is Incomplete. Error %s", glGetString(err));
+	}
+	else LOG_CONSOLE("Framebuffer is Complete");
 
 	glBindFramebuffer(GL_TEXTURE_2D, 0);
 }
