@@ -109,25 +109,24 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 20.0f * dt;
 
-	// Movement of camera ====================================================================================
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
-
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
-
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= cam->frustum.Up() * speed * 0.5f;
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.5f;
-
-	position += newPos;
-	reference += newPos;
-
-	cam->SetCameraPosition(position);
-
-	// Rotation of camera ================================================================================
-
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
+		// Movement of camera ====================================================================================
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
+
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
+
+		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= cam->frustum.Up() * speed * 0.5f;
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.5f;
+
+		position += newPos;
+		//reference += newPos;
+
+		cam->SetCameraPosition(position);
+
+		// Rotation of camera ================================================================================
 		float dx = -app->input->GetMouseXMotion();
 		float dy = -app->input->GetMouseYMotion();
 
@@ -136,6 +135,22 @@ bool Camera3D::Update(float dt)
 		math::Quat finalRotation = rotationX * rotationY;
 
 		cam->frustum.Transform(finalRotation);
+	}
+
+	// Zoom ===============================================================
+	float3 zoom(0, 0, 0); 
+
+	if (app->input->GetMouseZ() < 0)
+	{
+		zoom -= cam->frustum.Front() * speed;
+		position += zoom;
+		cam->SetCameraPosition(position);
+	}
+	if (app->input->GetMouseZ() > 0)
+	{
+		zoom += cam->frustum.Front() * speed;
+		position += zoom;
+		cam->SetCameraPosition(position);
 	}
 
 	return true;

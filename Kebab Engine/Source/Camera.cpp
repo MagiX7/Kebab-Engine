@@ -63,11 +63,6 @@ void Camera::SetCameraPosition(const vec& position)
 }
 
 // GETTERS =============================================
-Frustum* Camera::GetFrustum()
-{
-	return &frustum;
-}
-
 float4x4 Camera::GetProjectionMatrix() const
 {
 	return frustum.ProjectionMatrix().Transposed();

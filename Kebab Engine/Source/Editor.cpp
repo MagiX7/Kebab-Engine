@@ -15,6 +15,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
 
     consolePanel = new ConsolePanel();
     viewportPanel = new ViewportPanel();
+    hierarchyPanel = new HierarchyPanel();
 
     showAboutPanel = false;
     wireframe = true;
@@ -130,6 +131,10 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 configPanel.active = !configPanel.active;
             }
+            if (ImGui::MenuItem("Hierarchy"))
+            {
+                hierarchyPanel->active = !hierarchyPanel->active;
+            }
             if (ImGui::Checkbox(" Wireframe", &wireframe))
             {
                 //wireframe = !wireframe;
@@ -178,11 +183,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         if (!demoShouldClose) showDemoWindow = false;
     }
 
-    if (showAboutPanel)
-    {
-        ShowAboutPanel();
-    }
+    if (showAboutPanel) ShowAboutPanel();
 
+    if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
     if (consolePanel->active) consolePanel->OnRender(dt);
     if (configPanel.active) configPanel.OnRender(dt);
 

@@ -147,6 +147,9 @@
     <ClCompile Include="Source\Cube.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelHierarchy.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="Source\TextureManager.h">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClInclude Include="Source\PanelHierarchy.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
