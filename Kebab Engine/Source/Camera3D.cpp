@@ -4,6 +4,7 @@
 #include "Camera.h"
 
 #include "mmgr/mmgr.h"
+#include "Math/float4.h"
 
 Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 {
@@ -139,18 +140,23 @@ bool Camera3D::Update(float dt)
 
 	// Zoom ===============================================================
 	float3 zoom(0, 0, 0); 
+	float4 viewDim = app->editor->viewportPanel->GetViewportDimensions();
 
-	if (app->input->GetMouseZ() < 0)
+	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
+		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w)
 	{
-		zoom -= cam->frustum.Front() * speed;
-		position += zoom;
-		cam->SetCameraPosition(position);
-	}
-	if (app->input->GetMouseZ() > 0)
-	{
-		zoom += cam->frustum.Front() * speed;
-		position += zoom;
-		cam->SetCameraPosition(position);
+		if (app->input->GetMouseZ() < 0)
+		{
+			zoom -= cam->frustum.Front() * speed;
+			position += zoom;
+			cam->SetCameraPosition(position);
+		}
+		if (app->input->GetMouseZ() > 0)
+		{
+			zoom += cam->frustum.Front() * speed;
+			position += zoom;
+			cam->SetCameraPosition(position);
+		}
 	}
 
 	return true;

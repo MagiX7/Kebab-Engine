@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Globals.h"
+
 class GameObject;
 
 enum class ComponentType
@@ -12,15 +14,12 @@ enum class ComponentType
 class Component
 {
 public:
-	Component(const GameObject& owner, const ComponentType& type);
-	~Component();
+	virtual void Enable() {};
+	virtual void Disable() {};
 
-	virtual void Enable();
-	virtual void Disable();
+	virtual void Update() {};
 
-	virtual void Update();
-
-private:
+protected:
 
 	ComponentType type;
 	GameObject* owner;

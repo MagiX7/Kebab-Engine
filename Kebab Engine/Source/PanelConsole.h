@@ -18,4 +18,5 @@ private:
 	ImGuiTextBuffer buf;
 
 	bool scrollMax;
+	float maxScroll;
 };

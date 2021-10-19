@@ -7,6 +7,7 @@ ConsolePanel::ConsolePanel()
 {
     active = true;
     scroll = 0;
+    maxScroll = 0;
     scrollMax = false;
     ClearConsole();
 }
@@ -36,8 +37,12 @@ void ConsolePanel::OnRender(float dt)
         if (scrollMax)
         {
             scrollMax = false;
-            scroll = ImGui::GetWindowHeight();
+            if (maxScroll == 0)
+                maxScroll = ImGui::GetWindowHeight();
+            maxScroll += ImGui::GetFrameHeightWithSpacing();
+            scroll = maxScroll;
         }
+
         ImGui::SetScrollY(scroll);
     }
     ImGui::End();

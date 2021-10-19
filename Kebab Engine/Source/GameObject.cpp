@@ -2,6 +2,10 @@
 
 #include "Globals.h"
 
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
 GameObject::GameObject()
 {
 
@@ -24,9 +28,25 @@ void GameObject::Update(float dt)
 
 Component* GameObject::CreateComponent(ComponentType type)
 {
-	Component* ret = new Component(*this, type);
+	Component* ret = nullptr;
 
-	components.push_back(ret);
+	switch (type)
+	{
+	case ComponentType::TRANSFORM:
+		ret = new ComponentTransform(*this);
+		components.push_back(ret);
+		break;
+	case ComponentType::MESH:
+		ret = new ComponentMesh(*this);
+		components.push_back(ret);
+		break;
+	case ComponentType::MATERIAL:
+		ret = new ComponentMaterial(*this);
+		components.push_back(ret);
+		break;
+	default:
+		break;
+	}
 
 	return ret;
 }
