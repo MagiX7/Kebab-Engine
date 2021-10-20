@@ -37,7 +37,6 @@ public:
 	void Load(JSON_Object* root) override;
 
 	void Submit(KbGeometry* geometry);
-	void Submit(MeshLoader* model);
 	void Submit(const std::vector<KbGeometry>& geos);
 
 	void Submit(GameObject* go);
@@ -62,8 +61,6 @@ public:
 
 private:
 	std::vector<KbGeometry*> geometries;
-	std::vector<MeshLoader*> models;
-
 	std::vector<ComponentMesh*> meshes;
 
 	

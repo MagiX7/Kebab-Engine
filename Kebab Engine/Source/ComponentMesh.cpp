@@ -2,6 +2,10 @@
 
 #include "ComponentTransform.h"
 
+
+#define CHECKERS_HEIGHT 50
+#define CHECKERS_WIDTH 50
+
 ComponentMesh::ComponentMesh(GameObject& compOwner)
 {
 	this->owner = &compOwner;
@@ -92,6 +96,8 @@ void ComponentMesh::SetUpMesh()
 	vertexBuffer->SetData(vertices);
 
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
+
+	if(textures.size() == 0) SetCheckersTexture();
 }
 
 void ComponentMesh::BeginDraw()
@@ -102,8 +108,6 @@ void ComponentMesh::BeginDraw()
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
 
-	//glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
-
 	if (textures.size() > 0)
 	{
 		for (int i = 0; i < textures.size(); ++i)
@@ -111,7 +115,7 @@ void ComponentMesh::BeginDraw()
 			textures[i].Bind(i);
 		}
 	}
-	//else texture->Bind();
+	else texture->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
 	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
@@ -128,11 +132,27 @@ void ComponentMesh::EndDraw()
 			textures[i].Unbind();
 		}
 	}
-	//else texture->Unbind();
+	else texture->Unbind();
 
 	indexBuffer->Unbind();
 	vertexBuffer->Unbind();
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void ComponentMesh::SetCheckersTexture()
+{
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkerImage[i][j][0] = (GLubyte)c;
+			checkerImage[i][j][1] = (GLubyte)c;
+			checkerImage[i][j][2] = (GLubyte)c;
+			checkerImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	texture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT);
 }

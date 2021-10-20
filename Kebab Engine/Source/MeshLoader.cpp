@@ -26,22 +26,6 @@ MeshLoader::~MeshLoader()
     RELEASE(instance);
 }
 
-void MeshLoader::Draw(bool showNormals)
-{       
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
- 
-    for (unsigned int i = 0; i < meshes.size(); ++i)
-    {
-        meshes[i].BeginDraw();
-        meshes[i].Draw(showNormals);
-        meshes[i].EndDraw();
-    }
-
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
-
 GameObject* MeshLoader::LoadModel(std::string path)
 {
     Assimp::Importer import;
@@ -67,7 +51,6 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        //meshes.push_back(ProcessMesh(mesh, scene));
         ProcessMesh(mesh, scene, baseGO);
     }
     // Then do the same for each of its children
@@ -135,6 +118,30 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
             indices.push_back(face.mIndices[j]);
     }
 
+    //// Process materials
+    //if (mesh->mMaterialIndex > 0)
+    //{
+    //    aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+
+    //    aiString str;
+    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
+    //    {
+    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+    //        Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
+
+    //        //diffuseMaps.push_back(*texDiffuse);
+    //        textures.push_back(*texDiffuse);
+    //    }
+    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
+    //    {
+    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+    //        Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
+
+    //        //specularMaps.push_back(*texSpecular);
+    //        textures.push_back(*texSpecular);
+    //    }
+    //}
+
     meshComp->SetData(vertices, indices, textures);
 
     aiVector3D scale, rotation, position;
@@ -151,29 +158,4 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     go->SetParent(baseGO);
 
     baseGO->AddChild(go);
-
-
-    ///*if (mesh->mMaterialIndex > 0)
-    //{
-    //    aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-
-    //    aiString str;
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
-
-    //        diffuseMaps.push_back(*texDiffuse);
-    //        textures.push_back(*texDiffuse);
-    //    }
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
-
-    //        specularMaps.push_back(*texSpecular);
-    //        textures.push_back(*texSpecular);
-    //    }
-    //}*/
-    //return KbMesh(vertices, indices, textures, texCoords);
 }

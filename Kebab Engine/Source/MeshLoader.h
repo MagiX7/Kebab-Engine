@@ -15,8 +15,6 @@ public:
 
 	virtual ~MeshLoader();
 
-	void Draw(bool showNormals);
-
 	GameObject* LoadModel(std::string path);
 
 private:

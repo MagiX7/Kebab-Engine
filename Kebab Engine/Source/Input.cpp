@@ -123,18 +123,35 @@ bool Input::PreUpdate(float dt)
 			}
 			case SDL_DROPFILE:
 			{
-				char* droppedFiledir = e.drop.file;
+				std::string droppedFileDir = e.drop.file;
+				//char* droppedFiledir = e.drop.file;
 				// Shows directory of dropped file
 				SDL_ShowSimpleMessageBox(
 					SDL_MESSAGEBOX_INFORMATION,
 					"File dropped on window",
-					droppedFiledir,
+					droppedFileDir.c_str(),
 					app->window->window
 				);
-				// TODO: DROP FILE WITH NEW MODEL LOADING SYSTEM
-				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFiledir));
 
-				SDL_free(droppedFiledir);    // Free droppedFiledir memory
+				int pos = droppedFileDir.find(".");
+				std::string extension = droppedFileDir.substr(pos + 1);
+
+				// Convert extension to lowercase
+				std::for_each(extension.begin(), extension.end(), [](char& c)
+				{
+					c = ::tolower(c);
+				});
+
+				if(extension == "fbx")
+					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir));
+				else if (extension == "dds" || extension == "png")
+				{
+					// TODO: Check the current game object and attach the texture to it
+				}
+
+				droppedFileDir.clear();
+				extension.clear();
+				//SDL_free(droppedFileDir);    // Free droppedFiledir memory
 				break;
 			}
 		}

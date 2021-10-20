@@ -26,6 +26,8 @@ private:
 	void BeginDraw();
 	void EndDraw();
 
+	void SetCheckersTexture();
+
 public:
 	std::vector<Vertex>   vertices;
 	std::vector<uint32_t> indices;
@@ -34,6 +36,6 @@ public:
 private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-	//Texture* texture;
+	Texture* texture;
 
 };

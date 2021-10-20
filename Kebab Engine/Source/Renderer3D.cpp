@@ -172,9 +172,6 @@ bool Renderer3D::Draw(float dt)
 	for (const auto& g : geometries)
 		g->Draw(showNormals);
 
-	for (const auto& m : models)
-		m->Draw(showNormals);
-
 	for (const auto& mesh : meshes)
 		mesh->Draw(showNormals);
 
@@ -288,18 +285,6 @@ void Renderer3D::Submit(KbGeometry* geometry)
 {
 	geometries.push_back(geometry);
 
-	/*numVertices += geometry->verticesCount;
-	numIndices += geometry->indicesCount;
-	vertexBuffer->AddData(geometry->vertices, sizeof(geometry->vertices) * geometry->verticesCount);
-	indexBuffer->AddData(geometry->indices, geometry->indicesCount);
-
-	vertexArray->AddVertexBuffer(*vertexBuffer);
-	vertexArray->SetIndexBuffer(*indexBuffer);*/
-}
-
-void Renderer3D::Submit(MeshLoader* model)
-{
-	models.push_back(model);
 }
 
 void Renderer3D::Submit(const std::vector<KbGeometry>& geos)
@@ -309,7 +294,7 @@ void Renderer3D::Submit(const std::vector<KbGeometry>& geos)
 		Submit(&g);
 }
 
-// TODO: Stil need to check if the childs do have more childs
+// TODO: Still need to check if the childs do have more childs
 void Renderer3D::Submit(GameObject* go)
 {
 	for (const auto& child : go->GetChilds())
