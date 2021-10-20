@@ -6,9 +6,13 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 
-GameObject::GameObject()
+GameObject::GameObject() : parent(nullptr)
 {
+	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);
 
+	transform->SetPosition({ 0,0,0 });
+	transform->SetRotation({ 0,0,0,1 });
+	transform->SetScale({ 1,1,1, });
 }
 
 GameObject::~GameObject()
@@ -26,6 +30,7 @@ void GameObject::Update(float dt)
 
 }
 
+// TODO: Should check if the component already exists
 Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* ret = nullptr;
@@ -49,4 +54,24 @@ Component* GameObject::CreateComponent(ComponentType type)
 	}
 
 	return ret;
+}
+
+Component* GameObject::GetComponent(ComponentType type)
+{
+	for (const auto& comp : components)
+	{
+		if (comp->GetComponentType() == type) return comp;
+	}
+
+	return nullptr;
+}
+
+void GameObject::AddComponent(Component* comp)
+{
+	components.push_back(comp);
+}
+
+void GameObject::AddChild(GameObject* child)
+{
+	childs.push_back(child);
 }

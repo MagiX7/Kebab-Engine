@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Input.h"
 
+#include "MeshLoader.h"
+
 #include "mmgr/mmgr.h"
 
 #define MAX_KEYS 300
@@ -130,7 +132,8 @@ bool Input::PreUpdate(float dt)
 					app->window->window
 				);
 				// TODO: DROP FILE WITH NEW MODEL LOADING SYSTEM
-				//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh(droppedFiledir));
+				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFiledir));
+
 				SDL_free(droppedFiledir);    // Free droppedFiledir memory
 				break;
 			}

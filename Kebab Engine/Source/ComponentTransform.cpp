@@ -24,3 +24,18 @@ void ComponentTransform::Update()
 {
 	
 }
+
+void ComponentTransform::SetPosition(const float3& pos)
+{
+	position = pos;
+}
+
+void ComponentTransform::SetRotation(const Quat& rot)
+{
+	rotation = rot;
+}
+
+void ComponentTransform::SetScale(const float3& scal)
+{
+	scale = scal;
+}

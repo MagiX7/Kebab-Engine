@@ -5,7 +5,9 @@
 #include "Light.h"
 
 #include "Geometry.h"
-#include "Model.h"
+#include "MeshLoader.h"
+
+#include "ComponentMesh.h"
 
 #include "glmath.h"
 
@@ -35,8 +37,10 @@ public:
 	void Load(JSON_Object* root) override;
 
 	void Submit(KbGeometry* geometry);
-	void Submit(KbModel* model);
+	void Submit(MeshLoader* model);
 	void Submit(const std::vector<KbGeometry>& geos);
+
+	void Submit(GameObject* go);
 
 	void DoDraw();
 	void DrawGrid();
@@ -58,7 +62,10 @@ public:
 
 private:
 	std::vector<KbGeometry*> geometries;
-	std::vector<KbModel*> models;
+	std::vector<MeshLoader*> models;
+
+	std::vector<ComponentMesh*> meshes;
+
 	
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;

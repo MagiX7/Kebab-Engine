@@ -3,7 +3,7 @@
 ComponentMaterial::ComponentMaterial(GameObject& compOwner)
 {
 	this->owner = &compOwner;
-	this->type = ComponentType::TRANSFORM;
+	this->type = ComponentType::MATERIAL;
 	this->active = true;
 }
 

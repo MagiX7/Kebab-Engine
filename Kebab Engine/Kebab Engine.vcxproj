@@ -40,7 +40,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
-    <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\MeshLoader.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
@@ -73,7 +73,7 @@
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Mesh.h" />
-    <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\MeshLoader.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
     <ClInclude Include="Source\PanelViewport.h" />
     <ClInclude Include="Source\Plane.h" />

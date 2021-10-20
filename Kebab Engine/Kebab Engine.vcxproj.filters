@@ -100,7 +100,7 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Model.cpp">
+    <ClCompile Include="Source\MeshLoader.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
@@ -249,7 +249,7 @@
     <ClInclude Include="Source\Plane.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model.h">
+    <ClInclude Include="Source\MeshLoader.h">
       <Filter>Source Files\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mesh.h">

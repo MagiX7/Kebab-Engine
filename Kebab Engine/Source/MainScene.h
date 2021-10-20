@@ -7,7 +7,7 @@
 #include "Cube.h"
 #include "Pyramid.h"
 
-#include "Model.h"
+#include "MeshLoader.h"
 
 #define BOUNCER_TIME 200
 
@@ -22,6 +22,6 @@ public:
 	bool CleanUp();
 
 private:
-	KbModel* model;
+	MeshLoader* model;
 
 };

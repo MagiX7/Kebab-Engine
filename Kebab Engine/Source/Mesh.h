@@ -5,14 +5,6 @@
 
 #include "Vertex.h"
 
-
-//struct Vertex
-//{
-//	float3 position;
-//	float3 normal;
-//	float2 texCoords;
-//};
-
 struct Tex
 {
 	unsigned int id;

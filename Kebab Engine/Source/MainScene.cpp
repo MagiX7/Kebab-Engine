@@ -37,8 +37,11 @@ bool MainScene::Start()
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/heavy.fbx"));
 
-    model = new KbModel("Assets/3D Models/bakerHouse.fbx");
-    app->renderer3D->Submit(model);
+    //model = new MeshLoader("Assets/3D Models/bakerHouse.fbx");
+    //app->renderer3D->Submit(model);
+
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+
     
     /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
     app->renderer3D->Submit(c);*/
