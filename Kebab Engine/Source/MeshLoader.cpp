@@ -39,6 +39,7 @@ GameObject* MeshLoader::LoadModel(std::string path)
     directory = path.substr(0, path.find_last_of('/'));
 
     int start = path.find_last_of('/') + 1;
+    if (start == 0) start = path.find_last_of("\\") + 1;
     int end = path.find('.');
 
     std::string name = path.substr(start, end - start);
@@ -160,8 +161,10 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
 
     ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
     trans->SetPosition(p);
+    trans->SetRotation(r);
+    trans->SetScale(s);
 
-    go->AddComponent(meshComp);
+    //go->AddComponent(meshComp);
     go->SetParent(baseGO);
 
     baseGO->AddChild(go);

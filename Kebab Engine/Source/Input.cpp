@@ -133,8 +133,12 @@ bool Input::PreUpdate(float dt)
 					app->window->window
 				);
 
-				int pos = droppedFileDir.find(".");
-				std::string extension = droppedFileDir.substr(pos + 1);
+				int end = droppedFileDir.find(".");
+				std::string extension = droppedFileDir.substr(end + 1);
+
+				int start = droppedFileDir.find_last_of("\\") + 1;
+				std::string name = droppedFileDir.substr(start, end - start);
+				
 
 				// Convert extension to lowercase
 				std::for_each(extension.begin(), extension.end(), [](char& c)

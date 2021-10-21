@@ -24,7 +24,7 @@ public:
 	void AddChild(GameObject* child);
 
 	inline const std::vector<Component*>& GetComponents() const { return components; }
-	inline const std::vector<GameObject*>& GetChilds() const { return childs; }
+	inline std::vector<GameObject*>& GetChilds() { return childs; }
 	inline const std::string GetName() const { return name; }
 
 private:

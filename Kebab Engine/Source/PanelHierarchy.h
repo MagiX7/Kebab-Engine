@@ -13,6 +13,10 @@ public:
 private:
 	void DisplayHierarchy(GameObject* go);
 
+public:
+	GameObject* currentGO;
+
 private:
+	GameObject* goDragging;
 
 };

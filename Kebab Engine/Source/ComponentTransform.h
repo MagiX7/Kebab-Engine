@@ -21,6 +21,10 @@ public:
 	void SetRotation(const Quat& rot);
 	void SetScale(const float3& scal);
 
+	const float3& GetPosition() const { return position; }
+	const float3& GetScale() const { return scale; }
+	const Quat& GetRotation() const { return rotation; }
+
 private:
 
 	float3 position;
