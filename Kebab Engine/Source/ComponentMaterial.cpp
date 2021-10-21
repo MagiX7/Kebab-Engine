@@ -2,7 +2,7 @@
 
 ComponentMaterial::ComponentMaterial(GameObject& compOwner)
 {
-	this->owner = &compOwner;
+	this->parent = &compOwner;
 	this->type = ComponentType::MATERIAL;
 	this->active = true;
 }

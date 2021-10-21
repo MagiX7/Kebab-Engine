@@ -38,9 +38,16 @@ GameObject* MeshLoader::LoadModel(std::string path)
     }
     directory = path.substr(0, path.find_last_of('/'));
 
-    GameObject* baseGO = new GameObject();
+    int start = path.find_last_of('/') + 1;
+    int end = path.find('.');
+
+    std::string name = path.substr(start, end - start);
+
+    GameObject* baseGO = new GameObject(name);
 
     ProcessNode(scene->mRootNode, scene, baseGO);
+
+    app->scene->AddGameObject(baseGO);
 
     return baseGO;
 }
@@ -78,7 +85,7 @@ std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType
 
 void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO)
 {
-    GameObject* go = new GameObject();
+    GameObject* go = new GameObject(mesh->mName.C_Str());
 
     ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
 

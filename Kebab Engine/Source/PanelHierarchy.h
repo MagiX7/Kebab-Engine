@@ -11,5 +11,8 @@ public:
 	void OnRender(float dt) override;
 
 private:
+	void DisplayHierarchy(GameObject* go);
+
+private:
 
 };

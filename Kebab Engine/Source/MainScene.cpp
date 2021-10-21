@@ -77,7 +77,11 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG_CONSOLE("Unloading scene");
-    RELEASE(model);
 
     return true;
+}
+
+void MainScene::AddGameObject(GameObject* go)
+{
+    gameObjects.push_back(go);
 }

@@ -8,7 +8,7 @@
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(std::string name);
 	~GameObject();
 
 	void Update(float dt);
@@ -17,17 +17,19 @@ public:
 	Component* GetComponent(ComponentType type);
 
 	inline void SetParent(GameObject* newParent) { parent = newParent; }
+	inline GameObject* GetParent() const { return parent; }
+	inline const bool& HasParent() const { return parent; }
 
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);
 
 	inline const std::vector<Component*>& GetComponents() const { return components; }
 	inline const std::vector<GameObject*>& GetChilds() const { return childs; }
-
+	inline const std::string GetName() const { return name; }
 
 private:
 
-	std::string* name;
+	std::string name;
 	std::vector<Component*> components;
 
 	GameObject* parent;

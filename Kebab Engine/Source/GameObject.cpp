@@ -6,7 +6,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 
-GameObject::GameObject() : parent(nullptr)
+GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 {
 	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);
 

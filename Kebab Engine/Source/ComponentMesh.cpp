@@ -8,7 +8,7 @@
 
 ComponentMesh::ComponentMesh(GameObject& compOwner)
 {
-	this->owner = &compOwner;
+	this->parent = &compOwner;
 	this->type = ComponentType::MESH;
 	this->active = true;
 }

@@ -2,7 +2,7 @@
 
 ComponentTransform::ComponentTransform(GameObject& compOwner)
 {
-	this->owner = &compOwner;
+	this->parent = &compOwner;
 	this->type = ComponentType::TRANSFORM;
 	this->active = true;
 }

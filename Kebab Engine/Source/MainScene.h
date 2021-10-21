@@ -2,12 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
-#include "VertexArray.h"
-
-#include "Cube.h"
-#include "Pyramid.h"
-
-#include "MeshLoader.h"
+#include "GameObject.h"
 
 #define BOUNCER_TIME 200
 
@@ -21,7 +16,10 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
+	void AddGameObject(GameObject* go);
+	inline const std::vector<GameObject*>& GetGameObjects() const { return gameObjects; }
+
 private:
-	MeshLoader* model;
+	std::vector<GameObject*> gameObjects;
 
 };
