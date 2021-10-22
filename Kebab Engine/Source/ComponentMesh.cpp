@@ -111,6 +111,12 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	SetUpMesh();
 }
 
+void ComponentMesh::SetTexture(Texture* tex)
+{
+	if (texture) RELEASE(texture);
+	texture = new Texture(*tex);
+}
+
 void ComponentMesh::SetUpMesh()
 {
 	vertexBuffer = new VertexBuffer();

@@ -19,6 +19,8 @@ public:
 	void Draw(bool showNormals = false);
 
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*, std::vector<Texture> textures*/);
+	void SetTexture(Texture* tex);
+
 
 	void DrawOnInspector();
 

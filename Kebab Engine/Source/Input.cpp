@@ -2,6 +2,7 @@
 #include "Input.h"
 
 #include "MeshLoader.h"
+#include "TextureLoader.h"
 
 #include "imgui/imgui_impl_sdl.h"
 
@@ -154,7 +155,15 @@ bool Input::PreUpdate(float dt)
 					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir));
 				else if (extension == "dds" || extension == "png")
 				{
-					// TODO: Check the current game object and attach the texture to it
+					GameObject* target = app->editor->hierarchyPanel->currentGO;
+					if (target)
+					{
+						for (int i = 0; i < target->GetComponents().size(); ++i)
+						{
+							ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
+							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture((name + "." + extension).c_str()));
+						}
+					}
 				}
 
 				droppedFileDir.clear();

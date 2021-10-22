@@ -153,9 +153,18 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
             textures.push_back(*texSpecular);
         }
     }
-    std::string name = baseGO->GetName();
-    name.append(".png");
-    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(name.c_str()));
+
+    aiString name;
+    if (mesh->mMaterialIndex > 0)
+    {
+        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+        name = mat->GetName();
+    }
+    else
+        name = baseGO->GetName();
+
+    name.Append(".png");
+    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(name.C_Str()));
 
     aiVector3D scale, rotation, position;
     scene->mRootNode->mTransformation.Decompose(scale, rotation, position);
