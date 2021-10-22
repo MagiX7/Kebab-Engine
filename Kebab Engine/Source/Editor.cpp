@@ -139,6 +139,10 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 hierarchyPanel->active = !hierarchyPanel->active;
             }
+            if (ImGui::MenuItem("Inspector"))
+            {
+                inspectorPanel->active = !inspectorPanel->active;
+            }
             if (ImGui::Checkbox(" Wireframe", &wireframe))
             {
                 //wireframe = !wireframe;

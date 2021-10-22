@@ -1,5 +1,7 @@
 #include "ComponentMaterial.h"
 
+#include "imgui/imgui.h"
+
 ComponentMaterial::ComponentMaterial(GameObject& compOwner)
 {
 	this->parent = &compOwner;
@@ -20,7 +22,10 @@ void ComponentMaterial::Disable()
 	this->active = false;
 }
 
-void ComponentMaterial::Update()
+void ComponentMaterial::DrawOnInspector()
 {
-
+	if (ImGui::CollapsingHeader("Texture"))
+	{
+		ImGui::TextColored({ 255,255,0,255 }, "Path: ");
+	}
 }

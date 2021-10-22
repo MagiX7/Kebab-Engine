@@ -41,7 +41,6 @@ public:
 
 	void Submit(GameObject* go);
 
-	void DoDraw();
 	void DrawGrid();
 
 public:

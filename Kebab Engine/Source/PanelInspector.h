@@ -13,8 +13,6 @@ public:
 	void OnRender(float dt) override;
 
 private:
-	void DisplayTransform(GameObject* go);
-	void DisplayMeshInfo(GameObject* go);
-	void DisplayTextureInfo(GameObject* go);
+
 
 };

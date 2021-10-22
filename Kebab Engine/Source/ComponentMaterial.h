@@ -11,7 +11,7 @@ public:
 	void Enable();
 	void Disable();
 
-	void Update();
+	void DrawOnInspector();
 
 private:
 

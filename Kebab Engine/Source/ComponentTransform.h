@@ -15,8 +15,6 @@ public:
 	void Enable();
 	void Disable();
 
-	void Update();
-
 	void SetPosition(const float3& pos);
 	void SetRotation(const Quat& rot);
 	void SetScale(const float3& scal);
@@ -24,6 +22,8 @@ public:
 	const float3& GetPosition() const { return position; }
 	const float3& GetScale() const { return scale; }
 	const Quat& GetRotation() const { return rotation; }
+
+	void DrawOnInspector();
 
 private:
 

@@ -307,22 +307,6 @@ void Renderer3D::Submit(GameObject* go)
 		meshes.push_back((ComponentMesh*)go->GetComponent(ComponentType::MESH));
 }
 
-void Renderer3D::DoDraw()
-{
-	//frameBuffer->Bind();
-	glClearColor(0.05f, 0.05f, 0.05f, 1);
-
-
-	/*vertexArray->AddVertexBuffer(*vertexBuffer);
-	vertexArray->SetIndexBuffer(*indexBuffer);*/
-
-	vertexArray->Bind();
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
-	vertexArray->Unbind();
-
-	//frameBuffer->Unbind();
-}
-
 void Renderer3D::DrawGrid()
 {
 	glLineWidth(2.0f);
