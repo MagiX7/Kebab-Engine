@@ -1,6 +1,9 @@
 #include "Application.h"
 #include "MeshLoader.h"
 
+#include "Cube.h"
+#include "Pyramid.h"
+
 //#include "assimp/cimport.h"
 //#include "assimp/scene.h"
 //#include "assimp/postprocess.h"
@@ -168,4 +171,30 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     go->SetParent(baseGO);
 
     baseGO->AddChild(go);
+}
+
+GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
+{
+    GameObject* go = nullptr;
+    Component* comp = nullptr;
+
+    switch (type)
+    {
+        case KbGeometryType::CUBE:
+            go = new GameObject("Cube");
+            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
+            go->AddComponent(comp);
+            app->scene->AddGameObject(go);
+            break;
+
+        case KbGeometryType::PYRAMID:
+            go = new GameObject("Pyramid");
+            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);
+            go->AddComponent(comp);
+            app->scene->AddGameObject(go);
+
+            break;
+    }
+
+    return go;
 }

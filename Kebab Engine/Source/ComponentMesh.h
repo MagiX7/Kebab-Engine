@@ -33,7 +33,7 @@ public:
 	std::vector<uint32_t> indices;
 	std::vector<Texture>  textures;
 
-private:
+protected:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	Texture* texture;

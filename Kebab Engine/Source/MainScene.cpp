@@ -40,10 +40,12 @@ bool MainScene::Start()
     //model = new MeshLoader("Assets/3D Models/bakerHouse.fbx");
     //app->renderer3D->Submit(model);
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/heavy.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/heavy.fbx"));
 
-    
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+
     /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
     app->renderer3D->Submit(c);*/
 

@@ -3,6 +3,8 @@
 
 #include "MeshLoader.h"
 
+#include "imgui/imgui_impl_sdl.h"
+
 #include "mmgr/mmgr.h"
 
 #define MAX_KEYS 300
@@ -93,6 +95,8 @@ bool Input::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:

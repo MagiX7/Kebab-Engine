@@ -6,10 +6,10 @@ KbGeometry::~KbGeometry()
 {
 	glDeleteBuffers(1, &texBuffer);
 	//normals.clear();
-	RELEASE_ARRAY(vertices);
-	RELEASE_ARRAY(indices);
+	//RELEASE_ARRAY(vertices);
+	//RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(normals);
-	RELEASE_ARRAY(texCoords);
+	//RELEASE_ARRAY(texCoords);
 
 	RELEASE(vertexBuffer);
 	RELEASE(indexBuffer);
@@ -19,13 +19,15 @@ KbGeometry::~KbGeometry()
 
 void KbGeometry::SetUpBuffers()
 {
-	vertexBuffer = new VertexBuffer(vertices, sizeof(vertices) * verticesCount);
-	indexBuffer = new IndexBuffer(indices, indicesCount);
+	vertexBuffer = new VertexBuffer();
+	vertexBuffer->SetData(vertices);
+	//vertexBuffer = new VertexBuffer(vertices, sizeof(vertices) * verticesCount);
+	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
-	glGenBuffers(1, &texBuffer);
+	/*glGenBuffers(1, &texBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
 	glBufferData(GL_ARRAY_BUFFER, texCoordsCount * sizeof(float2), &texCoords[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
 	SetCheckerTexture();
 
@@ -65,9 +67,9 @@ void KbGeometry::Draw(bool showNormals)
 
 void KbGeometry::SetCheckerTexture()
 {
-	/*GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
-		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+	GLubyte checkerImage[40][40][4];
+	for (int i = 0; i < 40; i++) {
+		for (int j = 0; j < 40; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
 			checkerImage[i][j][0] = (GLubyte)c;
 			checkerImage[i][j][1] = (GLubyte)c;
@@ -76,6 +78,6 @@ void KbGeometry::SetCheckerTexture()
 		}
 	}
 
-	texture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT);*/
+	texture = new Texture(checkerImage, 40, 40);
 
 }

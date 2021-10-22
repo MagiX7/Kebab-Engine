@@ -27,6 +27,7 @@ ConfigPanel::ConfigPanel()
     texture2D = true;
     showNormals = false;*/
 
+    i = 0;
     scroll = 0;
 }
 

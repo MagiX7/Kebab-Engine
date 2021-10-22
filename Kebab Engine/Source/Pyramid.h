@@ -6,7 +6,7 @@ class KbPyramid : public KbGeometry
 {
 public:
 	// Position is the middle of the base
-	KbPyramid(float3 pos, float height, float baseWidth) : KbGeometry(pos)
+	KbPyramid(float3 pos, float height, float baseWidth, GameObject* parent) : KbGeometry(parent)
 	{
 		float ap = sqrt(pow(height, 2) + pow(baseWidth / 2, 2));
 
@@ -17,21 +17,28 @@ public:
 		float3 frontLeftCorner = { pos.x + distToCorner, pos.y, pos.z + distToCorner };
 		float3 backLeftCorner = { pos.x + distToCorner, pos.y, pos.z - distToCorner };
 
-		vertices = new float3[5 * 3];
-		verticesCount = 5 * 3;
-		float3 v[]=
-		{
-			{pos.x, pos.y + height,pos.z}, // Up
-			{frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z}, // Bottom left
-			{frontRightCorner.x, frontRightCorner.y, frontRightCorner.z}, // Bottom right
-			{backRightCorner.x, backRightCorner.y, backRightCorner.z}, // Bottom back right
-			{backLeftCorner.x, backLeftCorner.y, backLeftCorner.z} // Bottom back left
-		};
-		//memcpy(vertices, v, sizeof(float3) * verticesCount);
-		std::copy(v, v + verticesCount, vertices);
+		Vertex vertex;
+		vertex.position = { pos.x, pos.y + height,pos.z };
+		vertex.texCoords = { 0,1 };
+		vertices.push_back(vertex);
 		
-		indices = new uint32_t[6 * 3];
-		indicesCount = 6 * 3;
+		vertex.position = { frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z };
+		vertex.texCoords = { 0, 0 };
+		vertices.push_back(vertex);
+		
+		vertex.position = { frontRightCorner.x, frontRightCorner.y, frontRightCorner.z };
+		vertex.texCoords = { 1, 0 };
+		vertices.push_back(vertex);
+		
+		vertex.position = { backRightCorner.x, backRightCorner.y, backRightCorner.z };
+		vertex.texCoords = { 1, 1 };
+		vertices.push_back(vertex);
+
+		vertex.position = { backLeftCorner.x, backLeftCorner.y, backLeftCorner.z };
+		vertex.texCoords = { 1, 0 };
+		vertices.push_back(vertex);
+
+
 		uint32_t in[] =
 		{
 			// Front
@@ -50,8 +57,44 @@ public:
 			1,3,4,
 			2,3,1
 		};
+		indices.insert(indices.begin(), in, in + 6 * 3);
+
+
+		/*vertices = new float3[5 * 3];
+		verticesCount = 5 * 3;*/
+		//float3 v[]=
+		//{
+		//	{pos.x, pos.y + height,pos.z}, // Up
+		//	{frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z}, // Bottom left
+		//	{frontRightCorner.x, frontRightCorner.y, frontRightCorner.z}, // Bottom right
+		//	{backRightCorner.x, backRightCorner.y, backRightCorner.z}, // Bottom back right
+		//	{backLeftCorner.x, backLeftCorner.y, backLeftCorner.z} // Bottom back left
+		//};
+		//memcpy(vertices, v, sizeof(float3) * verticesCount);
+		//std::copy(v, v + verticesCount, vertices);
+		
+		//indices = new uint32_t[6 * 3];
+		//indicesCount = 6 * 3;
+		//uint32_t in[] =
+		//{
+		//	// Front
+		//	0,1,2,
+
+		//	// Right
+		//	0,2,3,
+
+		//	// Back
+		//	0,3,4,
+
+		//	// Left
+		//	0,4,1,
+
+		//	// Bottom
+		//	1,3,4,
+		//	2,3,1
+		//};
 		//memcpy(indices, in, sizeof(uint32_t) * indicesCount);
-		std::copy(in, in + verticesCount, indices);
+		//std::copy(in, in + verticesCount, indices);
 
 		SetUpBuffers();
 
@@ -73,8 +116,8 @@ public:
 
 	~KbPyramid()
 	{
-		RELEASE_ARRAY(vertices);
-		RELEASE_ARRAY(indices);
+		//RELEASE_ARRAY(vertices);
+		//RELEASE_ARRAY(indices);
 		RELEASE_ARRAY(normals);
 	}
 };

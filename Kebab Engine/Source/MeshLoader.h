@@ -8,6 +8,13 @@
 
 #include <assimp/scene.h>
 
+enum class KbGeometryType
+{
+	NONE = -1,
+	CUBE,
+	PYRAMID,
+};
+
 class MeshLoader
 {
 public:
@@ -16,6 +23,8 @@ public:
 	virtual ~MeshLoader();
 
 	GameObject* LoadModel(std::string path);
+
+	GameObject* LoadKbGeometry(KbGeometryType type);
 
 private:
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go);
