@@ -19,6 +19,8 @@ public:
 
 	virtual void Update() {};
 
+	virtual void DrawOnInspector() {};
+
 	virtual inline bool IsActive() { return active; }
 	virtual inline void SetActive(bool value) { active = value; }
 

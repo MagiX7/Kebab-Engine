@@ -2,6 +2,7 @@
 
 #include "ComponentTransform.h"
 
+#include "imgui/imgui.h"
 
 #define CHECKERS_HEIGHT 50
 #define CHECKERS_WIDTH 50
@@ -35,6 +36,16 @@ void ComponentMesh::Disable()
 
 void ComponentMesh::Update()
 {
+}
+
+void ComponentMesh::DrawOnInspector()
+{
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		ImGui::Text("Vertices: %i", vertices.size());
+		ImGui::Text("Indices: %i", indices.size());
+		ImGui::Text("Textures: %i", textures.size());
+	}
 }
 
 void ComponentMesh::Draw(bool showNormals)
