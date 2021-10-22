@@ -15,13 +15,23 @@ public:
 	void Enable();
 	void Disable();
 
-	void SetPosition(const float3& pos);
-	void SetRotation(const Quat& rot);
-	void SetScale(const float3& scal);
+	void Translate(const float3& pos);
+	void Rotate(const float3& rot);
+	void Scalate(const float3& scal);
+
+	void SetTranslation(const float3 newPos);
+	void SetRotation(const float3 newRot);
+	void SetScale(const float3 newScale);
 
 	const float3& GetPosition() const { return position; }
 	const float3& GetScale() const { return scale; }
-	const Quat& GetRotation() const { return rotation; }
+	const float3& GetRotation() const { return rotation; }
+
+	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
+
+
+private:
+	void UpdateTransform();
 
 	void DrawOnInspector();
 
@@ -29,7 +39,8 @@ private:
 
 	float3 position;
 	float3 scale;
-	Quat rotation;
+	//Quat rotation;
+	float3 rotation;
 
 	float4x4 localTransformMat;
 	float4x4 worldTransformMat;

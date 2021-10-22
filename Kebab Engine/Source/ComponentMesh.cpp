@@ -52,7 +52,10 @@ void ComponentMesh::DrawOnInspector()
 	// Temporarily, should move it to material component
 	if (ImGui::CollapsingHeader("Texture"))
 	{
-		ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
+		if(texture)
+			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
+		else
+			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
 	}
 }
 
@@ -106,7 +109,7 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	this->indices = indices;
 
 	this->texture = tex;
-	if (!texture) LOG_CONSOLE("Texture is NULL, gameobject %s", parent->GetName());
+	if (!texture) LOG_CONSOLE("Texture is NULL, gameobject %s", parent->GetName().c_str());
 
 	SetUpMesh();
 }

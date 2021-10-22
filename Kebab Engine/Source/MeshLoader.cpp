@@ -13,6 +13,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#define ASSETS_DIR "Assets/3D Models/"
+
 MeshLoader* MeshLoader::instance = nullptr;
 
 MeshLoader* MeshLoader::GetInstance()
@@ -154,29 +156,41 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
         }
     }
 
-    aiString name;
-    if (mesh->mMaterialIndex > 0)
+    std::string imageName;
+
+    if (scene->mMaterials > 0)
     {
         aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-        name = mat->GetName();
-    }
-    else
-        name = baseGO->GetName();
 
-    name.Append(".png");
-    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(name.C_Str()));
+        aiString n;
+        mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
+
+        std::string name = n.C_Str();
+        
+        if (name.size() > 0)
+        {
+            int start = name.find_last_of('\\');
+            if (start == 0)
+                start = name.find_last_of('/');
+
+            imageName = baseGO->GetName() + "/";
+            imageName += name.substr(start + 1);
+        }
+
+    }
+    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
     aiVector3D scale, rotation, position;
     scene->mRootNode->mTransformation.Decompose(scale, rotation, position);
 
     float3 s = { scale.x,scale.y,scale.z };
-    Quat r = { rotation.x, rotation.y, rotation.z, 1 };
+    float3 r = { rotation.x, rotation.y, rotation.z };
     float3 p = { position.x, position.y, position.z };
 
     ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-    trans->SetPosition(p);
-    trans->SetRotation(r);
-    trans->SetScale(s);
+    trans->Translate(p);
+    trans->Rotate(r);
+    trans->Scalate(s);
 
     //go->AddComponent(meshComp);
     go->SetParent(baseGO);

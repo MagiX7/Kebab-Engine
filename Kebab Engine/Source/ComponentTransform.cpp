@@ -7,6 +7,9 @@ ComponentTransform::ComponentTransform(GameObject& compOwner)
 	this->parent = &compOwner;
 	this->type = ComponentType::TRANSFORM;
 	this->active = true;
+
+	localTransformMat = float4x4::identity;
+	worldTransformMat = float4x4::identity;
 }
 
 ComponentTransform::~ComponentTransform()
@@ -48,17 +51,52 @@ void ComponentTransform::DrawOnInspector()
 	}
 }
 
-void ComponentTransform::SetPosition(const float3& pos)
+void ComponentTransform::UpdateTransform()
 {
-	position = pos;
+
 }
 
-void ComponentTransform::SetRotation(const Quat& rot)
+void ComponentTransform::Translate(const float3& pos)
 {
-	rotation = rot;
+	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(pos.x, pos.y, pos.z);
+
+	position += pos;
 }
 
-void ComponentTransform::SetScale(const float3& scal)
+void ComponentTransform::Rotate(const float3& rot)
 {
-	scale = scal;
+	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(rot.x, rot.y, rot.z);
+
+	rotation += rot;	
+}
+
+void ComponentTransform::Scalate(const float3& scal)
+{
+	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(scal.x, scal.y, scal.z);
+
+	scale += scal;
+}
+
+void ComponentTransform::SetTranslation(const float3 newPos)
+{
+	position = newPos;
+
+	float4x4 r = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+	localTransformMat = float4x4::FromTRS(position, r, scale);
+}
+
+void ComponentTransform::SetRotation(const float3 newRot)
+{
+	rotation = newRot;
+
+	float4x4 r = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+	localTransformMat = float4x4::FromTRS(position, r, scale);
+}
+
+void ComponentTransform::SetScale(const float3 newScale)
+{
+	scale = newScale;
+
+	float4x4 r = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+	localTransformMat = float4x4::FromTRS(position, r, scale);
 }
