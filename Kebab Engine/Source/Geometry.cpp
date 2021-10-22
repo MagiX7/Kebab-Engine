@@ -67,7 +67,7 @@ void KbGeometry::Draw(bool showNormals)
 
 void KbGeometry::SetCheckerTexture()
 {
-	GLubyte checkerImage[40][40][4];
+	/*GLubyte checkerImage[40][40][4];
 	for (int i = 0; i < 40; i++) {
 		for (int j = 0; j < 40; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -78,6 +78,6 @@ void KbGeometry::SetCheckerTexture()
 		}
 	}
 
-	texture = new Texture(checkerImage, 40, 40);
+	texture = new Texture(checkerImage, 40, 40);*/
 
 }

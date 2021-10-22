@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "MeshLoader.h"
+#include "TextureLoader.h"
 
 #include "Cube.h"
 #include "Pyramid.h"
@@ -130,30 +131,31 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     }
 
     //// Process materials
-    //if (mesh->mMaterialIndex > 0)
-    //{
-    //    aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+    if (mesh->mMaterialIndex > 0)
+    {
+        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
-    //    aiString str;
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
+        aiString str;
+        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
+        {
+            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+            Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
 
-    //        //diffuseMaps.push_back(*texDiffuse);
-    //        textures.push_back(*texDiffuse);
-    //    }
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
+            //diffuseMaps.push_back(*texDiffuse);
+            textures.push_back(*texDiffuse);
+        }
+        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
+        {
+            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+            Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
 
-    //        //specularMaps.push_back(*texSpecular);
-    //        textures.push_back(*texSpecular);
-    //    }
-    //}
-
-    meshComp->SetData(vertices, indices, textures);
+            //specularMaps.push_back(*texSpecular);
+            textures.push_back(*texSpecular);
+        }
+    }
+    std::string name = baseGO->GetName();
+    name.append(".png");
+    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(name.c_str()));
 
     aiVector3D scale, rotation, position;
     scene->mRootNode->mTransformation.Decompose(scale, rotation, position);

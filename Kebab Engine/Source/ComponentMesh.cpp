@@ -1,6 +1,8 @@
+#include "GameObject.h"
 #include "ComponentMesh.h"
-
 #include "ComponentTransform.h"
+
+#include "TextureLoader.h"
 
 #include "imgui/imgui.h"
 
@@ -45,6 +47,12 @@ void ComponentMesh::DrawOnInspector()
 		ImGui::Text("Vertices: %i", vertices.size());
 		ImGui::Text("Indices: %i", indices.size());
 		ImGui::Text("Textures: %i", textures.size());
+	}
+
+	// Temporarily, should move it to material component
+	if (ImGui::CollapsingHeader("Texture"))
+	{
+		ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
 	}
 }
 
@@ -92,11 +100,13 @@ void ComponentMesh::Draw(bool showNormals)
 	EndDraw();
 }
 
-void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
+void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*std::vector<Texture> textures*/)
 {
 	this->vertices = vertices;
 	this->indices = indices;
-	this->textures = textures;
+
+	this->texture = tex;
+	if (!texture) LOG_CONSOLE("Texture is NULL, gameobject %s", parent->GetName());
 
 	SetUpMesh();
 }
@@ -108,7 +118,9 @@ void ComponentMesh::SetUpMesh()
 
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
-	if(textures.size() == 0) SetCheckersTexture();
+	//texture = TextureLoader::GetInstance()->LoadTexture("Assets/3D Models/bakerHouse.png");
+
+	//if(textures.size() == 0) SetCheckersTexture();
 }
 
 void ComponentMesh::BeginDraw()
@@ -119,14 +131,15 @@ void ComponentMesh::BeginDraw()
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
 
-	if (textures.size() > 0)
+	/*if (textures.size() > 0)
 	{
 		for (int i = 0; i < textures.size(); ++i)
 		{
-			textures[i].Bind(i);
+			textures.data()->Bind(i);
 		}
 	}
-	else texture->Bind();
+	else */
+	if(texture) texture->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
 	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
@@ -136,14 +149,14 @@ void ComponentMesh::BeginDraw()
 
 void ComponentMesh::EndDraw()
 {
-	if (textures.size() > 0)
+	/*if (textures.size() > 0)
 	{
 		for (int i = 0; i < textures.size(); ++i)
 		{
 			textures[i].Unbind();
 		}
 	}
-	else texture->Unbind();
+	else */texture->Unbind();
 
 	indexBuffer->Unbind();
 	vertexBuffer->Unbind();
@@ -165,5 +178,5 @@ void ComponentMesh::SetCheckersTexture()
 		}
 	}
 
-	texture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT);
+	texture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture, generated in code.");
 }

@@ -55,6 +55,7 @@
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Sphere.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\TextureLoader.h" />
     <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
