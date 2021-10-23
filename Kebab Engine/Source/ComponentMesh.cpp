@@ -134,6 +134,14 @@ void ComponentMesh::SetUpMesh()
 
 void ComponentMesh::BeginDraw()
 {
+	ComponentTransform* t = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+	if (t)
+	{
+		float4x4 mat = t->GetLocalMatrix();
+		glPushMatrix();
+		glMultMatrixf(mat.Transposed().ptr());
+	}
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -158,6 +166,7 @@ void ComponentMesh::BeginDraw()
 
 void ComponentMesh::EndDraw()
 {
+	glPopMatrix();
 	/*if (textures.size() > 0)
 	{
 		for (int i = 0; i < textures.size(); ++i)

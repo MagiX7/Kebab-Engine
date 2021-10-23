@@ -11,7 +11,7 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);
 
 	transform->Translate({ 0,0,0 });
-	transform->Rotate({ 0,0,0 });
+	transform->Rotate({ 0,0,0,1 });
 	transform->Scalate({ 1,1,1, });
 }
 

@@ -133,28 +133,28 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     }
 
     //// Process materials
-    if (mesh->mMaterialIndex > 0)
-    {
-        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+    //if (mesh->mMaterialIndex > 0)
+    //{
+    //    aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
-        aiString str;
-        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
-        {
-            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-            Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
+    //    aiString str;
+    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
+    //    {
+    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+    //        Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
 
-            //diffuseMaps.push_back(*texDiffuse);
-            textures.push_back(*texDiffuse);
-        }
-        for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
-        {
-            mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-            Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
+    //        //diffuseMaps.push_back(*texDiffuse);
+    //        textures.push_back(*texDiffuse);
+    //    }
+    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
+    //    {
+    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+    //        Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
 
-            //specularMaps.push_back(*texSpecular);
-            textures.push_back(*texSpecular);
-        }
-    }
+    //        //specularMaps.push_back(*texSpecular);
+    //        textures.push_back(*texSpecular);
+    //    }
+    //}
 
     std::string imageName;
 
@@ -180,17 +180,18 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     }
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
-    aiVector3D scale, rotation, position;
+    aiVector3D scale, position;
+    aiQuaternion rotation;
     scene->mRootNode->mTransformation.Decompose(scale, rotation, position);
 
     float3 s = { scale.x,scale.y,scale.z };
-    float3 r = { rotation.x, rotation.y, rotation.z };
+    Quat r = { rotation.x, rotation.y, rotation.z, rotation.w };
     float3 p = { position.x, position.y, position.z };
 
     ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-    trans->Translate(p);
-    trans->Rotate(r);
-    trans->Scalate(s);
+    trans->SetTranslation(p);
+    trans->SetRotation(r);
+    trans->SetScale(s);
 
     //go->AddComponent(meshComp);
     go->SetParent(baseGO);

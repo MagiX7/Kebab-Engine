@@ -30,24 +30,31 @@ void ComponentTransform::DrawOnInspector()
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Text("Position");
-		ImGui::SetNextItemWidth(75.f);
-		bool change = ImGui::DragFloat("X", &position.x, 0.2f, -50.f, 50.f);
-		ImGui::SameLine();
-		ImGui::SetNextItemWidth(75.f);
-		change |= ImGui::DragFloat("Y", &position.y, 0.2f, -50.f, 50.f);
-		ImGui::SameLine();
-		ImGui::SetNextItemWidth(75.f);
-		change |= ImGui::DragFloat("Z", &position.z, 0.2f, -50.f, 50.f);
+		if (ImGui::DragFloat3("position", position.ptr(), 0.05f))
+		{
+			SetTranslation(position);
+		}
 
 		ImGui::Separator();
 
 		ImGui::Text("Rotation");
-		ImGui::TextWrapped("x: %.2f	y: %.2f	z: %.2f", rotation.x, rotation.y, rotation.z);
+		static float3 newRot = { 0,0,0 };
+		if (ImGui::DragFloat3("rotation", newRot.ptr(), 0.05f))
+		{
+			Quat x = Quat::RotateX(math::DegToRad(newRot.x));
+			Quat y = Quat::RotateY(math::DegToRad(newRot.y));
+			Quat z = Quat::RotateZ(math::DegToRad(newRot.z));
+
+			SetRotation(x * y * z);
+		}
 
 		ImGui::Separator();
 
 		ImGui::Text("Scale");
-		ImGui::TextWrapped("x: %.2f	y: %.2f	z: %.2f", scale.x, scale.y, scale.z);
+		if(ImGui::DragFloat3("scale", scale.ptr(), 0.05f))
+		{
+			SetScale(scale);
+		}
 	}
 }
 
@@ -63,11 +70,14 @@ void ComponentTransform::Translate(const float3& pos)
 	position += pos;
 }
 
-void ComponentTransform::Rotate(const float3& rot)
+void ComponentTransform::Rotate(const Quat& rot)
 {
-	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(rot.x, rot.y, rot.z);
+	localTransformMat = localTransformMat * float4x4::FromQuat(rot);
 
-	rotation += rot;	
+	rotation.x += rot.x;
+	rotation.y += rot.y;
+	rotation.z += rot.z;
+	rotation.w += rot.w;
 }
 
 void ComponentTransform::Scalate(const float3& scal)
@@ -77,23 +87,28 @@ void ComponentTransform::Scalate(const float3& scal)
 	scale += scal;
 }
 
-void ComponentTransform::SetTranslation(const float3 newPos)
+void ComponentTransform::SetTranslation(const float3& newPos)
 {
 	position = newPos;
 
-	float4x4 r = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
-	localTransformMat = float4x4::FromTRS(position, r, scale);
+	//float4x4 r = float4x4::FromQuat(rotation);
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 }
 
-void ComponentTransform::SetRotation(const float3 newRot)
+void ComponentTransform::SetRotation(const Quat& newRot)
 {
-	rotation = newRot;
+	//float len = newRot.Normalize();
+	//rotation = newRot;
 
-	float4x4 r = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
-	localTransformMat = float4x4::FromTRS(position, r, scale);
+	//rotation = Quat::FromEulerXYX(newRot.x, newRot.y, newRot.z);
+
+	//rotation = newRot;
+
+	//float4x4 r = float4x4::FromQuat(rotation);
+	localTransformMat = float4x4::FromTRS(position, newRot, scale);
 }
 
-void ComponentTransform::SetScale(const float3 newScale)
+void ComponentTransform::SetScale(const float3& newScale)
 {
 	scale = newScale;
 
