@@ -31,7 +31,9 @@ public:
 
 
 private:
-	void UpdateTransform();
+	void UpdateTransform(float4x4 newTransform);
+
+	void PropagateTransform(GameObject* go, float4x4 newTrans);
 
 	void DrawOnInspector();
 

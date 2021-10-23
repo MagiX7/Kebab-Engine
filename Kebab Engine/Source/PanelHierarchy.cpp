@@ -48,11 +48,11 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 	ImGuiTreeNodeFlags flags = 0;
 	flags |= ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;;
 
-	if (ImGui::IsItemClicked())
-		currentGO = parentGO;
-
 	if (ImGui::TreeNodeEx(parentGO->GetName().c_str(), flags))
 	{
+		if (ImGui::IsItemClicked())
+			currentGO = parentGO;
+
 		for (int i = 0; i < parentGO->GetChilds().size(); ++i)
 		{
 			const auto& goChild = parentGO->GetChilds()[i];
@@ -65,6 +65,9 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 
 			if (ImGui::TreeNodeEx(goChild->GetName().c_str(), flags))
 			{
+				if (ImGui::IsItemClicked())
+					currentGO = goChild;
+
 				// Display the hierarchy recursively
 				if (goChild->GetChilds().size() > 0)
 				{

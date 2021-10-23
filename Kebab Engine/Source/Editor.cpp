@@ -125,6 +125,19 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             }
             ImGui::EndMenu();
         }
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            if (ImGui::MenuItem("Cube"))
+            {
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+            }
+            if (ImGui::MenuItem("Pyramid"))
+            {
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+            }
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("View"))
         {
             if (ImGui::MenuItem("Console"))

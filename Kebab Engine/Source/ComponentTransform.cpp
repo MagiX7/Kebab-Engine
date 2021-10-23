@@ -1,5 +1,7 @@
 #include "ComponentTransform.h"
 
+#include "GameObject.h"
+
 #include "imgui/imgui.h"
 
 ComponentTransform::ComponentTransform(GameObject& compOwner)
@@ -33,6 +35,9 @@ void ComponentTransform::DrawOnInspector()
 		if (ImGui::DragFloat3("position", position.ptr(), 0.05f))
 		{
 			SetTranslation(position);
+
+			PropagateTransform(parent, float4x4::FromTRS(position, rotation, scale));
+
 		}
 
 		ImGui::Separator();
@@ -58,33 +63,56 @@ void ComponentTransform::DrawOnInspector()
 	}
 }
 
-void ComponentTransform::UpdateTransform()
+void ComponentTransform::UpdateTransform(float4x4 newTransform)
 {
 
+}
+
+void ComponentTransform::PropagateTransform(GameObject* go, float4x4 newTrans)
+{
+	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
+	for (; it != parent->GetChilds().end(); ++it)
+	{
+		ComponentTransform* tr = (ComponentTransform*)(*it)->GetComponent(ComponentType::TRANSFORM);
+
+		if ((*it)->GetChilds().size() > 0)
+		{
+			PropagateTransform((*it), newTrans);
+		}
+		else
+		{
+			newTrans.Decompose(position, rotation, scale);
+			tr->SetTranslation(position);
+			tr->SetRotation(rotation);
+			tr->SetScale(scale);
+		}
+	}
 }
 
 void ComponentTransform::Translate(const float3& pos)
 {
-	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(pos.x, pos.y, pos.z);
-
+	//localTransformMat = localTransformMat * float4x4::FromEulerXYZ(pos.x, pos.y, pos.z);
 	position += pos;
+
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+
 }
 
 void ComponentTransform::Rotate(const Quat& rot)
 {
-	localTransformMat = localTransformMat * float4x4::FromQuat(rot);
-
 	rotation.x += rot.x;
 	rotation.y += rot.y;
 	rotation.z += rot.z;
 	rotation.w += rot.w;
+
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 }
 
 void ComponentTransform::Scalate(const float3& scal)
 {
-	localTransformMat = localTransformMat * float4x4::FromEulerXYZ(scal.x, scal.y, scal.z);
-
 	scale += scal;
+
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 }
 
 void ComponentTransform::SetTranslation(const float3& newPos)
