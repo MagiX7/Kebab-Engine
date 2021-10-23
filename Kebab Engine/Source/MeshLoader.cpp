@@ -70,7 +70,11 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
     // Then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        ProcessNode(node->mChildren[i], scene, baseGO);
+        if(baseGO->GetChilds().size() > i)
+            ProcessNode(node->mChildren[i], scene, baseGO->GetChilds()[i]);
+        else
+            ProcessNode(node->mChildren[i], scene, baseGO);
+
     }
 }
 
@@ -132,32 +136,7 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
             indices.push_back(face.mIndices[j]);
     }
 
-    //// Process materials
-    //if (mesh->mMaterialIndex > 0)
-    //{
-    //    aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-
-    //    aiString str;
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texDiffuse = app->textures->CreateTexture(str.C_Str());
-
-    //        //diffuseMaps.push_back(*texDiffuse);
-    //        textures.push_back(*texDiffuse);
-    //    }
-    //    for (unsigned int i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
-    //    {
-    //        mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
-    //        Texture* texSpecular = app->textures->CreateTexture(str.C_Str());
-
-    //        //specularMaps.push_back(*texSpecular);
-    //        textures.push_back(*texSpecular);
-    //    }
-    //}
-
     std::string imageName;
-
     if (scene->mMaterials > 0)
     {
         aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
