@@ -156,7 +156,7 @@ bool Input::PreUpdate(float dt)
 				else if (extension == "dds" || extension == "png")
 				{
 					GameObject* target = app->editor->hierarchyPanel->currentGO;
-					if (target)
+					if (target->GetComponent(ComponentType::MESH))
 					{
 						for (int i = 0; i < target->GetComponents().size(); ++i)
 						{
@@ -168,6 +168,13 @@ bool Input::PreUpdate(float dt)
 							std::string a = (target->GetName() + '/' + name + '.' + extension);
 							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(a.c_str()));
 						}
+					}
+					else
+					{
+						std::string message = "Couldn't apply texture, selected game object "
+							+ target->GetName()
+							+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
+						LOG_CONSOLE(message.c_str());
 					}
 				}
 

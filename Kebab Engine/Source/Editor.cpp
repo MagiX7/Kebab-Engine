@@ -21,6 +21,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
 
     showAboutPanel = false;
     wireframe = true;
+    showWindows = true;
 }
 
 Editor::~Editor()
@@ -160,10 +161,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 inspectorPanel->active = !inspectorPanel->active;
             }
-            if (ImGui::Checkbox(" Wireframe", &wireframe))
+            if (ImGui::Checkbox("Show Editor Windows", &showWindows))
             {
-                //wireframe = !wireframe;
-                app->renderer3D->SetWireframe();
+
             }
             ImGui::EndMenu();
         }
@@ -208,12 +208,15 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         if (!demoShouldClose) showDemoWindow = false;
     }
 
-    if (showAboutPanel) ShowAboutPanel();
+    if (showWindows)
+    {
+        if (showAboutPanel) ShowAboutPanel();
 
-    if (consolePanel->active) consolePanel->OnRender(dt);
-    if (configPanel->active) configPanel->OnRender(dt);
-    if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
-    if (inspectorPanel->active) inspectorPanel->OnRender(dt);
+        if (consolePanel->active) consolePanel->OnRender(dt);
+        if (configPanel->active) configPanel->OnRender(dt);
+        if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
+        if (inspectorPanel->active) inspectorPanel->OnRender(dt);
+    }
 
     ImGui::EndFrame();
 

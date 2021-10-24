@@ -28,8 +28,6 @@ private:
 	
 	void ShowAboutPanel();
 
-	float scroll;
-
 public:
 
 	ConsolePanel* consolePanel;
@@ -38,14 +36,16 @@ public:
 	HierarchyPanel* hierarchyPanel;
 	InspectorPanel* inspectorPanel;
 
-	//FrameBuffer* frameBuffer;
-	//float2 viewportSize = { 0,0 };
-
 	bool showAboutPanel;
 	bool wireframe;
 
 	/*float fpsLog[MAX_IT_HIST];
 	float msLog[MAX_IT_HIST];
 	int i;*/
+
+private:
+	float scroll;
+
+	bool showWindows;
 
 };

@@ -123,8 +123,6 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 {
     //GameObject* go = new GameObject(mesh->mName.C_Str());
 
-    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
@@ -162,12 +160,13 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     }
 
     std::string imageName;
-    if (scene->mMaterials > 0)
+    if (scene->mNumMaterials > 0)
     {
         aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
         aiString n;
         mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
+        mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
 
         std::string name = n.C_Str();
         
@@ -180,8 +179,9 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
             imageName = nameBaseGO + "/";
             imageName += name.substr(start + 1);
         }
-
     }
+
+    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
     aiVector3D scale, position;

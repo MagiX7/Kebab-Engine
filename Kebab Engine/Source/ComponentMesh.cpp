@@ -67,8 +67,10 @@ void ComponentMesh::DrawOnInspector()
 	// Temporarily, should move it to material component
 	if (ImGui::CollapsingHeader("Texture"))
 	{
-		if(texture)
+		if(currentTexture && currentTexture == texture)
 			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
+		else if (currentTexture == checkersTexture)
+			ImGui::TextColored({ 255,255,0,255 }, "Default checkers texture");
 		else
 			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
 
@@ -80,8 +82,10 @@ void ComponentMesh::DrawOnInspector()
 			if (checkers)
 				currentTexture = checkersTexture;
 
-			else
+			else if (texture)
 				currentTexture = texture;
+
+			else currentTexture = nullptr;
 		}
 	}
 }
@@ -107,10 +111,9 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	if (!texture)
 	{
 		currentTexture = checkersTexture;
-
 		LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
 	}
-
+	else currentTexture = texture;
 
 	SetUpMesh();
 }
