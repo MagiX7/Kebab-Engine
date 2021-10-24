@@ -6,6 +6,9 @@
 
 #include "Vertex.h"
 
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
+
 class ComponentMesh : public Component
 {
 public:
@@ -21,8 +24,9 @@ public:
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*, std::vector<Texture> textures*/);
 	void SetTexture(Texture* tex);
 
-
 	void DrawOnInspector();
+
+	void CreateAABB();
 
 private:
 	void SetUpMesh();
@@ -36,6 +40,8 @@ public:
 	std::vector<Vertex>   vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Texture>  textures;
+
+	AABB aabb;
 
 protected:
 	VertexBuffer* vertexBuffer;

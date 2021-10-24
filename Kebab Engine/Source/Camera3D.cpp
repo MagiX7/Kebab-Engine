@@ -4,7 +4,6 @@
 #include "Camera.h"
 
 #include "mmgr/mmgr.h"
-#include "Math/float4.h"
 
 Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 {
@@ -85,7 +84,7 @@ bool Camera3D::Init(JSON_Object* root)
 // -----------------------------------------------------------------
 bool Camera3D::Start()
 {
-	LOG_CONSOLE("Setting up the camera");
+	LOG("Setting up the camera");
 	bool ret = true;
 
 	return ret;
@@ -94,9 +93,7 @@ bool Camera3D::Start()
 // -----------------------------------------------------------------
 bool Camera3D::CleanUp()
 {
-	LOG_CONSOLE("Cleaning camera");
-	
-	RELEASE(cam);
+	LOG("Cleaning camera");
 
 	return true;
 }
@@ -105,10 +102,13 @@ bool Camera3D::CleanUp()
 bool Camera3D::Update(float dt)
 {	
 	float3 newPos(0, 0, 0);
-	float speed = 10.0f * dt;
+	float speed = 20.0f * dt;
   
+	float dx = -app->input->GetMouseXMotion();
+	float dy = -app->input->GetMouseYMotion();
+
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 20.0f * dt;
+		speed = 40.0f * dt;
 
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -123,14 +123,11 @@ bool Camera3D::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.5f;
 
 		position += newPos;
-		//reference += newPos;
+		reference += newPos;
 
 		cam->SetCameraPosition(position);
 
 		// Rotation of camera ================================================================================
-		float dx = -app->input->GetMouseXMotion();
-		float dy = -app->input->GetMouseYMotion();
-
 		math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
 		math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
 		math::Quat finalRotation = rotationX * rotationY;
@@ -158,6 +155,42 @@ bool Camera3D::Update(float dt)
 			cam->SetCameraPosition(position);
 		}
 	}
+	
+	if (app->editor->hierarchyPanel->currentGO != nullptr)
+	{
+		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
+		ComponentMesh* compMeshGO = (ComponentMesh*)selectedGO->GetComponent(ComponentType::MESH);
+		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
+
+		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		{
+			float3 dist = compMeshGO->aabb.HalfSize() / tan(cam->GetVerticalFov()/2);
+
+			//cam->SetCameraPosition(compTransGO->GetPosition() + dist);
+
+			cam->SetCameraPosition(compMeshGO->aabb.CenterPoint());
+			position = cam->GetCameraPosition();
+
+			cam->Look(compTransGO->GetPosition());
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			reference = compTransGO->GetPosition();
+
+			float3 dir = cam->GetCameraPosition() - reference;
+
+			math::Quat rotationX = math::Quat::RotateAxisAngle(cam->frustum.Up(), dx * DEGTORAD);
+			math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
+			math::Quat finalRotation = rotationX * rotationY;
+
+			dir = finalRotation.Transform(dir);
+
+			position = dir + reference;
+			cam->SetCameraPosition(position);
+			LookAt(reference);
+		}
+	}
 
 	return true;
 }
@@ -174,17 +207,16 @@ void Camera3D::MoveTo(const float3& pos)
 	position = pos;
 }
 
-void Camera3D::SetPosLook(const float3& pos, const float3& point)
+void Camera3D::SetPosLook(const float3& pos, const float3& pointLook)
 {
-	cam->Look(point);
-	reference = point;
+	cam->Look(pointLook);
+	reference = pointLook;
 	cam->SetCameraPosition(pos);
 	position = pos;
 }
 
 void Camera3D::SetRatio(float ratio)
 {
-	//cam->frustum.SetVerticalFovAndAspectRatio(cam->GetVerticalFov(), ratio);
 	cam->frustum.SetHorizontalFovAndAspectRatio(Atan(ratio * Tan(cam->frustum.VerticalFov() / 2)) * 2, ratio);
 }
 
@@ -212,7 +244,7 @@ void Camera3D::Save(JSON_Object* root)
 
 	json_object_set_value(camObj, "rotation", json_value_init_object());
 	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
-
+	
 	json_object_set_value(rotObj, "x", json_value_init_object());
 	JSON_Object* xObj = json_object_get_object(rotObj, "x");
 	json_object_set_number(xObj, "x", x.x);

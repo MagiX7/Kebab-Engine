@@ -111,6 +111,16 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	SetUpMesh();
 }
 
+void ComponentMesh::CreateAABB()
+{
+	this->aabb.SetNegativeInfinity();
+
+	for (uint i = 0; i < this->vertices.size(); i++)
+	{
+		this->aabb.Enclose(this->vertices[i].position);
+	}
+}
+
 void ComponentMesh::SetTexture(Texture* tex)
 {
 	if (texture) RELEASE(texture);
@@ -123,6 +133,8 @@ void ComponentMesh::SetUpMesh()
 	vertexBuffer->SetData(vertices);
 
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
+
+	CreateAABB();
 
 	//texture = TextureLoader::GetInstance()->LoadTexture("Assets/3D Models/bakerHouse.png");
 

@@ -33,7 +33,6 @@ void InspectorPanel::OnRender(float dt)
 		if (app->editor->hierarchyPanel->currentGO)
 		{
 			std::vector<Component*>::const_iterator it = app->editor->hierarchyPanel->currentGO->GetComponents().begin();
-			app->editor->hierarchyPanel->currentGO->GetComponents().size();
 
 			for (; it != app->editor->hierarchyPanel->currentGO->GetComponents().end(); ++it)
 			{
