@@ -61,6 +61,29 @@ GameObject* MeshLoader::LoadModel(std::string path)
 
 void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO)
 {
+    for (int i = 0; i < node->mNumMeshes; ++i)
+    {
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        ProcessMesh(mesh, scene, baseGO);
+    }
+    for (int i = 0; i < node->mNumChildren; ++i)
+    {
+        if (node->mChildren[i]->mNumMeshes > 0)
+        {
+            GameObject* go = new GameObject(node->mChildren[i]->mName.C_Str());
+            go->SetParent(baseGO);
+            if (baseGO) baseGO->AddChild(go);
+
+            ProcessNode(node->mChildren[i], scene, go);
+            //app->scene->AddGameObject(go);
+        }
+        else
+        {
+            ProcessNode(node->mChildren[i], scene, baseGO);
+        }
+    }
+    
+    /*
     // Process all the node's meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
@@ -74,8 +97,8 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
             ProcessNode(node->mChildren[i], scene, baseGO->GetChilds()[i]);
         else
             ProcessNode(node->mChildren[i], scene, baseGO);
-
     }
+    */
 }
 
 std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
@@ -94,11 +117,11 @@ std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType
     return textures;
 }
 
-void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO)
+ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO)
 {
-    GameObject* go = new GameObject(mesh->mName.C_Str());
+    //GameObject* go = new GameObject(mesh->mName.C_Str());
 
-    ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
+    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -167,15 +190,19 @@ void MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* bas
     Quat r = { rotation.x, rotation.y, rotation.z, rotation.w };
     float3 p = { position.x, position.y, position.z };
 
-    ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+    ComponentTransform* trans = (ComponentTransform*)baseGO->GetComponent(ComponentType::TRANSFORM);
     trans->SetTranslation(p);
     trans->SetRotation(r);
     trans->SetScale(s);
 
-    //go->AddComponent(meshComp);
-    go->SetParent(baseGO);
+    return meshComp;
 
-    baseGO->AddChild(go);
+
+    //go->AddComponent(meshComp);
+    //go->SetParent(baseGO);
+
+    //if(baseGO)
+    //    baseGO->AddChild(go);
 }
 
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)

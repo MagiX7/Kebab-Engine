@@ -161,7 +161,8 @@ bool Input::PreUpdate(float dt)
 						for (int i = 0; i < target->GetComponents().size(); ++i)
 						{
 							ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
-							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture((name + "." + extension).c_str()));
+							std::string a = (target->GetName() + '/' + name + '.' + extension);
+							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(a.c_str()));
 						}
 					}
 				}

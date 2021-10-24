@@ -29,7 +29,7 @@ public:
 private:
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go);
 	//Component* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO);
-	void ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO);
+	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO);
 	std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 private:

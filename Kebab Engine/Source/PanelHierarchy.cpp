@@ -40,9 +40,6 @@ void HierarchyPanel::OnRender(float dt)
 
 				if (ImGui::TreeNodeEx(go->GetName().c_str()))
 				{
-					if (ImGui::IsItemClicked())
-						currentGO = go;
-
 					if(go->GetChilds().size() > 0)
 						DisplayHierarchy(go);
 

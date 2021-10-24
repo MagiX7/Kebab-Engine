@@ -14,6 +14,11 @@ TextureLoader* TextureLoader::GetInstance()
 
 TextureLoader::~TextureLoader()
 {
+	RELEASE(instance);
+	for (int i = 0; i < textures.size(); ++i)
+	{
+		RELEASE(textures[i]);
+	}
 }
 
 Texture* TextureLoader::LoadTexture(const char* fileName)
