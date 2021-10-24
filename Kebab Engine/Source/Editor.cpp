@@ -91,6 +91,7 @@ void Editor::InitImGui()
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
+    ImGui::PushStyleColor(ImGuiCol_DockingPreview, { 0.1f,0.1f,0.1f,1 });
     //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer backends

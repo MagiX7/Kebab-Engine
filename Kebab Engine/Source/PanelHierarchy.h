@@ -13,6 +13,8 @@ public:
 private:
 	void DisplayHierarchy(GameObject* go);
 
+	void DisplayGameObjectMenu(GameObject* go);
+
 public:
 	GameObject* currentGO;
 

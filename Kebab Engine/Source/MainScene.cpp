@@ -88,3 +88,29 @@ void MainScene::AddGameObject(GameObject* go)
 {
     gameObjects.push_back(go);
 }
+
+void MainScene::DeleteGameObject(GameObject* go)
+{
+    std::vector<GameObject*>::iterator it = gameObjects.begin();
+
+    if (gameObjects.size() == 1)
+    {
+        gameObjects.erase(it);
+        //delete go;
+    }
+    else
+    {
+        for (; it != gameObjects.end(); ++it)
+        {
+            if ((*it) == go)
+            {
+                if ((*it)->GetChilds().size() > 0)
+                {
+                    DeleteGameObject(*it);
+                }
+                gameObjects.erase(it);
+                //delete (*it);
+            }
+        }
+    }
+}

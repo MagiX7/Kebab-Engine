@@ -42,6 +42,21 @@ void HierarchyPanel::OnRender(float dt)
 				{
 					if (ImGui::IsItemClicked())
 						currentGO = go;
+					
+					static bool optionsPopup = false;
+					if (ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
+					{
+						optionsPopup = true;
+					}
+					if (optionsPopup && !ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
+					{
+						optionsPopup = false;
+					}
+
+					if(optionsPopup)
+					{
+						DisplayGameObjectMenu(go);
+					}
 
 					if(go->GetChilds().size() > 0)
 						DisplayHierarchy(go);
@@ -113,4 +128,85 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 
 
 	}	
+}
+
+void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
+{
+	/*static bool open = false;
+	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		open = true;
+	}
+	if (open && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+		open = false;*/
+
+	//if (open)
+	//{
+		ImGui::OpenPopup(go->GetName().c_str());
+		//ImGui::OpenPopupOnItemClick(go->GetName().c_str());
+
+		if (ImGui::BeginPopup(go->GetName().c_str()))
+		{
+			//ImGui::Popupitem
+			if (ImGui::Button("Delete"))
+			{
+				app->scene->DeleteGameObject(go);
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Empty Child"))
+			{
+				GameObject* child = new GameObject("Game Object");
+				go->AddChild(child);
+				child->SetParent(go);
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Move up"))
+			{
+
+			}
+			if(ImGui::Button("Move down"))
+			{
+				if (!go->GetParent())
+				{
+					std::vector<GameObject*>::iterator it = go->GetChilds().begin();
+					while (it != go->GetChilds().end())
+					{
+						(*it)->UnParent();
+						++it;
+					}
+				}
+				else if (go->GetChilds().size() > 0)
+				{
+					GameObject* newParent = go->GetChilds()[0];
+					GameObject* oldParent = go->GetParent();
+
+					if (oldParent)
+					{
+						std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
+						while ((*it) != go)
+							++it;
+
+						oldParent->GetChilds().erase(it);
+						//go->UnParent();
+					}
+					
+
+					/*std::vector<GameObject*>::iterator it = go->GetChilds().begin();
+					while (it != go->GetChilds().end())
+					{
+						(*it)->UnParent();
+						++it;
+					}*/
+
+					newParent->AddChild(go);
+					go->SetParent(newParent);
+
+				}
+				else
+					LOG_CONSOLE("Can't move down because there are no childs")
+			}
+
+			ImGui::EndPopup();
+		}
+	//}
 }
