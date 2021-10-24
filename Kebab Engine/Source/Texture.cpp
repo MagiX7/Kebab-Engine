@@ -11,9 +11,9 @@ Texture::Texture(void* data, int width, int height, std::string path)
 {
 	this->width = width;
 	this->height = height;
-	this->path = path;
+	//this->path = path;
 
-	SetData(data, width, height);
+	SetData(data, width, height, path);
 }
 
 Texture::Texture(const char* fileName)
@@ -79,8 +79,13 @@ Texture::~Texture()
 	glDeleteTextures(1, &rendererID);
 }
 
-void Texture::SetData(void* data, int width, int height)
+void Texture::SetData(void* data, int width, int height, std::string path)
 {
+	if (rendererID)
+	{
+		glDeleteTextures(1, &rendererID);
+	}
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &rendererID);
 	glBindTexture(GL_TEXTURE_2D, rendererID);
@@ -93,6 +98,8 @@ void Texture::SetData(void* data, int width, int height)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
+
+	this->path = path;
 }
 
 void Texture::Bind(unsigned int index) const

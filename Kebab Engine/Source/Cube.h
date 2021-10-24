@@ -10,4 +10,6 @@ public:
     KbCube(math::float3 pos, math::float3 size, GameObject* owner);
 
     ~KbCube();
+
+    void Draw(bool drawVertexNormals, bool drawTriangleNormals) override;
 };

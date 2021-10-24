@@ -40,6 +40,9 @@ void HierarchyPanel::OnRender(float dt)
 
 				if (ImGui::TreeNodeEx(go->GetName().c_str()))
 				{
+					if (ImGui::IsItemClicked())
+						currentGO = go;
+
 					if(go->GetChilds().size() > 0)
 						DisplayHierarchy(go);
 
@@ -60,8 +63,8 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 	{
 		const auto& goChild = parentGO->GetChilds()[i];
 
-		if (ImGui::IsItemClicked())
-			currentGO = goChild;
+		/*if (ImGui::IsItemClicked())
+			currentGO = goChild;*/
 
 		if (ImGui::TreeNodeEx(goChild->GetName().c_str(), flags))
 		{

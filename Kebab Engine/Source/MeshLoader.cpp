@@ -4,6 +4,8 @@
 
 #include "Cube.h"
 #include "Pyramid.h"
+#include "Plane.h"
+#include "Sphere.h"
 
 //#include "assimp/cimport.h"
 //#include "assimp/scene.h"
@@ -52,19 +54,19 @@ GameObject* MeshLoader::LoadModel(std::string path)
 
     GameObject* baseGO = new GameObject(name);
 
-    ProcessNode(scene->mRootNode, scene, baseGO);
+    ProcessNode(scene->mRootNode, scene, baseGO, name);
 
     app->scene->AddGameObject(baseGO);
 
     return baseGO;
 }
 
-void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO)
+void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO)
 {
     for (int i = 0; i < node->mNumMeshes; ++i)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        ProcessMesh(mesh, scene, baseGO);
+        ProcessMesh(mesh, scene, baseGO, nameBaseGO);
     }
     for (int i = 0; i < node->mNumChildren; ++i)
     {
@@ -74,12 +76,12 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
             go->SetParent(baseGO);
             if (baseGO) baseGO->AddChild(go);
 
-            ProcessNode(node->mChildren[i], scene, go);
+            ProcessNode(node->mChildren[i], scene, go, nameBaseGO);
             //app->scene->AddGameObject(go);
         }
         else
         {
-            ProcessNode(node->mChildren[i], scene, baseGO);
+            ProcessNode(node->mChildren[i], scene, baseGO, nameBaseGO);
         }
     }
     
@@ -117,7 +119,7 @@ std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType
     return textures;
 }
 
-ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO)
+ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO)
 {
     //GameObject* go = new GameObject(mesh->mName.C_Str());
 
@@ -175,7 +177,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
             if (start == 0)
                 start = name.find_last_of('/');
 
-            imageName = baseGO->GetName() + "/";
+            imageName = nameBaseGO + "/";
             imageName += name.substr(start + 1);
         }
 
@@ -194,6 +196,8 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     trans->SetTranslation(p);
     trans->SetRotation(r);
     trans->SetScale(s);
+
+    LOG_CONSOLE("Succesfully loaded mesh %s: %i vertices, %i indices", baseGO->GetName().c_str(), vertices.size(), indices.size());
 
     return meshComp;
 
@@ -215,17 +219,26 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
         case KbGeometryType::CUBE:
             go = new GameObject("Cube");
             comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
-            go->AddComponent(comp);
-            app->scene->AddGameObject(go);
             break;
 
         case KbGeometryType::PYRAMID:
             go = new GameObject("Pyramid");
             comp = new KbPyramid({ 0,0,0 }, 5, 3, go);
-            go->AddComponent(comp);
-            app->scene->AddGameObject(go);
-
             break;
+
+        case KbGeometryType::PLANE:
+            go = new GameObject("Plane");
+            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);
+            break;
+        case KbGeometryType::SPHERE:
+            go = new GameObject("Sphere");
+            comp = new KbSphere({ 0,0,0 }, 1, 10, 10, go);
+    }
+
+    if (go)
+    {
+        go->AddComponent(comp);
+        app->scene->AddGameObject(go);
     }
 
     return go;

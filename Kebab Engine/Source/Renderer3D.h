@@ -56,7 +56,9 @@ public:
 	bool colorMaterial;
 	bool texture2D;
 	bool wireframe;
-	bool showNormals;
+
+	bool drawVertexNormals;
+	bool drawTriangleNormals;
 
 private:
 	std::vector<KbGeometry*> geometries;

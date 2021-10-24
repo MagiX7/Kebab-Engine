@@ -184,11 +184,12 @@ void ConfigPanel::OnRender(float dt)
         {
             if (ImGui::BeginTable("Render Config Table", 2))
             {
-                ImGui::TableNextColumn();
+                //ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Depth", &app->renderer3D->depth))
                     app->renderer3D->SetDepth();
 
                 ImGui::TableNextColumn();
+
                 if (ImGui::Checkbox("Cull Face", &app->renderer3D->cullFace))
                     app->renderer3D->SetCullFace();
 
@@ -209,9 +210,9 @@ void ConfigPanel::OnRender(float dt)
                 
                 ImGui::TableNextColumn();
 
-                if (ImGui::Checkbox("Draw normals", &app->renderer3D->showNormals))
+                if (ImGui::Checkbox("Draw normals", &app->renderer3D->drawVertexNormals))
 
-                //ImGui::TableNextColumn();
+                ImGui::TableNextColumn();
 
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();

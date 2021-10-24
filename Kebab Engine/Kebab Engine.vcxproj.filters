@@ -124,6 +124,18 @@
     <ClCompile Include="Source\TextureLoader.cpp">
       <Filter>Source Files\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Cylinder.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pyramid.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Plane.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sphere.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -275,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="Source\TextureLoader.h">
       <Filter>Source Files\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Cylinder.h">
+      <Filter>Source Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
