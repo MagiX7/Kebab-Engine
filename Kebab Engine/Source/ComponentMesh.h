@@ -21,7 +21,6 @@ public:
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*, std::vector<Texture> textures*/);
 	void SetTexture(Texture* tex);
 
-	void DrawOnInspector();
 	void DrawVertexNormals();
 	void DrawTriangleNormals();
 

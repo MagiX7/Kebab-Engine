@@ -10,12 +10,11 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 {
 	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);
 
-	transform->SetPosition({ 0,0,0 });
+	transform->SetTranslation({ 0,0,0 });
 	transform->SetRotation({ 0,0,0,1 });
 	transform->SetScale({ 1,1,1, });
 
 	localAABB = nullptr;
-	activeAABB = false;
 }
 
 GameObject::~GameObject()
@@ -115,8 +114,6 @@ void GameObject::AddAABB()
 		{
 			localAABB->Enclose(mesh->vertices[i].position);
 		}
-
-		activeAABB = true;
 	}
 
 	if (childs.size() != 0)
@@ -143,7 +140,8 @@ void GameObject::SetCompleteAABB(GameObject* p)
 		}
 	}
 
-	p->aabb.Enclose(localAABB->minPoint, localAABB->maxPoint);
+	if (localAABB != nullptr)
+		p->aabb.Enclose(localAABB->minPoint, localAABB->maxPoint);
 }
 
 AABB* GameObject::GetCompleteAABB()

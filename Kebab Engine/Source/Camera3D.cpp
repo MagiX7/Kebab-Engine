@@ -163,36 +163,19 @@ bool Camera3D::Update(float dt)
 		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
 
+		selectedGO->SetCompleteAABB(selectedGO);
+		AABB* boundBox = selectedGO->GetCompleteAABB();
+
 		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
 
 		if (focusing == true)
 		{
-			selectedGO->SetCompleteAABB(selectedGO);
-			AABB* boundBox = selectedGO->GetCompleteAABB();
-
-			
-			position = boundBox->CenterPoint();
-			cam->SetCameraPosition(position);
-			cam->Look(reference);
-
-			focusing = false;
+			CenterCameraToGO(boundBox);
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
-			reference = compTransGO->GetPosition();
-
-			float3 dir = cam->GetCameraPosition() - reference;
-
-			math::Quat rotationX = math::Quat::RotateAxisAngle(cam->frustum.Up(), dx * DEGTORAD);
-			math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
-			math::Quat finalRotation = rotationX * rotationY;
-
-			dir = finalRotation.Transform(dir);
-
-			position = dir + reference;
-			cam->SetCameraPosition(position);
-			LookAt(reference);
+			OrbitGO(boundBox, dx, dy);
 		}
 	}
 
@@ -232,6 +215,46 @@ float* Camera3D::GetViewMatrix()
 float* Camera3D::GetProjectionMatrix()
 {
 	return cam->GetProjectionMatrix().ptr();
+}
+
+void Camera3D::CenterCameraToGO(AABB* boundBox)
+{
+	float dist = boundBox->Size().y / Tan(cam->GetVerticalFov() / 2);;
+	float3 dir = boundBox->CenterPoint() - position;
+
+	if (Distance(boundBox->CenterPoint(), position) > dist + 0.5f)
+	{
+		position += dir.Normalized();
+	}
+	else if (Distance(boundBox->CenterPoint(), position) < dist - 0.5f)
+	{
+		position -= dir.Normalized();
+	}
+	else
+	{
+		focusing = false;
+	}
+
+	reference = boundBox->CenterPoint();
+	cam->SetCameraPosition(position);
+	cam->Look(reference);
+}
+
+void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
+{
+	reference = boundBox->CenterPoint();
+
+	float3 dir = cam->GetCameraPosition() - reference;
+
+	math::Quat rotationX = math::Quat::RotateAxisAngle(cam->frustum.Up(), dx * DEGTORAD);
+	math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
+	math::Quat finalRotation = rotationX * rotationY;
+
+	dir = finalRotation.Transform(dir);
+
+	position = dir + reference;
+	cam->SetCameraPosition(position);
+	LookAt(reference);
 }
 
 void Camera3D::Save(JSON_Object* root)

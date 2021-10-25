@@ -37,8 +37,6 @@ public:
 	void SetCompleteAABB(GameObject* parent);
 	AABB* GetCompleteAABB();
 
-	bool activeAABB;
-
 private:
 
 	std::string name;
