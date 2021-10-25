@@ -32,7 +32,7 @@ void ComponentTransform::DrawOnInspector()
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Text("Position");
-		if (ImGui::DragFloat3("position", position.ptr(), 0.05f))
+		if (ImGui::DragFloat3("position", position.ptr(), 0.1f))
 		{
 			SetTranslation(position);
 
@@ -44,7 +44,7 @@ void ComponentTransform::DrawOnInspector()
 
 		ImGui::Text("Rotation");
 		static float3 newRot = { 0,0,0 };
-		if (ImGui::DragFloat3("rotation", newRot.ptr(), 0.05f))
+		if (ImGui::DragFloat3("rotation", newRot.ptr(), 0.1f))
 		{
 			Quat x = Quat::RotateX(math::DegToRad(newRot.x));
 			Quat y = Quat::RotateY(math::DegToRad(newRot.y));
@@ -56,7 +56,7 @@ void ComponentTransform::DrawOnInspector()
 		ImGui::Separator();
 
 		ImGui::Text("Scale");
-		if(ImGui::DragFloat3("scale", scale.ptr(), 0.05f))
+		if(ImGui::DragFloat3("scale", scale.ptr(), 0.1f))
 		{
 			SetScale(scale);
 		}

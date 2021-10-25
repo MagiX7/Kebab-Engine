@@ -312,7 +312,7 @@ void Renderer3D::Submit(GameObject* go)
 
 void Renderer3D::DrawGrid()
 {
-	glLineWidth(2.0f);
+	glLineWidth(1.5f);
 
 	glBegin(GL_LINES);
 
@@ -338,7 +338,7 @@ void Renderer3D::DrawGrid()
 
 	float d = 200.0f;
 
-	glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+	glColor4f(1.0f, 1.0f, 1.0f, 0.65f);
 	glLineWidth(1.0f);
 
 	for (float i = -d; i <= d; i += 1.0f)

@@ -20,6 +20,11 @@ Window::~Window()
 // Called before render is available
 bool Window::Init(JSON_Object* root)
 {
+	SDL_version ver;
+	SDL_VERSION(&ver);
+	std::string s = "Initializing SDL. Version: " + std::to_string(ver.major) + '.' + std::to_string(ver.minor) + '.' + std::to_string(ver.patch);
+	LOG_CONSOLE(s.c_str());
+
 	LOG_CONSOLE("Init SDL window & surface");
   
 	bool ret = true;

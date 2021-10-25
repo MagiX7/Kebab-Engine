@@ -28,6 +28,8 @@ private:
 	
 	void ShowAboutPanel();
 
+	void SetImGuiStyle();
+
 public:
 
 	ConsolePanel* consolePanel;
