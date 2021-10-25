@@ -20,11 +20,16 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 
 GameObject::~GameObject()
 {
+	for (auto& go : childs)
+	{
+		RELEASE(go);
+	}
+	childs.clear();
+
 	for (auto& c: components)
 	{
 		RELEASE(c);
 	}
-
 	components.clear();
 }
 
@@ -67,6 +72,21 @@ Component* GameObject::GetComponent(ComponentType type)
 	}
 
 	return nullptr;
+}
+
+void GameObject::UnParent()
+{
+	parent = nullptr;
+	/*if(parent)
+	{
+		for (int i = 0; i < parent->GetChilds().size(); ++i)
+		{
+			if (parent->GetChilds()[i] == this)
+			{
+				parent.
+			}
+		}
+	}*/
 }
 
 void GameObject::AddComponent(Component* comp)

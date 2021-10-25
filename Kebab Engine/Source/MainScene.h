@@ -17,7 +17,8 @@ public:
 	bool CleanUp();
 
 	void AddGameObject(GameObject* go);
-	inline const std::vector<GameObject*>& GetGameObjects() const { return gameObjects; }
+	void DeleteGameObject(GameObject* go);
+	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
 
 private:
 	std::vector<GameObject*> gameObjects;

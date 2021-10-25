@@ -15,13 +15,25 @@ public:
 	void Enable();
 	void Disable();
 
-	void SetPosition(const float3& pos);
-	void SetRotation(const Quat& rot);
-	void SetScale(const float3& scal);
+	void Translate(const float3& pos);
+	void Rotate(const Quat& rot);
+	void Scalate(const float3& scal);
+
+	void SetTranslation(const float3& newPos);
+	void SetRotation(const Quat& newRot);
+	void SetScale(const float3& newScale);
 
 	const float3& GetPosition() const { return position; }
 	const float3& GetScale() const { return scale; }
 	const Quat& GetRotation() const { return rotation; }
+
+	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
+
+
+private:
+	void UpdateTransform(float4x4 newTransform);
+
+	void PropagateTransform(GameObject* go, float4x4 newTrans);
 
 	void DrawOnInspector();
 
@@ -29,6 +41,7 @@ private:
 
 	float3 position;
 	float3 scale;
+	//Quat rotation;
 	Quat rotation;
 
 	float4x4 localTransformMat;

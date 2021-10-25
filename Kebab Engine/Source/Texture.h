@@ -24,7 +24,7 @@ public:
 	Texture(const char* fileName);
 	virtual ~Texture();
 
-	void SetData(void* data, int width, int height);
+	void SetData(void* data, int width, int height, std::string path);
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;

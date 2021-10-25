@@ -40,11 +40,12 @@ bool MainScene::Start()
     //model = new MeshLoader("Assets/3D Models/bakerHouse.fbx");
     //app->renderer3D->Submit(model);
 
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/soraFbx.fbx"));
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Avril.fbx"));
 
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
 
     /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
     app->renderer3D->Submit(c);*/
@@ -87,4 +88,30 @@ bool MainScene::CleanUp()
 void MainScene::AddGameObject(GameObject* go)
 {
     gameObjects.push_back(go);
+}
+
+void MainScene::DeleteGameObject(GameObject* go)
+{
+    std::vector<GameObject*>::iterator it = gameObjects.begin();
+
+    if (gameObjects.size() == 1)
+    {
+        gameObjects.erase(it);
+        //delete go;
+    }
+    else
+    {
+        for (; it != gameObjects.end(); ++it)
+        {
+            if ((*it) == go)
+            {
+                if ((*it)->GetChilds().size() > 0)
+                {
+                    DeleteGameObject(*it);
+                }
+                gameObjects.erase(it);
+                //delete (*it);
+            }
+        }
+    }
 }

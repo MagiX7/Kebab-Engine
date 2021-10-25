@@ -8,6 +8,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "mmgr/mmgr.h"
+#include <imgui/imgui_internal.h>
 
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
@@ -21,6 +22,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
 
     showAboutPanel = false;
     wireframe = true;
+    showWindows = true;
 }
 
 Editor::~Editor()
@@ -89,7 +91,9 @@ void Editor::InitImGui()
     }
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsDark();
+    SetImGuiStyle();
+    //ImGui::PushStyleColor(ImGuiCol_DockingPreview, { 0.1f,0.1f,0.1f,1 });
     //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer backends
@@ -125,6 +129,23 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             }
             ImGui::EndMenu();
         }
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            if (ImGui::MenuItem("Cube"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+
+            if (ImGui::MenuItem("Pyramid"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+            
+            if(ImGui::MenuItem("Plane"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
+            
+            if (ImGui::MenuItem("Sphere"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("View"))
         {
             if (ImGui::MenuItem("Console"))
@@ -143,10 +164,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 inspectorPanel->active = !inspectorPanel->active;
             }
-            if (ImGui::Checkbox(" Wireframe", &wireframe))
+            if (ImGui::Checkbox("Show Editor Windows", &showWindows))
             {
-                //wireframe = !wireframe;
-                app->renderer3D->SetWireframe();
+
             }
             ImGui::EndMenu();
         }
@@ -191,12 +211,15 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         if (!demoShouldClose) showDemoWindow = false;
     }
 
-    if (showAboutPanel) ShowAboutPanel();
+    if (showWindows)
+    {
+        if (showAboutPanel) ShowAboutPanel();
 
-    if (consolePanel->active) consolePanel->OnRender(dt);
-    if (configPanel->active) configPanel->OnRender(dt);
-    if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
-    if (inspectorPanel->active) inspectorPanel->OnRender(dt);
+        if (consolePanel->active) consolePanel->OnRender(dt);
+        if (configPanel->active) configPanel->OnRender(dt);
+        if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
+        if (inspectorPanel->active) inspectorPanel->OnRender(dt);
+    }
 
     ImGui::EndFrame();
 
@@ -255,13 +278,13 @@ void Editor::ShowAboutPanel()
     ImGui::BulletText("GLEW %s", glewGetString(GLEW_VERSION));
     ImGui::BulletText("ImGui %s", ImGui::GetVersion());
     ImGui::BulletText("MathGeoLib");
-    
+
     ImGui::NewLine();
 
     ImGui::Text("License: ");
     ImGui::Text("MIT License");
     ImGui::Text("\n");
-    ImGui::Text("Copyright(c) 2021 David González and Carlos Megia");
+    ImGui::Text("Copyright(c) 2021 David Gonzalez and Carlos Megia");
     ImGui::Text("\n");
     ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
     ImGui::Text("of this softwareand associated documentation files(the 'Software'), to deal");
@@ -284,4 +307,95 @@ void Editor::ShowAboutPanel()
     // TODO: Read file with JSON and print it
 
     ImGui::End();
+}
+
+void Editor::SetImGuiStyle()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    ImGuiStyle* style = &ImGui::GetStyle();
+    ImVec4* colors = style->Colors;
+
+    // -- UI Style Settings --
+    style->WindowPadding = ImVec2(5, 5);
+    style->WindowRounding = 3.0f;
+    style->FramePadding = ImVec2(5, 5);
+    style->FrameRounding = 5.0f;
+    style->ItemSpacing = ImVec2(15, 8);
+    style->ItemInnerSpacing = ImVec2(10, 8);
+    style->IndentSpacing = 25.0f;
+    style->ScrollbarSize = 15.0f;
+    style->ScrollbarRounding = 9.0f;
+
+    style->TabRounding = style->FrameRounding;
+    //style->ChildRounding = 4.0f;
+    style->PopupRounding = 3.0f;
+    style->TabBorderSize = 0.1f;
+
+
+    // UI Style Colors
+    colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+    colors[ImGuiCol_TextDisabled] = ImVec4(0.34f, 0.33f, 0.4f, 1.0f);
+    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.4f);
+    colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.0f);
+    colors[ImGuiCol_Border] = ImVec4(0.8f, 0.8f, 0.83f, 0.88f);
+    colors[ImGuiCol_MenuBarBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.1f, 0.09f, 0.12f, 1.0f);
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.4f, 0.4f, 0.4f, 0.7f);
+    colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 0.75f);
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.8f, 0.8f, 0.8f, 0.8f);
+
+    colors[ImGuiCol_CheckMark] = ImVec4(0.96f, 0.96f, 0.97f, 0.9f);
+    colors[ImGuiCol_SliderGrab] = ImVec4(0.65f, 0.65f, 0.65f, 0.75f);
+    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.4f, 0.8f, 0.9f, 1.0f);
+    colors[ImGuiCol_ResizeGrip] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+    colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.0f);
+    colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.0f);
+
+    colors[ImGuiCol_PlotLines] = ImVec4(0.6f, 0.6f, 0.9f, 1.f);
+    colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.0f, 0.7f, 0.6f, 1.0f);
+    colors[ImGuiCol_PlotHistogram] = colors[ImGuiCol_PlotLines];
+    colors[ImGuiCol_PlotHistogramHovered] = colors[ImGuiCol_PlotLinesHovered];
+
+    colors[ImGuiCol_TextSelectedBg] = ImVec4(0.78f, 0.5f, 0.5f, 0.85f);
+    colors[ImGuiCol_ModalWindowDimBg] = ImVec4(1.0f, 0, 0, 0);
+
+    // Headers
+    colors[ImGuiCol_Header] = ImVec4(0.13f, 0.13f, 0.21f, 0.8f);
+    colors[ImGuiCol_HeaderHovered] = ImVec4(0.17f, 0.17f, 0.25f, 0.9f);
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.45f, 0.45f, 0.7f, 1.0f);
+
+    // Buttons
+    colors[ImGuiCol_Button] = ImVec4(0.14f, 0.13f, 0.17f, 1.0f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.0f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.0f);
+
+    // Frames
+    colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
+    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.25f, 0.25f, 0.3f, 1.0f);
+    colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.0f);
+
+    // Titles
+    colors[ImGuiCol_TitleBg] = ImVec4(0.15f, 0.12f, 0.18f, 0.8f);
+    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.2f, 0.18f, 0.23f, 1.0f);
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.1f, 0.07f, 0.09f, 1.0f);
+
+
+    colors[ImGuiCol_ChildBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+    colors[ImGuiCol_Separator] = ImVec4(0.65f, 0.65f, 0.7f, 0.88f);
+    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.1f, 0.4f, 0.75f, 0.78f);
+    colors[ImGuiCol_SeparatorActive] = ImVec4(0.1f, 0.4f, 0.75f, 1.0f);
+    colors[ImGuiCol_DragDropTarget] = ImVec4(0.65f, 0.65f, 0.95f, 0.95f);
+    colors[ImGuiCol_NavHighlight] = ImVec4(0.26f, 0.59f, 0.98f, 1.0f);
+    colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.0f, 1.0f, 1.0f, 0.7f);
+
+    colors[ImGuiCol_DockingPreview] = ImVec4(0.1f, 0.1f, 0.1f, 1.f);
+    colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
+
+
+    // Tabs
+    colors[ImGuiCol_Tab] = ImVec4(0.44f, 0.42f, 0.42f, 0.5f);
+    colors[ImGuiCol_TabHovered] = ImVec4(0.45f, 0.45f, 0.46f, 0.9f);
+    colors[ImGuiCol_TabActive] = ImVec4(0.65f, 0.65f, 0.65f, 0.65f);
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.392f, 0.369f, 0.376f, 0.5f);
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.392f, 0.369f, 0.376f, 0.50f);
 }

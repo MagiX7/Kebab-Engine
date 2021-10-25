@@ -11,7 +11,7 @@ class GameObject
 {
 public:
 	GameObject(std::string name);
-	~GameObject();
+	virtual ~GameObject();
 
 	void Update(float dt);
 
@@ -19,11 +19,14 @@ public:
 	Component* GetComponent(ComponentType type);
 
 	inline void SetParent(GameObject* newParent) { parent = newParent; }
+	void UnParent();
 	inline GameObject* GetParent() const { return parent; }
 	inline const bool& HasParent() const { return parent; }
 
+
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);
+
 
 	inline const std::vector<Component*>& GetComponents() const { return components; }
 	inline std::vector<GameObject*>& GetChilds() { return childs; }

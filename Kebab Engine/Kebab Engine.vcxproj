@@ -27,6 +27,7 @@
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
     <ClCompile Include="Source\Cube.cpp" />
+    <ClCompile Include="Source\Cylinder.cpp" />
     <ClCompile Include="Source\External\imgui\imgui.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\External\imgui\imgui_draw.cpp" />
@@ -52,8 +53,11 @@
     <ClCompile Include="Source\PanelHierarchy.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
+    <ClCompile Include="Source\Plane.cpp" />
+    <ClCompile Include="Source\Pyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
+    <ClCompile Include="Source\Sphere.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
@@ -71,6 +75,7 @@
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\Cube.h" />
+    <ClInclude Include="Source\Cylinder.h" />
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\MeshLoader.h" />

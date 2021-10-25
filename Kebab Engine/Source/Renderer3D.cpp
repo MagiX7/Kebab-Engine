@@ -115,6 +115,9 @@ bool Renderer3D::Init(JSON_Object* root)
 	SetTexture2D();
 	SetWireframe();
 
+	drawVertexNormals = false;
+	drawTriangleNormals = false;
+
 	int w, h;
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
@@ -170,10 +173,10 @@ bool Renderer3D::Draw(float dt)
 	DrawGrid();
 
 	for (const auto& g : geometries)
-		g->Draw(showNormals);
+		g->Draw(drawVertexNormals, drawTriangleNormals);
 
 	for (const auto& mesh : meshes)
-		mesh->Draw(showNormals);
+		mesh->Draw(drawVertexNormals, drawTriangleNormals);
 
 	frameBuffer->Unbind();
 
@@ -278,7 +281,7 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
-	showNormals = json_object_get_boolean(renObj, "showNormals");
+	drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
 void Renderer3D::Submit(KbGeometry* geometry)
@@ -309,7 +312,7 @@ void Renderer3D::Submit(GameObject* go)
 
 void Renderer3D::DrawGrid()
 {
-	glLineWidth(2.0f);
+	glLineWidth(1.5f);
 
 	glBegin(GL_LINES);
 
@@ -335,7 +338,7 @@ void Renderer3D::DrawGrid()
 
 	float d = 200.0f;
 
-	glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+	glColor4f(1.0f, 1.0f, 1.0f, 0.65f);
 	glLineWidth(1.0f);
 
 	for (float i = -d; i <= d; i += 1.0f)
