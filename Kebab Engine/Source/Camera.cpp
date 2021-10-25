@@ -27,11 +27,9 @@ void Camera::Look(const vec& lookPoint)
 	{
 		vec direction = lookPoint - frustum.Pos();
 
-		//float3x3 matrix = float3x3::LookAt(frustum.Front(), direction.Normalized(), frustum.Up(), float3(0, 1, 0));
+		float3x3 matrix = float3x3::LookAt(frustum.Front(), direction.Normalized(), frustum.Up(), float3(0, 1, 0));
 
-		frustum.Transform(Quat::LookAt(frustum.Front(), direction.Normalized(), frustum.Up(), float3(0, 1, 0)));
-		/*frustum.SetFront(matrix.MulDir(frustum.Front()).Normalized());
-		frustum.SetUp(matrix.MulDir(frustum.Up()).Normalized());*/
+		frustum.SetFrame(frustum.Pos(), matrix.MulDir(frustum.Front()).Normalized(), matrix.MulDir(frustum.Up()).Normalized());
 	}
 }
 
