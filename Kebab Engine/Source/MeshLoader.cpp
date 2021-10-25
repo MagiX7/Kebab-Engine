@@ -158,7 +158,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
         for (unsigned int j = 0; j < face.mNumIndices; ++j)
             indices.push_back(face.mIndices[j]);
     }
-
+    
     std::string imageName;
     if (scene->mNumMaterials > 0)
     {
@@ -166,20 +166,41 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 
         aiString n;
         mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
+        //if(n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a diffuse texture", mesh->mName.C_Str());
         mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
+        //if (n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a base color texture\n", mesh->mName.C_Str());
 
-        std::string name = n.C_Str();
-        
+        std::string name;
+        name = n.C_Str();
+
         if (name.size() > 0)
         {
             int start = name.find_last_of('\\');
             if (start == 0)
                 start = name.find_last_of('/');
 
-            imageName = nameBaseGO + "/";
+            imageName = ASSETS_DIR + nameBaseGO + "/";
             imageName += name.substr(start + 1);
         }
     }
+        
+
+    /*int start = 0;
+    if (name.size() > 0)
+    {
+        start = name.find_last_of('\\');
+        if (start == 0)
+            start = name.find_last_of('/');
+
+        imageName = ASSETS_DIR + nameBaseGO + "/";
+        imageName += name.substr(start + 1);
+    }*/
+    /*else
+    {
+        imageName = ASSETS_DIR + nameBaseGO + "/";
+        imageName += name.substr(start + 1);
+    }*/
+
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
@@ -197,7 +218,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     trans->SetRotation(r);
     trans->SetScale(s);
 
-    LOG_CONSOLE("Succesfully loaded mesh %s: %i vertices, %i indices", baseGO->GetName().c_str(), vertices.size(), indices.size());
+    LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
     return meshComp;
 

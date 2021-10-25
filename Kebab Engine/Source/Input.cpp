@@ -166,7 +166,7 @@ bool Input::PreUpdate(float dt)
 								target = target->GetParent();
 
 							std::string a = (target->GetName() + '/' + name + '.' + extension);
-							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(a.c_str()));
+							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
 						}
 					}
 					else

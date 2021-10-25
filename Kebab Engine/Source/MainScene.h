@@ -18,7 +18,7 @@ public:
 
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
-	inline const std::vector<GameObject*>& GetGameObjects() const { return gameObjects; }
+	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
 
 private:
 	std::vector<GameObject*> gameObjects;

@@ -29,23 +29,23 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 	tmp = ilGenImage();
 	ilBindImage(tmp);
 
-	std::string dir = ASSETS_DIR;
-	dir.append(fileName);
+	/*std::string dir = ASSETS_DIR;
+	dir.append(fileName);*/
 
-	if (!ilLoadImage(dir.c_str()))
+	if (!ilLoadImage(fileName))
 	{
-		LOG_CONSOLE("Could not load Image from %s", dir.c_str());
+		LOG_CONSOLE("Could not load Image from %s", fileName);
 	}
 	else
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), dir);
+		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 		textures.push_back(ret);
 
 		ilDeleteImage(tmp);
 
-		LOG_CONSOLE("Loaded image from %s", dir.c_str());
+		LOG_CONSOLE("\nLoaded image from %s", fileName);
 	}
 
 	ilBindImage(0);
