@@ -75,3 +75,29 @@ void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
 }
+
+AABB& GameObject::BoundingBoxFromMeshes()
+{
+	if (boundingBox.Size().x == 0 && boundingBox.Size().y == 0 && boundingBox.Size().z == 0)
+	{
+		if (this->childs.size() != 0)
+		{
+			for (uint i = 0; i < this->childs.size(); i++)
+			{
+				boundingBox.Enclose(this->childs[i]->BoundingBoxFromMeshes());
+			}
+		}
+
+		ComponentMesh* compMesh = (ComponentMesh*)this->GetComponent(ComponentType::MESH);
+
+		if (compMesh != nullptr)
+		{
+			boundingBox.Enclose(compMesh->aabb);
+			return boundingBox;
+		}
+	}
+	else
+	{
+		return boundingBox;
+	}
+}

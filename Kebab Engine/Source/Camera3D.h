@@ -31,4 +31,6 @@ public:
 private:
 
 	Camera* cam;
+
+	bool focusing;
 };

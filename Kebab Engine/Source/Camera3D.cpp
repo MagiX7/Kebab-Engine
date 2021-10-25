@@ -14,6 +14,8 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 
 	cam = new Camera();
 
+	focusing = false;
+
 	cam->SetCameraPosition(position);
 	cam->Look(reference);
 }
@@ -119,8 +121,8 @@ bool Camera3D::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
 
-		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= cam->frustum.Up() * speed * 0.5f;
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += cam->frustum.Up() * speed * 0.5f;
+		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= float3::unitY * speed * 0.5f;
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += float3::unitY * speed * 0.5f;
 
 		position += newPos;
 		reference += newPos;
@@ -159,19 +161,27 @@ bool Camera3D::Update(float dt)
 	if (app->editor->hierarchyPanel->currentGO != nullptr)
 	{
 		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
-		ComponentMesh* compMeshGO = (ComponentMesh*)selectedGO->GetComponent(ComponentType::MESH);
 		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
 
-		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
+
+		if (focusing == true)
 		{
-			float3 dist = compMeshGO->aabb.HalfSize() / tan(cam->GetVerticalFov()/2);
+			AABB boundingBox = selectedGO->BoundingBoxFromMeshes();
+			float dist = boundingBox.Size().y / tan(cam->GetVerticalFov() / 2);
 
-			//cam->SetCameraPosition(compTransGO->GetPosition() + dist);
+			reference = boundingBox.CenterPoint();
 
-			cam->SetCameraPosition(compMeshGO->aabb.CenterPoint());
-			position = cam->GetCameraPosition();
+			float3 dir = boundingBox.CenterPoint() - position;
 
-			cam->Look(compTransGO->GetPosition());
+			/*if (position.DistanceSq(boundingBox->ExtremePoint(-dir)) > dist)
+				position += dir.Normalized();
+			else if (position.DistanceSq(boundingBox->ExtremePoint(-dir)) <= dist)
+				focusing = false;*/
+
+			cam->SetCameraPosition(float3(boundingBox.CenterPoint().x + boundingBox.Size().x, boundingBox.CenterPoint().y + boundingBox.Size().y, boundingBox.CenterPoint().z + +boundingBox.Size().z));
+			focusing = false;
+			cam->Look(reference);
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)

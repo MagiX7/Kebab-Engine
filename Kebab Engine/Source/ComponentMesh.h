@@ -7,7 +7,6 @@
 #include "Vertex.h"
 
 #include "Geometry/AABB.h"
-#include "Geometry/OBB.h"
 
 class ComponentMesh : public Component
 {
