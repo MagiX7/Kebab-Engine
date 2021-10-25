@@ -13,6 +13,9 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	transform->SetPosition({ 0,0,0 });
 	transform->SetRotation({ 0,0,0,1 });
 	transform->SetScale({ 1,1,1, });
+
+	localAABB = nullptr;
+	activeAABB = false;
 }
 
 GameObject::~GameObject()
@@ -76,28 +79,54 @@ void GameObject::AddChild(GameObject* child)
 	childs.push_back(child);
 }
 
-AABB& GameObject::BoundingBoxFromMeshes()
+void GameObject::AddAABB()
 {
-	if (boundingBox.Size().x == 0 && boundingBox.Size().y == 0 && boundingBox.Size().z == 0)
+	ComponentMesh* mesh = (ComponentMesh*)this->GetComponent(ComponentType::MESH);
+
+	if (mesh != nullptr)
 	{
-		if (this->childs.size() != 0)
+		if (localAABB == nullptr)
 		{
-			for (uint i = 0; i < this->childs.size(); i++)
-			{
-				boundingBox.Enclose(this->childs[i]->BoundingBoxFromMeshes());
-			}
+			localAABB = new AABB();
 		}
 
-		ComponentMesh* compMesh = (ComponentMesh*)this->GetComponent(ComponentType::MESH);
-
-		if (compMesh != nullptr)
+		localAABB->SetNegativeInfinity();
+		for (uint i = 0; i < mesh->vertices.size(); i++)
 		{
-			boundingBox.Enclose(compMesh->aabb);
-			return boundingBox;
+			localAABB->Enclose(mesh->vertices[i].position);
+		}
+
+		activeAABB = true;
+	}
+
+	if (childs.size() != 0)
+	{
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			childs[i]->AddAABB();
 		}
 	}
-	else
+}
+
+AABB* GameObject::GetLocalAABB()
+{
+	return localAABB;
+}
+
+void GameObject::SetCompleteAABB(GameObject* p)
+{
+	if (childs.size() != 0)
 	{
-		return boundingBox;
+		for (uint i = 0; i < childs.size(); i++)
+		{
+			childs[i]->SetCompleteAABB(p);
+		}
 	}
+
+	p->aabb.Enclose(localAABB->minPoint, localAABB->maxPoint);
+}
+
+AABB* GameObject::GetCompleteAABB()
+{
+	return &aabb;
 }

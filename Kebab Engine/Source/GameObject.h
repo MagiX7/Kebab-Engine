@@ -25,11 +25,16 @@ public:
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);
 
-	AABB& BoundingBoxFromMeshes();
-
 	inline const std::vector<Component*>& GetComponents() const { return components; }
 	inline std::vector<GameObject*>& GetChilds() { return childs; }
 	inline const std::string GetName() const { return name; }
+
+	void AddAABB();
+	AABB* GetLocalAABB();
+	void SetCompleteAABB(GameObject* parent);
+	AABB* GetCompleteAABB();
+
+	bool activeAABB;
 
 private:
 
@@ -39,7 +44,8 @@ private:
 	GameObject* parent;
 	std::vector<GameObject*> childs;
 
-	AABB boundingBox;
+	AABB aabb;
+	AABB* localAABB;
 
 	bool active;
 };

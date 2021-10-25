@@ -167,21 +167,15 @@ bool Camera3D::Update(float dt)
 
 		if (focusing == true)
 		{
-			AABB boundingBox = selectedGO->BoundingBoxFromMeshes();
-			float dist = boundingBox.Size().y / tan(cam->GetVerticalFov() / 2);
+			selectedGO->SetCompleteAABB(selectedGO);
+			AABB* boundBox = selectedGO->GetCompleteAABB();
 
-			reference = boundingBox.CenterPoint();
-
-			float3 dir = boundingBox.CenterPoint() - position;
-
-			/*if (position.DistanceSq(boundingBox->ExtremePoint(-dir)) > dist)
-				position += dir.Normalized();
-			else if (position.DistanceSq(boundingBox->ExtremePoint(-dir)) <= dist)
-				focusing = false;*/
-
-			cam->SetCameraPosition(float3(boundingBox.CenterPoint().x + boundingBox.Size().x, boundingBox.CenterPoint().y + boundingBox.Size().y, boundingBox.CenterPoint().z + +boundingBox.Size().z));
-			focusing = false;
+			
+			position = boundBox->CenterPoint();
+			cam->SetCameraPosition(position);
 			cam->Look(reference);
+
+			focusing = false;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
