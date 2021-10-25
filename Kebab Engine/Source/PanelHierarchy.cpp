@@ -147,10 +147,7 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 
 void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 {
-	
 	ImGui::OpenPopup(go->GetName().c_str());
-	//ImGui::OpenPopupOnItemClick(go->GetName().c_str());
-
 	if (ImGui::BeginPopup(go->GetName().c_str()))
 	{
 		//ImGui::Popupitem
@@ -168,43 +165,72 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 		}
 		if (ImGui::Button("Move up"))
 		{
+			if (go->GetParent())
+			{
+				int size = go->GetParent()->GetChilds().size();
+				for (int i = 0; i < size; ++i)
+				{
+					GameObject* current = go->GetParent()->GetChilds()[i];
+					if ((current == go) && (i >= 1))
+					{
+						GameObject* tmp = go->GetParent()->GetChilds()[i - 1];
+						go->GetParent()->GetChilds()[i - 1] = go->GetParent()->GetChilds()[i];
+						go->GetParent()->GetChilds()[i] = tmp;
+						break;
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < app->scene->GetGameObjects().size(); ++i)
+				{
+					GameObject* current = app->scene->GetGameObjects()[i];
+					if (current == go && i >= 1)
+					{
+						GameObject* tmp = app->scene->GetGameObjects()[i - 1];
+						app->scene->GetGameObjects()[i - 1] = app->scene->GetGameObjects()[i];
+						app->scene->GetGameObjects()[i] = tmp;
+						break;
+					}
+				}
+			}
 
 		}
-		if(ImGui::Button("Move down"))
+		if (ImGui::Button("Move down"))
 		{
 			// Childs
 			if (go->GetParent())
 			{
-				std::vector<GameObject*>::iterator it = go->GetChilds().begin();
-				std::vector<GameObject*>::iterator itEnd = go->GetChilds().end()  -1;
-				for (; it != itEnd; ++it)
+				int size = go->GetParent()->GetChilds().size();
+				for (int i = 0; i < size; ++i)
 				{
-					if ((*it) == go)
+					GameObject* current = go->GetParent()->GetChilds()[i];
+					if ((current == go) && (i <= size - 2))
 					{
-						app->scene->GetGameObjects().erase(it);
-						app->scene->GetGameObjects().insert(it, go);
+						GameObject* tmp = go->GetParent()->GetChilds()[i + 1];
+						go->GetParent()->GetChilds()[i + 1] = go->GetParent()->GetChilds()[i];
+						go->GetParent()->GetChilds()[i] = tmp;
+						break;
 					}
 				}
 			}
 			// Top parents
 			else
 			{
-				std::vector<GameObject*>::iterator it = app->scene->GetGameObjects().begin();
-				std::vector<GameObject*>::iterator itEnd = app->scene->GetGameObjects().end() - 1;
-				for (; it != itEnd; ++it)
+				int size = app->scene->GetGameObjects().size();
+				for (int i = 0; i < size; ++i)
 				{
-					if ((*it) == go)
+					GameObject* current = app->scene->GetGameObjects()[i];
+					if ((current == go) && (i <= size - 2))
 					{
-						//app->scene->GetGameObjects().insert
-						app->scene->GetGameObjects().erase(it);
-						//app->scene->GetGameObjects().emplace(it, go);
-						app->scene->GetGameObjects().insert(it, go);
+						GameObject* tmp = app->scene->GetGameObjects()[i + 1];
+						app->scene->GetGameObjects()[i + 1] = app->scene->GetGameObjects()[i];
+						app->scene->GetGameObjects()[i] = tmp;
+						break;
 					}
 				}
 			}
 		}
-
 		ImGui::EndPopup();
-		}
-	//}
+	}
 }

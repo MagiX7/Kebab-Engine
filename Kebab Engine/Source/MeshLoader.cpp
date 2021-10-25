@@ -6,6 +6,7 @@
 #include "Pyramid.h"
 #include "Plane.h"
 #include "Sphere.h"
+#include "Cylinder.h"
 
 //#include "assimp/cimport.h"
 //#include "assimp/scene.h"
@@ -251,9 +252,17 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             go = new GameObject("Plane");
             comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);
             break;
+        
         case KbGeometryType::SPHERE:
             go = new GameObject("Sphere");
             comp = new KbSphere({ 0,0,0 }, 1, 10, 10, go);
+            break;
+
+        case KbGeometryType::CYLINDER:
+            go = new GameObject("Cylinder");
+            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);
+            break;
+
     }
 
     if (go)
