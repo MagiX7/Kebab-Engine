@@ -236,32 +236,69 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
     GameObject* go = nullptr;
     Component* comp = nullptr;
 
+    std::string name;
     switch (type)
     {
         case KbGeometryType::CUBE:
-            go = new GameObject("Cube");
+        {
+            static int numCube = 0;
+            name = "Cube";
+            if(numCube > 0)
+                name += " " + std::to_string(numCube);
+            numCube++;
+
+            go = new GameObject(name.c_str());
             comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
             break;
+        }
 
         case KbGeometryType::PYRAMID:
-            go = new GameObject("Pyramid");
+        {
+            static int numPyr = 0;
+            name = "Pyramid";
+            if (numPyr > 0) name += " " + std::to_string(numPyr);
+            numPyr++;
+
+            go = new GameObject(name.c_str());
             comp = new KbPyramid({ 0,0,0 }, 5, 3, go);
             break;
+        }
 
         case KbGeometryType::PLANE:
-            go = new GameObject("Plane");
+        {
+            static int numPlane = 0;
+            name = "Plane";
+            if (numPlane > 0) name += " " + std::to_string(numPlane);
+            numPlane++;
+
+            go = new GameObject(name.c_str());
             comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);
             break;
+        }
         
         case KbGeometryType::SPHERE:
-            go = new GameObject("Sphere");
-            comp = new KbSphere({ 0,0,0 }, 1, 10, 10, go);
+        {
+            static int numSphere = 0;
+            name = "Sphere";
+            if (numSphere > 0) name += " " + std::to_string(numSphere);
+            numSphere++;
+
+            go = new GameObject(name.c_str());
+            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);
             break;
+        }
 
         case KbGeometryType::CYLINDER:
-            go = new GameObject("Cylinder");
+        {
+            static int numCyl = 0;
+            name = "Cylinder";
+            if (numCyl > 0) name = name += " " + std::to_string(numCyl);
+            numCyl++;
+
+            go = new GameObject(name.c_str());
             comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);
             break;
+        }
 
     }
 

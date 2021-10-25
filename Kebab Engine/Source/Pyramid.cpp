@@ -13,27 +13,27 @@ KbPyramid::KbPyramid(float3 pos, float height, float baseWidth, GameObject* pare
 
 	Vertex vertex;
 	vertex.position = { pos.x, pos.y + height,pos.z };
-	vertex.texCoords = { 0,1 };
+	vertex.texCoords = { 0.5,1 };
 	vertex.normal = vertex.position;
 	vertices.push_back(vertex);
 
 	vertex.position = { frontLeftCorner.x, frontLeftCorner.y, frontLeftCorner.z };
-	vertex.texCoords = { 0, 0 };
+	vertex.texCoords = { 1, 0 };
 	vertex.normal = vertex.position;
 	vertices.push_back(vertex);
 
 	vertex.position = { frontRightCorner.x, frontRightCorner.y, frontRightCorner.z };
-	vertex.texCoords = { 1, 0 };
+	vertex.texCoords = { 0, 0 };
 	vertex.normal = vertex.position;
 	vertices.push_back(vertex);
 
 	vertex.position = { backRightCorner.x, backRightCorner.y, backRightCorner.z };
-	vertex.texCoords = { 1, 1 };
+	vertex.texCoords = { 1, 0 };
 	vertex.normal = vertex.position;
 	vertices.push_back(vertex);
 
 	vertex.position = { backLeftCorner.x, backLeftCorner.y, backLeftCorner.z };
-	vertex.texCoords = { 1, 0 };
+	vertex.texCoords = { 0, 0 };
 	vertex.normal = vertex.position;
 	vertices.push_back(vertex);
 

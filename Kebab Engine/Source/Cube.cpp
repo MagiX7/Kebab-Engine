@@ -5,44 +5,50 @@
 KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeometry(owner)
 {
     Vertex vertex;
-
-    vertex.position = { -0.5f,  0.5f,  0.0f };
-    vertex.texCoords = { 0,1 };
-    vertex.normal = { vertex.position };
-    vertices.push_back(vertex);
-
-    vertex.position = { -0.5f, -0.5f,  0.0f };
+    
+    // 0
+    vertex.position = { -0.5f,  0.5f,  0.5f };
     vertex.texCoords = { 0,0 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
 
-    vertex.position = { 0.5f, -0.5f,  0.0f };
+    // 1
+    vertex.position = { -0.5f, -0.5f,  0.5f };
+    vertex.texCoords = { 0,1 };
+    vertex.normal = { vertex.position };
+    vertices.push_back(vertex);
+    // 2
+    vertex.position = { 0.5f, -0.5f,  0.5f };
+    vertex.texCoords = { 1,1 };
+    vertex.normal = { vertex.position };
+    vertices.push_back(vertex);
+    // 3
+    vertex.position = { 0.5f,  0.5f,  0.5f };
     vertex.texCoords = { 1,0 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
 
-    vertex.position = { 0.5f,  0.5f,  0.0f };
-    vertex.texCoords = { 1,1 };
-    vertex.normal = { vertex.position };
-    vertices.push_back(vertex);
-
-    vertex.position = { 0.5f, -0.5f, -1.0f };
+    // 4
+    vertex.position = { 0.5f, -0.5f, -0.5f };
     vertex.texCoords = { 0,1 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
 
-    vertex.position = { 0.5f,  0.5f, -1.0f };
+    // 5
+    vertex.position = { 0.5f,  0.5f, -0.5f };
     vertex.texCoords = { 0,0 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
     
-    vertex.position = { -0.5f, -0.5f, -1.0f };
-    vertex.texCoords = { 1,0 };
+    // 6
+    vertex.position = { -0.5f, -0.5f, -0.5f };
+    vertex.texCoords = { 1,1 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
 
-    vertex.position = { -0.5f,  0.5f, -1.0f };
-    vertex.texCoords = { 1,1 };
+    // 7
+    vertex.position = { -0.5f,  0.5f, -0.5f };
+    vertex.texCoords = { 1,0 };
     vertex.normal = { vertex.position };
     vertices.push_back(vertex);
 

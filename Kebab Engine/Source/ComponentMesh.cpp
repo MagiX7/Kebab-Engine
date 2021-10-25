@@ -8,8 +8,8 @@
 
 #include "imgui/imgui.h"
 
-#define CHECKERS_HEIGHT 50
-#define CHECKERS_WIDTH 50
+#define CHECKERS_HEIGHT 80
+#define CHECKERS_WIDTH 80
 
 ComponentMesh::ComponentMesh(GameObject& compOwner)
 {
@@ -273,17 +273,13 @@ Texture* ComponentMesh::SetCheckersTexture()
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 225;
 			checkerImage[i][j][0] = (GLubyte)c;
 			checkerImage[i][j][1] = (GLubyte)c;
 			checkerImage[i][j][2] = (GLubyte)c;
-			checkerImage[i][j][3] = (GLubyte)255;
+			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
-	/*if (texture)
-		texture->SetData(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
-	else*/
 	Texture* ret = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
-	//ret = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
 	return ret;
 }

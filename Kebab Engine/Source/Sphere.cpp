@@ -23,6 +23,7 @@ KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices, GameObj
             float z = sinf(theta) * sinf(phi);
 
             vertex.position = (float3(x, y, z) * radius);
+            vertex.texCoords = { x * radius,y * radius };
             vertices.push_back(vertex);
         }
     }
