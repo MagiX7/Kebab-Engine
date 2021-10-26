@@ -74,6 +74,19 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
         if (node->mChildren[i]->mNumMeshes > 0)
         {
             GameObject* go = new GameObject(node->mChildren[i]->mName.C_Str());
+            ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+            aiVector3D p, s;
+            aiQuaternion r;
+            node->mChildren[i]->mTransformation.Decompose(s, r, p);
+
+            float3 pos = { p.x, p.y, p.z };
+            float3 scale = { s.x,s.y,s.z };
+            Quat rot = { r.x,r.y,r.z,r.w };
+            tr->SetTranslation(pos);
+            tr->SetScale(scale);
+            tr->SetRotation(rot);
+
+
             go->SetParent(baseGO);
             if (baseGO) baseGO->AddChild(go);
 
@@ -206,8 +219,9 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
-    aiVector3D scale, position;
+    /*aiVector3D scale, position;
     aiQuaternion rotation;
+
     scene->mRootNode->mTransformation.Decompose(scale, rotation, position);
 
     float3 s = { scale.x,scale.y,scale.z };
@@ -217,7 +231,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentTransform* trans = (ComponentTransform*)baseGO->GetComponent(ComponentType::TRANSFORM);
     trans->SetTranslation(p);
     trans->SetRotation(r);
-    trans->SetScale(s);
+    trans->SetScale(s);*/
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
