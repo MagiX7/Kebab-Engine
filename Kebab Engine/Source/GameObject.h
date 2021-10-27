@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Geometry/AABB.h"
+
 class GameObject
 {
 public:
@@ -30,6 +32,12 @@ public:
 	inline std::vector<GameObject*>& GetChilds() { return childs; }
 	inline const std::string GetName() const { return name; }
 
+	void AddAABB();
+	AABB* GetLocalAABB();
+	void SetCompleteAABB(GameObject* parent);
+	AABB* GetCompleteAABB();
+	void UpdateAABB(float4x4& newTrans);
+
 private:
 
 	std::string name;
@@ -37,6 +45,9 @@ private:
 
 	GameObject* parent;
 	std::vector<GameObject*> childs;
+
+	AABB aabb;
+	AABB* localAABB;
 
 	bool active;
 };

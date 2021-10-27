@@ -209,6 +209,8 @@ void ComponentMesh::SetUpMesh()
 
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
+	this->parent->AddAABB();
+
 	//texture = TextureLoader::GetInstance()->LoadTexture("Assets/3D Models/bakerHouse.png");
 
 	//if(textures.size() == 0) SetCheckersTexture();

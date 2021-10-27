@@ -27,9 +27,17 @@ void ConsolePanel::OnRender(float dt)
             ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + ImGui::GetWindowHeight())
         {
             if (app->input->GetMouseZ() < 0)
-                scroll -= app->input->GetMouseZ() * 5;
+            {
+                scroll = ImGui::GetScrollY();
+                scroll -= app->input->GetMouseZ() * 2;
+                ImGui::SetScrollY(scroll);
+            }
             if (app->input->GetMouseZ() > 0)
-                scroll -= app->input->GetMouseZ() * 5;
+            {
+                scroll = ImGui::GetScrollY();
+                scroll -= app->input->GetMouseZ() * 2;
+                ImGui::SetScrollY(scroll);
+            }
             if (scroll <= 0) scroll = 0;
             else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
         }
@@ -39,11 +47,10 @@ void ConsolePanel::OnRender(float dt)
             scrollMax = false;
             if (maxScroll == 0)
                 maxScroll = ImGui::GetWindowHeight();
-            maxScroll += ImGui::GetFrameHeightWithSpacing();
+            maxScroll += 60;
             scroll = maxScroll;
+            ImGui::SetScrollY(scroll);
         }
-
-        ImGui::SetScrollY(scroll);
     }
     ImGui::End();
 }

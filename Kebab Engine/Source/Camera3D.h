@@ -24,6 +24,9 @@ public:
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
 
+	void CenterCameraToGO(AABB* boundBox);
+	void OrbitGO(AABB* boundBox, float& dx, float& dy);
+
 	void Save(JSON_Object* root) override;
 
 	float3 reference, position;
@@ -31,4 +34,6 @@ public:
 private:
 
 	Camera* cam;
+
+	bool focusing;
 };

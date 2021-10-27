@@ -164,10 +164,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 inspectorPanel->active = !inspectorPanel->active;
             }
-            if (ImGui::Checkbox("Show Editor Windows", &showWindows))
-            {
-
-            }
+            ImGui::Checkbox("Show Editor Windows", &showWindows);
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Help"))
