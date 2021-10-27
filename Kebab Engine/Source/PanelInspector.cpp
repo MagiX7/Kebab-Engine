@@ -21,14 +21,20 @@ void InspectorPanel::OnRender(float dt)
 			ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + ImGui::GetWindowHeight())
 		{
 			if (app->input->GetMouseZ() < 0)
-				scroll -= app->input->GetMouseZ() * 5;
+			{
+				scroll = ImGui::GetScrollY();
+				scroll -= app->input->GetMouseZ();
+				ImGui::SetScrollY(scroll);
+			}
 			if (app->input->GetMouseZ() > 0)
-				scroll -= app->input->GetMouseZ() * 5;
+			{
+				scroll = ImGui::GetScrollY();
+				scroll -= app->input->GetMouseZ();
+				ImGui::SetScrollY(scroll);
+			}
 			if (scroll <= 0) scroll = 0;
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 		}
-
-		ImGui::SetScrollY(scroll);
 
 		if (app->editor->hierarchyPanel->currentGO)
 		{
