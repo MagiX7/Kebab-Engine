@@ -23,7 +23,7 @@ public:
 	void SetRotation(const Quat& newRot);
 	void SetScale(const float3& newScale);
 
-	const float3& GetPosition() const { return position; }
+	const float3& GetTranslation() const { return position; }
 	const float3& GetScale() const { return scale; }
 	const Quat& GetRotation() const { return rotation; }
 
@@ -33,7 +33,7 @@ public:
 private:
 	void UpdateTransform(float4x4 newTransform);
 
-	void PropagateTransform(GameObject* go, float4x4 newTrans);
+	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
 
 	void DrawOnInspector();
 
