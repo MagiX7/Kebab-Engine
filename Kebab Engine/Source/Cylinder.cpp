@@ -2,6 +2,8 @@
 
 KbCylinder::KbCylinder(math::float3 pos, float baseRadius, float height, float sectors, GameObject* owner) : KbGeometry(pos, owner)
 {
+    isKbGeometry = true;
+
     this->height = height;
     this->radius = baseRadius;
     this->sectors = sectors;

@@ -31,7 +31,7 @@ public:
 
 	void SetUpBuffers();
 
-	virtual void Draw(bool drawVertexNormals, bool drawTriangleNormals);
+	//virtual void Draw();
 
 	void SetCheckerTexture();
 

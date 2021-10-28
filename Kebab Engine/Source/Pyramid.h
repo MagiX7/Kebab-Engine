@@ -10,5 +10,5 @@ public:
 
 	virtual ~KbPyramid();
 
-	void Draw(bool drawVertexNormals, bool drawTriangleNormals) override;
+	//void Draw() override;
 };

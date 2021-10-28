@@ -23,6 +23,7 @@ public:
 	inline GameObject* GetParent() const { return parent; }
 	inline const bool& HasParent() const { return parent; }
 
+	inline bool HasChilds() { return childs.size() > 0; }
 
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);
@@ -37,6 +38,7 @@ public:
 	void SetCompleteAABB(GameObject* parent);
 	AABB* GetCompleteAABB();
 	void UpdateAABB(float4x4& newTrans);
+
 
 private:
 

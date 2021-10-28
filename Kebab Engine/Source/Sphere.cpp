@@ -3,6 +3,8 @@
 // Slices for the X, stacks for the Y
 KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices, GameObject* owner) : KbGeometry(pos, owner)
 {
+    isKbGeometry = true;
+
     Vertex vertex;
 
     // Calc the vertices
@@ -43,36 +45,36 @@ KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices, GameObj
     SetUpBuffers();
 }
 
-void KbSphere::Draw(bool drawVertexNormals, bool drawTriangleNormals)
-{
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    //vertexArray->Bind();
-
-    vertexBuffer->Bind();
-    indexBuffer->Bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    texture->Bind();
-    glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
-    glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
-
-    if (drawVertexNormals)
-        DrawVertexNormals();
-    if (drawTriangleNormals)
-        DrawTriangleNormals();
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    texture->Unbind();
-
-    vertexBuffer->Unbind();
-    indexBuffer->Unbind();
-
-    //vertexArray->Unbind();
-
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
+//void KbSphere::Draw(bool drawVertexNormals, bool drawTriangleNormals)
+//{
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//
+//    //vertexArray->Bind();
+//
+//    vertexBuffer->Bind();
+//    indexBuffer->Bind();
+//    glVertexPointer(3, GL_FLOAT, 0, 0);
+//
+//    texture->Bind();
+//    glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+//    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+//
+//    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+//
+//    if (drawVertexNormals)
+//        DrawVertexNormals();
+//    if (drawTriangleNormals)
+//        DrawTriangleNormals();
+//
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    texture->Unbind();
+//
+//    vertexBuffer->Unbind();
+//    indexBuffer->Unbind();
+//
+//    //vertexArray->Unbind();
+//
+//    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//    glDisableClientState(GL_VERTEX_ARRAY);
+//}

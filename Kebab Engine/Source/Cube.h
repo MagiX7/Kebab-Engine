@@ -11,5 +11,5 @@ public:
 
     ~KbCube();
 
-    void Draw(bool drawVertexNormals, bool drawTriangleNormals) override;
+    //void Draw() override;
 };

@@ -216,9 +216,9 @@ void ConfigPanel::OnRender(float dt)
                 
                 ImGui::TableNextColumn();
 
-                if (ImGui::Checkbox("Draw normals", &app->renderer3D->drawVertexNormals))
+                //if (ImGui::Checkbox("Draw normals", &app->renderer3D->drawVertexNormals))
 
-                ImGui::TableNextColumn();
+                //ImGui::TableNextColumn();
 
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();

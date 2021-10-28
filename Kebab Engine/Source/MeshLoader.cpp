@@ -219,30 +219,9 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
-    /*aiVector3D scale, position;
-    aiQuaternion rotation;
-
-    scene->mRootNode->mTransformation.Decompose(scale, rotation, position);
-
-    float3 s = { scale.x,scale.y,scale.z };
-    Quat r = { rotation.x, rotation.y, rotation.z, rotation.w };
-    float3 p = { position.x, position.y, position.z };
-
-    ComponentTransform* trans = (ComponentTransform*)baseGO->GetComponent(ComponentType::TRANSFORM);
-    trans->SetTranslation(p);
-    trans->SetRotation(r);
-    trans->SetScale(s);*/
-
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
     return meshComp;
-
-
-    //go->AddComponent(meshComp);
-    //go->SetParent(baseGO);
-
-    //if(baseGO)
-    //    baseGO->AddChild(go);
 }
 
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
@@ -262,7 +241,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             numCube++;
 
             go = new GameObject(name.c_str());
-            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
+            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);            
             break;
         }
 

@@ -36,10 +36,8 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
-	void Submit(KbGeometry* geometry);
-	void Submit(const std::vector<KbGeometry>& geos);
-
 	void Submit(GameObject* go);
+	void EraseGameObject(GameObject* go);
 
 	void DrawGrid();
 
@@ -57,13 +55,9 @@ public:
 	bool texture2D;
 	bool wireframe;
 
-	bool drawVertexNormals;
-	bool drawTriangleNormals;
-
 private:
-	std::vector<KbGeometry*> geometries;
 	std::vector<ComponentMesh*> meshes;
-
+	std::vector<GameObject*> gameObjects;
 	
 	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;

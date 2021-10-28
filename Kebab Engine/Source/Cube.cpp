@@ -4,6 +4,8 @@
 
 KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeometry(owner)
 {
+    isKbGeometry = true;
+
     Vertex vertex;
     
     // 0
@@ -86,35 +88,35 @@ KbCube::~KbCube()
     RELEASE_ARRAY(normals);
 }
 
-void KbCube::Draw(bool drawVertexNormals, bool drawTriangleNormals)
-{
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-
-    vertexBuffer->Bind();
-    indexBuffer->Bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    texture->Bind();
-    glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
-    glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
-
-    if (drawVertexNormals)
-        DrawVertexNormals();
-    if (drawTriangleNormals)
-        DrawTriangleNormals();
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    texture->Unbind();
-
-    vertexBuffer->Unbind();
-    indexBuffer->Unbind();
-
-    //vertexArray->Unbind();
-
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
+//void KbCube::Draw()
+//{
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//
+//
+//    vertexBuffer->Bind();
+//    indexBuffer->Bind();
+//    glVertexPointer(3, GL_FLOAT, 0, 0);
+//
+//    texture->Bind();
+//    glBindBuffer(GL_ARRAY_BUFFER, texBuffer);
+//    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+//
+//    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+//
+//    if (drawVertexNormals)
+//        DrawVertexNormals();
+//    if (drawTriangleNormals)
+//        DrawTriangleNormals();
+//
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    texture->Unbind();
+//
+//    vertexBuffer->Unbind();
+//    indexBuffer->Unbind();
+//
+//    //vertexArray->Unbind();
+//
+//    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//    glDisableClientState(GL_VERTEX_ARRAY);
+//}

@@ -18,6 +18,13 @@ ComponentMesh::ComponentMesh(GameObject& compOwner)
 	this->active = true;
 
 	checkersTexture = SetCheckersTexture();
+
+	drawVertexNormals = false;
+	drawTriangleNormals = false;
+	
+	normalsTriangleSize = normalsVertexSize = 1.0f;
+	normalsVertexColor = { 1,0.5f,0 };
+	normalsTriangleColor = { 0,0.5f,1.0 };
 }
 
 ComponentMesh::~ComponentMesh()
@@ -53,15 +60,49 @@ void ComponentMesh::DrawOnInspector()
 		ImGui::Text("Indices: %i", indices.size());
 		ImGui::Text("Textures: %i", textures.size());
 
-		if (ImGui::Checkbox("Show vertex normals", &app->renderer3D->drawVertexNormals))
+		ImGui::Checkbox("Show vertex normals", &drawVertexNormals);
+		if (drawVertexNormals)
 		{
+			if (ImGui::TreeNodeEx("Attributes"))
+			{
+				ImGui::Separator();
+				ImGui::NewLine();
+
+				ImGui::DragFloat("Size", &normalsVertexSize, 0.01f);
+
+
+				ImGuiColorEditFlags flags = ImGuiColorEditFlags_PickerHueBar;
+				ImGui::ColorEdit3("Color", normalsVertexColor.ptr());
+				
+				ImGui::NewLine();
+				ImGui::Separator();
+				//ImGui::NewLine();
+				
+				ImGui::TreePop();
+			}
+			//ImGui::ColorPicker3("Normals color", normalColor.ptr(), flags);
 		}
 
-		if (ImGui::Checkbox("Show triangles normals", &app->renderer3D->drawTriangleNormals))
+		ImGui::Checkbox("Show triangles normals", &drawTriangleNormals);
+
+		if (drawTriangleNormals)
 		{
+			if(ImGui::TreeNodeEx("Attributes "))
+			{
+				ImGui::Separator();
+				ImGui::NewLine();
 
+				ImGui::DragFloat("Size ", &normalsTriangleSize, 0.01f);
+
+				ImGui::ColorEdit3("Color ", normalsTriangleColor.ptr());
+
+				ImGui::NewLine();
+				ImGui::Separator();
+
+				ImGui::TreePop();
+			}
+			//ImGui::ColorPicker3("Normals color", normalColor.ptr(), flags);
 		}
-
 	}
 
 	// Temporarily, should move it to material component
@@ -90,14 +131,16 @@ void ComponentMesh::DrawOnInspector()
 	}
 }
 
-void ComponentMesh::Draw(bool drawVertexNormals, bool drawTriangleNormals)
+void ComponentMesh::Draw()
 {
 	BeginDraw();
 
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 
-	if (drawVertexNormals) DrawVertexNormals();
-	if (drawTriangleNormals) DrawTriangleNormals();
+	if (drawVertexNormals)
+		DrawVertexNormals();
+	if (drawTriangleNormals)
+		DrawTriangleNormals();
 
 	EndDraw();
 }
@@ -129,30 +172,37 @@ void ComponentMesh::DrawVertexNormals()
 {
 	glBegin(GL_LINES);
 
-	/*float4 currentColor;
-	glGetFloatv(GL_CURRENT_COLOR, currentColor.ptr());
-
-	glColor4f(255, 255, 255, 255);*/
+	glColor3f(normalsVertexColor.x, normalsVertexColor.y, normalsVertexColor.z);
 
 	for (int i = 0; i < vertices.size(); ++i)
 	{
 		float3 pos = vertices[i].position;
 		glVertex3f(pos.x, pos.y, pos.z);
-		float3 n = vertices[i].position + vertices[i].normal;
-		n.Normalize();
-		n *= 0.5f;
-		glVertex3f(pos.x + n.x, pos.y + n.y, pos.z + n.z);
 
-		/*glVertex3f(vertices[i].position.x, vertices[i].position.y, vertices[i].position.z);
-		float3 n;
-		n.x = vertices[i].position.x + vertices[i].normal.x;
-		n.y = vertices[i].position.y + vertices[i].normal.y;
-		n.z = vertices[i].position.z + vertices[i].normal.z;
-		n.Normalize();
-		glVertex3f(n.x, n.y, n.z);*/
+		if (isKbGeometry)
+		{
+			float3 normal = vertices[i].normal;
+			normal.Normalize();
+
+			glVertex3f(pos.x + normal.x * normalsVertexSize, pos.y, pos.z);
+
+			glVertex3f(pos.x, pos.y, pos.z);
+			glVertex3f(pos.x, pos.y + normal.y * normalsVertexSize, pos.z);
+
+			glVertex3f(pos.x, pos.y, pos.z);
+			glVertex3f(pos.x, pos.y, pos.z + normal.z * normalsVertexSize);
+		}
+		else
+		{
+			float3 pos = vertices[i].position;
+			float3 n = vertices[i].position + vertices[i].normal;
+			n.Normalize();
+
+			glVertex3f(pos.x + n.x * normalsVertexSize, pos.y + n.y * normalsVertexSize, pos.z + n.z * normalsVertexSize);
+		}
 	}
-	
-	//glColor4f(currentColor.x, currentColor.y, currentColor.z, currentColor.w);
+
+	glColor3f(1, 1, 1);
 
 	glEnd();
 }
@@ -161,10 +211,7 @@ void ComponentMesh::DrawTriangleNormals()
 {
 	glBegin(GL_LINES);
 
-	/*float4 currentColor;
-	glGetFloatv(GL_CURRENT_COLOR, currentColor.ptr());
-
-	glColor4f(255, 0, 255, 255);*/
+	glColor3f(normalsTriangleColor.x, normalsTriangleColor.y, normalsTriangleColor.z);
 
 	for (unsigned int i = 0; i < indices.size(); i += 3)
 	{
@@ -172,32 +219,20 @@ void ComponentMesh::DrawTriangleNormals()
 		float3 v2 = vertices[indices[i + 1]].position;
 		float3 v3 = vertices[indices[i + 2]].position;
 
-		float3 triangleNormal = math::Cross(v2 - v1, v3 - v1);
-		triangleNormal.Normalize();
-		triangleNormal *= 0.5f;
+		float3 tNorm = math::Cross(v2 - v1, v3 - v1);
+		tNorm.Normalize();
+		//tNorm *= 0.5f;
 
-		float3 triangleCenter;
-		triangleCenter.x = (v1.x + v2.x + v3.x) / 3;
-		triangleCenter.y = (v1.y + v2.y + v3.y) / 3;
-		triangleCenter.z = (v1.z + v2.z + v3.z) / 3;
+		float3 tCent;
+		tCent.x = (v1.x + v2.x + v3.x) / 3;
+		tCent.y = (v1.y + v2.y + v3.y) / 3;
+		tCent.z = (v1.z + v2.z + v3.z) / 3;
 
-		glVertex3f(triangleCenter.x, triangleCenter.y, triangleCenter.z);
-		glVertex3f(triangleCenter.x + triangleNormal.x, triangleCenter.y + triangleNormal.y, triangleCenter.z + triangleNormal.z);
-
-		/*float3 vec1 = (vertices[i + 1].position - vertices[i + 2].position);
-		float3 vec2 = -(vertices[i].position - vertices[i + 1].position);
-		float3 n = math::Cross(vec1, vec2);
-		n.Normalize();
-
-		float3 cent;
-		cent.x = (vertices[i].position.x + vertices[i + 1].position.x + vertices[i + 2].position.x) / 3;
-		cent.y = (vertices[i].position.y + vertices[i + 1].position.y + vertices[i + 2].position.y) / 3;
-		cent.z = (vertices[i].position.z + vertices[i + 1].position.z + vertices[i + 2].position.z) / 3;
-		glVertex3f(cent.x, cent.y, cent.z);
-		glVertex3f(cent.x + n.x, cent.y + n.y, cent.z + n.z);*/
+		glVertex3f(tCent.x, tCent.y, tCent.z);
+		glVertex3f(tCent.x + tNorm.x * normalsTriangleSize, tCent.y + tNorm.y * normalsTriangleSize, tCent.z + tNorm.z * normalsTriangleSize);
 	}
 
-	//glColor4f(currentColor.x, currentColor.y, currentColor.z, currentColor.w);
+	glColor3f(1, 1, 1);
 
 	glEnd();
 }
@@ -225,6 +260,7 @@ void ComponentMesh::BeginDraw()
 		glPushMatrix();
 		glMultMatrixf(mat.Transposed().ptr());
 	}
+	
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);

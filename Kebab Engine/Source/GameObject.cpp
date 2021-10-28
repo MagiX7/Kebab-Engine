@@ -20,6 +20,8 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 
 GameObject::~GameObject()
 {
+	//DeleteChilds(this);
+
 	for (auto& go : childs)
 	{
 		RELEASE(go);
@@ -30,6 +32,9 @@ GameObject::~GameObject()
 	{
 		RELEASE(c);
 	}
+	components.clear();
+
+	childs.clear();
 	components.clear();
 
 	RELEASE(localAABB);

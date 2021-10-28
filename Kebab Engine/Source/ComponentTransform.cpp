@@ -12,6 +12,9 @@ ComponentTransform::ComponentTransform(GameObject& compOwner)
 
 	localTransformMat = float4x4::identity;
 	worldTransformMat = float4x4::identity;
+
+	guiPos = { 0,0,0 };
+	guiRot = { 0,0,0 };
 }
 
 ComponentTransform::~ComponentTransform()
@@ -43,28 +46,22 @@ void ComponentTransform::DrawOnInspector()
 
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		static float3 newPos;
-		static float3 newScale;
-
 		ImGui::Text("Position");
-		if (ImGui::DragFloat3("position", newPos.ptr(), 0.05f))
+		if (ImGui::DragFloat3("position", guiPos.ptr(), 0.05f))
 		{
-			SetTranslation(newPos);
-			//SetTranslation(position);
-
+			SetTranslation(guiPos);
+			
 			PropagateTransform(parent, position, rotation, scale);
-
 		}
 
 		ImGui::Separator();
 
 		ImGui::Text("Rotation");
-		static float3 newRot = { 0,0,0 };
-		if (ImGui::DragFloat3("rotation", newRot.ptr(), 0.05f))
+		if (ImGui::DragFloat3("rotation", guiRot.ptr(), 0.05f))
 		{
-			Quat x = Quat::RotateX(math::DegToRad(newRot.x));
-			Quat y = Quat::RotateY(math::DegToRad(newRot.y));
-			Quat z = Quat::RotateZ(math::DegToRad(newRot.z));
+			Quat x = Quat::RotateX(math::DegToRad(guiRot.x));
+			Quat y = Quat::RotateY(math::DegToRad(guiRot.y));
+			Quat z = Quat::RotateZ(math::DegToRad(guiRot.z));
 
 			SetRotation(x * y * z);
 			PropagateTransform(parent, position, rotation, scale);
@@ -139,5 +136,5 @@ void ComponentTransform::SetRotation(const Quat& newRot)
 void ComponentTransform::SetScale(const float3& newScale)
 {
 	scale = newScale;
-	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+	localTransformMat = float4x4::FromTRS(position, rotation, newScale);
 }

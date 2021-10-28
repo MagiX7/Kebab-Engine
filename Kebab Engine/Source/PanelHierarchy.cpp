@@ -7,6 +7,8 @@ HierarchyPanel::HierarchyPanel()
 	active = true;
 	scroll = 0;
 	goDragging = nullptr;
+	childOptionsPopup = false;
+	childOptionsPopup = false;
 }
 
 HierarchyPanel::~HierarchyPanel()
@@ -43,28 +45,57 @@ void HierarchyPanel::OnRender(float dt)
 			for (int i = 0; i < size; ++i)
 			{
 				GameObject* go = app->scene->GetGameObjects()[i];
+				
+				bool opened = ImGui::TreeNodeEx(go->GetName().c_str());
+				
 
-				if (ImGui::TreeNodeEx(go->GetName().c_str()))
+				////////////////// Current GameObject assignation //////////////////
+				static bool isClicked = false;
+				if (!isClicked && ImGui::IsItemClicked())
 				{
-					if (ImGui::IsItemClicked())
+					isClicked = true;
+					currentGO = go;
+				}
+				else if(isClicked && ImGui::IsItemClicked())
+				{
+					if (go == currentGO)
+					{
+						isClicked = false;
+						currentGO = nullptr;
+					}
+					else
+					{
+						isClicked = true;
 						currentGO = go;
-					
-					static bool optionsPopup = false;
-					if (ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
-					{
-						optionsPopup = true;
 					}
-					if (optionsPopup && !ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
-					{
-						optionsPopup = false;
-					}
+				}
 
-					if(optionsPopup)
-					{
-						DisplayGameObjectMenu(go);
-					}
 
-					if(go->GetChilds().size() > 0)
+				////////////////// Options Popup //////////////////
+				//static bool optionsPopup = false;
+				if (ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP)
+				{
+					/*if (optionsPopup) optionsPopup = false;*/
+					/*else*/ parentOptionsPopup = true;
+				}
+				else if (parentOptionsPopup && !ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP)
+					parentOptionsPopup = false;
+
+				if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+					parentOptionsPopup = false;
+
+				LOG_CONSOLE("optionsPopup: %i", parentOptionsPopup);
+
+				if (parentOptionsPopup)
+				{
+					DisplayGameObjectMenu(go, parentOptionsPopup);
+				}
+
+
+				////////////////// Recursively display the hierarchy for its childs //////////////////
+				if (opened)
+				{
+					if (go->GetChilds().size() > 0)
 						DisplayHierarchy(go);
 
 					ImGui::TreePop();
@@ -78,43 +109,64 @@ void HierarchyPanel::OnRender(float dt)
 void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 {
 	ImGuiTreeNodeFlags flags = 0;
-	flags |= ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;;
+	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
 	for (int i = 0; i < parentGO->GetChilds().size(); ++i)
 	{
 		const auto& goChild = parentGO->GetChilds()[i];
 
-		/*if (ImGui::IsItemClicked())
-			currentGO = goChild;*/
+		bool opened = ImGui::TreeNodeEx(goChild->GetName().c_str(), flags);
 
-		if (ImGui::TreeNodeEx(goChild->GetName().c_str(), flags))
+		
+		////////////////// Current GameObject assignation //////////////////
+		static bool isClicked = false;
+		if (!isClicked && ImGui::IsItemClicked())
 		{
-			if (ImGui::IsItemClicked())
+			isClicked = true;
+			currentGO = goChild;
+		}
+		else if (isClicked && ImGui::IsItemClicked())
+		{
+			if (goChild == currentGO)
+			{
+				isClicked = false;
+				currentGO = nullptr;
+			}
+			else
+			{
+				isClicked = true;
 				currentGO = goChild;
-
-			static bool optionsPopup = false;
-			if (ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
-			{
-				optionsPopup = true;
 			}
-			if (optionsPopup && !ImGui::IsItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN)
-			{
-				optionsPopup = false;
-			}
+		}
+		
 
-			if (optionsPopup)
-			{
-				DisplayGameObjectMenu(goChild);
-			}
-
-
+		////////////////// Recursively display the hierarchy for its childs //////////////////
+		if(opened)
+		{
 			DisplayHierarchy(goChild);
 			ImGui::TreePop();
 		}
+		
+
+		////////////////// Options Popup //////////////////
+		//static bool optionsPopup = false;
+		if (ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP)
+		{
+			childOptionsPopup = true;
+		}
+		else if (childOptionsPopup && !ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_UP)
+			childOptionsPopup = false;
+
+		if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+			childOptionsPopup = false;
+
+		if (childOptionsPopup)
+		{
+			DisplayGameObjectMenu(goChild, childOptionsPopup);
+		}
 
 
-		/////// Drag and drop
-
+		////////////////// Drag and drop //////////////////
 		if (ImGui::BeginDragDropSource())
 		{
 			goDragging = goChild;
@@ -146,24 +198,28 @@ void HierarchyPanel::DisplayHierarchy(GameObject* parentGO)
 			}
 			ImGui::EndDragDropTarget();
 		}
-
-
-	}	
+	} // For
 }
 
-void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
+void HierarchyPanel::DisplayGameObjectMenu(GameObject* go, bool& optionsPopup)
 {
 	ImGui::OpenPopup(go->GetName().c_str());
 	if (ImGui::BeginPopup(go->GetName().c_str()))
 	{
+		LOG_CONSOLE("POPUP");
 		//ImGui::Popupitem
 		if (ImGui::Button("Delete"))
 		{
+			optionsPopup = false;
+
 			app->scene->DeleteGameObject(go);
 			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Empty Child"))
 		{
+			optionsPopup = false;
+			LOG_CONSOLE("EMPTY CHILD POPUP ITEM");
+
 			GameObject* child = new GameObject("Game Object");
 			go->AddChild(child);
 			child->SetParent(go);
@@ -182,6 +238,8 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 						GameObject* tmp = go->GetParent()->GetChilds()[i - 1];
 						go->GetParent()->GetChilds()[i - 1] = go->GetParent()->GetChilds()[i];
 						go->GetParent()->GetChilds()[i] = tmp;
+
+						optionsPopup = false;
 						break;
 					}
 				}
@@ -196,6 +254,8 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 						GameObject* tmp = app->scene->GetGameObjects()[i - 1];
 						app->scene->GetGameObjects()[i - 1] = app->scene->GetGameObjects()[i];
 						app->scene->GetGameObjects()[i] = tmp;
+
+						optionsPopup = false;
 						break;
 					}
 				}
@@ -216,6 +276,8 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 						GameObject* tmp = go->GetParent()->GetChilds()[i + 1];
 						go->GetParent()->GetChilds()[i + 1] = go->GetParent()->GetChilds()[i];
 						go->GetParent()->GetChilds()[i] = tmp;
+
+						optionsPopup = false;
 						break;
 					}
 				}
@@ -232,6 +294,8 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 						GameObject* tmp = app->scene->GetGameObjects()[i + 1];
 						app->scene->GetGameObjects()[i + 1] = app->scene->GetGameObjects()[i];
 						app->scene->GetGameObjects()[i] = tmp;
+
+						optionsPopup = false;
 						break;
 					}
 				}

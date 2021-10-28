@@ -41,11 +41,11 @@ bool MainScene::Start()
     //app->renderer3D->Submit(model);
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/soraFbx.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Avril.fbx"));
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
 
     /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
     app->renderer3D->Submit(c);*/
@@ -66,14 +66,6 @@ bool MainScene::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
 
-    //primitive->Draw();
-    
-    //model->Draw();
-
-    /*vertexArray->Bind();
-    glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
-    vertexArray->Unbind();*/
-
     return true;
 }
 
@@ -81,6 +73,12 @@ bool MainScene::Update(float dt)
 bool MainScene::CleanUp()
 {
     LOG_CONSOLE("Unloading scene");
+
+    for (auto& go : gameObjects)
+    {
+        RELEASE(go);
+    }
+    gameObjects.clear();
 
     return true;
 }
@@ -92,26 +90,17 @@ void MainScene::AddGameObject(GameObject* go)
 
 void MainScene::DeleteGameObject(GameObject* go)
 {
-    std::vector<GameObject*>::iterator it = gameObjects.begin();
+    std::vector<GameObject*>::iterator it;
 
-    if (gameObjects.size() == 1)
+    for (it = gameObjects.begin(); it != gameObjects.end(); ++it)
     {
-        gameObjects.erase(it);
-        //delete go;
-    }
-    else
-    {
-        for (; it != gameObjects.end(); ++it)
+        if (*it == go)
         {
-            if ((*it) == go)
-            {
-                if ((*it)->GetChilds().size() > 0)
-                {
-                    DeleteGameObject(*it);
-                }
-                gameObjects.erase(it);
-                //delete (*it);
-            }
+            gameObjects.erase(it);
+            app->renderer3D->EraseGameObject(go);
+            app->editor->hierarchyPanel->currentGO = nullptr;
+            RELEASE(go);
+            break;
         }
     }
 }

@@ -115,9 +115,6 @@ bool Renderer3D::Init(JSON_Object* root)
 	SetTexture2D();
 	SetWireframe();
 
-	drawVertexNormals = false;
-	drawTriangleNormals = false;
-
 	int w, h;
 	app->window->GetWindowSize(w, h);
 	OnResize(w, h);
@@ -172,11 +169,14 @@ bool Renderer3D::Draw(float dt)
 
 	DrawGrid();
 
-	for (const auto& g : geometries)
-		g->Draw(drawVertexNormals, drawTriangleNormals);
+	/*for (const auto& mesh : meshes)
+		mesh->Draw();*/
 
-	for (const auto& mesh : meshes)
-		mesh->Draw(drawVertexNormals, drawTriangleNormals);
+	for (const auto& go : gameObjects)
+	{
+		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+		if(mesh) mesh->Draw();
+	}
 
 	frameBuffer->Unbind();
 
@@ -190,7 +190,7 @@ bool Renderer3D::CleanUp()
 {
 	LOG_CONSOLE("Destroying 3D Renderer");
 
-	geometries.clear();
+	meshes.clear();
 	/*delete vertexArray;
 	delete vertexBuffer;
 	delete indexBuffer;*/
@@ -281,33 +281,33 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
-	drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
-}
-
-void Renderer3D::Submit(KbGeometry* geometry)
-{
-	geometries.push_back(geometry);
-
-}
-
-void Renderer3D::Submit(const std::vector<KbGeometry>& geos)
-{
-	//geometries.insert(geometries.end(), geos.begin(), geos.end());
-	for (auto g : geos)
-		Submit(&g);
+	//drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
 // TODO: Still need to check if the childs do have more childs
 void Renderer3D::Submit(GameObject* go)
 {
-	for (const auto& child : go->GetChilds())
-	{
-		ComponentMesh* m = (ComponentMesh*)child->GetComponent(ComponentType::MESH);
-		meshes.push_back(m);
-	}
+	if (go->GetChilds().size() > 0)
+		for (const auto& child : go->GetChilds())
+			Submit(child);
 
-	if (go->GetComponent(ComponentType::MESH))
-		meshes.push_back((ComponentMesh*)go->GetComponent(ComponentType::MESH));
+	gameObjects.push_back(go);
+
+	/*ComponentMesh* m = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+	if(m) meshes.push_back(m);*/
+}
+
+void Renderer3D::EraseGameObject(GameObject* go)
+{
+	std::vector<GameObject*>::iterator it;
+	for (it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	{
+		if (*it == go)
+		{
+			gameObjects.erase(it);
+			break;
+		}
+	}
 }
 
 void Renderer3D::DrawGrid()

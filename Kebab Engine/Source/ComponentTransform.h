@@ -46,4 +46,8 @@ private:
 
 	float4x4 localTransformMat;
 	float4x4 worldTransformMat;
+
+
+	float3 guiPos;
+	float3 guiRot;
 };

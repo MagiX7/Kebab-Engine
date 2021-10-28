@@ -121,24 +121,6 @@ void IndexBuffer::Unbind() const
 FrameBuffer::FrameBuffer(const FrameBufferProperties& props) : properties(props)
 {
 	Create();
-
-
-	/*glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glDrawBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
-
-
-	//glGenFramebuffers(1, &id);
-
-	//glCreateTextures(GL_TEXTURE_2D, 1, &colorAttachment);
-
-	//// TODO: Should use glTexStorage? Very useful for 3d graphics shader
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, properties.width, properties.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
 }
 
 FrameBuffer::~FrameBuffer()
@@ -195,12 +177,12 @@ void FrameBuffer::Create()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	/*GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG_CONSOLE("Framebuffer is Incomplete. Error %s", glGetString(err));
 	}
-	else LOG_CONSOLE("Framebuffer is Complete");
+	else LOG_CONSOLE("Framebuffer is Complete");*/
 
 	glBindFramebuffer(GL_TEXTURE_2D, 0);
 }
