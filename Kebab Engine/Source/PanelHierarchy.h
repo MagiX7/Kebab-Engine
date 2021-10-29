@@ -12,14 +12,15 @@ public:
 
 private:
 	void DisplayHierarchy(GameObject* go);
+	void DisplayGameObjectMenu(GameObject* go);
 
-	void DisplayGameObjectMenu(GameObject* go, bool& optionsPopup);
+	bool IsMouseInside(float4 bounds);
 
 public:
 	GameObject* currentGO;
 
 private:
 	GameObject* goDragging;
-	bool parentOptionsPopup;
-	bool childOptionsPopup;
+	GameObject* goClicked;
+	bool optionsPopup;
 };

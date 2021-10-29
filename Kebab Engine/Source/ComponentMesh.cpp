@@ -128,6 +128,23 @@ void ComponentMesh::DrawOnInspector()
 
 			else currentTexture = nullptr;
 		}
+
+		ImGui::NewLine();
+		ImGui::BulletText("Current Texture: ");
+		ImGui::Image((void*)currentTexture->GetID(), { 150,150 });
+
+		/*if (currentTexture == texture)
+		{
+			ImGui::NewLine();
+			ImGui::BulletText("Loaded Texture");
+			ImGui::Image((void*)texture->GetID(), { 150,150 });
+		}
+		else if (currentTexture == checkersTexture)
+		{
+			ImGui::NewLine();
+			ImGui::BulletText("Loaded Texture");
+			ImGui::Image((void*)checkersTexture->GetID(), { 150,150 });
+		}*/
 	}
 }
 
