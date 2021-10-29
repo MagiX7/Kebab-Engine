@@ -46,9 +46,6 @@
     <ClCompile Include="Source\Buffer.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\FileSystem.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -136,6 +133,9 @@
     <ClCompile Include="Source\Sphere.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -185,9 +185,6 @@
     </ClInclude>
     <ClInclude Include="Source\Buffer.h">
       <Filter>Source Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject.h">
       <Filter>Source Files\GameObjects</Filter>
@@ -290,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="Source\Cylinder.h">
       <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

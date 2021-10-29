@@ -1,13 +1,16 @@
 #pragma once
+#include "Component.h"
 
 #include "MathGeoLib.h"
 #include "Geometry/Frustum.h"
+#include "GameObject.h"
 
-class Camera
+class ComponentCamera : public Component
 {
 public:
-	Camera();
-	~Camera();
+	ComponentCamera();
+	ComponentCamera(GameObject& compOwner);
+	~ComponentCamera();
 
 	void SetCameraPosition(const vec& position);
 	vec GetCameraPosition() const;

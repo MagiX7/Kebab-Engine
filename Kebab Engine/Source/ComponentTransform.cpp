@@ -32,6 +32,7 @@ void ComponentTransform::Disable()
 
 void ComponentTransform::DrawOnInspector()
 {
+	float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
 	ImVec2 size = ImGui::GetWindowSize();
 
 	float len = parent->GetName().size();
@@ -50,8 +51,9 @@ void ComponentTransform::DrawOnInspector()
 		if (ImGui::DragFloat3("position", guiPos.ptr(), 0.05f))
 		{
 			SetTranslation(guiPos);
-			
 			PropagateTransform(parent, position, rotation, scale);
+			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);
 		}
 
 		ImGui::Separator();
@@ -65,6 +67,8 @@ void ComponentTransform::DrawOnInspector()
 
 			SetRotation(x * y * z);
 			PropagateTransform(parent, position, rotation, scale);
+			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);
 		}
 
 		ImGui::Separator();
@@ -74,6 +78,8 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetScale(scale);
 			PropagateTransform(parent, position, rotation, scale);
+			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);
 		}
 	}
 }

@@ -48,8 +48,8 @@ private:
 	GameObject* parent;
 	std::vector<GameObject*> childs;
 
-	AABB aabb;
-	AABB* localAABB;
+	AABB globalAABB;
+	AABB localAABB;
 
 	bool active;
 };

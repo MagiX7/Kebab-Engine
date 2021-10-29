@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 
-class Camera;
+class ComponentCamera;
 
 class Camera3D : public Module
 {
@@ -33,7 +33,7 @@ public:
 
 private:
 
-	Camera* cam;
+	ComponentCamera* cam;
 
 	bool focusing;
 };

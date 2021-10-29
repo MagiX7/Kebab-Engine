@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 {
@@ -14,7 +15,8 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	transform->SetRotation({ 0,0,0,1 });
 	transform->SetScale({ 1,1,1, });
 
-	localAABB = nullptr;
+	//localAABB = nullptr;
+	localAABB = AABB::AABB();
 	active = true;
 }
 
@@ -37,7 +39,7 @@ GameObject::~GameObject()
 	childs.clear();
 	components.clear();
 
-	RELEASE(localAABB);
+	//RELEASE(localAABB);
 }
 
 void GameObject::Update(float dt)
@@ -64,6 +66,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		ret = new ComponentMaterial(*this);
 		components.push_back(ret);
 		break;
+	case ComponentType::CAMERA:
+		ret = new ComponentCamera(*this);
+		components.push_back(ret);
 	default:
 		break;
 	}
@@ -106,6 +111,7 @@ void GameObject::AddComponent(Component* comp)
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
+	SetCompleteAABB(this);
 }
 
 void GameObject::AddAABB()
@@ -114,15 +120,15 @@ void GameObject::AddAABB()
 
 	if (mesh != nullptr)
 	{
-		if (localAABB == nullptr)
-		{
-			localAABB = new AABB();
-		}
+		//if (!localAABB)
+		//{
+		//	localAABB = new AABB();
+		//}
 
-		localAABB->SetNegativeInfinity();
+		localAABB.SetNegativeInfinity();
 		for (uint i = 0; i < mesh->vertices.size(); i++)
 		{
-			localAABB->Enclose(mesh->vertices[i].position);
+			localAABB.Enclose(mesh->vertices[i].position);
 		}
 	}
 
@@ -137,7 +143,7 @@ void GameObject::AddAABB()
 
 AABB* GameObject::GetLocalAABB()
 {
-	return localAABB;
+	return &localAABB;
 }
 
 void GameObject::SetCompleteAABB(GameObject* p)
@@ -150,16 +156,22 @@ void GameObject::SetCompleteAABB(GameObject* p)
 		}
 	}
 
-	if (localAABB != nullptr)
-		p->aabb.Enclose(localAABB->minPoint, localAABB->maxPoint);
+	//if (localAABB != nullptr)
+	p->localAABB.Enclose(localAABB.minPoint, localAABB.maxPoint);
 }
 
 AABB* GameObject::GetCompleteAABB()
 {
-	return &aabb;
+	ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
+	OBB obb = localAABB.Transform(compTrans->GetLocalMatrix());
+	globalAABB.SetNegativeInfinity();
+	globalAABB.Enclose(obb);
+	return &globalAABB;
 }
 
 void GameObject::UpdateAABB(float4x4& newTrans)
 {
-	localAABB->TransformAsAABB(newTrans);
+	OBB obb = localAABB.Transform(newTrans);
+	globalAABB.SetNegativeInfinity();
+	globalAABB.Enclose(obb);
 }

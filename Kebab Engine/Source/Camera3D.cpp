@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Camera3D.h"
 
-#include "Camera.h"
+#include "ComponentCamera.h"
 
 #include "mmgr/mmgr.h"
 
@@ -12,7 +12,7 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	position = vec(0.0f, 0.0f, 0.0f);
 	reference = vec(0.0f, 0.0f, 0.0f);
 
-	cam = new Camera();
+	cam = new ComponentCamera();
 
 	focusing = false;
 
