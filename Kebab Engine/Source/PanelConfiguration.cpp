@@ -20,6 +20,11 @@ ConfigPanel::ConfigPanel()
     width = 0;
     height = 0;
 
+    fullscreen = false;
+    resizable = false;
+    borderless = false;
+    fulldesktop = false;
+
     /*depth = true;
     cullFace = true;
     lighting = true;
@@ -150,16 +155,21 @@ void ConfigPanel::OnRender(float dt)
                 app->window->SetBrightness(brightness);
 
             if (ImGui::SliderInt("Width", &width, 0, 1920))
-                app->renderer3D->OnResize(width, height);
+                app->window->SetWindowSize(width, height);
 
             if (ImGui::SliderInt("Height", &height, 0, 1080))
-                app->renderer3D->OnResize(width, height);
+                app->window->SetWindowSize(width, height);
 
             ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
             //ImGui::Text("Refresh rate: %.0f", app->GetFPS());
 
             if (ImGui::BeginTable("Window Config Table", 2))
             {
+                fullscreen = app->window->GetFullscreen();
+                resizable = app->window->GetResizable();
+                borderless = app->window->GetBordered();
+                fulldesktop = app->window->GetFullscreenDesktop();
+
                 ImGui::TableNextColumn(); ImGui::Checkbox("Fullscreen", &fullscreen);
                 ImGui::TableNextColumn(); ImGui::Checkbox("Resizable", &resizable);
                 ImGui::TableNextColumn(); ImGui::Checkbox("Borderless", &borderless);

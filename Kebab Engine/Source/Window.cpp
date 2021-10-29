@@ -10,6 +10,12 @@ Window::Window(bool startEnabled) : Module(startEnabled)
 	screenSurface = NULL;
 
 	name = "window";
+
+	brightness = 1;
+	fullscreen = false;
+	resizable = true;
+	borderless = false;
+	fulldesktop = false;
 }
 
 // Destructor
@@ -80,6 +86,10 @@ bool Window::Init(JSON_Object* root)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
+		SDL_DisplayMode dm;
+		SDL_GetCurrentDisplayMode(0, &dm);
+		width = dm.w - 100;
+		height = dm.h - 100;
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == NULL)

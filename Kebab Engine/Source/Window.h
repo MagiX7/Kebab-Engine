@@ -30,6 +30,10 @@ public:
 
 	inline float& GetBrightness() { return brightness; }
 	inline void GetWindowSize(int& w, int& h) { w = width; h = height; }
+	bool GetFullscreen() { return fullscreen; }
+	bool GetFullscreenDesktop() { return fulldesktop; }
+	bool GetResizable() { return resizable; }
+	bool GetBordered() { return borderless; }
 	SDL_Rect GetViewport();
 
 public:
@@ -43,8 +47,8 @@ private:
 	int width;
 	int height;
 
-	float brightness = 1;
-	bool fullscreen = false;
+	float brightness;
+	bool fullscreen;
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;
