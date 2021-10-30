@@ -28,8 +28,7 @@
 !Kebab Engine/Source/External/SDL/libx86/SDL2main.lib
 !Kebab Engine/Source/External/glew/lib/Release/Win32/glew32s.lib
 !Kebab Engine/Source/External/PhysFS/lib/PhysFS.lib
-!Kebab Engine/Source/External/MathGeoLib/lib/Debug/MathGeoLib.lib
-!Kebab Engine/Source/External/MathGeoLib/lib/Release/MathGeoLib.lib
+!Kebab Engine/Source/External/MathGeoLib/lib/MathGeoLib.lib
 !Kebab Engine/Source/External/Assimp/lib/assimp-vc142-mt.lib
 !Kebab Engine/Source/External/DevIL/lib/DevIL.lib
 !Kebab Engine/Source/External/DevIL/lib/ILU.lib
@@ -70,7 +69,7 @@ Thumbs.db
 [Bb]uild
 [Bb]in
 [Dd]ebug/
-!Kebab Engine/Source/External/MathGeoLib/lib/[Dd]ebug/
+!Game/Source/External/Optick/lib/[Dd]ebug/
 !Kebab Engine/Source/External/MathGeoLib/src/
 !Kebab Engine/Source/External/MathGeoLib/test/
 *.sbr

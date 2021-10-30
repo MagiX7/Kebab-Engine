@@ -225,6 +225,7 @@ int KdTree<T>::TreeHeight(int nodeIndex) const
 	if (node.IsLeaf())
 		return 1;
 	return 1 + max(TreeHeight(node.LeftChildIndex()), TreeHeight(node.RightChildIndex()));
+	// TODO: std::max;
 }
 
 template<typename T>
