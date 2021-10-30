@@ -142,6 +142,12 @@ bool Renderer3D::PreUpdate(float dt)
 	
 	glLoadMatrixf(app->camera->GetViewMatrix());
 
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(app->camera->GetProjectionMatrix());
+
+
+
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		wireframe = !wireframe;
@@ -160,8 +166,11 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
+	
+	/*ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();*/
 	app->editor->OnImGuiRender(dt, frameBuffer);
-
 	frameBuffer->Bind();
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
@@ -177,7 +186,6 @@ bool Renderer3D::Draw(float dt)
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 		if(mesh) mesh->Draw();
 	}
-
 	frameBuffer->Unbind();
 
 
@@ -198,7 +206,7 @@ bool Renderer3D::CleanUp()
 	RELEASE(vertexArray);
 	RELEASE(vertexBuffer);
 	RELEASE(indexBuffer);
-	RELEASE(frameBuffer);
+	//RELEASE(frameBuffer);
 
 	SDL_GL_DeleteContext(context);
 

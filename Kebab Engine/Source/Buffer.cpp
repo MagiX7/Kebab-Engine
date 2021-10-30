@@ -10,13 +10,13 @@
 
 VertexBuffer::VertexBuffer() : count(0)
 {
-	layout = { {ShaderDataType::VEC3F, "position"} };
+	//layout = { {ShaderDataType::VEC3F, "position"} };
 	glGenBuffers(1, &vbo);
 }
 
 VertexBuffer::VertexBuffer(const float3* vertices, uint32_t size) : count(0)
 {
-	layout = { {ShaderDataType::VEC3F, "position"} };
+	//layout = { {ShaderDataType::VEC3F, "position"} };
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);

@@ -198,7 +198,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    viewportPanel->OnRender(frameBuffer);
+    if(frameBuffer)
+        viewportPanel->OnRender(frameBuffer);
     ImGui::PopStyleVar();
 
     if (showDemoWindow)
