@@ -25,21 +25,14 @@ Camera3D::~Camera3D()
 
 bool Camera3D::Init(JSON_Object* root)
 {
-	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	Load(root);
 
-	JSON_Object* posObj = json_object_get_object(camObj, "position");
-	position.x = json_object_get_number(posObj, "x");
-	position.y = json_object_get_number(posObj, "y");
-	position.z = json_object_get_number(posObj, "z");
-	cam->SetCameraPosition(position);
-
-	float3 front;
+	/*float3 front;
 	JSON_Object* frontObj = json_object_get_object(camObj, "front");
 	front.x = json_object_get_number(frontObj, "x");
 	front.y = json_object_get_number(frontObj, "y");
 	front.z = json_object_get_number(frontObj, "z");
-	cam->Look(reference);
-	//cam->frustum.SetFront(front);
+	cam->frustum.SetFront(front);*/
 
 	/*JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
 	rotation.x = json_object_get_number(rotObj, "x");
@@ -134,7 +127,6 @@ bool Camera3D::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += float3::unitY * speed * 0.5f;
 
 		position += newPos;
-		reference += newPos;
 
 		cam->SetCameraPosition(position);
 
@@ -271,18 +263,42 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_value(root, name.c_str(), json_value_init_object());
 	JSON_Object* camObj = json_object_get_object(root, name.c_str());
 
-	json_object_set_value(camObj, "position", json_value_init_object());
+	json_object_set_value(camObj, "worldmatrix", json_value_init_object());
+	JSON_Object* worldObj = json_object_get_object(camObj, "worldmatrix");
+
+	float3x4 worldMat = cam->frustum.WorldMatrix();
+
+	json_object_set_number(worldObj, "x0", worldMat.At(0, 0));
+	json_object_set_number(worldObj, "y0", worldMat.At(1, 0));
+	json_object_set_number(worldObj, "z0", worldMat.At(2, 0));
+
+	json_object_set_number(worldObj, "x1", worldMat.At(0, 1));
+	json_object_set_number(worldObj, "y1", worldMat.At(1, 1));
+	json_object_set_number(worldObj, "z1", worldMat.At(2, 1));
+
+	json_object_set_number(worldObj, "x2", worldMat.At(0, 2));
+	json_object_set_number(worldObj, "y2", worldMat.At(1, 2));
+	json_object_set_number(worldObj, "z2", worldMat.At(2, 2));
+
+	json_object_set_number(worldObj, "x3", worldMat.At(0, 3));
+	json_object_set_number(worldObj, "y3", worldMat.At(1, 3));
+	json_object_set_number(worldObj, "z3", worldMat.At(2, 3));
+
+
+
+	/*json_object_set_value(camObj, "position", json_value_init_object());
 	JSON_Object* posObj = json_object_get_object(camObj, "position");
 	json_object_set_number(posObj, "x", position.x);
 	json_object_set_number(posObj, "y", position.y);
-	json_object_set_number(posObj, "z", position.z);
+	json_object_set_number(posObj, "z", position.z);*/
 
-	float3 front = cam->frustum.Front();
+
+	/*float3 front = cam->frustum.Front();
 	json_object_set_value(camObj, "front", json_value_init_object());
 	JSON_Object* frontObj = json_object_get_object(camObj, "front");
 	json_object_set_number(frontObj, "x", front.x);
 	json_object_set_number(frontObj, "y", front.y);
-	json_object_set_number(frontObj, "z", front.z);
+	json_object_set_number(frontObj, "z", front.z);*/
 
 	/*
 	json_object_set_value(rotObj, "y", json_value_init_object());
@@ -331,4 +347,62 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_number(vec4Obj, "z", viewMatrix.M[11]);
 	json_object_set_number(vec4Obj, "w", viewMatrix.M[15]);*/
 
+}
+
+void Camera3D::Load(JSON_Object* root)
+{
+	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	JSON_Object* worldObj = json_object_get_object(camObj, "worldmatrix");
+
+	float3 pos = { 0,0,0 };
+	float3 rot = { 0,0,0 };
+	float3x3 rotMat;
+
+	rot.x = json_object_get_number(worldObj, "x0");
+	rot.y = json_object_get_number(worldObj, "y0");
+	rot.z = json_object_get_number(worldObj, "z0");
+
+	rotMat.SetCol(0, rot);
+
+	rot.x = json_object_get_number(worldObj, "x1");
+	rot.y = json_object_get_number(worldObj, "y1");
+	rot.z = json_object_get_number(worldObj, "z1");
+
+	rotMat.SetCol(1, rot);
+
+	rot.x = json_object_get_number(worldObj, "x2");
+	rot.y = json_object_get_number(worldObj, "y2");
+	rot.z = json_object_get_number(worldObj, "z2");
+
+	rotMat.SetCol(2, rot);
+
+	pos.x = json_object_get_number(worldObj, "x3");
+	pos.y = json_object_get_number(worldObj, "y3");
+	pos.z = json_object_get_number(worldObj, "z3");
+
+	float3x4 worldMat{ rotMat, pos };
+	cam->frustum.SetWorldMatrix(worldMat);
+	position = pos;
+
+
+	//JSON_Object* posObj = json_object_get_object(camObj, "position");
+	//position.x = json_object_get_number(posObj, "x");
+	//position.y = json_object_get_number(posObj, "y");
+	//position.z = json_object_get_number(posObj, "z");
+	//cam->SetCameraPosition(position);
+	//cam->Look({ 0, 0, 0 });
+
+	/*float3 front;
+	JSON_Object* frontObj = json_object_get_object(camObj, "front");
+	front.x = json_object_get_number(frontObj, "x");
+	front.y = json_object_get_number(frontObj, "y");
+	front.z = json_object_get_number(frontObj, "z");
+	cam->frustum.SetFront(front);*/
+
+	//float3 up;
+	//JSON_Object* upObj = json_object_get_object(camObj, "front");
+	//up.x = json_object_get_number(upObj, "x");
+	//up.y = json_object_get_number(upObj, "y");
+	//up.z = json_object_get_number(upObj, "z");
+	//cam->frustum.SetFrame(position, front, up);
 }

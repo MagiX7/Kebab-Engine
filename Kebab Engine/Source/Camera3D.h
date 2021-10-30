@@ -28,6 +28,7 @@ public:
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
 
 	void Save(JSON_Object* root) override;
+	void Load(JSON_Object* root) override;
 
 	float3 reference, position;
 
