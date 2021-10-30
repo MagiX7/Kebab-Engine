@@ -50,4 +50,5 @@ private:
 
 	float3 guiPos;
 	float3 guiRot;
+	float3 guiScale;
 };

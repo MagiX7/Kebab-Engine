@@ -203,7 +203,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>ILUT.lib;ILU.lib;DevIL.lib;assimp-vc142-mt.lib;PhysFS.lib;MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\DevIL\lib;$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\DevIL\lib;$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib\$(Configuration);$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -222,7 +222,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>ILUT.lib;ILU.lib;DevIL.lib;assimp-vc142-mt.lib;PhysFS.lib;MathGeoLib.lib;opengl32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\DevIL\lib;$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\DevIL\lib;$(ProjectDir)Source\External\Assimp\lib;$(ProjectDir)Source\External\PhysFS\lib;$(ProjectDir)Source\External\MathGeoLib\lib\$(Configuration);$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

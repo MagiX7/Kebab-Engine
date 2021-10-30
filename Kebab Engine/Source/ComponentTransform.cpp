@@ -15,6 +15,7 @@ ComponentTransform::ComponentTransform(GameObject& compOwner)
 
 	guiPos = { 0,0,0 };
 	guiRot = { 0,0,0 };
+	guiScale = { 1,1,1 };
 }
 
 ComponentTransform::~ComponentTransform()
@@ -74,9 +75,9 @@ void ComponentTransform::DrawOnInspector()
 		ImGui::Separator();
 
 		ImGui::Text("Scale");
-		if(ImGui::DragFloat3("scale", scale.ptr(), 0.05f))
+		if(ImGui::DragFloat3("scale", guiScale.ptr(), 0.05f))
 		{
-			SetScale(scale);
+			SetScale(guiScale);
 			PropagateTransform(parent, position, rotation, scale);
 			transformAABB = float4x4::FromTRS(position, rotation, scale);
 			parent->UpdateAABB(transformAABB);

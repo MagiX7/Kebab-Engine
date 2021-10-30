@@ -7,6 +7,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
+#include "mmgr/mmgr.h"
+
 GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 {
 	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);

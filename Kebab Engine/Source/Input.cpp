@@ -162,10 +162,10 @@ bool Input::PreUpdate(float dt)
 						{
 							ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
 							GameObject* parent = target->GetParent();
-							while (target != parent)
-								target = target->GetParent();
+							/*while (parent && target != parent)
+								target = target->GetParent();*/
 
-							std::string a = (target->GetName() + '/' + name + '.' + extension);
+							//std::string a = (target->GetName() + '/' + name + '.' + extension);
 							mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
 						}
 					}

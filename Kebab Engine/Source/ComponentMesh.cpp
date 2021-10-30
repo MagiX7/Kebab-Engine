@@ -180,8 +180,8 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 
 void ComponentMesh::SetTexture(Texture* tex)
 {
-	if (texture) RELEASE(texture);
-	texture = new Texture(*tex);
+	//if (texture) RELEASE(texture);
+	texture = tex;
 	currentTexture = texture;
 }
 

@@ -32,6 +32,7 @@ private:
 	void BeginDraw();
 	void EndDraw();
 
+protected:
 	Texture* SetCheckersTexture();
 
 public:

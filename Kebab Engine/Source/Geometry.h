@@ -33,7 +33,7 @@ public:
 
 	//virtual void Draw();
 
-	void SetCheckerTexture();
+	//void SetCheckerTexture();
 
 public:
 	//VertexArray* vertexArray;

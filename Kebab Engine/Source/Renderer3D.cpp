@@ -136,18 +136,15 @@ bool Renderer3D::PreUpdate(float dt)
 {
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glLoadIdentity();
-
-	glMatrixMode(GL_MODELVIEW);
 	
-	glLoadMatrixf(app->camera->GetViewMatrix());
-
-
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(app->camera->GetProjectionMatrix());
 
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(app->camera->GetViewMatrix());
 
-
+	
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		wireframe = !wireframe;

@@ -8,7 +8,7 @@
 #include "parson.h"
 
 
-//#include "mmgr/mmgr.h"
+#include "mmgr/mmgr.h"
 
 #include <iostream>
 
@@ -41,11 +41,11 @@ bool MainScene::Start()
     //app->renderer3D->Submit(model);
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/soraFbx.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Avril.fbx"));
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
 
     /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
     app->renderer3D->Submit(c);*/
@@ -59,6 +59,8 @@ bool MainScene::Start()
 // Update: draw background
 bool MainScene::Update(float dt)
 {
+   /* int* f = new int();
+    delete[] f;*/
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
 
@@ -72,7 +74,7 @@ bool MainScene::CleanUp()
 
     for (auto& go : gameObjects)
     {
-        RELEASE(go);
+        delete(go);
     }
     gameObjects.clear();
 
@@ -95,7 +97,7 @@ void MainScene::DeleteGameObject(GameObject* go)
             gameObjects.erase(it);
             app->renderer3D->EraseGameObject(go);
             app->editor->hierarchyPanel->currentGO = nullptr;
-            RELEASE(go);
+            delete(go);
             break;
         }
     }
