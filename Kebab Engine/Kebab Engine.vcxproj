@@ -118,6 +118,11 @@
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Source\External\MathGeoLib\MathGeoLib.vcxproj">
+      <Project>{d4f59a3d-3135-32ac-80df-7507099a7481}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
