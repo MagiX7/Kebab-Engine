@@ -4,13 +4,25 @@
         "max fps": 62.5
     },
     "window": {
-        "width": 1800,
-        "height": 900,
+        "width": 1820,
+        "height": 980,
         "brightness": 1,
         "fullscreen": false,
         "fulldesktop": false,
         "resizable": true,
         "bordered": false
+    },
+    "camera3D": {
+        "position": {
+            "x": 0.037189383059740067,
+            "y": 2.1072299480438232,
+            "z": 6.4251718521118164
+        },
+        "front": {
+            "x": 0.011800549924373627,
+            "y": -0.032582737505435944,
+            "z": -0.99939936399459839
+        }
     },
     "renderer": {
         "depth": true,

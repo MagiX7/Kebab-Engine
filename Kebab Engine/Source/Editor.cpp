@@ -65,6 +65,7 @@ bool Editor::CleanUp()
     RELEASE(viewportPanel);
     RELEASE(hierarchyPanel);
     RELEASE(configPanel);
+    RELEASE(inspectorPanel);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();

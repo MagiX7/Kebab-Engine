@@ -111,7 +111,7 @@ void GameObject::AddComponent(Component* comp)
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
-	SetCompleteAABB(this);
+	SetGlobalAABB(this);
 }
 
 void GameObject::AddAABB()
@@ -141,18 +141,15 @@ void GameObject::AddAABB()
 	}
 }
 
-AABB* GameObject::GetLocalAABB()
+void GameObject::SetGlobalAABB(GameObject* p)
 {
-	return &localAABB;
-}
+	p->localAABB.SetNegativeInfinity();
 
-void GameObject::SetCompleteAABB(GameObject* p)
-{
 	if (childs.size() != 0)
 	{
 		for (uint i = 0; i < childs.size(); i++)
 		{
-			childs[i]->SetCompleteAABB(p);
+			childs[i]->SetGlobalAABB(p);
 		}
 	}
 
@@ -160,7 +157,12 @@ void GameObject::SetCompleteAABB(GameObject* p)
 	p->localAABB.Enclose(localAABB.minPoint, localAABB.maxPoint);
 }
 
-AABB* GameObject::GetCompleteAABB()
+AABB* GameObject::GetLocalAABB()
+{
+	return &localAABB;
+}
+
+AABB* GameObject::GetGlobalAABB()
 {
 	ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
 	OBB obb = localAABB.Transform(compTrans->GetLocalMatrix());

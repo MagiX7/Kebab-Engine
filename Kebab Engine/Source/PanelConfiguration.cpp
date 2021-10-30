@@ -44,8 +44,7 @@ void ConfigPanel::OnRender(float dt)
 {
     if (ImGui::Begin("Configuration", &active, 0))
     {
-        if (ImGui::GetMousePos().x > ImGui::GetWindowPos().x && ImGui::GetMousePos().x < ImGui::GetWindowPos().x + ImGui::GetWindowWidth() &&
-            ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + ImGui::GetWindowHeight())
+        if (ImGui::IsWindowHovered())
         {
             if (app->input->GetMouseZ() < 0)
             {

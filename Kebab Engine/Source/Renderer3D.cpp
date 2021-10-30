@@ -221,12 +221,12 @@ void Renderer3D::OnResize(int width, int height)
 	app->camera->SetRatio(ratio);
 
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	//glLoadIdentity();
 
 	glLoadMatrixf(app->camera->GetProjectionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	//glLoadIdentity();
 }
 
 void Renderer3D::SetDepth()

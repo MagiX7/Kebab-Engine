@@ -22,8 +22,7 @@ void HierarchyPanel::OnRender(float dt)
 {
 	if (ImGui::Begin("Hierarchy", &active))
 	{
-		if (ImGui::GetMousePos().x > ImGui::GetWindowPos().x && ImGui::GetMousePos().x < ImGui::GetWindowPos().x + ImGui::GetWindowWidth() &&
-			ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + ImGui::GetWindowHeight())
+		if (ImGui::IsWindowHovered())
 		{
 			if (app->input->GetMouseZ() < 0)
 			{
@@ -69,7 +68,7 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 		else
 			currentGO = nullptr;
 	}
-	else if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT))
+	else if (!ImGui::IsAnyItemHovered() && ImGui::IsWindowHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT))
 	{	
 		currentGO = nullptr;
 	}

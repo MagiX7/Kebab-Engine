@@ -25,23 +25,30 @@ Camera3D::~Camera3D()
 
 bool Camera3D::Init(JSON_Object* root)
 {
-	/*JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	JSON_Object* camObj = json_object_get_object(root, name.c_str());
+
 	JSON_Object* posObj = json_object_get_object(camObj, "position");
 	position.x = json_object_get_number(posObj, "x");
 	position.y = json_object_get_number(posObj, "y");
 	position.z = json_object_get_number(posObj, "z");
+	cam->SetCameraPosition(position);
 
-	JSON_Object* refObj = json_object_get_object(camObj, "reference");
-	reference.x = json_object_get_number(refObj, "x");
-	reference.y = json_object_get_number(refObj, "y");
-	reference.z = json_object_get_number(refObj, "z");
+	float3 front;
+	JSON_Object* frontObj = json_object_get_object(camObj, "front");
+	front.x = json_object_get_number(frontObj, "x");
+	front.y = json_object_get_number(frontObj, "y");
+	front.z = json_object_get_number(frontObj, "z");
+	cam->Look(reference);
+	//cam->frustum.SetFront(front);
 
-	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
-	JSON_Object* xObj = json_object_get_object(rotObj, "x");
-	x.x = json_object_get_number(xObj, "x");
-	x.y = json_object_get_number(xObj, "y");
-	x.z = json_object_get_number(xObj, "z");
+	/*JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
+	rotation.x = json_object_get_number(rotObj, "x");
+	rotation.y = json_object_get_number(rotObj, "y");
+	rotation.z = json_object_get_number(rotObj, "z");
+	rotation.w = json_object_get_number(rotObj, "w");*/
+	//cam->frustum.Transform(rotation);
 
+	/*
 	JSON_Object* yObj = json_object_get_object(rotObj, "y");
 	y.x = json_object_get_number(yObj, "x");
 	y.y = json_object_get_number(yObj, "y");
@@ -96,6 +103,8 @@ bool Camera3D::Start()
 bool Camera3D::CleanUp()
 {
 	LOG("Cleaning camera");
+
+	RELEASE(cam);
 
 	return true;
 }
@@ -163,8 +172,8 @@ bool Camera3D::Update(float dt)
 		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
 
-		selectedGO->SetCompleteAABB(selectedGO);
-		AABB* boundBox = selectedGO->GetCompleteAABB();
+		selectedGO->SetGlobalAABB(selectedGO);
+		AABB* boundBox = selectedGO->GetGlobalAABB();
 
 		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
 
@@ -259,7 +268,7 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 
 void Camera3D::Save(JSON_Object* root)
 {
-	/*json_object_set_value(root, name.c_str(), json_value_init_object());
+	json_object_set_value(root, name.c_str(), json_value_init_object());
 	JSON_Object* camObj = json_object_get_object(root, name.c_str());
 
 	json_object_set_value(camObj, "position", json_value_init_object());
@@ -268,16 +277,14 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_number(posObj, "y", position.y);
 	json_object_set_number(posObj, "z", position.z);
 
+	float3 front = cam->frustum.Front();
+	json_object_set_value(camObj, "front", json_value_init_object());
+	JSON_Object* frontObj = json_object_get_object(camObj, "front");
+	json_object_set_number(frontObj, "x", front.x);
+	json_object_set_number(frontObj, "y", front.y);
+	json_object_set_number(frontObj, "z", front.z);
 
-	json_object_set_value(camObj, "rotation", json_value_init_object());
-	JSON_Object* rotObj = json_object_get_object(camObj, "rotation");
-	
-	json_object_set_value(rotObj, "x", json_value_init_object());
-	JSON_Object* xObj = json_object_get_object(rotObj, "x");
-	json_object_set_number(xObj, "x", x.x);
-	json_object_set_number(xObj, "y", x.y);
-	json_object_set_number(xObj, "z", x.z);
-
+	/*
 	json_object_set_value(rotObj, "y", json_value_init_object());
 	JSON_Object* yObj = json_object_get_object(rotObj, "y");
 	json_object_set_number(yObj, "x", y.x);
@@ -289,13 +296,6 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_number(zObj, "x", z.x);
 	json_object_set_number(zObj, "y", z.y);
 	json_object_set_number(zObj, "z", z.z);
-
-	json_object_set_value(camObj, "reference", json_value_init_object());
-	JSON_Object* refObj = json_object_get_object(camObj, "reference");
-	json_object_set_number(refObj, "x", reference.x);
-	json_object_set_number(refObj, "y", reference.y);
-	json_object_set_number(refObj, "z", reference.z);
-
 
 	json_object_set_value(camObj, "view matrix", json_value_init_object());
 	JSON_Object* viewObj = json_object_get_object(camObj, "view matrix");
