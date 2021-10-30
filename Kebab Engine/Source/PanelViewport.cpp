@@ -4,6 +4,7 @@
 ViewportPanel::ViewportPanel()
 {
     viewportDimensions = { 0,0,0,0 };
+    viewportSize = { 0,0 };
 }
 
 ViewportPanel::~ViewportPanel()
@@ -13,6 +14,7 @@ ViewportPanel::~ViewportPanel()
 void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
 {
     ImGui::Begin("Viewport");
+
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)

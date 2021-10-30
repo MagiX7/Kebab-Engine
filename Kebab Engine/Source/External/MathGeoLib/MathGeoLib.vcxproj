@@ -110,7 +110,7 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86 /ignore:4221</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\"</Command>
+      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\$(Configuration)\MathGeoLib.lib"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -140,10 +140,11 @@
       <UseFullPaths>false</UseFullPaths>
       <WarningLevel>Level4</WarningLevel>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;MATH_SILENT_ASSUME;RELEASE;OPTIMIZED_RELEASE;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;MATH_SILENT_ASSUME;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;MATH_SILENT_ASSUME;RELEASE;OPTIMIZED_RELEASE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
@@ -161,7 +162,7 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86 /ignore:4221</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\"</Command>
+      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\$(Configuration)\MathGeoLib.lib"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -202,7 +203,7 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86 /ignore:4221</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\"</Command>
+      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\$(Configuration)\MathGeoLib.lib"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -251,7 +252,7 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86 /ignore:4221</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\"</Command>
+      <Command>copy /Y "$(SolutionDir)\Build\$(ProjectName)\$(Configuration)\$(Platform)\MathGeoLib.lib" "$(SolutionDir)Kebab Engine\Source\External\MathGeoLib\lib\$(Configuration)\MathGeoLib.lib"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>

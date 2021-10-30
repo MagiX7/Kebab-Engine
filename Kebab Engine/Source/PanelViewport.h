@@ -19,7 +19,7 @@ public:
 	float4 GetViewportDimensions();
 
 private:
-	float2 viewportSize = { 0,0 };
+	float2 viewportSize;
 
 	float4 viewportDimensions;
 };

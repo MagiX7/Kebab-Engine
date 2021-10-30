@@ -177,12 +177,12 @@ void FrameBuffer::Create()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	/*GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG_CONSOLE("Framebuffer is Incomplete. Error %s", glGetString(err));
 	}
-	else LOG_CONSOLE("Framebuffer is Complete");*/
+	else LOG_CONSOLE("Framebuffer is Complete");
 
 	glBindFramebuffer(GL_TEXTURE_2D, 0);
 }

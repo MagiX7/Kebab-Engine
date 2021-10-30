@@ -6,7 +6,7 @@
 
 #include "Math/float4x4.h"
 
-#include "mmgr/mmgr.h"
+//#include "mmgr/mmgr.h"
 
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
@@ -34,6 +34,15 @@ bool Renderer3D::Init(JSON_Object* root)
 	
 	if(ret == true)
 	{
+		// GLEW initialization
+		GLenum err = glewInit();
+		if (err != GLEW_OK)
+		{
+			LOG_CONSOLE("Error loading GLEW: %s", glewGetErrorString(err));
+		}
+		else LOG_CONSOLE("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+
+
 		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 			LOG_CONSOLE("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
@@ -97,12 +106,12 @@ bool Renderer3D::Init(JSON_Object* root)
 		LOG_CONSOLE("OpenGL initialization correct. Version %s", glGetString(GL_VERSION));
 
 		// GLEW initialization
-		GLenum err = glewInit();
+		/*GLenum err = glewInit();
 		if (err != GLEW_OK)
 		{
 			LOG_CONSOLE("Error loading GLEW: %s", glewGetErrorString(err));
 		}
-		else LOG_CONSOLE("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+		else LOG_CONSOLE("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));*/
 	}
 
 	Load(root);
@@ -138,15 +147,15 @@ bool Renderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glLoadIdentity();
 
-	//glMatrixMode(GL_MODELVIEW);
-	
+	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->GetViewMatrix());
+	glPopMatrix();
 
-	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	/*if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		wireframe = !wireframe;
 		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
+	}*/
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
