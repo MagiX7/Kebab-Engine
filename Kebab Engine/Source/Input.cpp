@@ -16,6 +16,8 @@ Input::Input(bool startEnabled) : Module(startEnabled)
 
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
+
+	inputBuffScroll = false;
 }
 
 // Destructor
@@ -52,15 +54,22 @@ bool Input::PreUpdate(float dt)
 	{
 		if(keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
+			if (keyboard[i] == KEY_IDLE)
+			{
 				keyboard[i] = KEY_DOWN;
+				GetKeyBuffer("Keyboard", i, "Key Down");
+				GetKeyBuffer("Keyboard", i, "Key Repeat");
+			}
 			else
 				keyboard[i] = KEY_REPEAT;
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			{
 				keyboard[i] = KEY_UP;
+				GetKeyBuffer("Keyboard", i, "Key Up");
+			}
 			else
 				keyboard[i] = KEY_IDLE;
 		}
@@ -76,15 +85,22 @@ bool Input::PreUpdate(float dt)
 	{
 		if(buttons & SDL_BUTTON(i))
 		{
-			if(mouseButtons[i] == KEY_IDLE)
+			if (mouseButtons[i] == KEY_IDLE)
+			{
 				mouseButtons[i] = KEY_DOWN;
+				GetKeyBuffer("Mouse", i, "Key Down");
+				GetKeyBuffer("Mouse", i, "Key Repeat");
+			}
 			else
 				mouseButtons[i] = KEY_REPEAT;
 		}
 		else
 		{
-			if(mouseButtons[i] == KEY_REPEAT || mouseButtons[i] == KEY_DOWN)
+			if (mouseButtons[i] == KEY_REPEAT || mouseButtons[i] == KEY_DOWN)
+			{
 				mouseButtons[i] = KEY_UP;
+				GetKeyBuffer("Mouse", i, "Key Up");
+			}
 			else
 				mouseButtons[i] = KEY_IDLE;
 		}
@@ -201,4 +217,14 @@ bool Input::CleanUp()
 	LOG_CONSOLE("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void Input::GetKeyBuffer(const std::string& peripheral, const int& numKey, const std::string& keyState)
+{
+	std::string numKeyString = std::to_string(numKey);
+	std::string tmp = peripheral + ": " + numKeyString + " - State: " + keyState + "\n";
+
+	inputBuf.appendf(tmp.c_str());
+
+	inputBuffScroll = true;
 }

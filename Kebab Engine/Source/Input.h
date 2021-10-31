@@ -2,6 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include <string>
+#include "imgui/imgui.h"
+
 #define MAX_MOUSE_BUTTONS 5
 
 enum KeyState
@@ -57,6 +60,11 @@ public:
 	{
 		return mouseYMotion;
 	}
+
+	void GetKeyBuffer(const std::string &peripheral, const int &numKey, const std::string& keyState);
+
+	ImGuiTextBuffer inputBuf;
+	bool inputBuffScroll;
 
 private:
 	KeyState* keyboard;
