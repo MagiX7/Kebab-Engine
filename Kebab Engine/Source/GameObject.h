@@ -24,6 +24,7 @@ public:
 	inline const bool& HasParent() const { return parent; }
 
 	inline bool HasChilds() { return childs.size() > 0; }
+	void EraseChild(GameObject* go);
 
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);

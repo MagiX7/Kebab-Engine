@@ -104,4 +104,6 @@ void MainScene::DeleteGameObject(GameObject* go)
             break;
         }
     }
+
+
 }

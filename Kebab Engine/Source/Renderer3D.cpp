@@ -308,7 +308,9 @@ void Renderer3D::EraseGameObject(GameObject* go)
 	{
 		for (const auto& child : go->GetChilds())
 		{
-			EraseGameObject(child);
+			ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(ComponentType::MESH);
+			if(mesh)
+				EraseGameObject(child);
 		}
 	}
 
@@ -317,7 +319,6 @@ void Renderer3D::EraseGameObject(GameObject* go)
 		++it;
 
 	gameObjects.erase(it);
-
 	gameObjects.shrink_to_fit();
 }
 

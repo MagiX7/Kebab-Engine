@@ -142,7 +142,13 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 		{
 			optionsPopup = false;
 
-			app->scene->DeleteGameObject(go);
+			if (!go->GetParent())
+				app->scene->DeleteGameObject(go);
+			else
+			{
+				if (go == currentGO) currentGO = nullptr;
+				go->GetParent()->EraseChild(go);
+			}
 			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Empty Child"))

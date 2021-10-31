@@ -32,13 +32,17 @@ public:
 	//GameObject* LoadPrimitive(PrimitiveType type);
 
 private:
+	MeshLoader();
+	MeshLoader(const MeshLoader&);
+
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, std::string nameBaseGO);
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO);
 	std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
+public:
+
+
 private:
-	MeshLoader();
-	MeshLoader(const MeshLoader&);
 
 	static MeshLoader* instance;
 

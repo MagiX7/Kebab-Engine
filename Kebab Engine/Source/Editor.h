@@ -49,5 +49,5 @@ private:
 	float scroll;
 
 	bool showWindows;
-
+	bool closeApp;
 };

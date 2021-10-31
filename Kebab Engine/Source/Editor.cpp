@@ -23,6 +23,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     showAboutPanel = false;
     wireframe = true;
     showWindows = true;
+    closeApp = false;
 }
 
 Editor::~Editor()
@@ -38,7 +39,7 @@ bool Editor::Start()
 
 bool Editor::Update(float dt)
 {
-
+    if (closeApp) return false;
 	return true;
 }
 
@@ -125,8 +126,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         {
             if (ImGui::MenuItem("Exit"))
             {
+                closeApp = true;
                 ImGui::EndMenu();
-                return false;
             }
             ImGui::EndMenu();
         }

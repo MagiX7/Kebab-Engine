@@ -103,6 +103,24 @@ void GameObject::UnParent()
 	}*/
 }
 
+void GameObject::EraseChild(GameObject* go)
+{
+	std::vector<GameObject*>::iterator it = childs.begin();
+
+	for (; it != childs.end(); ++it)
+	{
+		if (*it == go)
+		{
+			childs.erase(it);
+			childs.shrink_to_fit();
+			delete go;
+			go = nullptr;
+			break;
+		}
+	}
+
+}
+
 void GameObject::AddComponent(Component* comp)
 {
 	components.push_back(comp);
