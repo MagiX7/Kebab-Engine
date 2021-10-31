@@ -17,9 +17,12 @@ public:
 	inline float2 const& GetViewportSize() const { return viewportSize; }
 
 	float4 GetViewportDimensions();
+	bool IsHovered();
 
 private:
-	float2 viewportSize = { 0,0 };
+	float2 viewportSize;
 
 	float4 viewportDimensions;
+
+	bool hovered;
 };

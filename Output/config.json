@@ -1,16 +1,18 @@
 {
     "App": {
         "dt": 0.017000000923871994,
-        "max fps": 62.5
+        "max fps": 62
     },
     "window": {
-        "width": 1820,
-        "height": 980,
+        "width": 1662,
+        "height": 903,
         "brightness": 1,
         "fullscreen": false,
         "fulldesktop": false,
         "resizable": true,
-        "bordered": false
+        "bordered": false,
+        "title": "Kebab Engine",
+        "organization": "UPC CITM"
     },
     "camera3D": {
         "worldmatrix": {

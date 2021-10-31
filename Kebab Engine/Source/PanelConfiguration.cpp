@@ -32,6 +32,9 @@ ConfigPanel::ConfigPanel()
     texture2D = true;
     showNormals = false;*/
 
+    titleName = "";
+    orgName = "";
+
     i = 0;
     scroll = 0;
 }
@@ -70,11 +73,11 @@ void ConfigPanel::OnRender(float dt)
             }
             if (ImGui::MenuItem("Load"))
             {
-
+                app->RequestLoad();
             }
             if (ImGui::MenuItem("Save"))
             {
-
+                app->RequestSave();
             }
 
             ImGui::EndMenu();
@@ -84,18 +87,19 @@ void ConfigPanel::OnRender(float dt)
         {
             // Input Text ===========
             static char tmp[32];
-            sprintf_s(tmp, 32, "Kebab Engine");
-            ImGui::InputText("App Name", tmp, IM_ARRAYSIZE(tmp));
-            sprintf_s(tmp, 32, "UPC CITM");
-            ImGui::InputText("Organization", tmp, IM_ARRAYSIZE(tmp));
+            titleName = app->window->titleName;
+            orgName = app->window->orgName;
+            sprintf_s(tmp, 32, titleName.c_str());
+            if (ImGui::InputText("App Name", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue))
+                app->window->SetTitle(tmp);
+            sprintf_s(tmp, 32, orgName.c_str());
+            if (ImGui::InputText("Organization", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue))
+                app->window->orgName = tmp;
 
             // Slider ============
-
-            static float limFPS = 0;
+            static float limFPS = app->GetMaxFPS();
             if (ImGui::SliderFloat("Max FPS", &limFPS, 0.0f, 120.0f, "%.1f"))
-            {
                 app->SetMaxFPS(limFPS);
-            }
 
             ImGui::Text("Limit Framerate: %.1f", limFPS);
 

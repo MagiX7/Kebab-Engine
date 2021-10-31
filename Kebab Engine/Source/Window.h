@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL.h"
+#include <string>
 
 class Application;
 
@@ -27,6 +28,7 @@ public:
 	void SetFullscreenDesktop(bool value);
 	void SetResizable(bool value);
 	void SetBordered(bool value);
+	inline void SetWidthAndHeight(int w, int h) { width = w; height = h; }
 
 	inline float& GetBrightness() { return brightness; }
 	inline void GetWindowSize(int& w, int& h) { w = width; h = height; }
@@ -42,6 +44,9 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screenSurface;
+
+	std::string titleName;
+	std::string orgName;
 
 private:
 	int width;

@@ -4,6 +4,8 @@
 ViewportPanel::ViewportPanel()
 {
     viewportDimensions = { 0,0,0,0 };
+    viewportSize = { 0,0 };
+    hovered = false;
 }
 
 ViewportPanel::~ViewportPanel()
@@ -14,6 +16,8 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
 {
     ImGui::Begin("Viewport");
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+
+    hovered = ImGui::IsWindowHovered();
 
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
     {
@@ -32,4 +36,9 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
 float4 ViewportPanel::GetViewportDimensions()
 {
     return viewportDimensions;
+}
+
+bool ViewportPanel::IsHovered()
+{
+    return hovered;
 }

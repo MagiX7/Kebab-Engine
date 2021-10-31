@@ -122,8 +122,11 @@ bool Input::PreUpdate(float dt)
 			}
 			case SDL_WINDOWEVENT:
 			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
 					app->renderer3D->OnResize(e.window.data1, e.window.data2);
+					app->window->SetWidthAndHeight(e.window.data1, e.window.data2);
+				}
 				break;
 			}
 			case SDL_DROPFILE:

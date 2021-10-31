@@ -143,7 +143,8 @@ bool Camera3D::Update(float dt)
 	float4 viewDim = app->editor->viewportPanel->GetViewportDimensions();
 
 	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
-		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w)
+		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
+		app->editor->viewportPanel->IsHovered())
 	{
 		if (app->input->GetMouseZ() < 0)
 		{

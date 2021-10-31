@@ -141,7 +141,7 @@ void Application::Save()
 	json_object_set_value(root, "App", json_value_init_object());
 	JSON_Object* appObj = json_object_get_object(root, "App");
 	json_object_set_number(appObj, "dt", dt);
-	json_object_set_number(appObj, "max fps", 1000.0f / cappedMs);
+	json_object_set_number(appObj, "max fps", GetMaxFPS());
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())
@@ -234,7 +234,7 @@ int& Application::GetFPS()
 
 float& Application::GetMaxFPS()
 {
-	float ret = cappedMs * 1000;
+	float ret = 1000 / cappedMs;
 	return ret;
 }
 

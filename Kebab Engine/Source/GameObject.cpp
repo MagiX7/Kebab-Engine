@@ -145,17 +145,16 @@ void GameObject::AddAABB()
 
 void GameObject::SetGlobalAABB(GameObject* p)
 {
-	p->localAABB.SetNegativeInfinity();
-
 	if (childs.size() != 0)
 	{
+		p->localAABB.SetNegativeInfinity();
+
 		for (uint i = 0; i < childs.size(); i++)
 		{
 			childs[i]->SetGlobalAABB(p);
 		}
 	}
 
-	//if (localAABB != nullptr)
 	p->localAABB.Enclose(localAABB.minPoint, localAABB.maxPoint);
 }
 

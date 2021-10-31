@@ -4,6 +4,8 @@
 #include "Window.h"
 #include "Renderer3D.h"
 
+#include <string>
+
 #define MAX_IT_HIST 100
 
 class ConfigPanel : public Panel
@@ -38,4 +40,7 @@ private:
 	bool texture2D;
 	bool showNormals;*/
 	// TODO: Other two
+
+	std::string titleName;
+	std::string orgName;
 };

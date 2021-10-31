@@ -16,6 +16,8 @@ Window::Window(bool startEnabled) : Module(startEnabled)
 	resizable = true;
 	borderless = false;
 	fulldesktop = false;
+	titleName = "";
+	orgName = "UPC CITM";
 }
 
 // Destructor
@@ -86,11 +88,9 @@ bool Window::Init(JSON_Object* root)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		SDL_DisplayMode dm;
-		SDL_GetCurrentDisplayMode(0, &dm);
-		width = dm.w - 100;
-		height = dm.h - 100;
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		if (titleName.size() > 0) SetTitle(titleName.c_str());
+		else titleName = TITLE;
 
 		if(window == NULL)
 		{
@@ -126,6 +126,7 @@ bool Window::CleanUp()
 void Window::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+	titleName = title;
 }
 
 void Window::Save(JSON_Object* root)
@@ -140,6 +141,8 @@ void Window::Save(JSON_Object* root)
 	json_object_set_boolean(winObj, "fulldesktop", fulldesktop);
 	json_object_set_boolean(winObj, "resizable", resizable);
 	json_object_set_boolean(winObj, "bordered", borderless);
+	json_object_set_string(winObj, "title", titleName.c_str());
+	json_object_set_string(winObj, "organization", orgName.c_str());
 }
 
 void Window::Load(JSON_Object* root)
@@ -154,6 +157,8 @@ void Window::Load(JSON_Object* root)
 	fulldesktop = json_object_get_boolean(winObj, "fulldesktop");
 	resizable = json_object_get_boolean(winObj, "resizable");
 	borderless = json_object_get_boolean(winObj, "bordered");
+	titleName = json_object_get_string(winObj, "title");
+	orgName = json_object_get_string(winObj, "organization");
 }
 
 void Window::SetBrightness(float value)

@@ -247,18 +247,23 @@ void Editor::ShowAboutPanel()
     ImGui::Begin("About Kebab Engine", &showAboutPanel);
     ImGui::SetWindowSize({ 800,600 });
 
-    if (ImGui::GetMousePos().x > ImGui::GetWindowPos().x && ImGui::GetMousePos().x < ImGui::GetWindowPos().x + ImGui::GetWindowWidth() &&
-        ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + ImGui::GetWindowHeight())
+    if (app->input->GetMouseZ() < 0)
     {
         if (app->input->GetMouseZ() < 0)
-            scroll -= app->input->GetMouseZ() * 5;
+        {
+            scroll = ImGui::GetScrollY();
+            scroll -= app->input->GetMouseZ();
+            ImGui::SetScrollY(scroll);
+        }
         if (app->input->GetMouseZ() > 0)
-            scroll -= app->input->GetMouseZ() * 5;
+        {
+            scroll = ImGui::GetScrollY();
+            scroll -= app->input->GetMouseZ();
+            ImGui::SetScrollY(scroll);
+        }
         if (scroll <= 0) scroll = 0;
         else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
     }
-
-    ImGui::SetScrollY(scroll);
 
     ImGui::Text("Kebab Engine v0.1");
     ImGui::NewLine();
