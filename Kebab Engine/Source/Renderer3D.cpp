@@ -304,15 +304,21 @@ void Renderer3D::Submit(GameObject* go)
 
 void Renderer3D::EraseGameObject(GameObject* go)
 {
-	std::vector<GameObject*>::iterator it;
-	for (it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	if (go->GetChilds().size() > 0)
 	{
-		if (*it == go)
+		for (const auto& child : go->GetChilds())
 		{
-			gameObjects.erase(it);
-			break;
+			EraseGameObject(child);
 		}
 	}
+
+	std::vector<GameObject*>::iterator it = gameObjects.begin();
+	while (*it != go && it != gameObjects.end())
+		++it;
+
+	gameObjects.erase(it);
+
+	gameObjects.shrink_to_fit();
 }
 
 void Renderer3D::DrawGrid()

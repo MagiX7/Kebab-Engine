@@ -37,6 +37,7 @@
     <ClCompile Include="Source\External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\External\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\External\parson\src\parson.c" />
+    <ClCompile Include="Source\External\par\par_shapes.cpp" />
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
@@ -54,6 +55,7 @@
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Plane.cpp" />
+    <ClCompile Include="Source\Primitives.cpp" />
     <ClCompile Include="Source\Pyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
@@ -76,6 +78,7 @@
     <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\Cylinder.h" />
+    <ClInclude Include="Source\External\par\par_shapes.h" />
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\MeshLoader.h" />
@@ -106,6 +109,7 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
+    <ClInclude Include="Source\Primitives.h" />
     <ClInclude Include="Source\Pyramid.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
@@ -117,11 +121,6 @@
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Source\External\MathGeoLib\MathGeoLib.vcxproj">
-      <Project>{d4f59a3d-3135-32ac-80df-7507099a7481}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

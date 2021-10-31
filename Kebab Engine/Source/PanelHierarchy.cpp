@@ -42,8 +42,7 @@ void HierarchyPanel::OnRender(float dt)
 
 		if (ImGui::CollapsingHeader("Game Objects", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			int size = app->scene->GetGameObjects().size();
-			for (int i = 0; i < size; ++i)
+			for (int i = 0; i < app->scene->GetGameObjects().size(); ++i)
 			{
 				GameObject* go = app->scene->GetGameObjects()[i];
 				DisplayHierarchy(go);
@@ -57,6 +56,8 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 {
 	ImGuiTreeNodeFlags flags = 0;
 	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+
+	if (go->GetChilds().size() <= 0) flags |= ImGuiTreeNodeFlags_Leaf;
 	
 	bool opened = ImGui::TreeNodeEx(go->GetName().c_str(), flags);
 
@@ -85,7 +86,7 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 		goClicked = nullptr;
 	}
 
-	if (optionsPopup && goClicked)
+	if (optionsPopup && goClicked == go)
 		DisplayGameObjectMenu(goClicked);
 
 
@@ -99,37 +100,37 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 
 
 	////////////////// Drag and drop //////////////////
-	if (ImGui::BeginDragDropSource())
-	{
-		goDragging = go;
+	//if (ImGui::BeginDragDropSource())
+	//{
+	//	goDragging = go;
 
-		ImGui::SetDragDropPayload("childs", go, sizeof(GameObject));
-		ImGui::Text(go->GetName().c_str());
-		ImGui::EndDragDropSource();
-	}
+	//	ImGui::SetDragDropPayload("childs", go, sizeof(GameObject));
+	//	ImGui::Text(go->GetName().c_str());
+	//	ImGui::EndDragDropSource();
+	//}
 
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (ImGui::AcceptDragDropPayload("childs"))
-		{
-			if (goDragging)
-			{
-				GameObject* oldParent = goDragging->GetParent();
+	//if (ImGui::BeginDragDropTarget())
+	//{
+	//	if (ImGui::AcceptDragDropPayload("childs"))
+	//	{
+	//		if (goDragging)
+	//		{
+	//			GameObject* oldParent = goDragging->GetParent();
 
-				std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
-				while (*it != goDragging)
-					++it;
-				oldParent->GetChilds().erase(it);
+	//			std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
+	//			while (*it != goDragging)
+	//				++it;
+	//			oldParent->GetChilds().erase(it);
 
-				GameObject* newParent = go->GetParent();
+	//			GameObject* newParent = go->GetParent();
 
-				//newParent->AddChild(goDragging);
-				go->AddChild(goDragging);
-				goDragging = nullptr;
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
+	//			//newParent->AddChild(goDragging);
+	//			go->AddChild(goDragging);
+	//			goDragging = nullptr;
+	//		}
+	//	}
+	//	ImGui::EndDragDropTarget();
+	//}
 }
 
 void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
@@ -137,8 +138,6 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 	ImGui::OpenPopup(go->GetName().c_str());
 	if (ImGui::BeginPopup(go->GetName().c_str()))
 	{
-		LOG_CONSOLE("POPUP");
-		//ImGui::Popupitem
 		if (ImGui::Button("Delete"))
 		{
 			optionsPopup = false;
@@ -149,9 +148,9 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 		if (ImGui::Button("Empty Child"))
 		{
 			optionsPopup = false;
-			LOG_CONSOLE("EMPTY CHILD POPUP ITEM");
+			LOG_CONSOLE("Empty GameObject created insinde %s", go->GetName().c_str());
 
-			GameObject* child = new GameObject("Game Object");
+			GameObject* child = new GameObject("Empty Game Object");
 			go->AddChild(child);
 			child->SetParent(go);
 			ImGui::CloseCurrentPopup();

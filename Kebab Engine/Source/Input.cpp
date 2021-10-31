@@ -151,7 +151,7 @@ bool Input::PreUpdate(float dt)
 					c = ::tolower(c);
 				});
 
-				if(extension == "fbx")
+				if(extension == "fbx" || extension == "obj")
 					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir));
 				else if (extension == "dds" || extension == "png")
 				{

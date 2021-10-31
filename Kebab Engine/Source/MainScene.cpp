@@ -41,7 +41,7 @@ bool MainScene::Start()
     //app->renderer3D->Submit(model);
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/soraFbx.fbx"));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/bakerHouse.fbx"));
+    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Baker House.fbx"));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Avril.fbx"));
 
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
@@ -95,9 +95,12 @@ void MainScene::DeleteGameObject(GameObject* go)
         if (*it == go)
         {
             gameObjects.erase(it);
+            gameObjects.shrink_to_fit();
+
             app->renderer3D->EraseGameObject(go);
             app->editor->hierarchyPanel->currentGO = nullptr;
             delete(go);
+            go = nullptr;
             break;
         }
     }

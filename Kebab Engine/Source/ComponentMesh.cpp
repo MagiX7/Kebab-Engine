@@ -118,33 +118,23 @@ void ComponentMesh::DrawOnInspector()
 		static bool checkers = currentTexture;
 		if (currentTexture == checkersTexture) checkers = true;
 		else checkers = false;
+
 		if (ImGui::Checkbox("Set checkers", &checkers))
 		{
-			if (checkers)
-				currentTexture = checkersTexture;
-
-			else if (texture)
-				currentTexture = texture;
-
+			if (checkers) currentTexture = checkersTexture;
+			else if (texture) currentTexture = texture;
 			else currentTexture = nullptr;
 		}
 
 		ImGui::NewLine();
 		ImGui::BulletText("Current Texture: ");
-		ImGui::Image((void*)currentTexture->GetID(), { 150,150 });
-
-		/*if (currentTexture == texture)
+		if (currentTexture)
+			ImGui::Image((void*)currentTexture->GetID(), { 150,150 });
+		else
 		{
-			ImGui::NewLine();
-			ImGui::BulletText("Loaded Texture");
-			ImGui::Image((void*)texture->GetID(), { 150,150 });
+			ImGui::SameLine();
+			ImGui::Text("No texture.");
 		}
-		else if (currentTexture == checkersTexture)
-		{
-			ImGui::NewLine();
-			ImGui::BulletText("Loaded Texture");
-			ImGui::Image((void*)checkersTexture->GetID(), { 150,150 });
-		}*/
 	}
 }
 
@@ -153,6 +143,9 @@ void ComponentMesh::Draw()
 	BeginDraw();
 
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+
+	// This goes here just to be able to change the normals color while texture is assigned
+	if (currentTexture) currentTexture->Unbind();
 
 	if (drawVertexNormals)
 		DrawVertexNormals();
@@ -211,11 +204,11 @@ void ComponentMesh::DrawVertexNormals()
 		}
 		else
 		{
-			float3 pos = vertices[i].position;
-			float3 n = vertices[i].position + vertices[i].normal;
-			n.Normalize();
-
-			glVertex3f(pos.x + n.x * normalsVertexSize, pos.y + n.y * normalsVertexSize, pos.z + n.z * normalsVertexSize);
+			float3 n;
+			n.x = (vertices[i].position.x + vertices[i].normal.x * normalsVertexSize);
+			n.y = (vertices[i].position.y + vertices[i].normal.y * normalsVertexSize);
+			n.z = (vertices[i].position.z + vertices[i].normal.z * normalsVertexSize);
+			glVertex3f(n.x, n.y, n.z);
 		}
 	}
 
@@ -314,7 +307,7 @@ void ComponentMesh::EndDraw()
 	}
 	else *///texture->Unbind();
 
-	if(currentTexture) currentTexture->Unbind();
+	//if(currentTexture) currentTexture->Unbind();
 
 	indexBuffer->Unbind();
 	vertexBuffer->Unbind();

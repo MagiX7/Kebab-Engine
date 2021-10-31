@@ -136,6 +136,12 @@
     <ClCompile Include="Source\ComponentCamera.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Primitives.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\par\par_shapes.cpp">
+      <Filter>Source Files\3rd Parties\par</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -291,6 +297,12 @@
     <ClInclude Include="Source\ComponentCamera.h">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Primitives.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\par\par_shapes.h">
+      <Filter>Source Files\3rd Parties\par</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -320,9 +332,6 @@
     <Filter Include="Source Files\3rd Parties\glMath">
       <UniqueIdentifier>{506240c1-b476-4b7d-9efe-24323be6e125}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3rd Parties\MathGeoLib">
-      <UniqueIdentifier>{d6382774-31a4-4a5b-a406-9f2a76cc5e2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\3rd Parties\mmgr">
       <UniqueIdentifier>{12a8fcd0-272f-4a79-aa60-6c3360f159fa}</UniqueIdentifier>
     </Filter>
@@ -337,6 +346,9 @@
     </Filter>
     <Filter Include="Source Files\Importers">
       <UniqueIdentifier>{f9f029b5-c7f4-4d59-af55-a8df763fe04f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\par">
+      <UniqueIdentifier>{55b5e136-9c8d-4466-ad0b-80e12d90e867}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

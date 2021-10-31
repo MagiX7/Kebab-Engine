@@ -181,7 +181,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
         aiString n;
         mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
         //if(n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a diffuse texture", mesh->mName.C_Str());
-        mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
+        //mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
         //if (n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a base color texture\n", mesh->mName.C_Str());
 
         std::string name;
@@ -223,6 +223,80 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 
     return meshComp;
 }
+
+//GameObject* MeshLoader::LoadPrimitive(PrimitiveType type)
+//{
+//    GameObject* go = nullptr;
+//    Component* comp = nullptr;
+//
+//    std::string name;
+//    switch (type)
+//    {
+//        case PrimitiveType::CUBE:
+//        {
+//            static int numCube = 0;
+//            name = "Cube";
+//            if(numCube > 0)
+//                name += " " + std::to_string(numCube);
+//            numCube++;
+//
+//            go = new GameObject(name.c_str());
+//            comp = (ComponentMesh*)new Primitive(type, go);
+//
+//            //comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);            
+//            break;
+//        }
+//
+//        case PrimitiveType::CONE:
+//        {
+//            static int numPlane = 0;
+//            name = "Cone";
+//            if (numPlane > 0) name += " " + std::to_string(numPlane);
+//            numPlane++;
+//
+//            /*go = new GameObject(name.c_str());
+//            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);*/
+//            break;
+//        }
+//        
+//        case PrimitiveType::SPHERE:
+//        {
+//            static int numSphere = 0;
+//            name = "Sphere";
+//            if (numSphere > 0) name += " " + std::to_string(numSphere);
+//            numSphere++;
+//
+//            /*go = new GameObject(name.c_str());
+//            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);*/
+//            break;
+//        }
+//
+//        case PrimitiveType::CYLINDER:
+//        {
+//            static int numCyl = 0;
+//            name = "Cylinder";
+//            if (numCyl > 0) name = name += " " + std::to_string(numCyl);
+//            numCyl++;
+//
+//            /*go = new GameObject(name.c_str());
+//            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);*/
+//            break;
+//        }
+//
+//    }
+//
+//    go = new GameObject(name.c_str());
+//    comp = (ComponentMesh*)new Primitive(type, go);
+//
+//    if (go)
+//    {
+//        go->AddComponent(comp);
+//        app->scene->AddGameObject(go);
+//    }
+//
+//    return go;
+//
+//}
 
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 {
