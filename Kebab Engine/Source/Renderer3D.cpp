@@ -196,14 +196,8 @@ bool Renderer3D::CleanUp()
 	LOG_CONSOLE("Destroying 3D Renderer");
 
 	meshes.clear();
-	/*delete vertexArray;
-	delete vertexBuffer;
-	delete indexBuffer;*/
 
-	RELEASE(vertexArray);
-	RELEASE(vertexBuffer);
-	RELEASE(indexBuffer);
-	//RELEASE(frameBuffer);
+	delete(frameBuffer);
 
 	SDL_GL_DeleteContext(context);
 

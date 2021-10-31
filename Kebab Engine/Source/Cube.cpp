@@ -2,6 +2,8 @@
 
 #include "Globals.h"
 
+#include "mmgr/mmgr.h"
+
 KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeometry(owner)
 {
     isKbGeometry = true;
@@ -289,7 +291,7 @@ KbCube::~KbCube()
 {
     //RELEASE_ARRAY(vertices);
     //RELEASE_ARRAY(indices);
-    RELEASE_ARRAY(normals);
+    delete[](normals);
 }
 
 //void KbCube::Draw()

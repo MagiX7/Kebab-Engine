@@ -31,6 +31,8 @@ public:
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
 
+	void CleanUp();
+
 private:
 	MeshLoader();
 	MeshLoader(const MeshLoader&);

@@ -24,34 +24,10 @@ MainScene::~MainScene()
 bool MainScene::Start()
 {
 	LOG_CONSOLE("Loading assets");
-    //LOG_CONSOLE("Creating Scene\n");
+
 	bool ret = true;
 
-    //primitive = new KebabCube({ 0,0,0 }, { 1,1,1 });
-    //primitive = new KebabPyramid({ 0,0,0 }, 5.f, 4.0f);
-    //primitive = new KebabSphere({ 0,0,0 }, 2, 50, 30);
-    //primitive = new KebabPlane({ -5,0,0 }, { 10,5 });
-    //primitive = new KebabGeometry();
-    /*primitive = meshLoader->LoadMesh("Assets/3D Models/warrior.fbx");
-    app->renderer3D->Submit(primitive);*/
-
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadMesh("Assets/3D Models/heavy.fbx"));
-
-    //model = new MeshLoader("Assets/3D Models/bakerHouse.fbx");
-    //app->renderer3D->Submit(model);
-
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/soraFbx.fbx"));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Baker House.fbx"));
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Avril.fbx"));
-
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
-
-    /*KbGeometry* c = new KbCube({ 0,0,0 }, { 4,4,4 });
-    app->renderer3D->Submit(c);*/
-
-    /*app->renderer3D->Submit(new KebabPyramid({ 0,0,0 }, 5.f, 4.0f));
-    app->renderer3D->Submit(new KebabCube({ 5.5f,0,-3 }, { 5,5,5 }));*/
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Baker House.fbx"));
 
 	return ret;
 }
@@ -59,8 +35,6 @@ bool MainScene::Start()
 // Update: draw background
 bool MainScene::Update(float dt)
 {
-   /* int* f = new int();
-    delete[] f;*/
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
 
@@ -104,6 +78,4 @@ void MainScene::DeleteGameObject(GameObject* go)
             break;
         }
     }
-
-
 }

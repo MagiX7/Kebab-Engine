@@ -6,6 +6,8 @@
 #include "assimp/cfileio.h"
 #include "assimp/types.h"
 
+#include "mmgr/mmgr.h"
+
 using namespace std;
 
 FileSystem::FileSystem(const char* game_path)
@@ -52,7 +54,7 @@ FileSystem::FileSystem(const char* game_path)
 // Destructor
 FileSystem::~FileSystem()
 {
-	RELEASE(AssimpIO);
+	delete(assimpIO);
 	PHYSFS_deinit();
 }
 
@@ -280,7 +282,7 @@ uint FileSystem::Load(const char* file, char** buffer) const
 			if(readed != size)
 			{
 				LOG_CONSOLE("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
-				RELEASE(buffer);
+				delete(buffer);
 			}
 			else
 				ret = readed;
@@ -315,7 +317,7 @@ SDL_RWops* FileSystem::Load(const char* file) const
 
 int close_sdl_rwops(SDL_RWops *rw)
 {
-	RELEASE_ARRAY(rw->hidden.mem.base);
+	delete[](rw->hidden.mem.base);
 	SDL_FreeRW(rw);
 	return 0;
 }
@@ -508,16 +510,17 @@ void AssimpClose(aiFileIO* io, aiFile* file)
 
 void FileSystem::CreateAssimpIO()
 {
-	RELEASE(AssimpIO);
+	delete(assimpIO);
+	assimpIO = nullptr;
 
-	AssimpIO = new aiFileIO;
-	AssimpIO->OpenProc = AssimpOpen;
-	AssimpIO->CloseProc = AssimpClose;
+	assimpIO = new aiFileIO;
+	assimpIO->OpenProc = AssimpOpen;
+	assimpIO->CloseProc = AssimpClose;
 }
 
 aiFileIO * FileSystem::GetAssimpIO()
 {
-	return AssimpIO;
+	return assimpIO;
 }
 
 // -----------------------------------------------------

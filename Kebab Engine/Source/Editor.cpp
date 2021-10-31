@@ -62,11 +62,16 @@ bool Editor::Draw(float dt)
 
 bool Editor::CleanUp()
 {
-    RELEASE(consolePanel);
-    RELEASE(viewportPanel);
-    RELEASE(hierarchyPanel);
-    RELEASE(configPanel);
-    RELEASE(inspectorPanel);
+    delete(consolePanel);
+    consolePanel = nullptr;
+    delete(viewportPanel);
+    viewportPanel = nullptr;
+    delete(hierarchyPanel);
+    hierarchyPanel = nullptr;
+    delete(configPanel);
+    configPanel = nullptr;
+    delete(inspectorPanel);
+    inspectorPanel = nullptr;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();

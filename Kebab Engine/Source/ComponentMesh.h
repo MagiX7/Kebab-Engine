@@ -33,7 +33,7 @@ private:
 	void EndDraw();
 
 protected:
-	Texture* SetCheckersTexture();
+	void SetCheckersTexture();
 
 public:
 	std::vector<Vertex>   vertices;

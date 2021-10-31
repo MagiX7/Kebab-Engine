@@ -28,13 +28,15 @@ GameObject::~GameObject()
 
 	for (auto& go : childs)
 	{
-		RELEASE(go);
+		delete(go);
+		go = nullptr;
 	}
 	childs.clear();
 
 	for (auto& c: components)
 	{
-		RELEASE(c);
+		delete(c);
+		c = nullptr;
 	}
 	components.clear();
 

@@ -11,6 +11,8 @@ public:
 
 	Texture* LoadTexture(const char* fileName);
 
+	void CleanUp();
+
 private:
 	static TextureLoader* instance;
 

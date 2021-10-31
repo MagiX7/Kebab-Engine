@@ -8,6 +8,8 @@
 
 #include "imgui/imgui.h"
 
+#include "mmgr/mmgr.h"
+
 #define CHECKERS_HEIGHT 80
 #define CHECKERS_WIDTH 80
 
@@ -17,7 +19,7 @@ ComponentMesh::ComponentMesh(GameObject& compOwner)
 	this->type = ComponentType::MESH;
 	this->active = true;
 
-	checkersTexture = SetCheckersTexture();
+	/*checkersTexture = */ SetCheckersTexture();
 
 	drawVertexNormals = false;
 	drawTriangleNormals = false;
@@ -29,9 +31,10 @@ ComponentMesh::ComponentMesh(GameObject& compOwner)
 
 ComponentMesh::~ComponentMesh()
 {
-	RELEASE(vertexBuffer);
-	RELEASE(indexBuffer);
-	RELEASE(texture);
+	delete(vertexBuffer);
+	delete(indexBuffer);
+	delete(texture);
+	delete(checkersTexture);
 
 	vertices.clear();
 	indices.clear();
@@ -278,15 +281,6 @@ void ComponentMesh::BeginDraw()
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
 
-	/*if (textures.size() > 0)
-	{
-		for (int i = 0; i < textures.size(); ++i)
-		{
-			textures.data()->Bind(i);
-		}
-	}
-	else */
-	//if(texture) texture->Bind();
 	if (currentTexture) currentTexture->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
@@ -298,16 +292,6 @@ void ComponentMesh::BeginDraw()
 void ComponentMesh::EndDraw()
 {
 	glPopMatrix();
-	/*if (textures.size() > 0)
-	{
-		for (int i = 0; i < textures.size(); ++i)
-		{
-			textures[i].Unbind();
-		}
-	}
-	else *///texture->Unbind();
-
-	//if(currentTexture) currentTexture->Unbind();
 
 	indexBuffer->Unbind();
 	vertexBuffer->Unbind();
@@ -316,7 +300,7 @@ void ComponentMesh::EndDraw()
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-Texture* ComponentMesh::SetCheckersTexture()
+void ComponentMesh::SetCheckersTexture()
 {
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
@@ -328,6 +312,6 @@ Texture* ComponentMesh::SetCheckersTexture()
 			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
-	Texture* ret = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
-	return ret;
+	checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
+	//return checkersTexture;
 }

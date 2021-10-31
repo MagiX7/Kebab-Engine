@@ -16,13 +16,17 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include "mmgr/mmgr.h"
+
 #define ASSETS_DIR "Assets/3D Models/"
 
 MeshLoader* MeshLoader::instance = nullptr;
 
 MeshLoader* MeshLoader::GetInstance()
 {
-    if (instance == nullptr) instance = new MeshLoader();
+    if (instance == nullptr)
+        instance = new MeshLoader();
+
     return instance;
 }
 
@@ -31,8 +35,13 @@ MeshLoader::MeshLoader()
 }
 
 MeshLoader::~MeshLoader()
+{   
+}
+
+void MeshLoader::CleanUp()
 {
-    RELEASE(instance);
+    delete(instance);
+    instance = nullptr;
 }
 
 GameObject* MeshLoader::LoadModel(std::string path)

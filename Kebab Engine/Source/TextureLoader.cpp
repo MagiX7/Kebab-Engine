@@ -2,6 +2,8 @@
 
 #include "Globals.h"
 
+#include "mmgr/mmgr.h"
+
 #define ASSETS_DIR "Assets/3D Models/"
 
 TextureLoader* TextureLoader::instance = nullptr;
@@ -14,11 +16,14 @@ TextureLoader* TextureLoader::GetInstance()
 
 TextureLoader::~TextureLoader()
 {
-	RELEASE(instance);
-	for (int i = 0; i < textures.size(); ++i)
+	/*for (int i = 0; i < textures.size(); ++i)
 	{
-		RELEASE(textures[i]);
+		delete(textures[i]);
+		textures[i] = nullptr;
 	}
+
+	delete(instance);
+	instance = nullptr;*/
 }
 
 Texture* TextureLoader::LoadTexture(const char* fileName)
@@ -51,4 +56,16 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 	ilBindImage(0);
 	
 	return ret;
+}
+
+void TextureLoader::CleanUp()
+{
+	/*for (int i = 0; i < textures.size(); ++i)
+	{
+		delete(textures[i]);
+		textures[i] = nullptr;
+	}*/
+
+	delete(instance);
+	instance = nullptr;
 }

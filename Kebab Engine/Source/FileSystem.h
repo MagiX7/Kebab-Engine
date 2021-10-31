@@ -61,7 +61,7 @@ private:
 
 private:
 
-	aiFileIO* AssimpIO = nullptr;
+	aiFileIO* assimpIO = nullptr;
 };
 
 #endif // __MODULEFILESYSTEM_H__

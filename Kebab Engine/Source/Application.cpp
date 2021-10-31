@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "TextureLoader.h"
+
 #include "mmgr/mmgr.h"
 
 Application::Application()
@@ -39,7 +41,8 @@ Application::~Application()
 	std::list<Module*>::reverse_iterator it = modules.rbegin();
 	while (it != modules.rend())
 	{
-		RELEASE(*it);
+		delete(*it);
+		*it = nullptr;
 		it++;
 	}
 	modules.clear();
@@ -205,7 +208,8 @@ bool Application::CleanUp()
 		it++;
 	}
 
-	//MeshLoader::GetInstance()->CleanUp();
+	MeshLoader::GetInstance()->CleanUp();
+	TextureLoader::GetInstance()->CleanUp();
 
 	return ret;
 }
