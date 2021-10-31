@@ -86,9 +86,6 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 		goClicked = nullptr;
 	}
 
-	if (optionsPopup && goClicked == go)
-		DisplayGameObjectMenu(goClicked);
-
 
 	////////////////// Recursively display the hierarchy for its childs //////////////////
 	if (opened)
@@ -97,6 +94,10 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 			DisplayHierarchy(child);
 		ImGui::TreePop();
 	}
+
+	// This goes after because if we delete a child, when the recursive call comes, it crashes because go was deleted
+	if (optionsPopup && goClicked == go)
+		DisplayGameObjectMenu(goClicked);
 
 
 	////////////////// Drag and drop //////////////////
@@ -146,8 +147,12 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				app->scene->DeleteGameObject(go);
 			else
 			{
-				if (go == currentGO) currentGO = nullptr;
-				go->GetParent()->EraseChild(go);
+				GameObject* parent = go->GetParent();
+				parent->EraseChild(go);
+				if (go != nullptr) go = nullptr;
+
+				currentGO = parent;
+				goClicked = nullptr;
 			}
 			ImGui::CloseCurrentPopup();
 		}
