@@ -136,9 +136,6 @@
     <ClCompile Include="Source\ComponentCamera.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Primitives.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Source\External\par\par_shapes.cpp">
       <Filter>Source Files\3rd Parties\par</Filter>
     </ClCompile>
@@ -296,9 +293,6 @@
     </ClInclude>
     <ClInclude Include="Source\ComponentCamera.h">
       <Filter>Source Files\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Primitives.h">
-      <Filter>Source Files\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\par\par_shapes.h">
       <Filter>Source Files\3rd Parties\par</Filter>

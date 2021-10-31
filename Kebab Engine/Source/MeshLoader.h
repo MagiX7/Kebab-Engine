@@ -6,8 +6,6 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 
-#include "Primitives.h"
-
 #include <assimp/scene.h>
 
 enum class KbGeometryType

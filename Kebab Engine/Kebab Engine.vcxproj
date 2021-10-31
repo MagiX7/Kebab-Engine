@@ -55,7 +55,6 @@
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Plane.cpp" />
-    <ClCompile Include="Source\Primitives.cpp" />
     <ClCompile Include="Source\Pyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
@@ -109,7 +108,6 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
-    <ClInclude Include="Source\Primitives.h" />
     <ClInclude Include="Source\Pyramid.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
