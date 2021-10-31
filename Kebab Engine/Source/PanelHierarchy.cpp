@@ -90,8 +90,9 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	////////////////// Recursively display the hierarchy for its childs //////////////////
 	if (opened)
 	{
-		for (const auto& child : go->GetChilds())
-			DisplayHierarchy(child);
+		for (int i = 0; i < go->GetChilds().size(); ++i)
+			DisplayHierarchy(go->GetChilds()[i]);
+
 		ImGui::TreePop();
 	}
 
@@ -147,10 +148,15 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				app->scene->DeleteGameObject(go);
 			else
 			{
+				ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+				if (mesh)
+					app->renderer3D->EraseGameObject(go);
+
 				GameObject* parent = go->GetParent();
 				parent->EraseChild(go);
 				if (go != nullptr) go = nullptr;
-
+				
+				go = parent;
 				currentGO = parent;
 				goClicked = nullptr;
 			}
@@ -161,7 +167,13 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 			optionsPopup = false;
 			LOG_CONSOLE("Empty GameObject created insinde %s", go->GetName().c_str());
 
-			GameObject* child = new GameObject("Empty Game Object");
+			static int count = 0;
+			std::string name = "Empty Game Object";
+			if (count > 0)
+				name += " " + std::to_string(count);
+			count++;
+
+			GameObject* child = new GameObject(name);
 			go->AddChild(child);
 			child->SetParent(go);
 			ImGui::CloseCurrentPopup();

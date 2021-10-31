@@ -115,12 +115,14 @@ void GameObject::EraseChild(GameObject* go)
 		{
 			childs.erase(it);
 			childs.shrink_to_fit();
+
+			LOG_CONSOLE("Deleted GameObject %s from %s", go->GetName().c_str(), go->GetParent()->GetName().c_str());
+
 			delete go;
 			go = nullptr;
 			break;
 		}
 	}
-
 }
 
 void GameObject::AddComponent(Component* comp)
