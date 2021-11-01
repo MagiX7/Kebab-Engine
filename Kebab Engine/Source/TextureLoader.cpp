@@ -39,7 +39,7 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 
 	if (!ilLoadImage(fileName))
 	{
-		LOG_CONSOLE("Could not load Image from %s", fileName);
+		//LOG_CONSOLE("Could not load Image from %s", fileName);
 	}
 	else
 	{

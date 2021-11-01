@@ -18,7 +18,7 @@
 
 #include "mmgr/mmgr.h"
 
-#define ASSETS_DIR "Assets/3D Models/"
+#define ASSETS_DIR "Assets/Resources/"
 
 MeshLoader* MeshLoader::instance = nullptr;
 
@@ -205,6 +205,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
             imageName = ASSETS_DIR + nameBaseGO + "/";
             imageName += name.substr(start + 1);
         }
+        else LOG_CONSOLE("\nMesh doesn't have a material with DIFFUSE texture. If you have it, drag and drop it.");
     }
         
 

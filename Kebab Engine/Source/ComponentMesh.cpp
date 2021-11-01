@@ -167,7 +167,7 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	if (!texture)
 	{
 		currentTexture = checkersTexture;
-		LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
+		//LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
 	}
 	else currentTexture = texture;
 

@@ -27,7 +27,7 @@ bool MainScene::Start()
 
 	bool ret = true;
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/3D Models/Baker House.fbx"));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 
 	return ret;
 }

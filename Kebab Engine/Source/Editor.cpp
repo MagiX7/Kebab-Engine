@@ -150,6 +150,11 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             if (ImGui::MenuItem("Sphere"))
                 app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
 
+            if (ImGui::MenuItem("Empty GameObject"))
+            {
+                GameObject* go = new GameObject("Empty Game Object");
+                app->scene->AddGameObject(go);
+            }
             ImGui::EndMenu();
         }
 
