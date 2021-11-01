@@ -255,8 +255,19 @@ void ConfigPanel::OnRender(float dt)
             SDL_version compiled;
             SDL_VERSION(&compiled);
 
-            ImGui::Text("SDL Version:");
+            ImGui::Text("SDL ");
             ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
+
+            ImGui::Text("OpenGL");
+            ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%s", glGetString(GL_VERSION));
+            ImGui::Text("GLEW");
+            ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%s", glewGetString(GLEW_VERSION));
+            ImGui::Text("ImGui");
+            ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "%s", ImGui::GetVersion());
+            
+            ImGui::Text("MathGeoLib");
+            ImGui::SameLine(); ImGui::TextColored({ 200,200,0,255 }, "1.5.0"); // Not hardcoded because yes. It's the version shown in CMakeLists.txt from MathGeoLib
+
 
             ImGui::Separator();
 

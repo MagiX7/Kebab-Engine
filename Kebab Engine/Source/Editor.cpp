@@ -288,11 +288,11 @@ void Editor::ShowAboutPanel()
 
     SDL_version ver;
     SDL_VERSION(&ver);
-    ImGui::BulletText("SDL Version: %d.%d.%d", ver.major, ver.minor, ver.patch);
+    ImGui::BulletText("SDL %d.%d.%d", ver.major, ver.minor, ver.patch);
     ImGui::BulletText("OpenGL %s", glGetString(GL_VERSION));
     ImGui::BulletText("GLEW %s", glewGetString(GLEW_VERSION));
     ImGui::BulletText("ImGui %s", ImGui::GetVersion());
-    ImGui::BulletText("MathGeoLib");
+    ImGui::BulletText("MathGeoLib 1.5.0"); // Not hardcoded because yes. It's the version shown in CMakeLists.txt from MathGeoLib
 
     ImGui::NewLine();
 
