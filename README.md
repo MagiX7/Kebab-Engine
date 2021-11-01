@@ -4,7 +4,7 @@
 
 This is an 3D Game Engine made for the subject Game Engines at CITM - UPC Terrassa (2021) by David González and Carlos Megia.
 
-The objective is to create a useful 3D Engine that fits all the basic aspects to create a 3D game and to learn how to do and how an Engine works.
+The objective is to create a useful 3D Engine that fits all the basic aspects to create a 3D game and to learn how to do and works an Engine.
 
 ## 3rd Party Links
 
