@@ -13,7 +13,9 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - [ImGUI](https://github.com/ocornut/imgui)
 - [DevIL](http://openil.sourceforge.net/)
 - [Assimp](https://github.com/assimp/assimp)
-- [MathGeoLib](https://github.com/juj/MathGeoLib).
+- [MathGeoLib](https://github.com/juj/MathGeoLib)
+- [Parson](https://github.com/kgabis/parson)
+- [PhysFS](https://github.com/icculus/physfs)
 
 ## Team Members
 
