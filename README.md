@@ -48,6 +48,7 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
   * D - Right.
   * E - Up.
   * Q - Down.
+- Mouse Wheel - Zoom in/out.
 - Gameobject clicked + F - Center gameobject on the camera.
 - Gameobject clicked + Alt + Left Click - Orbit around the gameobject.
 - P - Save.
