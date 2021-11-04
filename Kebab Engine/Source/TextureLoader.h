@@ -16,7 +16,7 @@ public:
 private:
 	static TextureLoader* instance;
 
-	TextureLoader() {};
+	TextureLoader();
 	TextureLoader(const TextureLoader&) {}
 	void operator=(const TextureLoader&) {};
 

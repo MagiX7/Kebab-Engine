@@ -61,7 +61,6 @@
     <ClCompile Include="Source\Sphere.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
-    <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="Source\Sphere.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
-    <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />

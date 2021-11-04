@@ -8,6 +8,8 @@
 
 #include "mmgr/mmgr.h"
 
+#define TEXTURES_DIR "Library/Textures/"
+
 using namespace std;
 
 FileSystem::FileSystem(const char* game_path)
@@ -416,6 +418,24 @@ const char * FileSystem::GetReadPaths() const
 	}
 
 	return paths;
+}
+
+void FileSystem::SaveTextureCustomFormat(Texture* tex)
+{
+	ILuint size;
+	ILubyte* data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
+	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
+	if (size > 0)
+	{
+		data = new ILubyte[size]; // Allocate data buffer
+		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+		{
+			std::string n = TEXTURES_DIR + tex->GetName() + ".dds";
+			Save(n.c_str(), data, size);
+		}
+		delete[]data;
+	}
 }
 
 // -----------------------------------------------------

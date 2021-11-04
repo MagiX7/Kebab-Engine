@@ -22,9 +22,6 @@
     <ClCompile Include="Source\Renderer3D.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TextureManager.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Window.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -160,9 +157,6 @@
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Renderer3D.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureManager.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Window.h">

@@ -55,6 +55,9 @@ public:
 	const char* GetWritePath() const;
 	const char* GetReadPaths() const;
 
+
+	void SaveTextureCustomFormat(Texture* tex);
+
 private:
 
 	void CreateAssimpIO();

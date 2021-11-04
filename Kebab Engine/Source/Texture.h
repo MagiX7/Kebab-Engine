@@ -19,18 +19,20 @@ class Texture
 {
 public:
 	//Texture(unsigned char* pixels, int width, int height);
-	Texture() {};
+	Texture();
 	Texture(void* data, int width, int height, std::string path);
-	Texture(const char* fileName);
+	//Texture();
 	virtual ~Texture();
 
-	void SetData(void* data, int width, int height, std::string path);
+	void SetData(void* data, int width, int height);
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;
 
 	inline const std::string& GetPath() const { return path; }
 	inline const unsigned int& GetID() const { return rendererID; }
+
+	inline const std::string& GetName() const { return name; }
 
 private:
 	unsigned int rendererID;
@@ -43,4 +45,5 @@ private:
 	ILubyte* data;
 
 	std::string path;
+	std::string name;
 };

@@ -1,3 +1,5 @@
+#include "Application.h"
+
 #include "TextureLoader.h"
 
 #include "Globals.h"
@@ -12,6 +14,17 @@ TextureLoader* TextureLoader::GetInstance()
 {
 	if (!instance) instance = new TextureLoader();
 	return instance;
+}
+
+TextureLoader::TextureLoader()
+{
+	ilInit();
+	iluInit();
+	ilutInit();
+
+	ilEnable(IL_CONV_PAL);
+	ilutEnable(ILUT_OPENGL_CONV);
+	ilutRenderer(ILUT_OPENGL);
 }
 
 TextureLoader::~TextureLoader()
@@ -48,6 +61,8 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 		textures.push_back(ret);
 
+		app->fileSystem->SaveTextureCustomFormat(ret);
+
 		ilDeleteImage(tmp);
 
 		LOG_CONSOLE("\nLoaded image from %s", fileName);
@@ -65,6 +80,8 @@ void TextureLoader::CleanUp()
 		delete(textures[i]);
 		textures[i] = nullptr;
 	}*/
+
+	ilShutDown();
 
 	delete(instance);
 	instance = nullptr;

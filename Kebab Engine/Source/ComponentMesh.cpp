@@ -312,6 +312,6 @@ void ComponentMesh::SetCheckersTexture()
 			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
-	checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
+	checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Checkers");
 	//return checkersTexture;
 }
