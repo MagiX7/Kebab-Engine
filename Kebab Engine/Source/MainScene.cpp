@@ -8,6 +8,7 @@
 #include "PanelHierarchy.h"
 
 #include "GameObject.h"
+#include "MeshLoader.h"
 
 #include "Cube.h"
 #include "Sphere.h"

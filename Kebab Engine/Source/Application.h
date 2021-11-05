@@ -5,6 +5,15 @@
 #include "Globals.h"
 #include "Timer.h"
 
+/* #include "Module.h"
+#include "Window.h"
+#include "Input.h"
+#include "MainScene.h"
+#include "Renderer3D.h"
+#include "Camera3D.h"
+#include "Editor.h"
+#include "FileSystem.h"*/
+
 #include "parson.h"
 
 #include <list>
@@ -30,7 +39,6 @@ public:
 	Camera3D* camera;
 	Editor* editor;
 	FileSystem* fileSystem;
-	TextureManager* textures;
 
 private:
 	std::list<Module*> modules;

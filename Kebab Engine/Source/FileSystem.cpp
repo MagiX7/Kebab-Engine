@@ -2,11 +2,16 @@
 #include "FileSystem.h"
 
 #include "Globals.h"
+#include "TextureLoader.h"
 
 #include "PhysFS/include/physfs.h"
+
 #include "assimp/cfileio.h"
 #include "assimp/types.h"
 #include "mmgr/mmgr.h"
+
+#define TEXTURES_DIR "Library/Textures/"
+#define MESHES_DIR "Library/Meshes/"
 
 using namespace std;
 

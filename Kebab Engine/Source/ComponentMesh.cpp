@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
 
 #include "TextureLoader.h"
 
@@ -19,8 +20,6 @@ ComponentMesh::ComponentMesh(GameObject& compOwner)
 	this->type = ComponentType::MESH;
 	this->active = true;
 
-	/*checkersTexture = */ SetCheckersTexture();
-
 	drawVertexNormals = false;
 	drawTriangleNormals = false;
 	
@@ -33,8 +32,8 @@ ComponentMesh::~ComponentMesh()
 {
 	delete(vertexBuffer);
 	delete(indexBuffer);
-	delete(texture);
-	delete(checkersTexture);
+	/*delete(texture);
+	delete(checkersTexture);*/
 
 	vertices.clear();
 	indices.clear();
@@ -109,7 +108,7 @@ void ComponentMesh::DrawOnInspector()
 	}
 
 	// Temporarily, should move it to material component
-	if (ImGui::CollapsingHeader("Texture"))
+	/*if (ImGui::CollapsingHeader("Texture"))
 	{
 		if(currentTexture && currentTexture == texture)
 			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
@@ -138,24 +137,25 @@ void ComponentMesh::DrawOnInspector()
 			ImGui::SameLine();
 			ImGui::Text("No texture.");
 		}
-	}
+	}*/
 }
 
-void ComponentMesh::Draw()
+void ComponentMesh::Draw(ComponentMaterial* mat)
 {
-	BeginDraw();
+	BeginDraw(mat);
 
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 
 	// This goes here just to be able to change the normals color while texture is assigned
-	if (currentTexture) currentTexture->Unbind();
+	mat->Unbind();
+	//if (currentTexture) currentTexture->Unbind();
 
 	if (drawVertexNormals)
 		DrawVertexNormals();
 	if (drawTriangleNormals)
 		DrawTriangleNormals();
 
-	EndDraw();
+	EndDraw(mat);
 }
 
 void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*std::vector<Texture> textures*/)
@@ -163,13 +163,16 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	this->vertices = vertices;
 	this->indices = indices;
 
-	this->texture = tex;
-	if (!texture)
-	{
-		currentTexture = checkersTexture;
-		//LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
-	}
-	else currentTexture = texture;
+	//if (tex)
+	//{
+	//	this->texture = tex;
+	//	if (!texture)
+	//	{
+	//		currentTexture = checkersTexture;
+	//		//LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
+	//	}
+	//	else currentTexture = texture;
+	//}
 
 	SetUpMesh();
 }
@@ -177,8 +180,8 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 void ComponentMesh::SetTexture(Texture* tex)
 {
 	//if (texture) RELEASE(texture);
-	texture = tex;
-	currentTexture = texture;
+	/*texture = tex;
+	currentTexture = texture;*/
 }
 
 void ComponentMesh::DrawVertexNormals()
@@ -264,7 +267,7 @@ void ComponentMesh::SetUpMesh()
 	//if(textures.size() == 0) SetCheckersTexture();
 }
 
-void ComponentMesh::BeginDraw()
+void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 {
 	ComponentTransform* t = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	if (t)
@@ -281,7 +284,8 @@ void ComponentMesh::BeginDraw()
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
 
-	if (currentTexture) currentTexture->Bind();
+	//if (currentTexture) currentTexture->Bind();
+	mat->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
 	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
@@ -289,7 +293,7 @@ void ComponentMesh::BeginDraw()
 
 }
 
-void ComponentMesh::EndDraw()
+void ComponentMesh::EndDraw(ComponentMaterial* mat)
 {
 	glPopMatrix();
 
@@ -298,20 +302,4 @@ void ComponentMesh::EndDraw()
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
-
-void ComponentMesh::SetCheckersTexture()
-{
-	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
-		for (int j = 0; j < CHECKERS_WIDTH; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 225;
-			checkerImage[i][j][0] = (GLubyte)c;
-			checkerImage[i][j][1] = (GLubyte)c;
-			checkerImage[i][j][2] = (GLubyte)c;
-			checkerImage[i][j][3] = (GLubyte)225;
-		}
-	}
-	checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Default checkers texture");
-	//return checkersTexture;
 }

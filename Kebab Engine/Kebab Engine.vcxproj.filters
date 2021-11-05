@@ -22,9 +22,6 @@
     <ClCompile Include="Source\Renderer3D.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TextureManager.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Window.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -139,6 +136,9 @@
     <ClCompile Include="Source\PanelAssets.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Material.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -160,9 +160,6 @@
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Renderer3D.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureManager.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Window.h">
@@ -296,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="Source\PanelAssets.h">
       <Filter>Source Files\Panels</Filter>
+      </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Source Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

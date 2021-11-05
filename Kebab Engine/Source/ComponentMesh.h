@@ -6,6 +6,8 @@
 
 #include "Vertex.h"
 
+class ComponentMaterial;
+
 class ComponentMesh : public Component
 {
 public:
@@ -16,9 +18,9 @@ public:
 	void Disable();
 
 	void Update();
-	void Draw();
+	void Draw(ComponentMaterial* mat);
 
-	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*, std::vector<Texture> textures*/);
+	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
 	void SetTexture(Texture* tex);
 
 	void DrawVertexNormals();
@@ -29,11 +31,8 @@ private:
 	
 	void SetUpMesh();
 
-	void BeginDraw();
-	void EndDraw();
-
-protected:
-	void SetCheckersTexture();
+	void BeginDraw(ComponentMaterial* mat);
+	void EndDraw(ComponentMaterial* mat);
 
 public:
 	std::vector<Vertex>   vertices;
@@ -43,9 +42,9 @@ public:
 protected:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-	Texture* currentTexture;
+	/*Texture* currentTexture;
 	Texture* texture;
-	Texture* checkersTexture;
+	Texture* checkersTexture;*/
 
 	bool isKbGeometry = false;
 

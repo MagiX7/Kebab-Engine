@@ -9,6 +9,7 @@
 #include "Editor.h"
 #include "FileSystem.h"
 #include "TextureManager.h"
+#include "MeshLoader.h"
 
 #include "mmgr/mmgr.h"
 
@@ -21,7 +22,6 @@ Application::Application()
 	camera = new Camera3D();
 	editor = new Editor();
 	fileSystem = new FileSystem();
-	textures = new TextureManager();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -31,7 +31,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(textures);
 	AddModule(editor);
 	AddModule(fileSystem);
 	

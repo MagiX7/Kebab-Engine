@@ -7,6 +7,9 @@
 #include "Input.h"
 
 #include "Buffer.h"
+#include "MeshLoader.h"
+
+#include "GL/glew.h"
 
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"

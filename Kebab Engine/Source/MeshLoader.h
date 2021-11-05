@@ -29,6 +29,10 @@ public:
 
 	GameObject* LoadKbGeometry(KbGeometryType type);
 
+	void SaveMeshCustomFormat(ComponentMesh* mesh);
+	ComponentMesh* LoadMeshCustomFormat(const char* fileName, GameObject* parent);
+
+
 	//GameObject* LoadPrimitive(PrimitiveType type);
 
 	void CleanUp();

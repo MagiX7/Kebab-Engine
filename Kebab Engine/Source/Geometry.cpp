@@ -20,8 +20,8 @@ KbGeometry::~KbGeometry()
 	delete(indexBuffer);
 	indexBuffer = nullptr;
 	
-	delete(texture);
-	texture = nullptr;
+	//delete(texture);
+	//texture = nullptr;
 }
 
 void KbGeometry::SetUpBuffers()
@@ -30,6 +30,6 @@ void KbGeometry::SetUpBuffers()
 	vertexBuffer->SetData(vertices);
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 	
-	SetCheckersTexture();
-	currentTexture = checkersTexture;
+	/*SetCheckersTexture();
+	currentTexture = checkersTexture;*/
 }

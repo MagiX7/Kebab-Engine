@@ -41,6 +41,7 @@
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Geometry.cpp" />
+    <ClCompile Include="Source\Material.cpp" />
     <ClCompile Include="Source\MeshLoader.cpp" />
     <ClCompile Include="Source\PanelAssets.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
@@ -61,7 +62,6 @@
     <ClCompile Include="Source\Sphere.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
-    <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
@@ -80,6 +80,7 @@
     <ClInclude Include="Source\External\par\par_shapes.h" />
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\MeshLoader.h" />
     <ClInclude Include="Source\PanelAssets.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
@@ -114,7 +115,6 @@
     <ClInclude Include="Source\Sphere.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
-    <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />
