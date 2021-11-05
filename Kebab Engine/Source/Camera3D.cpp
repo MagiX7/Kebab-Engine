@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Camera3D.h"
 
+#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
 #include "mmgr/mmgr.h"

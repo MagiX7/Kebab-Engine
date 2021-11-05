@@ -1,6 +1,17 @@
 #include "Application.h"
+
 #include "Renderer3D.h"
+
+#include "GameObject.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
+#include "MeshLoader.h"
+
+#include "Buffer.h"
+
 #include "SDL_opengl.h"
+
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -180,8 +191,9 @@ bool Renderer3D::Draw(float dt)
 
 	for (const auto& go : gameObjects)
 	{
+		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if(mesh) mesh->Draw();
+		if(mesh && mat) mesh->Draw(mat);
 	}
 	frameBuffer->Unbind();
 

@@ -1,6 +1,9 @@
 #include "Application.h"
 #include "Input.h"
 #include "MainScene.h"
+
+#include "MeshLoader.h"
+
 #include "Cube.h"
 #include "Sphere.h"
 //#include "Plane.h"

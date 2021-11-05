@@ -2,6 +2,8 @@
 #include "MeshLoader.h"
 #include "TextureLoader.h"
 
+#include "ComponentMaterial.h"
+
 #include "Cube.h"
 #include "Pyramid.h"
 #include "Plane.h"
@@ -209,26 +211,12 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
         }
         else LOG_CONSOLE("\nMesh doesn't have a material with DIFFUSE texture. If you have it, drag and drop it.");
     }
-        
 
-    /*int start = 0;
-    if (name.size() > 0)
-    {
-        start = name.find_last_of('\\');
-        if (start == 0)
-            start = name.find_last_of('/');
-
-        imageName = ASSETS_DIR + nameBaseGO + "/";
-        imageName += name.substr(start + 1);
-    }*/
-    /*else
-    {
-        imageName = ASSETS_DIR + nameBaseGO + "/";
-        imageName += name.substr(start + 1);
-    }*/
+    ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
+    mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
+    meshComp->SetData(vertices, indices/*, TextureLoader::GetInstance()->LoadTexture(imageName.c_str())*/);
 
     SaveMeshCustomFormat(meshComp);
     meshComp = LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
@@ -316,6 +304,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 {
     GameObject* go = nullptr;
     Component* comp = nullptr;
+    ComponentMaterial* matComp = nullptr;
 
     std::string name;
     switch (type)
@@ -329,7 +318,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             numCube++;
 
             go = new GameObject(name.c_str());
-            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);            
+            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
             break;
         }
 
@@ -386,6 +375,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
     if (go)
     {
         go->AddComponent(comp);
+        ComponentMaterial* mat = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
         app->scene->AddGameObject(go);
     }
 

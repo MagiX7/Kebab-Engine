@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Editor.h"
 
+#include "MeshLoader.h"
+
 #include "GL/glew.h"
 
 #include "imgui/imgui.h"

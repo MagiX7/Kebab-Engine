@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "TextureLoader.h"
+#include "MeshLoader.h"
 
 #include "mmgr/mmgr.h"
 

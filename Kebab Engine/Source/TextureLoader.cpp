@@ -63,7 +63,7 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 		textures.push_back(ret);
 
-		SaveTextureCustomFormat(ret);
+		SaveTextureCustomFormat(ret->GetName());
 		//ret = LoadTextureCustomFormat(ret->GetName());
 
 		ilDeleteImage(tmp);
@@ -101,7 +101,7 @@ Texture* TextureLoader::LoadTextureCustomFormat(std::string name)
 	return ret;
 }
 
-void TextureLoader::SaveTextureCustomFormat(Texture* tex)
+void TextureLoader::SaveTextureCustomFormat(const std::string& name)
 {
 	ILuint size;
 	ILubyte* data;
@@ -112,7 +112,7 @@ void TextureLoader::SaveTextureCustomFormat(Texture* tex)
 		data = new ILubyte[size]; // Allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 		{
-			std::string n = CUSTOM_DIR + tex->GetName() + CUSTOM_EXTENSION;
+			std::string n = CUSTOM_DIR + name + CUSTOM_EXTENSION;
 			app->fileSystem->Save(n.c_str(), data, size);
 		}
 		delete[] data;

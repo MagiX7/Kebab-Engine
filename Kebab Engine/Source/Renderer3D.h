@@ -4,12 +4,9 @@
 #include "Globals.h"
 #include "Light.h"
 
-#include "Geometry.h"
-#include "MeshLoader.h"
-
-#include "ComponentMesh.h"
-
-#include "glmath.h"
+class FrameBuffer;
+class GameObject;
+class ComponentMesh;
 
 #define MAX_LIGHTS 8
 
@@ -59,13 +56,13 @@ private:
 	std::vector<ComponentMesh*> meshes;
 	std::vector<GameObject*> gameObjects;
 	
-	VertexArray* vertexArray;
+	/*VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
-	IndexBuffer* indexBuffer;
+	IndexBuffer* indexBuffer;*/
 	FrameBuffer* frameBuffer;
 
-	std::vector<float3> vertices;
+	/*std::vector<float3> vertices;
 	std::vector<uint32_t> indices;
 	uint32_t numIndices;
-	uint32_t numVertices;
+	uint32_t numVertices;*/
 };

@@ -34,8 +34,12 @@ public:
 
 	inline const std::string& GetName() const { return name; }
 
+	inline void SetType(TextureType type) { this->type = type; }
+	inline const TextureType& GetType() const { return type; }
+
 private:
 	unsigned int rendererID;
+	TextureType type;
 
 	int width;
 	int height;
