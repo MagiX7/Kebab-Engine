@@ -61,10 +61,10 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
-		textures.push_back(ret);
+		//textures.push_back(ret);
 
 		SaveTextureCustomFormat(ret->GetName());
-		//ret = LoadTextureCustomFormat(ret->GetName());
+		ret = LoadTextureCustomFormat(ret->GetName());
 
 		ilDeleteImage(tmp);
 
@@ -91,13 +91,18 @@ Texture* TextureLoader::LoadTextureCustomFormat(std::string name)
 
 	if (ilLoadL(IL_DDS, buffer, size))
 	{
-		ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
+		textures.push_back(ret);
+
+		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
 		LOG_CONSOLE("Custom file format texture %s loaded!", name);
 	}
 	else LOG_CONSOLE("Could not load custom file format texture %s", name);
 
-
 	delete[] buffer;
+	
 	return ret;
 }
 
