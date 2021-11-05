@@ -8,7 +8,6 @@
 #include "Camera3D.h"
 #include "Editor.h"
 #include "FileSystem.h"
-#include "TextureManager.h"
 #include "MeshLoader.h"
 
 #include "mmgr/mmgr.h"
