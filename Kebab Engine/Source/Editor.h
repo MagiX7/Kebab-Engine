@@ -7,6 +7,7 @@ class ConsolePanel;
 class ViewportPanel;
 class InspectorPanel;
 class HierarchyPanel;
+class AssetsPanel;
 class FrameBuffer;
 
 class Editor : public Module
@@ -36,13 +37,10 @@ public:
 	ViewportPanel* viewportPanel;
 	HierarchyPanel* hierarchyPanel;
 	InspectorPanel* inspectorPanel;
+	AssetsPanel* assetsPanel;
 
 	bool showAboutPanel;
 	bool wireframe;
-
-	/*float fpsLog[MAX_IT_HIST];
-	float msLog[MAX_IT_HIST];
-	int i;*/
 
 private:
 	float scroll;

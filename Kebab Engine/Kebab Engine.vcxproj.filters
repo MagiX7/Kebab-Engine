@@ -136,6 +136,9 @@
     <ClCompile Include="Source\External\par\par_shapes.cpp">
       <Filter>Source Files\3rd Parties\par</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelAssets.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -290,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\par\par_shapes.h">
       <Filter>Source Files\3rd Parties\par</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelAssets.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

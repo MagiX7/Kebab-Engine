@@ -13,6 +13,7 @@
 #include "PanelHierarchy.h"
 #include "PanelInspector.h"
 #include "PanelViewport.h"
+#include "PanelAssets.h"
 
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -30,6 +31,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     viewportPanel = new ViewportPanel();
     hierarchyPanel = new HierarchyPanel();
     inspectorPanel = new InspectorPanel();
+    assetsPanel = new AssetsPanel();
 
     showAboutPanel = false;
     wireframe = true;
@@ -83,6 +85,8 @@ bool Editor::CleanUp()
     configPanel = nullptr;
     delete(inspectorPanel);
     inspectorPanel = nullptr;
+    delete(assetsPanel);
+    assetsPanel = nullptr;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -171,21 +175,25 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
 
         if (ImGui::BeginMenu("View"))
         {
-            if (ImGui::MenuItem("Console"))
+            if (ImGui::MenuItem("Console window"))
             {
                 consolePanel->active = !consolePanel->active;
             }
-            if (ImGui::MenuItem("Configuration"))
+            if (ImGui::MenuItem("Configuration window"))
             {
                 configPanel->active = !configPanel->active;
             }
-            if (ImGui::MenuItem("Hierarchy"))
+            if (ImGui::MenuItem("Hierarchy window"))
             {
                 hierarchyPanel->active = !hierarchyPanel->active;
             }
-            if (ImGui::MenuItem("Inspector"))
+            if (ImGui::MenuItem("Inspector window"))
             {
                 inspectorPanel->active = !inspectorPanel->active;
+            }
+            if (ImGui::MenuItem("Assets window"))
+            {
+                assetsPanel->active = !assetsPanel->active;
             }
             ImGui::Checkbox("Show Editor Windows", &showWindows);
             ImGui::EndMenu();
@@ -240,6 +248,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         if (configPanel->active) configPanel->OnRender(dt);
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
+        if (assetsPanel->active) assetsPanel->OnRender(dt);
     }
 
     ImGui::EndFrame();
