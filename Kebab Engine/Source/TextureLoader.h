@@ -10,6 +10,9 @@ public:
 	virtual ~TextureLoader();
 
 	Texture* LoadTexture(const char* fileName);
+	Texture* LoadTextureCustomFormat(std::string name);
+
+	void SaveTextureCustomFormat(Texture* tex);
 
 	void CleanUp();
 

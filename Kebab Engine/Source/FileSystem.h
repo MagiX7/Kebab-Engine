@@ -56,14 +56,6 @@ public:
 	const char* GetReadPaths() const;
 
 
-	void SaveTextureCustomFormat(Texture* tex);
-	void SaveMeshCustomFormat(ComponentMesh* mesh);
-
-	void LoadTextureCustomFormat(Texture* tex);
-	ComponentMesh* LoadMeshCustomFormat(const char* fileName, GameObject* parent);
-
-
-
 private:
 
 	void CreateAssimpIO();

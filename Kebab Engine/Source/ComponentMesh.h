@@ -18,7 +18,7 @@ public:
 	void Update();
 	void Draw();
 
-	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*, std::vector<Texture> textures*/);
+	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
 	void SetTexture(Texture* tex);
 
 	void DrawVertexNormals();

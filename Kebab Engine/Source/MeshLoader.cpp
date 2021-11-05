@@ -19,6 +19,8 @@
 #include "mmgr/mmgr.h"
 
 #define ASSETS_DIR "Assets/Resources/"
+#define CUSTOM_DIR "Library/Meshes/"
+#define CUSTOM_EXTENSION ".kbmesh"
 
 MeshLoader* MeshLoader::instance = nullptr;
 
@@ -225,12 +227,11 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
         imageName += name.substr(start + 1);
     }*/
 
-
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     meshComp->SetData(vertices, indices, TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
 
-    app->fileSystem->SaveMeshCustomFormat(meshComp);
-    meshComp = app->fileSystem->LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
+    SaveMeshCustomFormat(meshComp);
+    meshComp = LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
@@ -389,4 +390,79 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
     }
 
     return go;
+}
+
+void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
+{
+    unsigned int ranges[2] = { mesh->indices.size(), mesh->vertices.size() };
+
+    uint size = sizeof(ranges) + sizeof(uint32_t) * mesh->indices.size() + sizeof(Vertex) * mesh->vertices.size();
+
+    char* fileBuffer = new char[size];
+    char* cursor = fileBuffer;
+
+    unsigned int bytes = sizeof(ranges);
+    memcpy(cursor, ranges, bytes);
+    cursor += bytes;
+
+
+    bytes = sizeof(unsigned int) * mesh->vertices.size();
+    memcpy(cursor, mesh->vertices.data(), bytes);
+    cursor += bytes;
+
+    bytes = sizeof(uint32_t) * mesh->indices.size();
+    memcpy(cursor, mesh->indices.data(), bytes);
+    cursor += bytes;
+
+    std::string n = CUSTOM_DIR + mesh->GetParent()->GetName() + CUSTOM_EXTENSION;
+    app->fileSystem->Save(n.c_str(), fileBuffer, size);
+
+    delete[] fileBuffer;
+}
+
+ComponentMesh* MeshLoader::LoadMeshCustomFormat(const char* fileName, GameObject* parent)
+{
+    ComponentMesh* mesh = new ComponentMesh(*parent);
+
+    std::string n = CUSTOM_DIR;
+    n.append(fileName);
+    n.append(CUSTOM_EXTENSION);
+
+    SDL_RWops* file = app->fileSystem->Load(n.c_str());
+
+    unsigned int fileSize = file->size(file);
+
+    char* buffer = new char[fileSize];
+    app->fileSystem->Load(n.c_str(), &buffer);
+
+    char* cursor = buffer;
+    unsigned int ranges[2];
+
+    unsigned int bytes = sizeof(ranges);
+    memcpy(ranges, cursor, bytes);
+    cursor += bytes;
+
+    //mesh->indices.resize(ranges[0]);
+    //mesh->vertices.resize(ranges[1]);
+    std::vector<Vertex> vertices;
+    vertices.resize(ranges[0]);
+
+    std::vector<uint32_t> indices;
+    indices.resize(ranges[1]);
+
+    // Load vertices
+    bytes = sizeof(Vertex) * vertices.size();
+    memcpy(vertices.data(), cursor, bytes);
+    cursor += bytes;
+
+    // Load indices
+    bytes = sizeof(uint32_t) * indices.size();
+    memcpy(indices.data(), cursor, bytes);
+    cursor += bytes;
+
+    mesh->SetData(vertices, indices);
+
+    delete[] buffer;
+
+    return mesh;
 }
