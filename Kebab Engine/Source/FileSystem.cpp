@@ -9,6 +9,7 @@
 #include "mmgr/mmgr.h"
 
 #define TEXTURES_DIR "Library/Textures/"
+#define MESHES_DIR "Library/Meshes/"
 
 using namespace std;
 
@@ -436,6 +437,90 @@ void FileSystem::SaveTextureCustomFormat(Texture* tex)
 		}
 		delete[]data;
 	}
+}
+
+void FileSystem::SaveMeshCustomFormat(ComponentMesh* mesh)
+{
+	unsigned int ranges[2] = { mesh->indices.size(), mesh->vertices.size() };
+
+	uint sais = sizeof(ranges);
+
+	uint size = sizeof(ranges) + sizeof(unsigned int) * mesh->indices.size() + sizeof(Vertex) * mesh->vertices.size();
+
+	char* fileBuffer = new char[size];
+	char* cursor = fileBuffer;
+
+	unsigned int bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+
+
+	bytes = sizeof(unsigned int) * mesh->vertices.size();
+	memcpy(cursor, mesh->vertices.data(), bytes);
+	cursor += bytes;
+
+	bytes = sizeof(unsigned int) * mesh->indices.size();
+	memcpy(cursor, mesh->indices.data(), bytes);
+	cursor += bytes;
+
+	std::string n = MESHES_DIR + mesh->GetParent()->GetName() + ".kbmesh";
+	Save(n.c_str(), fileBuffer, size);
+
+	delete[] fileBuffer;
+}
+
+void FileSystem::LoadTextureCustomFormat(Texture* tex)
+{
+	std::string n = TEXTURES_DIR + tex->GetName() + ".dds";
+
+	SDL_RWops* file = Load(n.c_str());
+
+	unsigned int size = file->size(file);
+
+	char* buffer = new char[size];
+	Load(n.c_str(), &buffer);
+
+
+
+}
+
+ComponentMesh* FileSystem::LoadMeshCustomFormat(const char* fileName, GameObject* parent)
+{
+	ComponentMesh* mesh = new ComponentMesh(*parent);
+
+	std::string n = MESHES_DIR;
+	n.append(fileName);
+	n.append(".kbmesh");
+
+	SDL_RWops* file = Load(n.c_str());
+
+	unsigned int fileSize = file->size(file);
+
+	char* buffer = new char[fileSize];
+	Load(n.c_str(), &buffer);
+
+	unsigned int ranges[2];
+
+	char* cursor = buffer;
+	
+	unsigned int bytes = sizeof(unsigned int) * mesh->indices.size();
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+
+	mesh->indices.resize(ranges[0]);
+	mesh->vertices.resize(ranges[1]);
+
+
+
+	bytes = sizeof(Vertex) * mesh->vertices.size();
+	memcpy(mesh->vertices.data(), cursor, bytes);
+	cursor += bytes;
+
+	
+
+	delete[] buffer;
+
+	return mesh;
 }
 
 // -----------------------------------------------------

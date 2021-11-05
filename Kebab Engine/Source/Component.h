@@ -28,6 +28,7 @@ public:
 	virtual inline void SetActive(bool value) { active = value; }
 
 	inline void SetParent(GameObject* newParent) { parent = newParent; }
+	inline const GameObject* GetParent() const { return parent; }
 
 	inline const ComponentType& GetComponentType() const { return type; }
 
