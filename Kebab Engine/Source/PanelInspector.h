@@ -2,8 +2,6 @@
 
 #include "Panel.h"
 
-#include "GameObject.h"
-
 class InspectorPanel : public Panel
 {
 public:

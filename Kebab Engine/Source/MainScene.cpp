@@ -1,13 +1,18 @@
 #include "Application.h"
-#include "Input.h"
 #include "MainScene.h"
+
+#include "Input.h"
+#include "Renderer3D.h"
+#include "Editor.h"
+
+#include "PanelHierarchy.h"
+
+#include "GameObject.h"
+
 #include "Cube.h"
 #include "Sphere.h"
-//#include "Plane.h"
 
 #include "parson.h"
-
-
 #include "mmgr/mmgr.h"
 
 #include <iostream>

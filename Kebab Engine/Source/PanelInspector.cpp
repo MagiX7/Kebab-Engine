@@ -1,6 +1,14 @@
 #include "Application.h"
-
 #include "PanelInspector.h"
+
+#include "Input.h"
+#include "Editor.h"
+#include "MainScene.h"
+
+#include "PanelHierarchy.h"
+
+#include "GameObject.h"
+#include "ComponentMesh.h"
 
 #include <vector>
 

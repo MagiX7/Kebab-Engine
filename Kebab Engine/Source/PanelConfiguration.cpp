@@ -1,12 +1,13 @@
 #include "Application.h"
-#include "Window.h"
-
 #include "PanelConfiguration.h"
+
+#include "Window.h"
+#include "Input.h"
+#include "Renderer3D.h"
 
 #include "SDL.h"
 #include "SDL_cpuinfo.h"
 #include "GL/glew.h"
-
 #include "mmgr/mmgr.h"
 
 #include <stdio.h>

@@ -1,17 +1,16 @@
 #pragma once
 
 #include "Module.h"
-#include "Globals.h"
-#include "Light.h"
 
 #include "Geometry.h"
 #include "MeshLoader.h"
 
-#include "ComponentMesh.h"
-
-#include "glmath.h"
+#include "Globals.h"
+#include "Light.h"
 
 #define MAX_LIGHTS 8
+
+class ComponentMesh;
 
 class Renderer3D : public Module
 {
@@ -45,8 +44,6 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	//mat3x3 normalMatrix;
-	mat4x4 modelMatrix, viewMatrix, projectionMatrix;
 
 	bool depth;
 	bool cullFace;

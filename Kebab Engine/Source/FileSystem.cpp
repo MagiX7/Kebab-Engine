@@ -1,11 +1,11 @@
-#include "Globals.h"
 #include "Application.h"
 #include "FileSystem.h"
-//#include "ModuleResources.h"
+
+#include "Globals.h"
+
 #include "PhysFS/include/physfs.h"
 #include "assimp/cfileio.h"
 #include "assimp/types.h"
-
 #include "mmgr/mmgr.h"
 
 using namespace std;

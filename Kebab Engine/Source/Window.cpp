@@ -1,6 +1,7 @@
-#include "Globals.h"
 #include "Application.h"
 #include "Window.h"
+
+#include "Globals.h"
 
 #include "mmgr/mmgr.h"
 

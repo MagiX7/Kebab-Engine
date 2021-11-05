@@ -2,13 +2,12 @@
 
 #include "Module.h"
 
-#include "PanelConfiguration.h"
-#include "PanelConsole.h"
-#include "PanelViewport.h"
-#include "PanelHierarchy.h"
-#include "PanelInspector.h"
-
-//#define MAX_IT_HIST 100
+class ConfigPanel;
+class ConsolePanel;
+class ViewportPanel;
+class InspectorPanel;
+class HierarchyPanel;
+class FrameBuffer;
 
 class Editor : public Module
 {

@@ -1,22 +1,24 @@
 #pragma once
 
+#include "Module.h"
+
 #include "Globals.h"
 #include "Timer.h"
-#include "Module.h"
-#include "Window.h"
-#include "Input.h"
-#include "MainScene.h"
-#include "Renderer3D.h"
-#include "Camera3D.h"
-#include "Editor.h"
-#include "FileSystem.h"
-#include "TextureManager.h"
 
 #include "parson.h"
 
 #include <list>
 
 //#include "mmgr.h"
+
+class FileSystem;
+class Editor;
+class Renderer3D;
+class Window;
+class Input;
+class MainScene;
+class Camera3D;
+class TextureManager;
 
 class Application
 {

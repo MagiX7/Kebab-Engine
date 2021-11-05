@@ -1,6 +1,9 @@
 #pragma once
 #include "Application.h"
 
+#include "Editor.h"
+#include "PanelConsole.h"
+
 #include "Globals.h"
 
 void LogConsole(const char file[], int line, const char* format, ...)

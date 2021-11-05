@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Panel.h"
-#include "Window.h"
-#include "Renderer3D.h"
 
 #include <string>
 
 #define MAX_IT_HIST 100
+
+class Renderer3D;
+class Window;
 
 class ConfigPanel : public Panel
 {
@@ -31,15 +32,6 @@ private:
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;
-
-	// Render stuff
-	/*bool depth;
-	bool cullFace;
-	bool lighting;
-	bool colorMaterial;
-	bool texture2D;
-	bool showNormals;*/
-	// TODO: Other two
 
 	std::string titleName;
 	std::string orgName;

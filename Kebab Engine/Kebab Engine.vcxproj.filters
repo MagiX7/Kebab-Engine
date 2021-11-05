@@ -61,9 +61,6 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Source\glmath.cpp">
-      <Filter>Source Files\3rd Parties\glMath</Filter>
-    </ClCompile>
     <ClCompile Include="Source\External\imgui\imgui.cpp">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClCompile>
@@ -207,9 +204,6 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\glmath.h">
-      <Filter>Source Files\3rd Parties\glMath</Filter>
-    </ClInclude>
     <ClInclude Include="Source\External\imgui\imconfig.h">
       <Filter>Source Files\3rd Parties\Imgui</Filter>
     </ClInclude>
@@ -322,9 +316,6 @@
     </Filter>
     <Filter Include="Source Files\3rd Parties\Imgui">
       <UniqueIdentifier>{82cb710c-faed-4838-aec1-b2d54d79d0f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\3rd Parties\glMath">
-      <UniqueIdentifier>{506240c1-b476-4b7d-9efe-24323be6e125}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\3rd Parties\mmgr">
       <UniqueIdentifier>{12a8fcd0-272f-4a79-aa60-6c3360f159fa}</UniqueIdentifier>

@@ -1,11 +1,16 @@
 #include "Application.h"
 #include "Input.h"
 
+#include "Renderer3D.h"
+#include "Window.h"
+#include "Editor.h"
+
+#include "PanelHierarchy.h"
+
 #include "MeshLoader.h"
 #include "TextureLoader.h"
 
 #include "imgui/imgui_impl_sdl.h"
-
 #include "mmgr/mmgr.h"
 
 #define MAX_KEYS 300

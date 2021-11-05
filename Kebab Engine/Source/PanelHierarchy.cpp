@@ -1,6 +1,12 @@
 #include "Application.h"
-
 #include "PanelHierarchy.h"
+
+#include "Input.h"
+#include "MainScene.h"
+#include "Renderer3D.h"
+
+#include "GameObject.h"
+#include "ComponentMaterial.h"
 
 HierarchyPanel::HierarchyPanel()
 {

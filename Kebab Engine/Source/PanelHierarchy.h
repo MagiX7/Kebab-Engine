@@ -2,6 +2,8 @@
 
 #include "Panel.h"
 
+class GameObject;
+
 class HierarchyPanel : public Panel
 {
 public:
@@ -13,8 +15,6 @@ public:
 private:
 	void DisplayHierarchy(GameObject* go);
 	void DisplayGameObjectMenu(GameObject* go);
-
-	bool IsMouseInside(float4 bounds);
 
 public:
 	GameObject* currentGO;

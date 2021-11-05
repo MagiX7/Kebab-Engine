@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Module.h"
-#include "Texture.h"
 
 #include <vector>
+
+class Texture;
+
 class TextureManager : public Module
 {
 public:

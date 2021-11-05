@@ -1,10 +1,13 @@
 #pragma once
 #include "Module.h"
+
 #include "Globals.h"
 
-#include "GameObject.h"
+#include <vector>
 
 #define BOUNCER_TIME 200
+
+class GameObject;
 
 class MainScene : public Module
 {

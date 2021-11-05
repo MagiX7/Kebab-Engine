@@ -1,6 +1,14 @@
 #include "Application.h"
 
 #include "TextureLoader.h"
+#include "Window.h"
+#include "Input.h"
+#include "MainScene.h"
+#include "Renderer3D.h"
+#include "Camera3D.h"
+#include "Editor.h"
+#include "FileSystem.h"
+#include "TextureManager.h"
 
 #include "mmgr/mmgr.h"
 

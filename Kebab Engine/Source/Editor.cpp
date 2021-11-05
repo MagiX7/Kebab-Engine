@@ -1,12 +1,23 @@
 #include "Application.h"
 #include "Editor.h"
 
-#include "GL/glew.h"
+#include "Window.h"
+#include "Renderer3D.h"
+#include "MainScene.h"
+#include "Input.h"
 
+#include "Buffer.h"
+
+#include "PanelConfiguration.h"
+#include "PanelConsole.h"
+#include "PanelHierarchy.h"
+#include "PanelInspector.h"
+#include "PanelViewport.h"
+
+#include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
-
 #include "mmgr/mmgr.h"
 #include <imgui/imgui_internal.h>
 

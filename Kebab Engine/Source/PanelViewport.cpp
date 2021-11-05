@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "PanelViewport.h"
 
+#include "Renderer3D.h"
+
 ViewportPanel::ViewportPanel()
 {
     viewportDimensions = { 0,0,0,0 };

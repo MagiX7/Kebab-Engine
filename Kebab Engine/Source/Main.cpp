@@ -1,8 +1,10 @@
-#include <stdlib.h>
 #include "Application.h"
+
 #include "Globals.h"
 
 #include "SDL.h"
+
+#include <stdlib.h>
 
 enum MainStates
 {

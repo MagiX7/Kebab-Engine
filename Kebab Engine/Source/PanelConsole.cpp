@@ -1,5 +1,7 @@
-#include "PanelConsole.h"
 #include "Application.h"
+#include "PanelConsole.h"
+
+#include "Input.h"
 
 #include "mmgr/mmgr.h"
 

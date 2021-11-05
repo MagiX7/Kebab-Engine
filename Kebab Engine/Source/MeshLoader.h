@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Mesh.h"
-#include "GameObject.h"
 
+#include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 

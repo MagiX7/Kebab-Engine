@@ -1,12 +1,18 @@
 #include "Application.h"
 #include "Renderer3D.h"
-#include "SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
+
+#include "Window.h"
+#include "Camera3D.h"
+#include "Input.h"
+#include "Editor.h"
+
+#include "ComponentMesh.h"
 
 #include "Math/float4x4.h"
-
+#include "SDL_opengl.h"
 #include "mmgr/mmgr.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {

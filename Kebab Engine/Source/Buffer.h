@@ -1,17 +1,14 @@
 #pragma once
 
-//#include "Mesh.h"
-
-#include "Vertex.h"
-
 #include "Math/float3.h"
 #include "Math/float2.h"
-
 #include "GL/glew.h"
 
 #include <stdint.h>
 #include <vector>
 #include <string>
+
+class Vertex;
 
 enum class ShaderDataType
 {

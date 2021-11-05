@@ -1,5 +1,7 @@
 #include "TextureManager.h"
 
+#include "Texture.h"
+
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"

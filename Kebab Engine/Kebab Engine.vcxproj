@@ -44,7 +44,6 @@
     <ClCompile Include="Source\MeshLoader.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
-    <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -100,7 +99,6 @@
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\PanelConfiguration.h" />
     <ClInclude Include="Source\Editor.h" />
-    <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Module.h" />

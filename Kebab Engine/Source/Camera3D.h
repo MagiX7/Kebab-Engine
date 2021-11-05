@@ -1,7 +1,9 @@
 #pragma once
 #include "Module.h"
+
 #include "Globals.h"
-#include "glmath.h"
+
+#include "Math/float3.h"
 
 class ComponentCamera;
 

@@ -1,5 +1,8 @@
 #include "Application.h"
 #include "MeshLoader.h"
+
+#include "MainScene.h"
+
 #include "TextureLoader.h"
 
 #include "Cube.h"
@@ -8,14 +11,9 @@
 #include "Sphere.h"
 #include "Cylinder.h"
 
-//#include "assimp/cimport.h"
-//#include "assimp/scene.h"
-//#include "assimp/postprocess.h"
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-
 #include "mmgr/mmgr.h"
 
 #define ASSETS_DIR "Assets/Resources/"

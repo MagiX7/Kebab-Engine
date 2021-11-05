@@ -1,5 +1,7 @@
 #include "Buffer.h"
 
+#include "Vertex.h"
+
 #include "Globals.h"
 
 #include "mmgr/mmgr.h"
