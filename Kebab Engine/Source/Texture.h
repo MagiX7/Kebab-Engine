@@ -30,6 +30,7 @@ public:
 	void Unbind() const;
 
 	inline const std::string& GetPath() const { return path; }
+	inline void SetPath(const std::string& p) { path = p; }
 	inline const unsigned int& GetID() const { return rendererID; }
 
 	inline const std::string& GetName() const { return name; }

@@ -2,12 +2,12 @@
     "GameObjects": [
         {
             "name": "Baker House",
-            "uuid": -2109176197,
+            "uuid": 563441074,
             "childs": [
                 {
                     "name": "Chimney",
-                    "uuid": 304396826,
-                    "parent uuid": -2109176197,
+                    "uuid": 583187447,
+                    "parent uuid": 563441074,
                     "Components": [
                         {
                             "Transform": {
@@ -32,22 +32,23 @@
                         {
                             "Material": {
                                 "Texture": {
-                                    "path": "Assets\/Resources\/Baker House\/Baker_house.png"
+                                    "path": "Library\/Textures\/Baker_house.kbtexture"
                                 }
                             }
                         },
                         {
                             "Mesh": {
                                 "vertices": 324,
-                                "indices": 324
+                                "indices": 324,
+                                "path": "Library\/Meshes\/Chimney.kbmesh"
                             }
                         }
                     ]
                 },
                 {
                     "name": "Baker_house",
-                    "uuid": -470900761,
-                    "parent uuid": -2109176197,
+                    "uuid": 120305279,
+                    "parent uuid": 563441074,
                     "Components": [
                         {
                             "Transform": {
@@ -72,14 +73,15 @@
                         {
                             "Material": {
                                 "Texture": {
-                                    "path": "Assets\/Resources\/Baker House\/Baker_house.png"
+                                    "path": "Library\/Textures\/Baker_house.kbtexture"
                                 }
                             }
                         },
                         {
                             "Mesh": {
                                 "vertices": 2751,
-                                "indices": 2751
+                                "indices": 2751,
+                                "path": "Library\/Meshes\/Baker_house.kbmesh"
                             }
                         }
                     ]

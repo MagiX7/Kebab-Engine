@@ -8,13 +8,12 @@
 #include "TextureLoader.h"
 
 #include "imgui/imgui.h"
-
 #include "mmgr/mmgr.h"
 
 #define CHECKERS_HEIGHT 80
 #define CHECKERS_WIDTH 80
 
-ComponentMesh::ComponentMesh(GameObject& compOwner)
+ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath) : meshPath(meshPath)
 {
 	this->parent = &compOwner;
 	this->type = ComponentType::MESH;
@@ -32,8 +31,6 @@ ComponentMesh::~ComponentMesh()
 {
 	delete(vertexBuffer);
 	delete(indexBuffer);
-	/*delete(texture);
-	delete(checkersTexture);*/
 
 	vertices.clear();
 	indices.clear();
@@ -78,11 +75,9 @@ void ComponentMesh::DrawOnInspector()
 				
 				ImGui::NewLine();
 				ImGui::Separator();
-				//ImGui::NewLine();
 				
 				ImGui::TreePop();
 			}
-			//ImGui::ColorPicker3("Normals color", normalColor.ptr(), flags);
 		}
 
 		ImGui::Checkbox("Show triangles normals", &drawTriangleNormals);
@@ -103,41 +98,8 @@ void ComponentMesh::DrawOnInspector()
 
 				ImGui::TreePop();
 			}
-			//ImGui::ColorPicker3("Normals color", normalColor.ptr(), flags);
 		}
 	}
-
-	// Temporarily, should move it to material component
-	/*if (ImGui::CollapsingHeader("Texture"))
-	{
-		if(currentTexture && currentTexture == texture)
-			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
-		else if (currentTexture == checkersTexture)
-			ImGui::TextColored({ 255,255,0,255 }, "Default checkers texture");
-		else
-			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
-
-		static bool checkers = currentTexture;
-		if (currentTexture == checkersTexture) checkers = true;
-		else checkers = false;
-
-		if (ImGui::Checkbox("Set checkers", &checkers))
-		{
-			if (checkers) currentTexture = checkersTexture;
-			else if (texture) currentTexture = texture;
-			else currentTexture = nullptr;
-		}
-
-		ImGui::NewLine();
-		ImGui::BulletText("Current Texture: ");
-		if (currentTexture)
-			ImGui::Image((void*)currentTexture->GetID(), { 150,150 });
-		else
-		{
-			ImGui::SameLine();
-			ImGui::Text("No texture.");
-		}
-	}*/
 }
 
 void ComponentMesh::Draw(ComponentMaterial* mat)
@@ -163,25 +125,7 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 	this->vertices = vertices;
 	this->indices = indices;
 
-	//if (tex)
-	//{
-	//	this->texture = tex;
-	//	if (!texture)
-	//	{
-	//		currentTexture = checkersTexture;
-	//		//LOG_CONSOLE("Texture is NULL, Gameobject %s. Loaded default checkers texture instead.", parent->GetName().c_str());
-	//	}
-	//	else currentTexture = texture;
-	//}
-
 	SetUpMesh();
-}
-
-void ComponentMesh::SetTexture(Texture* tex)
-{
-	//if (texture) RELEASE(texture);
-	/*texture = tex;
-	currentTexture = texture;*/
 }
 
 void ComponentMesh::DrawVertexNormals()
@@ -260,7 +204,7 @@ JSON_Value* ComponentMesh::Save()
 
 	Parser::DotSetObjectNumber(obj, "Mesh.vertices", vertices.size());
 	Parser::DotSetObjectNumber(obj, "Mesh.indices", indices.size());
-
+	Parser::DotSetObjectString(obj, "Mesh.path", meshPath.c_str());
 
 	return value;
 }
@@ -273,10 +217,6 @@ void ComponentMesh::SetUpMesh()
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
 
 	this->parent->AddAABB();
-
-	//texture = TextureLoader::GetInstance()->LoadTexture("Assets/3D Models/bakerHouse.png");
-
-	//if(textures.size() == 0) SetCheckersTexture();
 }
 
 void ComponentMesh::BeginDraw(ComponentMaterial* mat)
@@ -296,7 +236,6 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 	vertexBuffer->Bind();
 	indexBuffer->Bind();
 
-	//if (currentTexture) currentTexture->Bind();
 	mat->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);

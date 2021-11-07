@@ -11,7 +11,7 @@ class ComponentMaterial;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(GameObject& compOwner);
+	ComponentMesh(GameObject& compOwner, const std::string& meshPath = "");
 	~ComponentMesh();
 
 	void Enable();
@@ -21,7 +21,7 @@ public:
 	void Draw(ComponentMaterial* mat);
 
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
-	void SetTexture(Texture* tex);
+	inline void SetMeshPath(const std::string& path) { meshPath = path; }
 
 	void DrawVertexNormals();
 	void DrawTriangleNormals();
@@ -44,9 +44,8 @@ public:
 protected:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-	/*Texture* currentTexture;
-	Texture* texture;
-	Texture* checkersTexture;*/
+
+	std::string meshPath;
 
 	bool isKbGeometry = false;
 

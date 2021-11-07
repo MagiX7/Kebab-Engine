@@ -9,6 +9,7 @@
 
 #include "MeshLoader.h"
 #include "TextureLoader.h"
+#include "ComponentMaterial.h"
 
 #include "imgui/imgui_impl_sdl.h"
 #include "mmgr/mmgr.h"
@@ -192,7 +193,8 @@ bool Input::PreUpdate(float dt)
 									target = target->GetParent();*/
 
 									//std::string a = (target->GetName() + '/' + name + '.' + extension);
-								mesh->SetTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
+								ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
+								mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
 							}
 						}
 						else

@@ -387,6 +387,7 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
     cursor += bytes;
 
     std::string n = CUSTOM_DIR + mesh->GetParent()->GetName() + CUSTOM_EXTENSION;
+    mesh->SetMeshPath(n);
     app->fileSystem->Save(n.c_str(), fileBuffer, size);
 
     delete[] fileBuffer;
