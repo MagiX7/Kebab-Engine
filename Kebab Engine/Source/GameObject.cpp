@@ -204,13 +204,8 @@ void GameObject::UpdateAABB(float4x4& newTrans)
 	globalAABB.Enclose(obb);
 }
 
-JSON_Value* GameObject::Save(JSON_Object* sceneObj)
+JSON_Value* GameObject::Save()
 {
-	if (childs.size() > 0)
-		for (const auto& child : childs)
-			child->Save(sceneObj);
-
-	//JSON_Value* value = Parser::InitValue();
 	JSON_Value* value = Parser::InitValue();
 	JSON_Object* goObj = Parser::GetObjectByValue(value);
 
@@ -222,10 +217,21 @@ JSON_Value* GameObject::Save(JSON_Object* sceneObj)
 	JSON_Value* arrValue = Parser::InitArray();
     JSON_Array* compsArray = Parser::GetArrayByValue(arrValue);
 
+	if (childs.size() > 0)
+	{
+		JSON_Value* childsArrValue = Parser::InitArray();
+		JSON_Array* childsArray = Parser::GetArrayByValue(childsArrValue);
+
+		Parser::SetObjectValue(goObj, "childs", childsArrValue);
+
+		for (const auto& child : childs)
+			Parser::AppendValueToArray(childsArray, child->Save());
+	}
+
     Parser::DotSetObjectValue(goObj, "Components", arrValue);
 
 	for (const auto& comp : components)
-		Parser::AppendValueToArray(compsArray, comp->Save(goObj));
+		Parser::AppendValueToArray(compsArray, comp->Save());
 
 	return value;
 }

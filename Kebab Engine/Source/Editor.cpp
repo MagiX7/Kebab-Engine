@@ -290,11 +290,9 @@ void Editor::SaveScene()
     Parser::DotSetObjectValue(root, "GameObjects", arrValue);
         
     for (const auto& go : app->scene->GetGameObjects())
-    {
-        Parser::AppendValueToArray(gosArray, go->Save(root));
-    }
+        Parser::AppendValueToArray(gosArray, go->Save());
 
-    Parser::GenerateFile(sceneValue, "scene.json");
+    Parser::GenerateFile(sceneValue, "Settings/scene.json");
     Parser::FreeValue(sceneValue);
 }
 

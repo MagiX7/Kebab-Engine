@@ -1,0 +1,112 @@
+{
+    "GameObjects": [
+        {
+            "name": "Baker House",
+            "uuid": -2109176197,
+            "childs": [
+                {
+                    "name": "Chimney",
+                    "uuid": 304396826,
+                    "parent uuid": -2109176197,
+                    "Components": [
+                        {
+                            "Transform": {
+                                "Position": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "z": 0
+                                },
+                                "Rotation": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "z": 0,
+                                    "w": 1
+                                },
+                                "Scale": {
+                                    "x": 1,
+                                    "y": 1,
+                                    "z": 1
+                                }
+                            }
+                        },
+                        {
+                            "Material": {
+                                "Texture": {
+                                    "path": "Assets\/Resources\/Baker House\/Baker_house.png"
+                                }
+                            }
+                        },
+                        {
+                            "Mesh": {
+                                "vertices": 324,
+                                "indices": 324
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Baker_house",
+                    "uuid": -470900761,
+                    "parent uuid": -2109176197,
+                    "Components": [
+                        {
+                            "Transform": {
+                                "Position": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "z": 0
+                                },
+                                "Rotation": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "z": 0,
+                                    "w": 1
+                                },
+                                "Scale": {
+                                    "x": 1,
+                                    "y": 1,
+                                    "z": 1
+                                }
+                            }
+                        },
+                        {
+                            "Material": {
+                                "Texture": {
+                                    "path": "Assets\/Resources\/Baker House\/Baker_house.png"
+                                }
+                            }
+                        },
+                        {
+                            "Mesh": {
+                                "vertices": 2751,
+                                "indices": 2751
+                            }
+                        }
+                    ]
+                }
+            ],
+            "Components": [
+                {
+                    "Transform": {
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

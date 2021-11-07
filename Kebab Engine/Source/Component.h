@@ -33,7 +33,7 @@ public:
 
 	inline const ComponentType& GetComponentType() const { return type; }
 
-	virtual JSON_Value* Save(JSON_Object* goObj) { return nullptr; };
+	virtual JSON_Value* Save() { return nullptr; };
 
 protected:
 	int uuid;

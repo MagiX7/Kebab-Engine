@@ -253,9 +253,16 @@ void ComponentMesh::DrawTriangleNormals()
 	glEnd();
 }
 
-JSON_Value* ComponentMesh::Save(JSON_Object* goObj)
+JSON_Value* ComponentMesh::Save()
 {
-	return nullptr;
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* obj = Parser::GetObjectByValue(value);
+
+	Parser::DotSetObjectNumber(obj, "Mesh.vertices", vertices.size());
+	Parser::DotSetObjectNumber(obj, "Mesh.indices", indices.size());
+
+
+	return value;
 }
 
 void ComponentMesh::SetUpMesh()

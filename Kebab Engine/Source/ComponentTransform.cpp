@@ -85,17 +85,25 @@ void ComponentTransform::DrawOnInspector()
 	}
 }
 
-JSON_Value* ComponentTransform::Save(JSON_Object* goObj)
+JSON_Value* ComponentTransform::Save()
 {
 	JSON_Value* value = Parser::InitValue();
 	JSON_Object* obj = Parser::GetObjectByValue(value);
 
-	Parser::SetObjectString(obj, "Transform", "transform");
-	Parser::SetObjectNumber(obj, "Position", 10);
-	Parser::DotSetObjectNumber(obj, "Position x", position.x);
-	Parser::DotSetObjectNumber(obj, "Position y", position.y);
-	Parser::DotSetObjectNumber(obj, "Position z", position.z);
+	Parser::DotSetObjectNumber(obj, "Transform.Position.x", position.x);
+	Parser::DotSetObjectNumber(obj, "Transform.Position.y", position.y);
+	Parser::DotSetObjectNumber(obj, "Transform.Position.z", position.z);
+	
+	Parser::DotSetObjectNumber(obj, "Transform.Rotation.x", rotation.x);
+	Parser::DotSetObjectNumber(obj, "Transform.Rotation.y", rotation.y);
+	Parser::DotSetObjectNumber(obj, "Transform.Rotation.z", rotation.z);
+	Parser::DotSetObjectNumber(obj, "Transform.Rotation.w", rotation.w);
 
+	Parser::DotSetObjectNumber(obj, "Transform.Scale.x", scale.x);
+	Parser::DotSetObjectNumber(obj, "Transform.Scale.y", scale.y);
+	Parser::DotSetObjectNumber(obj, "Transform.Scale.z", scale.z);
+
+	// TODO: Save view matrix
 
 	return value;
 }

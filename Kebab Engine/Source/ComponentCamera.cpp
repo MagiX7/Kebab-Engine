@@ -113,7 +113,7 @@ float ComponentCamera::GetNearPlane() const
 	return planeNear;
 }
 
-JSON_Value* ComponentCamera::Save(JSON_Object* goObj)
+JSON_Value* ComponentCamera::Save()
 {
 	return nullptr;
 }

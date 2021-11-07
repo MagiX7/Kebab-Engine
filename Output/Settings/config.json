@@ -1,0 +1,41 @@
+{
+    "App": {
+        "dt": 0.016000000759959221,
+        "max fps": 62
+    },
+    "window": {
+        "width": 1662,
+        "height": 903,
+        "brightness": 1,
+        "fullscreen": false,
+        "fulldesktop": false,
+        "resizable": true,
+        "bordered": false,
+        "title": "Kebab Engine",
+        "organization": "UPC CITM"
+    },
+    "camera3D": {
+        "worldmatrix": {
+            "x0": 1,
+            "y0": 1.9952379659571307e-07,
+            "z0": 4.0028371017797326e-07,
+            "x1": -2.1337194766601897e-07,
+            "y1": 0.99939090013504028,
+            "z1": 0.034899458289146423,
+            "x2": -3.9307656152232084e-07,
+            "y2": -0.034899801015853882,
+            "z2": 0.99939090013504028,
+            "x3": 0.016591161489486694,
+            "y3": 1.7345261573791504,
+            "z3": 6.4159870147705078
+        }
+    },
+    "renderer": {
+        "depth": true,
+        "cullface": true,
+        "lighting": false,
+        "color material": true,
+        "texture2D": true,
+        "wireframe": false
+    }
+}

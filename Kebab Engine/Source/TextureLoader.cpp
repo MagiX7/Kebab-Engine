@@ -65,7 +65,7 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 		//textures.push_back(ret);
 
 		SaveTextureCustomFormat(ret->GetName());
-		ret = LoadTextureCustomFormat(ret->GetName());
+		//ret = LoadTextureCustomFormat(ret->GetName());
 
 		ilDeleteImage(tmp);
 

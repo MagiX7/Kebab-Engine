@@ -62,7 +62,7 @@ bool Application::Init()
 
 	std::list<Module*>::iterator it = modules.begin();
 	
-	value = Parser::ParseFile("config.json");
+	value = Parser::ParseFile("Settings/config.json");
 	//value = json_parse_file("config.json");
 	if (!value)
 	{
@@ -167,7 +167,7 @@ void Application::Save()
 		it++;
 	}
 
-	Parser::GenerateFile(value, "config.json");
+	Parser::GenerateFile(value, "Settings/config.json");
 	//json_serialize_to_file_pretty(value, "config.json");
 
 	Parser::FreeValue(value);

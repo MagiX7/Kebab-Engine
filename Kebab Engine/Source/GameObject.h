@@ -42,7 +42,7 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
-	JSON_Value* Save(JSON_Object* sceneObj);
+	JSON_Value* Save();
 
 private:
 	int uuid;

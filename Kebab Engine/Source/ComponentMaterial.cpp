@@ -92,9 +92,15 @@ void ComponentMaterial::AddTexture(Texture* tex)
 	}
 }
 
-JSON_Value* ComponentMaterial::Save(JSON_Object* goObj)
+JSON_Value* ComponentMaterial::Save()
 {
-	return nullptr;
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* obj = Parser::GetObjectByValue(value);
+
+	if (currentTexture == checkersTexture) Parser::DotSetObjectString(obj, "Material.Texture.path", "Checkers");
+	if (currentTexture == texture) Parser::DotSetObjectString(obj, "Material.Texture.path", currentTexture->GetPath().c_str());
+
+	return value;
 }
 
 void ComponentMaterial::SetCheckersTexture()

@@ -30,7 +30,7 @@ public:
 	float GetFarPlane() const;
 	float GetNearPlane() const;
 
-	JSON_Value* Save(JSON_Object* goObj) override;
+	JSON_Value* Save() override;
 
 
 public:

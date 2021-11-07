@@ -29,7 +29,7 @@ public:
 
 	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
 
-	JSON_Value* Save(JSON_Object* goObj) override;
+	JSON_Value* Save() override;
 
 private:
 	void UpdateTransform(float4x4 newTransform);
@@ -42,7 +42,6 @@ private:
 
 	float3 position;
 	float3 scale;
-	//Quat rotation;
 	Quat rotation;
 
 	float4x4 localTransformMat;

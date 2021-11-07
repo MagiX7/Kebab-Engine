@@ -110,23 +110,6 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
             ProcessNode(node->mChildren[i], scene, baseGO, nameBaseGO);
         }
     }
-    
-    /*
-    // Process all the node's meshes (if any)
-    for (unsigned int i = 0; i < node->mNumMeshes; i++)
-    {
-        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        ProcessMesh(mesh, scene, baseGO);
-    }
-    // Then do the same for each of its children
-    for (unsigned int i = 0; i < node->mNumChildren; i++)
-    {
-        if(baseGO->GetChilds().size() > i)
-            ProcessNode(node->mChildren[i], scene, baseGO->GetChilds()[i]);
-        else
-            ProcessNode(node->mChildren[i], scene, baseGO);
-    }
-    */
 }
 
 std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
@@ -218,7 +201,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     meshComp->SetData(vertices, indices/*, TextureLoader::GetInstance()->LoadTexture(imageName.c_str())*/);
 
     SaveMeshCustomFormat(meshComp);
-    meshComp = LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
+    //meshComp = LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
@@ -452,6 +435,8 @@ ComponentMesh* MeshLoader::LoadMeshCustomFormat(const char* fileName, GameObject
     mesh->SetData(vertices, indices);
 
     delete[] buffer;
+    vertices.clear();
+    indices.clear();
 
     return mesh;
 }
