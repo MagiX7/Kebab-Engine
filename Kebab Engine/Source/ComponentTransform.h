@@ -29,6 +29,7 @@ public:
 
 	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
 
+	JSON_Value* Save(JSON_Object* goObj) override;
 
 private:
 	void UpdateTransform(float4x4 newTransform);

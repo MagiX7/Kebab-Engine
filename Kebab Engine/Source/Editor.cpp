@@ -9,8 +9,6 @@
 #include "Buffer.h"
 #include "MeshLoader.h"
 
-#include "GL/glew.h"
-
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
 #include "PanelHierarchy.h"
@@ -18,12 +16,14 @@
 #include "PanelViewport.h"
 #include "PanelAssets.h"
 
+
 #include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_internal.h"
+
 #include "mmgr/mmgr.h"
-#include <imgui/imgui_internal.h>
 
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
@@ -147,6 +147,10 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     {
         if (ImGui::BeginMenu("File"))
         {
+            if (ImGui::MenuItem("Save Scene", "Crtl + S"))
+            {
+                SaveScene();
+            }
             if (ImGui::MenuItem("Exit"))
             {
                 closeApp = true;
@@ -275,6 +279,24 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     return true;
 }
 
+void Editor::SaveScene()
+{
+    sceneValue = Parser::InitValue();
+    JSON_Object* root = Parser::GetObjectByValue(sceneValue);
+
+    JSON_Value* arrValue = Parser::InitArray();
+    JSON_Array* gosArray = Parser::GetArrayByValue(arrValue);
+
+    Parser::DotSetObjectValue(root, "GameObjects", arrValue);
+        
+    for (const auto& go : app->scene->GetGameObjects())
+    {
+        Parser::AppendValueToArray(gosArray, go->Save(root));
+    }
+
+    Parser::GenerateFile(sceneValue, "scene.json");
+    Parser::FreeValue(sceneValue);
+}
 
 void Editor::ShowAboutPanel()
 {

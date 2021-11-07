@@ -253,6 +253,11 @@ void ComponentMesh::DrawTriangleNormals()
 	glEnd();
 }
 
+JSON_Value* ComponentMesh::Save(JSON_Object* goObj)
+{
+	return nullptr;
+}
+
 void ComponentMesh::SetUpMesh()
 {
 	vertexBuffer = new VertexBuffer();

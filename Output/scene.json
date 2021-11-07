@@ -1,0 +1,17 @@
+{
+    "GameObjects": [
+        {
+            "name": "Baker House",
+            "uuid": -362739655,
+            "Components": [
+                {
+                    "Transform": "transform",
+                    "Position": 10,
+                    "Position x": 0,
+                    "Position y": 0,
+                    "Position z": 0
+                }
+            ]
+        }
+    ]
+}

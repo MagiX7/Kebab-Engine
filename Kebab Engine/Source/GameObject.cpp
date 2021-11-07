@@ -20,6 +20,9 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	//localAABB = nullptr;
 	localAABB = AABB::AABB();
 	active = true;
+
+	LCG lgc = LCG();
+	uuid = lgc.IntFast();
 }
 
 GameObject::~GameObject()
@@ -199,4 +202,30 @@ void GameObject::UpdateAABB(float4x4& newTrans)
 	OBB obb = localAABB.Transform(newTrans);
 	globalAABB.SetNegativeInfinity();
 	globalAABB.Enclose(obb);
+}
+
+JSON_Value* GameObject::Save(JSON_Object* sceneObj)
+{
+	if (childs.size() > 0)
+		for (const auto& child : childs)
+			child->Save(sceneObj);
+
+	//JSON_Value* value = Parser::InitValue();
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* goObj = Parser::GetObjectByValue(value);
+
+	Parser::SetObjectString(goObj, "name", name.c_str());
+	Parser::SetObjectNumber(goObj, "uuid", uuid);
+	if (parent) Parser::SetObjectNumber(goObj, "parent uuid", parent->uuid);
+
+
+	JSON_Value* arrValue = Parser::InitArray();
+    JSON_Array* compsArray = Parser::GetArrayByValue(arrValue);
+
+    Parser::DotSetObjectValue(goObj, "Components", arrValue);
+
+	for (const auto& comp : components)
+		Parser::AppendValueToArray(compsArray, comp->Save(goObj));
+
+	return value;
 }

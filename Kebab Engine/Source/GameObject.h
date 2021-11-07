@@ -2,6 +2,8 @@
 
 #include "Component.h"
 
+#include "Parser.h"
+
 #include <string>
 #include <vector>
 
@@ -40,8 +42,10 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
+	JSON_Value* Save(JSON_Object* sceneObj);
 
 private:
+	int uuid;
 
 	std::string name;
 	std::vector<Component*> components;

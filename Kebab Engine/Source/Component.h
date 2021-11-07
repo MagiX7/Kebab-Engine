@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Globals.h"
+#include "Parser.h"
 
 class GameObject;
 
@@ -32,7 +33,10 @@ public:
 
 	inline const ComponentType& GetComponentType() const { return type; }
 
+	virtual JSON_Value* Save(JSON_Object* goObj) { return nullptr; };
+
 protected:
+	int uuid;
 
 	ComponentType type;
 	GameObject* parent;

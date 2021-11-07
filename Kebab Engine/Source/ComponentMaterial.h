@@ -23,6 +23,8 @@ public:
 
 	void AddTexture(Texture* tex);
 
+	JSON_Value* Save(JSON_Object* goObj) override;
+
 private:
 	void SetCheckersTexture();
 

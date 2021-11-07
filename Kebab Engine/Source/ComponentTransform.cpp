@@ -85,6 +85,21 @@ void ComponentTransform::DrawOnInspector()
 	}
 }
 
+JSON_Value* ComponentTransform::Save(JSON_Object* goObj)
+{
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* obj = Parser::GetObjectByValue(value);
+
+	Parser::SetObjectString(obj, "Transform", "transform");
+	Parser::SetObjectNumber(obj, "Position", 10);
+	Parser::DotSetObjectNumber(obj, "Position x", position.x);
+	Parser::DotSetObjectNumber(obj, "Position y", position.y);
+	Parser::DotSetObjectNumber(obj, "Position z", position.z);
+
+
+	return value;
+}
+
 void ComponentTransform::UpdateTransform(float4x4 newTransform)
 {
 }

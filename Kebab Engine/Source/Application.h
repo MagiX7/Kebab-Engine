@@ -29,6 +29,8 @@ class MainScene;
 class Camera3D;
 class TextureManager;
 
+class Parser;
+
 class Application
 {
 public:
@@ -57,6 +59,7 @@ private:
 	bool saveReq;
 	bool loadReq;
 	JSON_Value* value;
+	Parser* parser;
 
 public:
 

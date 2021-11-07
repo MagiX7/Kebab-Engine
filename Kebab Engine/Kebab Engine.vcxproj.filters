@@ -139,6 +139,9 @@
     <ClCompile Include="Source\Material.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Parser.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -293,9 +296,12 @@
     </ClInclude>
     <ClInclude Include="Source\PanelAssets.h">
       <Filter>Source Files\Panels</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="Source\Material.h">
       <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Parser.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

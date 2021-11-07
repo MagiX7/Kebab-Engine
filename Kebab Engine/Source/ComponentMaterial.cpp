@@ -92,6 +92,11 @@ void ComponentMaterial::AddTexture(Texture* tex)
 	}
 }
 
+JSON_Value* ComponentMaterial::Save(JSON_Object* goObj)
+{
+	return nullptr;
+}
+
 void ComponentMaterial::SetCheckersTexture()
 {
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];

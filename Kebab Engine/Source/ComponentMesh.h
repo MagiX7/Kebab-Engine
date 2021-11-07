@@ -26,6 +26,8 @@ public:
 	void DrawVertexNormals();
 	void DrawTriangleNormals();
 
+	JSON_Value* Save(JSON_Object* goObj) override;
+
 private:
 	void DrawOnInspector();
 	

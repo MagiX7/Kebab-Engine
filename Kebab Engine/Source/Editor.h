@@ -2,6 +2,8 @@
 
 #include "Module.h"
 
+#include "Parser.h"
+
 class ConfigPanel;
 class ConsolePanel;
 class ViewportPanel;
@@ -22,6 +24,11 @@ public:
 	bool CleanUp() override;
 
 	bool OnImGuiRender(float dt, FrameBuffer* frameBuffer);
+
+	//void Save(JSON_Object* root) override;
+
+	void SaveScene();
+
 
 private:
 	void InitImGui();
@@ -47,4 +54,6 @@ private:
 
 	bool showWindows;
 	bool closeApp;
+
+	JSON_Value* sceneValue;
 };

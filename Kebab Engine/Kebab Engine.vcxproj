@@ -55,6 +55,7 @@
     <ClCompile Include="Source\PanelHierarchy.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
+    <ClCompile Include="Source\Parser.cpp" />
     <ClCompile Include="Source\Plane.cpp" />
     <ClCompile Include="Source\Pyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Source\PanelHierarchy.h" />
     <ClInclude Include="Source\PanelInspector.h" />
     <ClInclude Include="Source\PanelViewport.h" />
+    <ClInclude Include="Source\Parser.h" />
     <ClInclude Include="Source\Plane.h" />
     <ClInclude Include="Source\External\imgui\imconfig.h" />
     <ClInclude Include="Source\External\imgui\imgui.h" />
