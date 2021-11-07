@@ -337,6 +337,17 @@ void Renderer3D::EraseGameObject(GameObject* go)
 	gameObjects.shrink_to_fit();
 }
 
+void Renderer3D::EraseAllGameObjects()
+{
+	//std::vector<GameObject*>::iterator it;
+	//for (; it != gameObjects.end(); ++it)
+	//{
+	//	gameObjects.erase(it);
+	//}
+	
+	gameObjects.clear();
+}
+
 void Renderer3D::DrawGrid()
 {
 	glLineWidth(1.5f);

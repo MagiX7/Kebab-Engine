@@ -85,3 +85,14 @@ void MainScene::DeleteGameObject(GameObject* go)
         }
     }
 }
+
+void MainScene::DeleteAllGameObjects()
+{
+    for (auto& go : gameObjects)
+    {
+        delete go;
+        go = nullptr;
+    }
+
+    gameObjects.clear();
+}

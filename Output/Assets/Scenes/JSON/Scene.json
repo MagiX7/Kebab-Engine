@@ -1,0 +1,116 @@
+{
+    "Scene": {
+        "GameObjects": [
+            {
+                "name": "Baker House",
+                "uuid": -863827512,
+                "childs": [
+                    {
+                        "name": "Chimney",
+                        "uuid": -1855326164,
+                        "parent uuid": -863827512,
+                        "Components": [
+                            {
+                                "Transform": {
+                                    "Position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "Rotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "Scale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    }
+                                }
+                            },
+                            {
+                                "Material": {
+                                    "Texture": {
+                                        "path": "Library\/Textures\/Baker_house.kbtexture"
+                                    }
+                                }
+                            },
+                            {
+                                "Mesh": {
+                                    "vertices": 324,
+                                    "indices": 324,
+                                    "path": "Library\/Meshes\/Chimney.kbmesh"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Baker_house",
+                        "uuid": 1766943085,
+                        "parent uuid": -863827512,
+                        "Components": [
+                            {
+                                "Transform": {
+                                    "Position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "Rotation": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0,
+                                        "w": 1
+                                    },
+                                    "Scale": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    }
+                                }
+                            },
+                            {
+                                "Material": {
+                                    "Texture": {
+                                        "path": "Library\/Textures\/Baker_house.kbtexture"
+                                    }
+                                }
+                            },
+                            {
+                                "Mesh": {
+                                    "vertices": 2751,
+                                    "indices": 2751,
+                                    "path": "Library\/Meshes\/Baker_house.kbmesh"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "Components": [
+                    {
+                        "Transform": {
+                            "Position": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0
+                            },
+                            "Rotation": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0,
+                                "w": 1
+                            },
+                            "Scale": {
+                                "x": 1,
+                                "y": 1,
+                                "z": 1
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

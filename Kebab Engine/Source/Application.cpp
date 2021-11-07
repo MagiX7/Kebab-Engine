@@ -75,8 +75,8 @@ bool Application::Init()
 		//JSON_Object* root = json_value_get_object(value);
 		JSON_Object* appObj = Parser::GetObjectByName(root, "App");
 		//JSON_Object* appObj = json_object_get_object(root, "App");
-		dt = Parser::GetNumberFromObject(appObj, "dt");
-		cappedMs = 1000.0f / Parser::GetNumberFromObject(appObj, "max fps");
+		dt = Parser::GetNumberByObject(appObj, "dt");
+		cappedMs = 1000.0f / Parser::GetNumberByObject(appObj, "max fps");
 
 		while (it != modules.end() && ret == true)
 		{

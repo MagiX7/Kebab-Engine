@@ -22,11 +22,12 @@ public:
 	static JSON_Object* GetObjectByObject(JSON_Object* object, const char* name);
 	static JSON_Object* GetObjectByValue(JSON_Value* value);
 	static JSON_Object* GetObjectByName(JSON_Object* obj, const char* name);
-	static double GetNumberFromObject(JSON_Object* obj, const char* name);
+	static double GetNumberByObject(JSON_Object* obj, const char* name);
+	static const char* GetStringByObject(JSON_Object* obj, const char* name);
 	static JSON_Array* GetArrayByValue(JSON_Value* value);
 	static JSON_Array* GetArrayByObject(JSON_Object* object, const char* name);
 	static JSON_Value* GetValueByObject(JSON_Object* value, const char* name);
-	
+	static size_t GetSerializationSize(JSON_Value* value);
 
 	static void AppendValueToArray(JSON_Array* array, JSON_Value* value);
 

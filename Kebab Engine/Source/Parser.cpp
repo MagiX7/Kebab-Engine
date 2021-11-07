@@ -63,9 +63,14 @@ JSON_Object* Parser::GetObjectByName(JSON_Object* obj, const char* name)
 	return json_object_get_object(obj, name);
 }
 
-double Parser::GetNumberFromObject(JSON_Object* obj, const char* name)
+double Parser::GetNumberByObject(JSON_Object* obj, const char* name)
 {
 	return json_object_get_number(obj, name);
+}
+
+const char* Parser::GetStringByObject(JSON_Object* obj, const char* name)
+{
+	return json_object_get_string(obj, name);
 }
 
 JSON_Array* Parser::GetArrayByValue(JSON_Value* value)
@@ -81,6 +86,11 @@ JSON_Array* Parser::GetArrayByObject(JSON_Object* object, const char* name)
 JSON_Value* Parser::GetValueByObject(JSON_Object* obj, const char* name)
 {
 	return json_object_get_value(obj, name);
+}
+
+size_t Parser::GetSerializationSize(JSON_Value* value)
+{
+	return json_serialization_size_pretty(value);
 }
 
 void Parser::AppendValueToArray(JSON_Array* array, JSON_Value* value)

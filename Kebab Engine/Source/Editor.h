@@ -28,7 +28,7 @@ public:
 	//void Save(JSON_Object* root) override;
 
 	void SaveScene();
-
+	void LoadScene();
 
 private:
 	void InitImGui();
@@ -56,4 +56,5 @@ private:
 	bool closeApp;
 
 	JSON_Value* sceneValue;
+	char* buffer;
 };

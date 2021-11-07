@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "FileSystem.h"
 #include "Editor.h"
 
 #include "Window.h"
@@ -151,6 +152,10 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
             {
                 SaveScene();
             }
+            if (ImGui::MenuItem("Open Scene"))
+            {
+                LoadScene();
+            }
             if (ImGui::MenuItem("Exit"))
             {
                 closeApp = true;
@@ -287,13 +292,40 @@ void Editor::SaveScene()
     JSON_Value* arrValue = Parser::InitArray();
     JSON_Array* gosArray = Parser::GetArrayByValue(arrValue);
 
-    Parser::DotSetObjectValue(root, "GameObjects", arrValue);
+    Parser::DotSetObjectValue(root, "Scene.GameObjects", arrValue);
         
     for (const auto& go : app->scene->GetGameObjects())
         Parser::AppendValueToArray(gosArray, go->Save());
 
-    Parser::GenerateFile(sceneValue, "Settings/scene.json");
+    size_t size = Parser::GetSerializationSize(sceneValue);
+    buffer = new char[size];
+    app->fileSystem->Save("Assets/Scenes/Scene.kbscene", buffer, size);
+    delete[] buffer;
+
+    Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
     Parser::FreeValue(sceneValue);
+}
+
+void Editor::LoadScene()
+{
+    app->scene->DeleteAllGameObjects();
+    app->renderer3D->EraseAllGameObjects();
+
+    if(app->fileSystem->Load("Assets/Scenes/Scene.kbscene", &buffer) > 0)
+    {
+        JSON_Value* value = json_parse_string(buffer);
+        JSON_Object* sceneObj = Parser::GetObjectByValue(value);
+
+        JSON_Array* gosArray = json_value_get_array(value);
+        int numGos = json_array_get_count(gosArray);
+        for (int i = 0; i < numGos; ++i)
+        {
+            JSON_Object* obj = json_array_get_object(gosArray, i);
+            const char* name = Parser::GetStringByObject(obj, "name");
+            GameObject* go = new GameObject(name);
+        }
+
+    }
 }
 
 void Editor::ShowAboutPanel()
