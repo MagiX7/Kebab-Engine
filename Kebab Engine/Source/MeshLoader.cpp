@@ -366,9 +366,9 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
 void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
 {
-    unsigned int ranges[2] = { mesh->GetMesh()->indices.size(), mesh->GetMesh()->vertices.size() };
+    unsigned int ranges[2] = { mesh->GetMesh()->vertices.size(), mesh->GetMesh()->indices.size() };
 
-    uint size = sizeof(ranges) + sizeof(uint32_t) * mesh->GetMesh()->indices.size() + sizeof(Vertex) * mesh->GetMesh()->vertices.size();
+    uint size = sizeof(ranges) + sizeof(Vertex) * mesh->GetMesh()->vertices.size() + sizeof(uint32_t) * mesh->GetMesh()->indices.size();
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -378,7 +378,7 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
     cursor += bytes;
 
 
-    bytes = sizeof(unsigned int) * mesh->GetMesh()->vertices.size();
+    bytes = sizeof(Vertex) * mesh->GetMesh()->vertices.size();
     memcpy(cursor, mesh->GetMesh()->vertices.data(), bytes);
     cursor += bytes;
 

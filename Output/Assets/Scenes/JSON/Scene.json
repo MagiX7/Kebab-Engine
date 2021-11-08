@@ -3,14 +3,14 @@
         "GameObjects": [
             {
                 "name": "Baker House",
-                "uuid": -181094936,
+                "uuid": -903175441,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -2.5,
-                            "y": 2.4000000953674316,
-                            "z": 3.0499999523162842
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
                         },
                         "Rotation": {
                             "x": 0,
@@ -28,15 +28,15 @@
             },
             {
                 "name": "Chimney",
-                "uuid": -1559755969,
-                "parent uuid": -181094936,
+                "uuid": -1960117833,
+                "parent uuid": -903175441,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -2.5,
-                            "y": 2.4000000953674316,
-                            "z": 3.0499999523162842
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
                         },
                         "Rotation": {
                             "x": 0,
@@ -65,15 +65,15 @@
             },
             {
                 "name": "Baker_house",
-                "uuid": 643472068,
-                "parent uuid": -181094936,
+                "uuid": 1182045001,
+                "parent uuid": -903175441,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -2.5,
-                            "y": 2.4000000953674316,
-                            "z": 3.0499999523162842
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
                         },
                         "Rotation": {
                             "x": 0,
