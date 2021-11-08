@@ -99,12 +99,15 @@ void AssetsPanel::DisplayPopMenu(Asset* asset)
 		{
 			popUpMenu = false;
 
+			char path[128] = "";
 			int status;
 			char name[32] = "";
 			sprintf_s(name, 32, "%s.fbx", asset->name.c_str());
-			std::string path = app->fileSystem->FindFilePath(name, "Assets/Resources/");
+			app->fileSystem->FindFilePath(name, path, "Assets/");
 
-			status = remove(path.c_str());
+			char auxPath[128] = "";
+			sprintf_s(auxPath, 128, "%s", path);
+			status = remove(auxPath);
 			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", asset->name.c_str()); }
 			else { LOG_CONSOLE("Error to Delete %s", asset->name.c_str()); }
 

@@ -40,7 +40,7 @@ public:
 	void NormalizePath(char* full_path) const;
 	void NormalizePath(std::string& full_path) const;
 
-	std::string FindFilePath(const char* fileName, const char* directoryFrom = "");
+	bool FindFilePath(const char* fileName, char* path, const char* directoryFrom = "");
 
 	// Open for Read/Write
 	unsigned int Load(const char* path, const char* file, char** buffer) const;
