@@ -397,16 +397,16 @@ ComponentMesh* MeshLoader::LoadMeshCustomFormat(const char* fileName, GameObject
 {
     ComponentMesh* mesh = new ComponentMesh(*parent);
 
-    std::string n = CUSTOM_DIR;
+   /* std::string n = CUSTOM_DIR;
     n.append(fileName);
-    n.append(CUSTOM_EXTENSION);
+    n.append(CUSTOM_EXTENSION);*/
 
-    SDL_RWops* file = app->fileSystem->Load(n.c_str());
+    SDL_RWops* file = app->fileSystem->Load(fileName);
 
     unsigned int fileSize = file->size(file);
 
     char* buffer = new char[fileSize];
-    app->fileSystem->Load(n.c_str(), &buffer);
+    app->fileSystem->Load(fileName, &buffer);
 
     char* cursor = buffer;
     unsigned int ranges[2];

@@ -34,6 +34,7 @@ public:
 	inline const ComponentType& GetComponentType() const { return type; }
 
 	virtual JSON_Value* Save() { return nullptr; };
+	virtual void Load(JSON_Object* obj, GameObject* parent = nullptr) {};
 
 protected:
 	int uuid;

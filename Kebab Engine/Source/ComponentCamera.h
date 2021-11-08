@@ -31,7 +31,7 @@ public:
 	float GetNearPlane() const;
 
 	JSON_Value* Save() override;
-
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 public:
 	Frustum frustum;

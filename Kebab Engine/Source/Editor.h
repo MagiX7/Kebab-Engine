@@ -56,5 +56,5 @@ private:
 	bool closeApp;
 
 	JSON_Value* sceneValue;
-	char* buffer;
+	//char* buffer;
 };

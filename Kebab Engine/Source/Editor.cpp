@@ -293,13 +293,15 @@ void Editor::SaveScene()
     JSON_Array* gosArray = Parser::GetArrayByValue(arrValue);
 
     Parser::DotSetObjectValue(root, "Scene.GameObjects", arrValue);
-        
+
     for (const auto& go : app->scene->GetGameObjects())
-        Parser::AppendValueToArray(gosArray, go->Save());
+        go->Save(gosArray);
 
     size_t size = Parser::GetSerializationSize(sceneValue);
-    buffer = new char[size];
-    app->fileSystem->Save("Assets/Scenes/Scene.kbscene", buffer, size);
+    char* buffer = new char[size];
+    json_serialize_to_buffer(sceneValue, buffer, size);
+    if (app->fileSystem->Save("Assets/Scenes/Scene.kbscene", buffer, size) > 0)
+        LOG_CONSOLE("Saved successfully");
     delete[] buffer;
 
     Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
@@ -310,21 +312,27 @@ void Editor::LoadScene()
 {
     app->scene->DeleteAllGameObjects();
     app->renderer3D->EraseAllGameObjects();
-
+    char* buffer;
     if(app->fileSystem->Load("Assets/Scenes/Scene.kbscene", &buffer) > 0)
     {
-        JSON_Value* value = json_parse_string(buffer);
-        JSON_Object* sceneObj = Parser::GetObjectByValue(value);
+        sceneValue = json_parse_string(buffer);
+        JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
 
-        JSON_Array* gosArray = json_value_get_array(value);
+        JSON_Array* gosArray = json_object_dotget_array(sceneObj, "Scene.GameObjects");
+
         int numGos = json_array_get_count(gosArray);
         for (int i = 0; i < numGos; ++i)
         {
             JSON_Object* obj = json_array_get_object(gosArray, i);
             const char* name = Parser::GetStringByObject(obj, "name");
-            GameObject* go = new GameObject(name);
-        }
+            int uuid = Parser::GetNumberByObject(obj, "uuid");
+            GameObject* go = new GameObject(name, uuid);
 
+            go->Load(obj);
+            app->scene->AddGameObject(go);
+            if (go->GetComponent(ComponentType::MESH) && go->GetComponent(ComponentType::MATERIAL))
+                app->renderer3D->Submit(go);
+        }
     }
 }
 
@@ -395,8 +403,6 @@ void Editor::ShowAboutPanel()
     ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
     ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
     ImGui::Text("SOFTWARE.");
-
-    // TODO: Read file with JSON and print it
 
     ImGui::End();
 }

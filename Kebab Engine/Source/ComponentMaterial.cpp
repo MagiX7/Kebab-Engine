@@ -97,10 +97,17 @@ JSON_Value* ComponentMaterial::Save()
 	JSON_Value* value = Parser::InitValue();
 	JSON_Object* obj = Parser::GetObjectByValue(value);
 
-	if (currentTexture == checkersTexture) Parser::DotSetObjectString(obj, "Material.Texture.path", "Checkers");
-	if (currentTexture == texture) Parser::DotSetObjectString(obj, "Material.Texture.path", currentTexture->GetPath().c_str());
+	json_object_set_number(obj, "Type", 2);
+
+	if (currentTexture == checkersTexture) Parser::DotSetObjectString(obj, "Texture.path", "Checkers");
+	if (currentTexture == texture) Parser::DotSetObjectString(obj, "Texture.path", currentTexture->GetPath().c_str());
 
 	return value;
+}
+
+void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
+{
+
 }
 
 void ComponentMaterial::SetCheckersTexture()

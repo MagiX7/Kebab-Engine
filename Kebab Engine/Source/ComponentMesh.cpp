@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 
+#include "MeshLoader.h"
 #include "TextureLoader.h"
 
 #include "imgui/imgui.h"
@@ -25,6 +26,12 @@ ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath)
 	normalsTriangleSize = normalsVertexSize = 1.0f;
 	normalsVertexColor = { 1,0.5f,0 };
 	normalsTriangleColor = { 0,0.5f,1.0 };
+
+	int start = meshPath.find_last_of('\\');
+	if (start == 0)
+		start = meshPath.find_last_of('/');
+
+	meshName = meshPath.substr(start + 1);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -202,11 +209,22 @@ JSON_Value* ComponentMesh::Save()
 	JSON_Value* value = Parser::InitValue();
 	JSON_Object* obj = Parser::GetObjectByValue(value);
 
-	Parser::DotSetObjectNumber(obj, "Mesh.vertices", vertices.size());
-	Parser::DotSetObjectNumber(obj, "Mesh.indices", indices.size());
-	Parser::DotSetObjectString(obj, "Mesh.path", meshPath.c_str());
+	json_object_set_number(obj, "Type", 1);
+
+	Parser::DotSetObjectNumber(obj, "vertices", vertices.size());
+	Parser::DotSetObjectNumber(obj, "indices", indices.size());
+	Parser::DotSetObjectString(obj, "path", meshPath.c_str());
 
 	return value;
+}
+
+void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
+{
+	vertices.resize(json_object_get_number(obj, "vertices"));
+	indices.resize(json_object_get_number(obj, "indices"));
+
+	std::string path = json_object_dotget_string(obj, "path");
+	MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
 }
 
 void ComponentMesh::SetUpMesh()

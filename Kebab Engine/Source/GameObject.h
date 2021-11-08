@@ -12,13 +12,15 @@
 class GameObject
 {
 public:
-	GameObject(std::string name);
+	GameObject(std::string name, int uuid = 0);
 	virtual ~GameObject();
 
 	void Update(float dt);
 
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type);
+
+	const int& GetUuid() const { return uuid; }
 
 	inline void SetParent(GameObject* newParent) { parent = newParent; }
 	void UnParent();
@@ -42,7 +44,11 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
-	JSON_Value* Save();
+	void Save(JSON_Array* array);
+	JSON_Value* Load(JSON_Object* obj);
+	
+private:
+	void LoadComponents(JSON_Array* compsArray, GameObject* parent);
 
 private:
 	int uuid;

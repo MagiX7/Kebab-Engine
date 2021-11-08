@@ -24,6 +24,8 @@ public:
 	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
 	void DeleteAllGameObjects();
 
+	GameObject* GetGameObjectByUuid(int uuid);
+
 private:
 	std::vector<GameObject*> gameObjects;
 

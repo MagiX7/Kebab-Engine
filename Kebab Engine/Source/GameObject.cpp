@@ -1,5 +1,8 @@
 #include "GameObject.h"
 
+#include "Application.h"
+#include "MainScene.h"
+
 #include "Globals.h"
 
 #include "ComponentTransform.h"
@@ -7,9 +10,11 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
-GameObject::GameObject(std::string name) : parent(nullptr), name(name)
+GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 {
 	ComponentTransform* transform = (ComponentTransform*)CreateComponent(ComponentType::TRANSFORM);
 
@@ -21,8 +26,11 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	localAABB = AABB::AABB();
 	active = true;
 
-	LCG lgc = LCG();
-	uuid = lgc.IntFast();
+	if (uuid == 0)
+	{
+		LCG lgc = LCG();
+		this->uuid = lgc.IntFast();
+	}
 }
 
 GameObject::~GameObject()
@@ -204,7 +212,7 @@ void GameObject::UpdateAABB(float4x4& newTrans)
 	globalAABB.Enclose(obb);
 }
 
-JSON_Value* GameObject::Save()
+void GameObject::Save(JSON_Array* array)
 {
 	JSON_Value* value = Parser::InitValue();
 	JSON_Object* goObj = Parser::GetObjectByValue(value);
@@ -213,25 +221,68 @@ JSON_Value* GameObject::Save()
 	Parser::SetObjectNumber(goObj, "uuid", uuid);
 	if (parent) Parser::SetObjectNumber(goObj, "parent uuid", parent->uuid);
 
-
-	JSON_Value* arrValue = Parser::InitArray();
-    JSON_Array* compsArray = Parser::GetArrayByValue(arrValue);
+	Parser::AppendValueToArray(array, value);
 
 	if (childs.size() > 0)
-	{
-		JSON_Value* childsArrValue = Parser::InitArray();
-		JSON_Array* childsArray = Parser::GetArrayByValue(childsArrValue);
+		for (int i = 0; i < childs.size(); ++i)
+			childs[i]->Save(array);
 
-		Parser::SetObjectValue(goObj, "childs", childsArrValue);
 
-		for (const auto& child : childs)
-			Parser::AppendValueToArray(childsArray, child->Save());
-	}
+	// Components
+	JSON_Value* arrValue = Parser::InitArray();
+    JSON_Array* compsArray = Parser::GetArrayByValue(arrValue);
 
     Parser::DotSetObjectValue(goObj, "Components", arrValue);
 
 	for (const auto& comp : components)
 		Parser::AppendValueToArray(compsArray, comp->Save());
+}
 
-	return value;
+JSON_Value* GameObject::Load(JSON_Object* obj)
+{
+	uuid = json_object_get_number(obj, "uuid");
+	int parentUuid = json_object_get_number(obj, "parent uuid");
+	if (parentUuid)
+	{
+		GameObject* p = app->scene->GetGameObjectByUuid(parentUuid);
+		if (p)
+		{
+			p->childs.push_back(this);
+			parent = p;
+		}
+	}
+
+	JSON_Array* comps = json_object_dotget_array(obj, "Components");
+	LoadComponents(comps, this);
+
+	return nullptr;
+}
+
+void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
+{
+	for (int j = 0; j < json_array_get_count(compsArray); ++j)
+	{
+		Component* comp = nullptr;
+		JSON_Object* compObj = json_array_get_object(compsArray, j);
+		int type = json_object_get_number(compObj, "Type");
+		
+		if (type == 0)
+			comp = new ComponentTransform(*parent);
+		else if (type == 1)
+		{
+			std::string p = json_object_get_string(compObj, "path");
+			comp = new ComponentMesh(*parent, p.c_str());
+
+		}
+		else if (type == 2)
+			comp = new ComponentMaterial(*parent);
+		else if (type == 3)
+			comp = new ComponentCamera(*parent);
+
+		if (comp)
+		{
+			parent->AddComponent(comp);
+			comp->Load(compObj, parent);
+		}
+	}
 }

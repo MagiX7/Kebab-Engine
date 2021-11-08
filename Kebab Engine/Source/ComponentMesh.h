@@ -27,6 +27,7 @@ public:
 	void DrawTriangleNormals();
 
 	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 private:
 	void DrawOnInspector();
@@ -46,6 +47,7 @@ protected:
 	IndexBuffer* indexBuffer;
 
 	std::string meshPath;
+	std::string meshName;
 
 	bool isKbGeometry = false;
 

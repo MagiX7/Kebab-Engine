@@ -115,7 +115,15 @@ float ComponentCamera::GetNearPlane() const
 
 JSON_Value* ComponentCamera::Save()
 {
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* obj = Parser::GetObjectByValue(value);
+
+	json_object_set_number(obj, "Type", 4);
 	return nullptr;
+}
+
+void ComponentCamera::Load(JSON_Object* obj, GameObject* parent)
+{
 }
 
 float ComponentCamera::GetFarPlane() const
