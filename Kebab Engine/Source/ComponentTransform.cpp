@@ -124,6 +124,8 @@ void ComponentTransform::Load(JSON_Object* obj, GameObject* parent)
 	scale.x = json_object_dotget_number(obj, "Scale.x");
 	scale.y = json_object_dotget_number(obj, "Scale.y");
 	scale.z = json_object_dotget_number(obj, "Scale.z");
+
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 }
 
 void ComponentTransform::UpdateTransform(float4x4 newTransform)

@@ -183,10 +183,6 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
-	
-	/*ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();*/
 	app->editor->OnImGuiRender(dt, frameBuffer);
 	frameBuffer->Bind();
 
@@ -195,9 +191,6 @@ bool Renderer3D::Draw(float dt)
 
 	DrawGrid();
 
-	/*for (const auto& mesh : meshes)
-		mesh->Draw();*/
-
 	for (const auto& go : gameObjects)
 	{
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
@@ -205,8 +198,8 @@ bool Renderer3D::Draw(float dt)
 		if(mesh && mat)
 			mesh->Draw(mat);
 	}
-	frameBuffer->Unbind();
 
+	frameBuffer->Unbind();
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -305,7 +298,6 @@ void Renderer3D::Load(JSON_Object* root)
 	//drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
-// TODO: Still need to check if the childs do have more childs
 void Renderer3D::Submit(GameObject* go)
 {
 	if (go->GetChilds().size() > 0)
@@ -313,9 +305,6 @@ void Renderer3D::Submit(GameObject* go)
 			Submit(child);
 
 	gameObjects.push_back(go);
-
-	/*ComponentMesh* m = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-	if(m) meshes.push_back(m);*/
 }
 
 void Renderer3D::EraseGameObject(GameObject* go)

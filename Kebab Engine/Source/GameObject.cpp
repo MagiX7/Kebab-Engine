@@ -154,7 +154,7 @@ void GameObject::AddAABB()
 {
 	ComponentMesh* mesh = (ComponentMesh*)this->GetComponent(ComponentType::MESH);
 
-	if (mesh != nullptr)
+	if (mesh)
 	{
 		//if (!localAABB)
 		//{
@@ -263,7 +263,7 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 {
 	for (int j = 0; j < json_array_get_count(compsArray); ++j)
 	{
-		Component* comp = nullptr;
+		//Component* comp = nullptr;
 		JSON_Object* compObj = json_array_get_object(compsArray, j);
 		int type = json_object_get_number(compObj, "Type");
 		
@@ -275,18 +275,19 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 		else if (type == 1)
 		{
 			std::string p = json_object_get_string(compObj, "mesh path");
-			comp = new ComponentMesh(*parent, p.c_str());
-
+			ComponentMesh* m = new ComponentMesh(*parent, p.c_str());
+			m->Load(compObj, parent);
+			parent->AddComponent(m);
 		}
 		else if (type == 2)
-			comp = new ComponentMaterial(*parent);
-		else if (type == 3)
-			comp = new ComponentCamera(*parent);
-
-		if (comp)
 		{
-			parent->AddComponent(comp);
-			comp->Load(compObj, parent);
+			ComponentMaterial* mat = new ComponentMaterial(*parent);
+			mat->Load(compObj, parent);
+			parent->AddComponent(mat);
+
 		}
+		else if (type == 3);
+			//comp = new ComponentCamera(*parent);
+
 	}
 }

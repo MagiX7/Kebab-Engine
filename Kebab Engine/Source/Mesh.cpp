@@ -2,13 +2,7 @@
 
 KbMesh::KbMesh(std::string path)
 {
-	this->path = path;
-
-	int start = path.find_last_of('\\');
-	if (start <= 0)
-		start = path.find_last_of('/');
-
-	name = path.substr(start + 1);
+	SetPath(path);
 }
 
 KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
@@ -26,6 +20,9 @@ KbMesh::~KbMesh()
 
 	vertices.clear();
 	indices.clear();
+	
+	path.clear();
+	name.clear();
 }
 
 void KbMesh::SetData(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
@@ -119,7 +116,6 @@ void KbMesh::DrawTriangleNormals(const float& size, const float3& color)
 
 void KbMesh::SetPath(const std::string& path)
 {
-	this->path = path;
 	this->path = path;
 
 	int start = path.find_last_of('\\');

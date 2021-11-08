@@ -39,12 +39,7 @@ ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath)
 ComponentMesh::~ComponentMesh()
 {
 	delete mesh;
-	/*delete(vertexBuffer);
-	delete(indexBuffer);
-
-	vertices.clear();
-	indices.clear();
-	textures.clear();*/
+	mesh = nullptr;
 }
 
 void ComponentMesh::Enable()
@@ -169,7 +164,7 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 
 	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
 
-	this->parent = parent;
+	//this->parent = parent;
 }
 
 void ComponentMesh::BeginDraw(ComponentMaterial* mat)

@@ -396,12 +396,6 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
 
 KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject* parent)
 {
-    //ComponentMesh* mesh = new ComponentMesh(*parent);
-
-   /* std::string n = CUSTOM_DIR;
-    n.append(fileName);
-    n.append(CUSTOM_EXTENSION);*/
-
     KbMesh* mesh = new KbMesh(fileName);
 
     std::string name;
@@ -413,16 +407,10 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
         name = CUSTOM_DIR + fileName;
     else
         name = fileName.substr(start + 1);
-    //SDL_RWops* file = app->fileSystem->Load(name.c_str());
 
     char* buffer;
     if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
         LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
-
-    //unsigned int fileSize = file->size(file);
-
-    /*char* buffer = new char[fileSize];
-    app->fileSystem->Load(name.c_str(), &buffer);*/
 
     char* cursor = buffer;
     unsigned int ranges[2];
