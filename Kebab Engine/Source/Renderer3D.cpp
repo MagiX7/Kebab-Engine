@@ -203,9 +203,9 @@ bool Renderer3D::Draw(float dt)
 	{
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if (mesh && mat && !app->camera->cam->frustumCulling) 
+		if (mesh && mat && !app->camera->GetCamera()->frustumCulling) 
 			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->cam->frustumCulling) 
+		else if (mesh && mat && go->insideFrustum && app->camera->GetCamera()->frustumCulling) 
 			mesh->Draw(mat);
 	}
 	frameBuffer->Unbind();
