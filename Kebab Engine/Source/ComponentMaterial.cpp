@@ -6,6 +6,15 @@
 #define CHECKERS_HEIGHT 40
 #define CHECKERS_WIDTH 40
 
+ComponentMaterial::ComponentMaterial()
+{
+	this->parent = nullptr;
+	this->type = ComponentType::MATERIAL;
+	this->active = true;
+
+	SetCheckersTexture();
+}
+
 ComponentMaterial::ComponentMaterial(GameObject& compOwner)
 {
 	this->parent = &compOwner;

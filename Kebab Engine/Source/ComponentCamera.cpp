@@ -1,10 +1,19 @@
+#include "Application.h"
 #include "ComponentCamera.h"
+
+#include "GameObject.h"
+
+#include "imgui/imgui.h"
+
+#include "mmgr/mmgr.h"
 
 ComponentCamera::ComponentCamera()
 {
 	this->parent = nullptr;
 	this->active = true;
 	this->type = ComponentType::CAMERA;
+	
+	frustumCulling = true;
 
 	fovVertical = 70.0f;
 	fovHorizontal = 80.0f;
@@ -26,6 +35,8 @@ ComponentCamera::ComponentCamera(GameObject& compOwner)
 	this->SetParent(&compOwner);
 	this->active = true;
 	this->type = ComponentType::CAMERA;
+
+	frustumCulling = true;
 
 	fovVertical = 70.0f;
 	fovHorizontal = 80.0f;
@@ -121,4 +132,13 @@ float ComponentCamera::GetFarPlane() const
 vec ComponentCamera::GetCameraPosition() const
 {
 	return frustum.Pos();
+}
+
+
+void ComponentCamera::DrawOnInspector()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::Checkbox("Activate Camera", &cameraActive);
+	}
 }

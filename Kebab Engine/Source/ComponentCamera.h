@@ -30,7 +30,11 @@ public:
 	float GetFarPlane() const;
 	float GetNearPlane() const;
 
+	void DrawOnInspector() override;
+
 	Frustum frustum;
+
+	bool frustumCulling;
 
 private:
 
@@ -39,4 +43,6 @@ private:
 
 	float planeFar;
 	float planeNear;
+
+	bool cameraActive;
 };

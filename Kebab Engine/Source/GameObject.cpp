@@ -20,6 +20,7 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	//localAABB = nullptr;
 	localAABB = AABB::AABB();
 	active = true;
+	insideFrustum = true;
 }
 
 GameObject::~GameObject()
@@ -48,7 +49,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-
+	SetGlobalAABB(this);
 }
 
 // TODO: Should check if the component already exists
@@ -93,6 +94,7 @@ Component* GameObject::GetComponent(ComponentType type)
 void GameObject::UnParent()
 {
 	parent = nullptr;
+
 	/*if(parent)
 	{
 		for (int i = 0; i < parent->GetChilds().size(); ++i)
