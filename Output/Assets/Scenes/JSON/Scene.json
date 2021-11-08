@@ -3,14 +3,14 @@
         "GameObjects": [
             {
                 "name": "Baker House",
-                "uuid": -117233455,
+                "uuid": -181094936,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0
+                            "x": -2.5,
+                            "y": 2.4000000953674316,
+                            "z": 3.0499999523162842
                         },
                         "Rotation": {
                             "x": 0,
@@ -28,15 +28,15 @@
             },
             {
                 "name": "Chimney",
-                "uuid": -1665421623,
-                "parent uuid": -117233455,
+                "uuid": -1559755969,
+                "parent uuid": -181094936,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0
+                            "x": -2.5,
+                            "y": 2.4000000953674316,
+                            "z": 3.0499999523162842
                         },
                         "Rotation": {
                             "x": 0,
@@ -58,23 +58,22 @@
                     },
                     {
                         "Type": 1,
-                        "vertices": 324,
-                        "indices": 324,
-                        "path": "Library\/Meshes\/Chimney.kbmesh"
+                        "mesh path": "Library\/Meshes\/Chimney.kbmesh",
+                        "mesh name": "Chimney.kbmesh"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": 1344504940,
-                "parent uuid": -117233455,
+                "uuid": 643472068,
+                "parent uuid": -181094936,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0
+                            "x": -2.5,
+                            "y": 2.4000000953674316,
+                            "z": 3.0499999523162842
                         },
                         "Rotation": {
                             "x": 0,
@@ -96,9 +95,8 @@
                     },
                     {
                         "Type": 1,
-                        "vertices": 2751,
-                        "indices": 2751,
-                        "path": "Library\/Meshes\/Baker_house.kbmesh"
+                        "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
+                        "mesh name": "Baker_house.kbmesh"
                     }
                 ]
             }

@@ -10,8 +10,6 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
-#include <queue>
-
 #include "mmgr/mmgr.h"
 
 GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
@@ -63,7 +61,7 @@ void GameObject::Update(float dt)
 }
 
 // TODO: Should check if the component already exists
-Component* GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type, std::string meshPath)
 {
 	Component* ret = nullptr;
 
@@ -73,17 +71,22 @@ Component* GameObject::CreateComponent(ComponentType type)
 		ret = new ComponentTransform(*this);
 		components.push_back(ret);
 		break;
+
 	case ComponentType::MESH:
-		ret = new ComponentMesh(*this);
+		ret = new ComponentMesh(*this, meshPath);
 		components.push_back(ret);
 		break;
+
 	case ComponentType::MATERIAL:
 		ret = new ComponentMaterial(*this);
 		components.push_back(ret);
 		break;
+
 	case ComponentType::CAMERA:
 		ret = new ComponentCamera(*this);
 		components.push_back(ret);
+		break;
+
 	default:
 		break;
 	}
@@ -94,9 +97,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 Component* GameObject::GetComponent(ComponentType type)
 {
 	for (const auto& comp : components)
-	{
 		if (comp->GetComponentType() == type) return comp;
-	}
 
 	return nullptr;
 }
@@ -161,9 +162,9 @@ void GameObject::AddAABB()
 		//}
 
 		localAABB.SetNegativeInfinity();
-		for (uint i = 0; i < mesh->vertices.size(); i++)
+		for (uint i = 0; i < mesh->GetMesh()->vertices.size(); i++)
 		{
-			localAABB.Enclose(mesh->vertices[i].position);
+			localAABB.Enclose(mesh->GetMesh()->vertices[i].position);
 		}
 	}
 
@@ -267,10 +268,13 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 		int type = json_object_get_number(compObj, "Type");
 		
 		if (type == 0)
-			comp = new ComponentTransform(*parent);
+		{
+			ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+			trans->Load(compObj, parent);
+		}
 		else if (type == 1)
 		{
-			std::string p = json_object_get_string(compObj, "path");
+			std::string p = json_object_get_string(compObj, "mesh path");
 			comp = new ComponentMesh(*parent, p.c_str());
 
 		}

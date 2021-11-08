@@ -202,7 +202,8 @@ bool Renderer3D::Draw(float dt)
 	{
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if(mesh && mat) mesh->Draw(mat);
+		if(mesh && mat)
+			mesh->Draw(mat);
 	}
 	frameBuffer->Unbind();
 

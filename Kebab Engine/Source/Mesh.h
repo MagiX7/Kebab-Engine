@@ -1,43 +1,48 @@
 #pragma once
 
-#include "VertexArray.h"
-#include "Texture.h"
-
+#include "Buffer.h"
 #include "Vertex.h"
 
-struct Tex
-{
-	unsigned int id;
-	std::string type;
-	std::string path;
-};
+#include <vector>
 
 class KbMesh
 {
 public:
-	KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures, std::vector<float2> texCoords);
-	//KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* texture, const char* fileName);
-	//KbMesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, const char* fileName);
+	KbMesh(std::string path);
+	KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 	virtual ~KbMesh();
 
+	void SetData(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+
 	void BeginDraw();
-	void Draw(bool showNormals);
 	void EndDraw();
+
+	void DrawVertexNormals(const float& size, const float3& color);
+	void DrawTriangleNormals(const float& size, const float3& color);
+
+	inline const std::vector<Vertex>& GetVertices() const { return vertices; }
+	inline const std::vector<uint32_t>& GetIndices() const { return indices; }
+	inline const IndexBuffer* GetIndexBuffer() const { return indexBuffer; }
+	inline const std::string& GetPath() const { return path; }
+	inline const std::string& GetName() const { return name; }
+
+	void SetPath(const std::string&);
+	void SetName(const std::string&);
 
 private:
 	void SetUpMesh();
 
 public:
-	std::vector<Vertex>   vertices;
+	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<Texture>  textures;
 
 private:
-	//VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-	Texture* texture;
 
-	GLuint texBuffer;
+	/*std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;*/
 
+	std::string path;
+	std::string name;
 };

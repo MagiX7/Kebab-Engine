@@ -121,9 +121,9 @@ void ComponentTransform::Load(JSON_Object* obj, GameObject* parent)
 	rotation.z = json_object_dotget_number(obj, "Rotation.z");
 	rotation.w = json_object_dotget_number(obj, "Rotation.w");
 
-	scale.x = json_object_get_number(obj, "Scale.x");
-	scale.y = json_object_get_number(obj, "Scale.y");
-	scale.z = json_object_get_number(obj, "Scale.z");
+	scale.x = json_object_dotget_number(obj, "Scale.x");
+	scale.y = json_object_dotget_number(obj, "Scale.y");
+	scale.z = json_object_dotget_number(obj, "Scale.z");
 }
 
 void ComponentTransform::UpdateTransform(float4x4 newTransform)

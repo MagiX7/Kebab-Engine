@@ -91,12 +91,6 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Geometry.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Cube.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ComponentTransform.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
@@ -115,18 +109,6 @@
     <ClCompile Include="Source\TextureLoader.cpp">
       <Filter>Source Files\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Cylinder.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Pyramid.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Plane.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Sphere.cpp">
-      <Filter>Source Files\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ComponentCamera.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
@@ -141,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="Source\Parser.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,21 +237,6 @@
     <ClInclude Include="Source\Timer.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Sphere.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Pyramid.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Plane.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Geometry.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Cube.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ComponentTransform.h">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
@@ -285,9 +255,6 @@
     <ClInclude Include="Source\TextureLoader.h">
       <Filter>Source Files\Importers</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Cylinder.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ComponentCamera.h">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
@@ -302,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="Source\Parser.h">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Source Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -312,6 +312,8 @@ void Editor::LoadScene()
 {
     app->scene->DeleteAllGameObjects();
     app->renderer3D->EraseAllGameObjects();
+    hierarchyPanel->currentGO = nullptr;
+    
     char* buffer;
     if(app->fileSystem->Load("Assets/Scenes/Scene.kbscene", &buffer) > 0)
     {
@@ -329,7 +331,10 @@ void Editor::LoadScene()
             GameObject* go = new GameObject(name, uuid);
 
             go->Load(obj);
-            app->scene->AddGameObject(go);
+
+            if(!go->GetParent())
+                app->scene->AddGameObject(go);
+
             if (go->GetComponent(ComponentType::MESH) && go->GetComponent(ComponentType::MATERIAL))
                 app->renderer3D->Submit(go);
         }

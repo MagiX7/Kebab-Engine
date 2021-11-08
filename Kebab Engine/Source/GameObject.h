@@ -17,7 +17,7 @@ public:
 
 	void Update(float dt);
 
-	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, std::string meshPath = "");
 	Component* GetComponent(ComponentType type);
 
 	const int& GetUuid() const { return uuid; }

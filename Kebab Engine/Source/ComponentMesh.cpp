@@ -14,7 +14,7 @@
 #define CHECKERS_HEIGHT 80
 #define CHECKERS_WIDTH 80
 
-ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath) : meshPath(meshPath)
+ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath)
 {
 	this->parent = &compOwner;
 	this->type = ComponentType::MESH;
@@ -27,21 +27,24 @@ ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath)
 	normalsVertexColor = { 1,0.5f,0 };
 	normalsTriangleColor = { 0,0.5f,1.0 };
 
-	int start = meshPath.find_last_of('\\');
+	mesh = new KbMesh(meshPath);
+	/*int start = meshPath.find_last_of('\\');
 	if (start == 0)
 		start = meshPath.find_last_of('/');
 
-	meshName = meshPath.substr(start + 1);
+	mesh->SetName(meshPath.substr(start + 1));
+	mesh->SetPath(meshPath);*/
 }
 
 ComponentMesh::~ComponentMesh()
 {
-	delete(vertexBuffer);
+	delete mesh;
+	/*delete(vertexBuffer);
 	delete(indexBuffer);
 
 	vertices.clear();
 	indices.clear();
-	textures.clear();
+	textures.clear();*/
 }
 
 void ComponentMesh::Enable()
@@ -62,9 +65,9 @@ void ComponentMesh::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Mesh"))
 	{
-		ImGui::Text("Vertices: %i", vertices.size());
-		ImGui::Text("Indices: %i", indices.size());
-		ImGui::Text("Textures: %i", textures.size());
+		ImGui::Text("Vertices: %i", mesh->GetVertices().size());
+		ImGui::Text("Indices: %i", mesh->GetIndices().size());
+		//ImGui::Text("Textures: %i", textures.size());
 
 		ImGui::Checkbox("Show vertex normals", &drawVertexNormals);
 		if (drawVertexNormals)
@@ -113,95 +116,29 @@ void ComponentMesh::Draw(ComponentMaterial* mat)
 {
 	BeginDraw(mat);
 
-	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, mesh->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
 	// This goes here just to be able to change the normals color while texture is assigned
 	mat->Unbind();
 	//if (currentTexture) currentTexture->Unbind();
 
 	if (drawVertexNormals)
-		DrawVertexNormals();
+		mesh->DrawVertexNormals(normalsVertexSize, normalsVertexColor);
 	if (drawTriangleNormals)
-		DrawTriangleNormals();
+		mesh->DrawTriangleNormals(normalsTriangleSize, normalsTriangleColor);
 
 	EndDraw(mat);
 }
 
 void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*std::vector<Texture> textures*/)
 {
-	this->vertices = vertices;
-	this->indices = indices;
-
-	SetUpMesh();
+	mesh->SetData(vertices, indices);
+	this->parent->AddAABB();
 }
 
-void ComponentMesh::DrawVertexNormals()
+void ComponentMesh::SetMeshPath(const std::string& path)
 {
-	glBegin(GL_LINES);
-
-	glColor3f(normalsVertexColor.x, normalsVertexColor.y, normalsVertexColor.z);
-
-	for (int i = 0; i < vertices.size(); ++i)
-	{
-		float3 pos = vertices[i].position;
-		glVertex3f(pos.x, pos.y, pos.z);
-
-		if (isKbGeometry)
-		{
-			float3 normal = vertices[i].normal;
-			normal.Normalize();
-
-			glVertex3f(pos.x + normal.x * normalsVertexSize, pos.y, pos.z);
-
-			glVertex3f(pos.x, pos.y, pos.z);
-			glVertex3f(pos.x, pos.y + normal.y * normalsVertexSize, pos.z);
-
-			glVertex3f(pos.x, pos.y, pos.z);
-			glVertex3f(pos.x, pos.y, pos.z + normal.z * normalsVertexSize);
-		}
-		else
-		{
-			float3 n;
-			n.x = (vertices[i].position.x + vertices[i].normal.x * normalsVertexSize);
-			n.y = (vertices[i].position.y + vertices[i].normal.y * normalsVertexSize);
-			n.z = (vertices[i].position.z + vertices[i].normal.z * normalsVertexSize);
-			glVertex3f(n.x, n.y, n.z);
-		}
-	}
-
-	glColor3f(1, 1, 1);
-
-	glEnd();
-}
-
-void ComponentMesh::DrawTriangleNormals()
-{
-	glBegin(GL_LINES);
-
-	glColor3f(normalsTriangleColor.x, normalsTriangleColor.y, normalsTriangleColor.z);
-
-	for (unsigned int i = 0; i < indices.size(); i += 3)
-	{
-		float3 v1 = vertices[indices[i]].position;
-		float3 v2 = vertices[indices[i + 1]].position;
-		float3 v3 = vertices[indices[i + 2]].position;
-
-		float3 tNorm = math::Cross(v2 - v1, v3 - v1);
-		tNorm.Normalize();
-		//tNorm *= 0.5f;
-
-		float3 tCent;
-		tCent.x = (v1.x + v2.x + v3.x) / 3;
-		tCent.y = (v1.y + v2.y + v3.y) / 3;
-		tCent.z = (v1.z + v2.z + v3.z) / 3;
-
-		glVertex3f(tCent.x, tCent.y, tCent.z);
-		glVertex3f(tCent.x + tNorm.x * normalsTriangleSize, tCent.y + tNorm.y * normalsTriangleSize, tCent.z + tNorm.z * normalsTriangleSize);
-	}
-
-	glColor3f(1, 1, 1);
-
-	glEnd();
+	mesh->SetPath(path);
 }
 
 JSON_Value* ComponentMesh::Save()
@@ -211,30 +148,28 @@ JSON_Value* ComponentMesh::Save()
 
 	json_object_set_number(obj, "Type", 1);
 
-	Parser::DotSetObjectNumber(obj, "vertices", vertices.size());
-	Parser::DotSetObjectNumber(obj, "indices", indices.size());
-	Parser::DotSetObjectString(obj, "path", meshPath.c_str());
+	/*Parser::DotSetObjectNumber(obj, "vertices", mesh->GetVertices().size());
+	Parser::DotSetObjectNumber(obj, "indices", mesh->GetIndices().size());*/
+	Parser::DotSetObjectString(obj, "mesh path", mesh->GetPath().c_str());
+	Parser::DotSetObjectString(obj, "mesh name", mesh->GetName().c_str());
+
 
 	return value;
 }
 
 void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 {
+	/*std::vector<Vertex> vertices;
 	vertices.resize(json_object_get_number(obj, "vertices"));
-	indices.resize(json_object_get_number(obj, "indices"));
+	std::vector<uint32_t> indices;
+	indices.resize(json_object_get_number(obj, "indices"));*/
 
-	std::string path = json_object_dotget_string(obj, "path");
-	MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
-}
+	std::string path = json_object_get_string(obj, "mesh path");
+	std::string meshName = json_object_get_string(obj, "mesh name");
 
-void ComponentMesh::SetUpMesh()
-{
-	vertexBuffer = new VertexBuffer();
-	vertexBuffer->SetData(vertices);
+	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
 
-	indexBuffer = new IndexBuffer(indices.data(), indices.size());
-
-	this->parent->AddAABB();
+	this->parent = parent;
 }
 
 void ComponentMesh::BeginDraw(ComponentMaterial* mat)
@@ -251,9 +186,7 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	vertexBuffer->Bind();
-	indexBuffer->Bind();
-
+	mesh->BeginDraw();
 	mat->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
@@ -266,8 +199,7 @@ void ComponentMesh::EndDraw(ComponentMaterial* mat)
 {
 	glPopMatrix();
 
-	indexBuffer->Unbind();
-	vertexBuffer->Unbind();
+	mesh->EndDraw();
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
