@@ -248,9 +248,6 @@ void ConfigPanel::OnRender(float dt)
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();
 
-                /*if (ImGui::Checkbox("Frustum Culling", &app->renderer3D->wireframe))
-                    app->renderer3D->SetWireframe();*/
-
                 ImGui::EndTable();
             }
         }

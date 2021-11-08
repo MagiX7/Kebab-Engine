@@ -11,7 +11,6 @@ class ComponentMaterial;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh();
 	ComponentMesh(GameObject& compOwner);
 	~ComponentMesh();
 

@@ -23,5 +23,4 @@ private:
 	GameObject* goDragging;
 	GameObject* goClicked;
 	bool optionsPopup;
-	bool parentingPopup;
 };

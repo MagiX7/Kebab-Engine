@@ -21,7 +21,6 @@
 #include "Editor.h"
 
 #include "ComponentMesh.h"
-#include "ComponentCamera.h"
 
 #include "Math/float4x4.h"
 #include "SDL_opengl.h"
@@ -203,10 +202,7 @@ bool Renderer3D::Draw(float dt)
 	{
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if (mesh && mat && !app->camera->cam->frustumCulling) 
-			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->cam->frustumCulling) 
-			mesh->Draw(mat);
+		if(mesh && mat) mesh->Draw(mat);
 	}
 	frameBuffer->Unbind();
 

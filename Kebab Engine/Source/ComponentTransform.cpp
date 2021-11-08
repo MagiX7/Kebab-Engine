@@ -4,20 +4,6 @@
 
 #include "imgui/imgui.h"
 
-ComponentTransform::ComponentTransform()
-{
-	this->parent = nullptr;
-	this->type = ComponentType::TRANSFORM;
-	this->active = true;
-
-	localTransformMat = float4x4::identity;
-	worldTransformMat = float4x4::identity;
-
-	guiPos = { 0,0,0 };
-	guiRot = { 0,0,0 };
-	guiScale = { 1,1,1 };
-}
-
 ComponentTransform::ComponentTransform(GameObject& compOwner)
 {
 	this->parent = &compOwner;

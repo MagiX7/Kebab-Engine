@@ -268,9 +268,10 @@ bool FileSystem::FindFilePath(const char* fileName, char* path, const char* dire
 
 	while (!found)
 	{
+		FileSystem fs;
 		std::vector<std::string> fileList;
 		std::vector<std::string> dirList;
-		this->DiscoverFiles(directoryFrom, fileList, dirList);
+		fs.DiscoverFiles(directoryFrom, fileList, dirList);
 
 		std::vector<std::string>::iterator it;
 

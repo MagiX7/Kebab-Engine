@@ -10,7 +10,6 @@ class ComponentMaterial : public Component
 {
 public:
 	// Loads checkers texture by default
-	ComponentMaterial();
 	ComponentMaterial(GameObject& compOwner);
 	~ComponentMaterial();
 

@@ -3,7 +3,6 @@
 
 #include "Input.h"
 #include "Editor.h"
-#include "MainScene.h"
 
 #include "PanelHierarchy.h"
 #include "PanelViewport.h"
@@ -137,13 +136,6 @@ bool Camera3D::Update(float dt)
 		}
 	}
 
-	//std::vector<GameObject*>::iterator it;
-
-	//for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
-	//{
-	//	DrawInFrustumCulling((*it));
-	//}
-
 	return true;
 }
 
@@ -180,11 +172,6 @@ float* Camera3D::GetViewMatrix()
 float* Camera3D::GetProjectionMatrix()
 {
 	return cam->GetProjectionMatrix().ptr();
-}
-
-ComponentCamera* Camera3D::GetCamera()
-{
-	return cam;
 }
 
 void Camera3D::CenterCameraToGO(AABB* boundBox)
@@ -226,46 +213,6 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 	cam->SetCameraPosition(position);
 	LookAt(reference);
 }
-
-//void Camera3D::DrawInFrustumCulling(GameObject* go)
-//{
-//	/*if (go->GetGlobalAABB()->IsFinite())
-//	{
-//		if (cam->frustum.Intersects(go->GetGlobalAABB()))
-//			go->insideFrustum = true;
-//		else
-//			go->insideFrustum = false;
-//	}*/
-//}
-//
-//bool Camera3D::IntersectsAABB(const AABB* aabb)
-//{
-//	float3 corners[8];
-//	aabb->GetCornerPoints(corners);
-//
-//	Plane planes[6];
-//	cam->frustum.GetPlanes(planes);
-//
-//	for (uint i = 0; i < 6; ++i)
-//	{
-//		uint point_inside_plane = 8;
-//
-//		for (uint p = 0; p < 8; ++p)
-//		{
-//			if (planes[i].IsOnPositiveSide(corners[p]))
-//			{
-//				--point_inside_plane;
-//			}
-//		}
-//
-//		if (point_inside_plane == 0)
-//		{
-//			return false;
-//		}
-//	}
-//
-//	return false;
-//}
 
 void Camera3D::Save(JSON_Object* root)
 {

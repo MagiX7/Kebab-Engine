@@ -9,9 +9,8 @@ class GameObject;
 
 enum class AssetType
 {
-	FBX,
-	PNG,
-	NONE,
+	MODEL,
+	TEXTURE,
 };
 
 struct Asset
@@ -19,7 +18,7 @@ struct Asset
 	std::string name;
 	std::string path;
 
-	AssetType type = AssetType::NONE;
+	AssetType type;
 
 	GameObject* gameObj;
 };
@@ -40,8 +39,6 @@ public:
 private:
 
 	std::vector<Asset*> assets;
-
-	std::string assetsDirectory;
 
 	bool popUpMenu;
 };
