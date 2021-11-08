@@ -40,6 +40,7 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
+	bool insideFrustum;
 
 private:
 

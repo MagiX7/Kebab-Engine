@@ -14,6 +14,20 @@
 #define CHECKERS_HEIGHT 80
 #define CHECKERS_WIDTH 80
 
+ComponentMesh::ComponentMesh()
+{
+	this->parent = nullptr;
+	this->type = ComponentType::MESH;
+	this->active = true;
+
+	drawVertexNormals = false;
+	drawTriangleNormals = false;
+
+	normalsTriangleSize = normalsVertexSize = 1.0f;
+	normalsVertexColor = { 1,0.5f,0 };
+	normalsTriangleColor = { 0,0.5f,1.0 };
+}
+
 ComponentMesh::ComponentMesh(GameObject& compOwner)
 {
 	this->parent = &compOwner;

@@ -15,12 +15,17 @@
 
 #include <vector>
 
+//#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+//#include <experimental/filesystem>
+//#include <filesystem>
+
 AssetsPanel::AssetsPanel()
 {
     active = true;
     scroll = 0;
 
 	popUpMenu = false;
+	assetsDirectory = "Assets";
 }
 
 AssetsPanel::~AssetsPanel()
@@ -55,6 +60,14 @@ void AssetsPanel::OnRender(float dt)
 			{
 				DisplayAsset(assets[i]);
 			}
+
+
+
+			/*for (auto& p : std::filesystem::directory_iterator(assetsDirectory))
+			{
+				std::string path = p.path().string();
+				ImGui::Text("%s", path.c_str());
+			}*/
 		}
     }
 	ImGui::End();
@@ -62,10 +75,15 @@ void AssetsPanel::OnRender(float dt)
 
 void AssetsPanel::AddAsset(GameObject* gameObj)
 {
+	FileSystem fs;
+	char path[128] = "";
+	fs.FindFilePath(gameObj->GetName().c_str(), path, assetsDirectory.c_str());
+
 	Asset* aux = new Asset();
 	aux->gameObj = gameObj;
 	aux->name = gameObj->GetName().c_str();
-	aux->type = AssetType::MODEL;
+	aux->type = AssetType::FBX;
+	aux->path = path;
 
 	assets.push_back(aux);
 }
@@ -87,6 +105,8 @@ void AssetsPanel::DisplayAsset(Asset* asset)
 		DisplayPopMenu(asset);
 	}
 
+	
+
 	ImGui::TreePop();
 }
 
@@ -99,14 +119,16 @@ void AssetsPanel::DisplayPopMenu(Asset* asset)
 		{
 			popUpMenu = false;
 
-			char path[128] = "";
-			int status;
 			char name[32] = "";
 			sprintf_s(name, 32, "%s.fbx", asset->name.c_str());
-			app->fileSystem->FindFilePath(name, path, "Assets/");
+
+			char path[128] = "";
+			app->fileSystem->FindFilePath(name, path, assetsDirectory.c_str());
 
 			char auxPath[128] = "";
 			sprintf_s(auxPath, 128, "%s", path);
+
+			int status;
 			status = remove(auxPath);
 			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", asset->name.c_str()); }
 			else { LOG_CONSOLE("Error to Delete %s", asset->name.c_str()); }
@@ -124,6 +146,10 @@ void AssetsPanel::DisplayPopMenu(Asset* asset)
 					break;
 				}
 			}
+		}
+		if (ImGui::Button("Import to Scene"))
+		{
+			//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 		}
 
 		ImGui::EndPopup();

@@ -9,6 +9,7 @@
 class ComponentTransform : public Component
 {
 public:
+	ComponentTransform();
 	ComponentTransform(GameObject& compOwner);
 	~ComponentTransform();
 
