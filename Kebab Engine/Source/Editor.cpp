@@ -239,6 +239,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
         ImGui::EndMainMenuBar();
     }
 
+    SimulationControl();
+
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
     if(frameBuffer)
         viewportPanel->OnRender(frameBuffer);
@@ -409,6 +411,24 @@ void Editor::ShowAboutPanel()
     ImGui::Text("SOFTWARE.");
 
     ImGui::End();
+}
+
+void Editor::SimulationControl()
+{
+    if (ImGui::Begin("SimulationControl", NULL, ImGuiWindowFlags_NoTitleBar))
+    {
+        if (ImGui::Button("Play"));
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Stop"));
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Reset"));
+
+        ImGui::End();
+    }
 }
 
 void Editor::SetImGuiStyle()

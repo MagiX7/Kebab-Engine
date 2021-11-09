@@ -37,6 +37,8 @@ private:
 
 	void SetImGuiStyle();
 
+	void SimulationControl();
+
 public:
 
 	ConsolePanel* consolePanel;
