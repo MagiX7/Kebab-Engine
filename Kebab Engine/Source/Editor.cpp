@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "FileSystem.h"
 #include "Editor.h"
 
 #include "Window.h"
@@ -9,8 +10,6 @@
 #include "Buffer.h"
 #include "MeshLoader.h"
 
-#include "GL/glew.h"
-
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
 #include "PanelHierarchy.h"
@@ -18,12 +17,14 @@
 #include "PanelViewport.h"
 #include "PanelAssets.h"
 
+
 #include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_internal.h"
+
 #include "mmgr/mmgr.h"
-#include <imgui/imgui_internal.h>
 
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
@@ -146,6 +147,14 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     {
         if (ImGui::BeginMenu("File"))
         {
+            if (ImGui::MenuItem("Save Scene", "Crtl + S"))
+            {
+                SaveScene();
+            }
+            if (ImGui::MenuItem("Open Scene"))
+            {
+                LoadScene();
+            }
             if (ImGui::MenuItem("Exit"))
             {
                 closeApp = true;
@@ -274,6 +283,62 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     return true;
 }
 
+void Editor::SaveScene()
+{
+    sceneValue = Parser::InitValue();
+    JSON_Object* root = Parser::GetObjectByValue(sceneValue);
+
+    JSON_Value* arrValue = Parser::InitArray();
+    JSON_Array* gosArray = Parser::GetArrayByValue(arrValue);
+
+    Parser::DotSetObjectValue(root, "Scene.GameObjects", arrValue);
+
+    for (const auto& go : app->scene->GetGameObjects())
+        go->Save(gosArray);
+
+    size_t size = Parser::GetSerializationSize(sceneValue);
+    char* buffer = new char[size];
+    json_serialize_to_buffer(sceneValue, buffer, size);
+    if (app->fileSystem->Save("Assets/Scenes/Scene.kbscene", buffer, size) > 0)
+        LOG_CONSOLE("Saved successfully");
+    delete[] buffer;
+
+    Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
+    Parser::FreeValue(sceneValue);
+}
+
+void Editor::LoadScene()
+{
+    app->scene->DeleteAllGameObjects();
+    app->renderer3D->EraseAllGameObjects();
+    hierarchyPanel->currentGO = nullptr;
+    
+    char* buffer;
+    if(app->fileSystem->Load("Assets/Scenes/Scene.kbscene", &buffer) > 0)
+    {
+        sceneValue = json_parse_string(buffer);
+        JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
+
+        JSON_Array* gosArray = json_object_dotget_array(sceneObj, "Scene.GameObjects");
+
+        int numGos = json_array_get_count(gosArray);
+        for (int i = 0; i < numGos; ++i)
+        {
+            JSON_Object* obj = json_array_get_object(gosArray, i);
+            const char* name = Parser::GetStringByObject(obj, "name");
+            int uuid = Parser::GetNumberByObject(obj, "uuid");
+            GameObject* go = new GameObject(name, uuid);
+
+            go->Load(obj);
+
+            if(!go->GetParent())
+                app->scene->AddGameObject(go);
+
+            if (go->GetComponent(ComponentType::MESH) && go->GetComponent(ComponentType::MATERIAL))
+                app->renderer3D->Submit(go);
+        }
+    }
+}
 
 void Editor::ShowAboutPanel()
 {
@@ -342,8 +407,6 @@ void Editor::ShowAboutPanel()
     ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
     ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
     ImGui::Text("SOFTWARE.");
-
-    // TODO: Read file with JSON and print it
 
     ImGui::End();
 }

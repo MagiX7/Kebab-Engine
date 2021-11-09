@@ -85,3 +85,22 @@ void MainScene::DeleteGameObject(GameObject* go)
         }
     }
 }
+
+void MainScene::DeleteAllGameObjects()
+{
+    for (auto& go : gameObjects)
+    {
+        delete go;
+        go = nullptr;
+    }
+
+    gameObjects.clear();
+}
+
+GameObject* MainScene::GetGameObjectByUuid(int uuid)
+{
+    for (const auto& go : gameObjects)
+        if (go->GetUuid() == uuid) return go;
+
+    return nullptr;
+}

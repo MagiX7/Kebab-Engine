@@ -10,6 +10,8 @@
 #include "FileSystem.h"
 #include "MeshLoader.h"
 
+#include "Parser.h"
+
 #include "mmgr/mmgr.h"
 
 Application::Application()
@@ -59,8 +61,9 @@ bool Application::Init()
 	bool ret = true;
 
 	std::list<Module*>::iterator it = modules.begin();
-
-	value = json_parse_file("config.json");
+	
+	value = Parser::ParseFile("Settings/config.json");
+	//value = json_parse_file("config.json");
 	if (!value)
 	{
 		LOG_CONSOLE("Could not load or there is no file to load config.json");
@@ -68,10 +71,12 @@ bool Application::Init()
 	}
 	else
 	{
-		JSON_Object* root = json_value_get_object(value);
-		JSON_Object* appObj = json_object_get_object(root, "App");
-		dt = json_object_get_number(appObj, "dt");
-		cappedMs = 1000.0f / json_object_get_number(appObj, "max fps");
+		JSON_Object* root = Parser::GetObjectByValue(value);
+		//JSON_Object* root = json_value_get_object(value);
+		JSON_Object* appObj = Parser::GetObjectByName(root, "App");
+		//JSON_Object* appObj = json_object_get_object(root, "App");
+		dt = Parser::GetNumberByObject(appObj, "dt");
+		cappedMs = 1000.0f / Parser::GetNumberByObject(appObj, "max fps");
 
 		while (it != modules.end() && ret == true)
 		{
@@ -130,7 +135,8 @@ void Application::Load()
 {
 	loadReq = false;
 
-	JSON_Object* root = json_value_get_object(value);
+	//JSON_Object* root = json_value_get_object(value);
+	JSON_Object* root = Parser::GetObjectByValue(value);
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())
@@ -144,13 +150,15 @@ void Application::Save()
 {
 	saveReq = false;
 
-	value = json_value_init_object();
-	JSON_Object* root = json_value_get_object(value);
-
-	json_object_set_value(root, "App", json_value_init_object());
-	JSON_Object* appObj = json_object_get_object(root, "App");
-	json_object_set_number(appObj, "dt", dt);
-	json_object_set_number(appObj, "max fps", GetMaxFPS());
+	value = Parser::InitValue();
+	JSON_Object* root = Parser::GetObjectByValue(value);
+	Parser::SetObjectValue(root, "App");
+	//json_object_set_value(root, "App", json_value_init_object());
+	JSON_Object* appObj = Parser::GetObjectByName(root, "App");
+	//json_object_set_number(appObj, "dt", dt);
+	Parser::SetObjectNumber(appObj, "dt", dt);
+	//json_object_set_number(appObj, "max fps", GetMaxFPS());
+	Parser::SetObjectNumber(appObj, "max fps", GetMaxFPS());
 
 	std::list<Module*>::iterator it = modules.begin();
 	while (it != modules.end())
@@ -159,13 +167,11 @@ void Application::Save()
 		it++;
 	}
 
-	json_serialize_to_file_pretty(value, "config.json");
+	Parser::GenerateFile(value, "Settings/config.json");
+	//json_serialize_to_file_pretty(value, "config.json");
 
-	json_value_free(value);
-	
-	/*char cleanup_command[256];
-	sprintf(cleanup_command, "rm -f %s", "FILE.json");
-	system(cleanup_command);*/
+	Parser::FreeValue(value);
+	//json_value_free(value);
 }
 
 // Call PreUpdate, Update and Draw on all modules

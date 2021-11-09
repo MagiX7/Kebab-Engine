@@ -24,6 +24,9 @@ public:
 
 	void AddTexture(Texture* tex);
 
+	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
+
 private:
 	void SetCheckersTexture();
 

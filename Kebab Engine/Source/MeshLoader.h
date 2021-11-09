@@ -30,7 +30,7 @@ public:
 	GameObject* LoadKbGeometry(KbGeometryType type);
 
 	void SaveMeshCustomFormat(ComponentMesh* mesh);
-	ComponentMesh* LoadMeshCustomFormat(const char* fileName, GameObject* parent);
+	KbMesh* LoadMeshCustomFormat(const std::string& fileName, GameObject* parent);
 
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
@@ -43,7 +43,7 @@ private:
 
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, std::string nameBaseGO);
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO);
-	std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 public:
 

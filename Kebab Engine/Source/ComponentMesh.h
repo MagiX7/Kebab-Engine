@@ -2,6 +2,7 @@
 
 #include "Component.h"
 
+#include "Mesh.h"
 #include "Texture.h"
 
 #include "Vertex.h"
@@ -11,8 +12,10 @@ class ComponentMaterial;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh();
-	ComponentMesh(GameObject& compOwner);
+
+	ComponentMesh(const std::string& meshPath = "");
+	ComponentMesh(GameObject& compOwner, const std::string& meshPath = "");
+
 	~ComponentMesh();
 
 	void Enable();
@@ -22,30 +25,32 @@ public:
 	void Draw(ComponentMaterial* mat);
 
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
-	void SetTexture(Texture* tex);
+	void SetMeshPath(const std::string& path);
 
-	void DrawVertexNormals();
-	void DrawTriangleNormals();
+	inline KbMesh* GetMesh() const { return mesh; }
+
+	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 private:
 	void DrawOnInspector();
-	
-	void SetUpMesh();
 
 	void BeginDraw(ComponentMaterial* mat);
 	void EndDraw(ComponentMaterial* mat);
 
 public:
-	std::vector<Vertex>   vertices;
+	/*std::vector<Vertex>   vertices;
 	std::vector<uint32_t> indices;
-	std::vector<Texture>  textures;
+	std::vector<Texture>  textures;*/
 
 protected:
-	VertexBuffer* vertexBuffer;
+	/*VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
-	/*Texture* currentTexture;
-	Texture* texture;
-	Texture* checkersTexture;*/
+
+	std::string meshPath;
+	std::string meshName;*/
+
+	KbMesh* mesh;
 
 	bool isKbGeometry = false;
 

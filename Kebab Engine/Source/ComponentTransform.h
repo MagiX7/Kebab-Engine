@@ -30,6 +30,8 @@ public:
 
 	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
 
+	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 private:
 	void UpdateTransform(float4x4 newTransform);
@@ -42,7 +44,6 @@ private:
 
 	float3 position;
 	float3 scale;
-	//Quat rotation;
 	Quat rotation;
 
 	float4x4 localTransformMat;

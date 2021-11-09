@@ -41,6 +41,7 @@ public:
 
 	void Submit(GameObject* go);
 	void EraseGameObject(GameObject* go);
+	void EraseAllGameObjects();
 
 	void DrawGrid();
 

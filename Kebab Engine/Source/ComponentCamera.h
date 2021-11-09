@@ -32,6 +32,9 @@ public:
 
 	void DrawOnInspector() override;
 
+	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
+
 	Frustum frustum;
 
 	bool frustumCulling;

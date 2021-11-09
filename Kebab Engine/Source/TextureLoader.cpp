@@ -64,8 +64,8 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 		//textures.push_back(ret);
 
-		SaveTextureCustomFormat(ret->GetName());
-		ret = LoadTextureCustomFormat(ret->GetName());
+		SaveTextureCustomFormat(ret);
+		//ret = LoadTextureCustomFormat(ret->GetName());
 
 		ilDeleteImage(tmp);
 
@@ -77,37 +77,31 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 	return ret;
 }
 
-Texture* TextureLoader::LoadTextureCustomFormat(std::string name)
+Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path)
 {
 	Texture* ret = nullptr;
 
-	std::string n = CUSTOM_DIR + name + CUSTOM_EXTENSION;
-
-	SDL_RWops* file = app->fileSystem->Load(n.c_str());
-
-	unsigned int size = file->size(file);
-
-	char* buffer = new char[size];
-	app->fileSystem->Load(n.c_str(), &buffer);
+	char* buffer;
+	int size = app->fileSystem->Load(path.c_str(), &buffer);
 
 	if (ilLoadL(IL_DDS, buffer, size))
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
+		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), path);
 		textures.push_back(ret);
 
 		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
-		LOG_CONSOLE("Custom file format texture %s loaded!", name);
+		LOG_CONSOLE("Custom file format texture %s loaded!", path);
 	}
-	else LOG_CONSOLE("Could not load custom file format texture %s", name);
+	else LOG_CONSOLE("Could not load custom file format texture %s", path);
 
 	delete[] buffer;
 	
 	return ret;
 }
 
-void TextureLoader::SaveTextureCustomFormat(const std::string& name)
+void TextureLoader::SaveTextureCustomFormat(Texture* tex)
 {
 	ILuint size;
 	ILubyte* data;
@@ -118,7 +112,8 @@ void TextureLoader::SaveTextureCustomFormat(const std::string& name)
 		data = new ILubyte[size]; // Allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 		{
-			std::string n = CUSTOM_DIR + name + CUSTOM_EXTENSION;
+			std::string n = CUSTOM_DIR + tex->GetName() + CUSTOM_EXTENSION;
+			tex->SetPath(n);
 			app->fileSystem->Save(n.c_str(), data, size);
 		}
 		delete[] data;

@@ -2,6 +2,8 @@
 
 #include "Component.h"
 
+#include "Parser.h"
+
 #include <string>
 #include <vector>
 
@@ -10,13 +12,15 @@
 class GameObject
 {
 public:
-	GameObject(std::string name);
+	GameObject(std::string name, int uuid = 0);
 	virtual ~GameObject();
 
 	void Update(float dt);
 
-	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, std::string meshPath = "");
 	Component* GetComponent(ComponentType type);
+
+	const int& GetUuid() const { return uuid; }
 
 	inline void SetParent(GameObject* newParent) { parent = newParent; }
 	void UnParent();
@@ -44,7 +48,13 @@ public:
 
 	bool insideFrustum;
 
+	void Save(JSON_Array* array);
+	JSON_Value* Load(JSON_Object* obj);
+	
 private:
+	void LoadComponents(JSON_Array* compsArray, GameObject* parent);
+
+	int uuid;
 
 	std::string name;
 	std::vector<Component*> components;

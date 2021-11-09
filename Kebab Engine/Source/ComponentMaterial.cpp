@@ -1,4 +1,7 @@
 #include "ComponentMaterial.h"
+
+#include "TextureLoader.h"
+
 #include "Texture.h"
 
 #include "imgui/imgui.h"
@@ -92,13 +95,40 @@ void ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::AddTexture(Texture* tex)
 {
-	std::vector<Texture*>::iterator it = std::find(textures.begin(), textures.end(), tex);
-	if (it == textures.end())
+	//std::vector<Texture*>::iterator it = std::find(textures.begin(), textures.end(), tex);
+	if (std::find(textures.begin(), textures.end(), tex) == textures.end())
 	{
 		textures.push_back(tex);
 		texture = tex;
 		currentTexture = tex;
 	}
+}
+
+JSON_Value* ComponentMaterial::Save()
+{
+	JSON_Value* value = Parser::InitValue();
+	JSON_Object* obj = Parser::GetObjectByValue(value);
+
+	json_object_set_number(obj, "Type", 2);
+
+	if (currentTexture == checkersTexture) Parser::DotSetObjectString(obj, "Texture.path", "Checkers");
+	if (currentTexture == texture) Parser::DotSetObjectString(obj, "Texture.path", currentTexture->GetPath().c_str());
+
+	return value;
+}
+
+void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
+{
+	const char* texName = json_object_dotget_string(obj, "Texture.path");
+	if (texName == "Checkers") currentTexture = checkersTexture;
+	else
+	{
+		if (texture) delete texture;
+		texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(texName);
+		currentTexture = texture;
+	}
+
+	//this->parent = parent;
 }
 
 void ComponentMaterial::SetCheckersTexture()

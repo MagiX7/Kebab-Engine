@@ -22,6 +22,9 @@ public:
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
 	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
+	void DeleteAllGameObjects();
+
+	GameObject* GetGameObjectByUuid(int uuid);
 
 private:
 	std::vector<GameObject*> gameObjects;
