@@ -16,7 +16,7 @@ HierarchyPanel::HierarchyPanel()
 	optionsPopup = false;
 	parentingPopup = false;
 
-	goDragging = nullptr;
+	currentGO = nullptr;
 	goClicked = nullptr;
 }
 

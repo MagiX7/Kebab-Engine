@@ -38,6 +38,12 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
+private:
+	GameObject* MousePickGameObject();
+	GameObject* ThrowRay(const LineSegment& ray, float& distance);
+	std::vector<GameObject*> GetPickedChilds(const LineSegment& ray, GameObject* parent);
+
+public:
 	float3 reference, position;
 
 private:

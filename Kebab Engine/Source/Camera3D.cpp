@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Window.h"
 #include "Camera3D.h"
 
 #include "Input.h"
@@ -116,6 +117,14 @@ bool Camera3D::Update(float dt)
 		}
 	}
 	
+	// Mouse Picking
+	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		GameObject* picked = MousePickGameObject();
+		if (picked)
+			app->editor->hierarchyPanel->currentGO = picked;
+	}
+
 
 	// Focus
 	if (app->editor->hierarchyPanel->currentGO != nullptr)
@@ -345,4 +354,72 @@ void Camera3D::Load(JSON_Object* root)
 	float3x4 worldMat{ rotMat, pos };
 	cam->frustum.SetWorldMatrix(worldMat);
 	position = pos;
+}
+
+GameObject* Camera3D::MousePickGameObject()
+{
+	float2 size = app->editor->viewportPanel->GetViewportSize();
+	
+	float x = app->input->GetMouseX();
+	float y = app->input->GetMouseY();
+	
+	float normalizedX = -(1.0f - (float(x) * 2.0f) / size.x);
+	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;
+
+
+	/*float2 pos = { x,y };
+	pos.Normalize();*/
+
+	LineSegment picking = cam->frustum.UnProjectLineSegment(normalizedX, normalizedY);
+
+	float distance;
+	GameObject* hitted = ThrowRay(picking, distance);
+	if (hitted)
+		return hitted;
+
+	return nullptr;
+}
+
+GameObject* Camera3D::ThrowRay(const LineSegment& ray, float& distance)
+{
+	for (auto& go : app->scene->GetGameObjects())
+	{
+		if (go->GetLocalAABB()->Intersects(ray))
+		{
+			return go;
+		}
+	}
+
+	return nullptr;
+}
+
+std::vector<GameObject*> Camera3D::GetPickedChilds(const LineSegment& ray, GameObject* parent)
+{
+	std::vector<GameObject*> ret;
+
+	if (parent->GetChilds().size() > 0)
+	{
+		for (auto& child : parent->GetChilds())
+		{
+			if (child->GetLocalAABB()->Intersects(ray))
+			{
+				std::vector<GameObject*> childs = GetPickedChilds(ray, parent);
+				if (childs.size() > 0)
+					ret.insert(ret.begin(), childs.begin(), childs.end());
+			}
+
+			if (child->GetComponent(ComponentType::MESH))
+			{
+				if (child->GetLocalAABB()->Intersects(cam->frustum) && child->GetLocalAABB()->Intersects(ray))
+				{
+					ret.push_back(child);
+					/*float dist, end;
+					child->GetLocalAABB()->Intersects(ray, dist, end);
+					ret.push_back()*/
+				}
+			}
+		}
+	}
+
+	return ret;
 }
