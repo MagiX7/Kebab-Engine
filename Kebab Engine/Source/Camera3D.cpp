@@ -402,36 +402,14 @@ GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
 				meshParent = meshParent->GetParent();*/
 
 		
-			ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
-			//ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-			/*Ray localRay;
-			localRay.Transform(trans->GetLocalMatrix());
-			localRay.dir.Normalized();
-
-			Triangle triangle;
-			for (int i = 0; i < mesh->GetMesh()->indices.size();i+=3)
-			{
-				triangle.a = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i]].position;
-				triangle.b = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 1]].position;
-				triangle.c = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 2]].position;
-			}
-			float dist;
-			float3 hit;
-			if (localRay.Intersects(triangle, &dist, &hit))
-			{
-				distance = dist;
-				return go;
-			}*/
-
-			LineSegment localRay;
-			localRay = trans->GetGlobalMatrix().Inverted() * ray;
-			//localRay.Transform(trans->GetGlobalMatrix().Inverted());
-			if (go->GetLocalAABB()->Intersects(localRay))
-			{
-				return go;
-			}
-		
+		LineSegment localRay = ray;
+		localRay.Transform(trans->GetGlobalMatrix().Inverted());
+		if (go->GetGlobalAABB()->Intersects(localRay))
+		{
+			return go;
+		}
 	}
 
 	return nullptr;
