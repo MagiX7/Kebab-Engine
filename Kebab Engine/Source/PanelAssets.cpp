@@ -25,7 +25,7 @@ AssetsPanel::AssetsPanel()
     scroll = 0;
 
 	popUpMenu = false;
-	assetsDirectory = "Assets";
+	assetsDirectory = "Assets/";
 }
 
 AssetsPanel::~AssetsPanel()
@@ -75,15 +75,10 @@ void AssetsPanel::OnRender(float dt)
 
 void AssetsPanel::AddAsset(GameObject* gameObj)
 {
-	FileSystem fs;
-	char path[128] = "";
-	fs.FindFilePath(gameObj->GetName().c_str(), path, assetsDirectory.c_str());
-
 	Asset* aux = new Asset();
 	aux->gameObj = gameObj;
 	aux->name = gameObj->GetName().c_str();
 	aux->type = AssetType::FBX;
-	aux->path = path;
 
 	assets.push_back(aux);
 }
