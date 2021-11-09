@@ -8,7 +8,7 @@
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera(GameObject& compOwner);
+	ComponentCamera(GameObject* compOwner);
 	~ComponentCamera();
 
 	void SetCameraPosition(const vec& position);

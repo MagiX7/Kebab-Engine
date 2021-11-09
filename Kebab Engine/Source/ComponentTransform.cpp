@@ -4,9 +4,9 @@
 
 #include "imgui/imgui.h"
 
-ComponentTransform::ComponentTransform(GameObject& compOwner)
+ComponentTransform::ComponentTransform(GameObject* compOwner)
 {
-	this->parent = &compOwner;
+	this->parent = compOwner;
 	this->type = ComponentType::TRANSFORM;
 	this->active = true;
 

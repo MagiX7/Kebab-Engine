@@ -21,7 +21,7 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	position = vec(0.0f, 0.0f, 0.0f);
 	reference = vec(0.0f, 0.0f, 0.0f);
 
-	cam = new ComponentCamera();
+	cam = new ComponentCamera(nullptr);
 
 	focusing = false;
 
@@ -116,6 +116,8 @@ bool Camera3D::Update(float dt)
 		}
 	}
 	
+
+	// Focus
 	if (app->editor->hierarchyPanel->currentGO != nullptr)
 	{
 		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
@@ -136,8 +138,8 @@ bool Camera3D::Update(float dt)
 		}
 	}
 
+	// Frustum Culling
 	std::vector<GameObject*>::iterator it;
-
 	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
 	{
 		DrawInFrustumCulling((*it));

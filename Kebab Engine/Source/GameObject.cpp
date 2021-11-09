@@ -70,22 +70,22 @@ Component* GameObject::CreateComponent(ComponentType type, std::string meshPath)
 	switch (type)
 	{
 	case ComponentType::TRANSFORM:
-		ret = new ComponentTransform(*this);
+		ret = new ComponentTransform(this);
 		components.push_back(ret);
 		break;
 
 	case ComponentType::MESH:
-		ret = new ComponentMesh(*this, meshPath);
+		ret = new ComponentMesh(this, meshPath);
 		components.push_back(ret);
 		break;
 
 	case ComponentType::MATERIAL:
-		ret = new ComponentMaterial(*this);
+		ret = new ComponentMaterial(this);
 		components.push_back(ret);
 		break;
 
 	case ComponentType::CAMERA:
-		ret = new ComponentCamera(*this);
+		ret = new ComponentCamera(this);
 		components.push_back(ret);
 		break;
 
@@ -307,13 +307,13 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 		else if (type == 1)
 		{
 			std::string p = json_object_get_string(compObj, "mesh path");
-			ComponentMesh* m = new ComponentMesh(*parent, p.c_str());
+			ComponentMesh* m = new ComponentMesh(parent, p.c_str());
 			m->Load(compObj, parent);
 			parent->AddComponent(m);
 		}
 		else if (type == 2)
 		{
-			ComponentMaterial* mat = new ComponentMaterial(*parent);
+			ComponentMaterial* mat = new ComponentMaterial(parent);
 			mat->Load(compObj, parent);
 			parent->AddComponent(mat);
 

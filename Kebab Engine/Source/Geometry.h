@@ -15,8 +15,8 @@
 class KbGeometry : public ComponentMesh
 {
 public:
-	KbGeometry(GameObject* parent) : ComponentMesh(*parent) {};
-	KbGeometry(math::float3 pos, GameObject* parent) : position(pos), ComponentMesh(*parent) {}
+	KbGeometry(GameObject* parent) : ComponentMesh(parent) {};
+	KbGeometry(math::float3 pos, GameObject* parent) : position(pos), ComponentMesh(parent) {}
 	
 	virtual ~KbGeometry();
 

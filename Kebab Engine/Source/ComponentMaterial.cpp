@@ -9,9 +9,9 @@
 #define CHECKERS_HEIGHT 40
 #define CHECKERS_WIDTH 40
 
-ComponentMaterial::ComponentMaterial(GameObject& compOwner)
+ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 {
-	this->parent = &compOwner;
+	this->parent = compOwner;
 	this->type = ComponentType::MATERIAL;
 	this->active = true;
 

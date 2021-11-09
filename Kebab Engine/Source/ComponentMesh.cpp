@@ -14,9 +14,9 @@
 #define CHECKERS_HEIGHT 80
 #define CHECKERS_WIDTH 80
 
-ComponentMesh::ComponentMesh(GameObject& compOwner, const std::string& meshPath)
+ComponentMesh::ComponentMesh(GameObject* compOwner, const std::string& meshPath)
 {
-	this->parent = &compOwner;
+	this->parent = compOwner;
 	this->type = ComponentType::MESH;
 	this->active = true;
 

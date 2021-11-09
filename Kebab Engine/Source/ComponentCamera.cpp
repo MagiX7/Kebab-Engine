@@ -7,9 +7,9 @@
 
 #include "mmgr/mmgr.h"
 
-ComponentCamera::ComponentCamera(GameObject& compOwner)
+ComponentCamera::ComponentCamera(GameObject* compOwner)
 {
-	this->SetParent(&compOwner);
+	this->SetParent(compOwner);
 	this->active = true;
 	this->type = ComponentType::CAMERA;
 
