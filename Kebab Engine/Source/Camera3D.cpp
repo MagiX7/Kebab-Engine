@@ -370,15 +370,22 @@ ComponentMesh* Camera3D::GetComponentMeshFromChilds(GameObject* parent)
 
 GameObject* Camera3D::MousePickGameObject()
 {
-	float2 size = app->editor->viewportPanel->GetSize();
-	
-	float x = app->input->GetMouseX();
-	float y = app->input->GetMouseY();
-	
-	float normalizedX = -(1.0f - (float(x) * 2.0f) / size.x);
-	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;
+	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
+	int mouseX = app->input->GetMouseX();
+	int mouseY = app->input->GetMouseY();
 
-	LineSegment picking = cam->frustum.UnProjectLineSegment(normalizedX, normalizedY);
+	/*float x = app->input->GetMouseX();
+	float y = app->input->GetMouseY();*/
+	
+	/*float normalizedX = -(1.0f - (float(x) * 2.0f) / size.x);
+	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;*/
+
+	//ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winDimensions.x - cursorX, mousePos.y - winDimensions.y - cursorY);
+	ImVec2 mouseWinPos = ImVec2(mouseX - winDimensions.x, mouseY - winDimensions.y);
+	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
+	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
+
+	LineSegment picking = cam->frustum.UnProjectLineSegment(x, y);
 	
 	float distance;
 	GameObject* hitted = ThrowRay(picking, distance);
