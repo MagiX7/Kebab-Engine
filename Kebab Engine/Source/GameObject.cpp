@@ -20,7 +20,7 @@ GameObject::GameObject(std::string name) : parent(nullptr), name(name)
 	//localAABB = nullptr;
 	localAABB = AABB::AABB();
 	active = true;
-	insideFrustum = true;
+	insideFrustum = false;
 }
 
 GameObject::~GameObject()

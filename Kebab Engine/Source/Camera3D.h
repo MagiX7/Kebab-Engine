@@ -32,6 +32,7 @@ public:
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
 
 	void DrawInFrustumCulling(GameObject* go);
+	void PropagateDrawInFrustumCulling(GameObject* go);
 	bool IntersectsAABB(const AABB* aabb);
 
 	void Save(JSON_Object* root) override;

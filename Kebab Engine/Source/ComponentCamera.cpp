@@ -19,7 +19,7 @@ ComponentCamera::ComponentCamera()
 	fovHorizontal = 80.0f;
 
 	planeFar = 200.f;
-	planeNear = 0.1f;
+	planeNear = 1.f;
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
