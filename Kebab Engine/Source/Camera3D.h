@@ -31,9 +31,9 @@ public:
 	void CenterCameraToGO(AABB* boundBox);
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
 
-	void DrawInFrustumCulling(GameObject* go);
-	void PropagateDrawInFrustumCulling(GameObject* go);
-	bool IntersectsAABB(const AABB* aabb);
+	void DrawInFrustumCulling(GameObject* go, ComponentCamera* camera);
+	void PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* camera);
+	bool IntersectsAABB(const AABB* aabb, ComponentCamera* camera);
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;

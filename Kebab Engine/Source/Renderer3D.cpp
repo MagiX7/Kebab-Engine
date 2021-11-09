@@ -32,6 +32,8 @@
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
+
+	currentCam = nullptr;
 }
 
 // Destructor
@@ -53,6 +55,8 @@ bool Renderer3D::Init(JSON_Object* root)
 		ret = false;
 	}
 	
+	currentCam = app->camera->GetCamera();
+
 	if(ret == true)
 	{
 		//Use Vsync
@@ -63,7 +67,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		glLoadMatrixf(app->camera->GetProjectionMatrix());
+		glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
 
 		//Check for error
 		GLenum error = glGetError();
@@ -158,12 +162,29 @@ bool Renderer3D::PreUpdate(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
+	for (const auto& go : gameObjects)
+	{
+		ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+		
+		if (auxCam != nullptr)
+		{
+			if (auxCam->CameraToCurrent())
+			{
+				currentCam = auxCam;
+			}
+			else 
+			{
+				currentCam = app->camera->GetCamera();
+			}
+		}
+	}
 	
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(app->camera->GetProjectionMatrix());
+	glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(app->camera->GetViewMatrix());
+	float4x4 mat = currentCam->frustum.ViewMatrix();
+	glLoadMatrixf(mat.Transposed().ptr());
 
 	
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
@@ -174,7 +195,7 @@ bool Renderer3D::PreUpdate(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		drawAABB = !drawAABB;
 	if (app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-		app->camera->GetCamera()->frustumCulling = !app->camera->GetCamera()->frustumCulling;
+		currentCam->frustumCulling = !currentCam->frustumCulling;
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
@@ -203,9 +224,9 @@ bool Renderer3D::Draw(float dt)
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 		
-		if (mesh && mat && !app->camera->GetCamera()->frustumCulling) 
+		if (mesh && mat && !currentCam->frustumCulling)
 			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->GetCamera()->frustumCulling) 
+		else if (mesh && mat && go->insideFrustum && currentCam->frustumCulling)
 			mesh->Draw(mat);
 		
 		if (drawAABB)
@@ -242,7 +263,7 @@ void Renderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	//glLoadIdentity();
 
-	glLoadMatrixf(app->camera->GetProjectionMatrix());
+	glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();

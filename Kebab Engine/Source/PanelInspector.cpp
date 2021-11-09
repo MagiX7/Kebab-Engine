@@ -106,7 +106,7 @@ void InspectorPanel::OnRender(float dt)
 					if (ImGui::Button("Camera"))
 					{
 						addComponentOption = false;
-						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::TRANSFORM) == nullptr)
+						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::CAMERA) == nullptr)
 						{
 							ComponentCamera* newComp = new ComponentCamera(app->editor->hierarchyPanel->currentGO);
 

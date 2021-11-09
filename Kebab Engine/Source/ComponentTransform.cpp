@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
+#include "ComponentCamera.h"
 
 #include "imgui/imgui.h"
 
@@ -55,6 +56,9 @@ void ComponentTransform::DrawOnInspector()
 			PropagateTransform(parent, position, rotation, scale);
 			transformAABB = float4x4::FromTRS(position, rotation, scale);
 			parent->UpdateAABB(transformAABB);
+			ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
+			if (parentCam != nullptr)
+				parentCam->SetCameraPosition(guiPos);
 		}
 
 		ImGui::Separator();
@@ -138,7 +142,7 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 	for (; it != parent->GetChilds().end(); ++it)
 	{
 		ComponentTransform* childTrans = (ComponentTransform*)(*it)->GetComponent(ComponentType::TRANSFORM);
-		ComponentTransform* parentTrans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+		ComponentTransform* parentTrans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);			
 
 		if ((*it)->GetChilds().size() > 0)
 		{
@@ -150,6 +154,11 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 			childTrans->SetRotation(/*parentTrans->GetRotation() * */newQuat);
 			childTrans->SetScale(/*parentTrans->GetScale() + */newScale);
 		}
+
+		ComponentCamera* childCam = (ComponentCamera*)(*it)->GetComponent(ComponentType::CAMERA);
+
+		if (childCam != nullptr)
+			childCam->SetCameraPosition(childTrans->GetTranslation());
 	}
 }
 

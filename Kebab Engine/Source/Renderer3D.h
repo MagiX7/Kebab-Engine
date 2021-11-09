@@ -14,6 +14,7 @@ class ComponentMesh; */
 #define MAX_LIGHTS 8
 
 class ComponentMesh;
+class ComponentCamera;
 
 class Renderer3D : public Module
 {
@@ -49,6 +50,8 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
+
+	ComponentCamera* currentCam;
 
 	bool depth;
 	bool cullFace;
