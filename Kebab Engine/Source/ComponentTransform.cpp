@@ -133,7 +133,7 @@ void ComponentTransform::RecomputeGlobalMat()
 	if (parent->GetParent())
 	{
 		ComponentTransform* tr = (ComponentTransform*)parent->GetParent()->GetComponent(ComponentType::TRANSFORM);
-		localTransformMat = tr->globalTransformMat.Mul(localTransformMat);
+		localTransformMat = tr->globalTransformMat * localTransformMat;
 	}
 	else
 	{
@@ -143,6 +143,10 @@ void ComponentTransform::RecomputeGlobalMat()
 
 void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat& newQuat, float3& newScale)
 {
+	RecomputeGlobalMat();
+
+	parent->UpdateAABB(globalTransformMat);
+
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
 	for (; it != parent->GetChilds().end(); ++it)
 	{

@@ -203,7 +203,7 @@ AABB* GameObject::GetLocalAABB()
 AABB* GameObject::GetGlobalAABB()
 {
 	ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
-	OBB obb = localAABB.Transform(compTrans->GetGlobalMatrix());
+	OBB obb = localAABB.Transform(compTrans->GetLocalMatrix());
 	globalAABB.SetNegativeInfinity();
 	globalAABB.Enclose(obb);
 	return &globalAABB;
