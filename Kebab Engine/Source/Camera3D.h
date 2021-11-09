@@ -6,6 +6,7 @@
 #include "Math/float3.h"
 
 class ComponentCamera;
+class GameObject;
 
 class Camera3D : public Module
 {
@@ -25,9 +26,14 @@ public:
 
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
+	ComponentCamera* GetCamera();
 
 	void CenterCameraToGO(AABB* boundBox);
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
+
+	void DrawInFrustumCulling(GameObject* go);
+	void PropagateDrawInFrustumCulling(GameObject* go);
+	bool IntersectsAABB(const AABB* aabb);
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;

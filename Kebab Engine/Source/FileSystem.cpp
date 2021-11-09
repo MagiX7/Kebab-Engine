@@ -262,6 +262,50 @@ void FileSystem::NormalizePath(std::string & full_path) const
 	}
 }
 
+bool FileSystem::FindFilePath(const char* fileName, char* path, const char* directoryFrom)
+{
+	bool found = false;
+
+	while (!found)
+	{
+		std::vector<std::string> fileList;
+		std::vector<std::string> dirList;
+		this->DiscoverFiles(directoryFrom, fileList, dirList);
+
+		std::vector<std::string>::iterator it;
+
+		for (it = fileList.begin(); it != fileList.end(); ++it)
+		{
+			if (*it == fileName)
+			{
+				found = true;
+				sprintf(path, "%s%s", directoryFrom, fileName);
+				return true;
+			}
+		}
+
+		if (dirList.size() == 0)
+		{
+			return false;
+		}
+
+		if (!found)
+		{
+			std::vector<std::string>::iterator it;
+
+			for (it = dirList.begin(); it != dirList.end(); ++it)
+			{
+				char aux[128] = "";
+				sprintf_s(aux, 128, "%s%s/", directoryFrom, (*it).c_str());
+				found = FindFilePath(fileName, path, aux);
+				if (found) return true;
+			}
+		}
+	}
+
+	return found;
+}
+
 unsigned int FileSystem::Load(const char* path, const char* file, char** buffer) const
 {
 	string full_path(path);

@@ -2,6 +2,28 @@
 
 #include "Panel.h"
 
+#include <vector>
+#include <string>
+
+class GameObject;
+
+enum class AssetType
+{
+	FBX,
+	PNG,
+	NONE,
+};
+
+struct Asset
+{
+	std::string name;
+	std::string path;
+
+	AssetType type = AssetType::NONE;
+
+	GameObject* gameObj;
+};
+
 class AssetsPanel : public Panel
 {
 public:
@@ -10,6 +32,16 @@ public:
 
 	void OnRender(float dt) override;
 
+	void AddAsset(GameObject* gameObj);
+
+	void DisplayAsset(Asset* asset);
+	void DisplayPopMenu(Asset* asset);
+
 private:
 
+	std::vector<Asset*> assets;
+
+	std::string assetsDirectory;
+
+	bool popUpMenu;
 };

@@ -1,31 +1,19 @@
+#include "Application.h"
 #include "ComponentCamera.h"
 
-ComponentCamera::ComponentCamera()
-{
-	this->parent = nullptr;
-	this->active = true;
-	this->type = ComponentType::CAMERA;
+#include "GameObject.h"
 
-	fovVertical = 70.0f;
-	fovHorizontal = 80.0f;
+#include "imgui/imgui.h"
 
-	planeFar = 200.f;
-	planeNear = 0.1f;
-
-	frustum.SetPerspective(fovHorizontal, fovVertical);
-
-	frustum.SetFrame(vec(0, 0, 0), vec(0, 0, 1), vec(0, 1, 0));
-
-	frustum.SetViewPlaneDistances(planeNear, planeFar);
-
-	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumRightHanded);
-}
+#include "mmgr/mmgr.h"
 
 ComponentCamera::ComponentCamera(GameObject& compOwner)
 {
 	this->SetParent(&compOwner);
 	this->active = true;
 	this->type = ComponentType::CAMERA;
+
+	frustumCulling = true;
 
 	fovVertical = 70.0f;
 	fovHorizontal = 80.0f;
@@ -134,4 +122,13 @@ float ComponentCamera::GetFarPlane() const
 vec ComponentCamera::GetCameraPosition() const
 {
 	return frustum.Pos();
+}
+
+
+void ComponentCamera::DrawOnInspector()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::Checkbox("Activate Camera", &cameraActive);
+	}
 }

@@ -1,9 +1,12 @@
 #include "Application.h"
-#include "FileSystem.h"
+#include "MeshLoader.h"
 
 #include "MainScene.h"
+#include "Editor.h"
+#include "FileSystem.h"
 
-#include "MeshLoader.h"
+#include "PanelAssets.h"
+
 #include "TextureLoader.h"
 
 #include "ComponentMaterial.h"
@@ -70,6 +73,7 @@ GameObject* MeshLoader::LoadModel(std::string path)
     ProcessNode(scene->mRootNode, scene, baseGO, name);
 
     app->scene->AddGameObject(baseGO);
+    app->editor->assetsPanel->AddAsset(baseGO);
 
     return baseGO;
 }

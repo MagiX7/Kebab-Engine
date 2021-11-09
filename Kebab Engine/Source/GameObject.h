@@ -44,13 +44,16 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
+	void DrawAABB();
+
+	bool insideFrustum;
+
 	void Save(JSON_Array* array);
 	JSON_Value* Load(JSON_Object* obj);
 	
 private:
 	void LoadComponents(JSON_Array* compsArray, GameObject* parent);
 
-private:
 	int uuid;
 
 	std::string name;

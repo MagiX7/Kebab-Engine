@@ -36,6 +36,7 @@
         "lighting": false,
         "color material": true,
         "texture2D": true,
-        "wireframe": false
+        "wireframe": false,
+        "drawaabb": false
     }
 }

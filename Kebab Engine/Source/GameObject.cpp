@@ -24,6 +24,8 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 	localAABB = AABB::AABB();
 	active = true;
 
+	insideFrustum = false;
+
 	if (uuid == 0)
 	{
 		LCG lgc = LCG();
@@ -57,7 +59,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-
+	SetGlobalAABB(this);
 }
 
 // TODO: Should check if the component already exists
@@ -105,6 +107,7 @@ Component* GameObject::GetComponent(ComponentType type)
 void GameObject::UnParent()
 {
 	parent = nullptr;
+
 	/*if(parent)
 	{
 		for (int i = 0; i < parent->GetChilds().size(); ++i)
@@ -211,6 +214,35 @@ void GameObject::UpdateAABB(float4x4& newTrans)
 	OBB obb = localAABB.Transform(newTrans);
 	globalAABB.SetNegativeInfinity();
 	globalAABB.Enclose(obb);
+}
+
+void GameObject::DrawAABB()
+{
+	GLdouble min[3] = { globalAABB.MinX(), globalAABB.MinY(), globalAABB.MinZ() };
+	GLdouble max[3] = { globalAABB.MaxX(), globalAABB.MaxY(), globalAABB.MaxZ() };
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3dv(&min[0]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], min[2]);
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3dv(&min[0]);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
 }
 
 void GameObject::Save(JSON_Array* array)

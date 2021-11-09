@@ -14,6 +14,7 @@ HierarchyPanel::HierarchyPanel()
 	scroll = 0;
 	goDragging = nullptr;
 	optionsPopup = false;
+	parentingPopup = false;
 
 	goDragging = nullptr;
 	goClicked = nullptr;
@@ -68,7 +69,7 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	bool opened = ImGui::TreeNodeEx(go->GetName().c_str(), flags);
 
 	////////////////// Current GameObject assignation //////////////////
-	if (ImGui::IsItemClicked())
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 	{
 		if (ImGui::IsItemActivated())
 			currentGO = go;

@@ -8,7 +8,6 @@
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera();
 	ComponentCamera(GameObject& compOwner);
 	~ComponentCamera();
 
@@ -30,11 +29,14 @@ public:
 	float GetFarPlane() const;
 	float GetNearPlane() const;
 
+	void DrawOnInspector() override;
+
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
-public:
 	Frustum frustum;
+
+	bool frustumCulling;
 
 private:
 
@@ -43,4 +45,6 @@ private:
 
 	float planeFar;
 	float planeNear;
+
+	bool cameraActive;
 };

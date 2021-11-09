@@ -248,6 +248,14 @@ void ConfigPanel::OnRender(float dt)
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();
 
+                ImGui::TableNextColumn();
+
+                if (ImGui::Checkbox("Draw Colliders", &app->renderer3D->drawAABB))
+                    app->renderer3D->SetDrawAABB();
+
+                /*if (ImGui::Checkbox("Frustum Culling", &app->renderer3D->wireframe))
+                    app->renderer3D->SetWireframe();*/
+
                 ImGui::EndTable();
             }
         }
