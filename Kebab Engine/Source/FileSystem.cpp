@@ -298,6 +298,7 @@ bool FileSystem::FindFilePath(const char* fileName, char* path, const char* dire
 				char aux[128] = "";
 				sprintf_s(aux, 128, "%s%s/", directoryFrom, (*it).c_str());
 				found = FindFilePath(fileName, path, aux);
+				if (found) return true;
 			}
 		}
 	}

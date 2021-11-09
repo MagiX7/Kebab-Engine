@@ -12,8 +12,6 @@ class ComponentMaterial;
 class ComponentMesh : public Component
 {
 public:
-
-	ComponentMesh(const std::string& meshPath = "");
 	ComponentMesh(GameObject& compOwner, const std::string& meshPath = "");
 
 	~ComponentMesh();

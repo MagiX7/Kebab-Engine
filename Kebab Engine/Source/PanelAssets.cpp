@@ -100,8 +100,6 @@ void AssetsPanel::DisplayAsset(Asset* asset)
 		DisplayPopMenu(asset);
 	}
 
-	
-
 	ImGui::TreePop();
 }
 

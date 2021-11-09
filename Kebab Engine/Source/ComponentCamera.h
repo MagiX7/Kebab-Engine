@@ -8,7 +8,6 @@
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera();
 	ComponentCamera(GameObject& compOwner);
 	~ComponentCamera();
 

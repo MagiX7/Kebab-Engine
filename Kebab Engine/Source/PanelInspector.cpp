@@ -75,8 +75,7 @@ void InspectorPanel::OnRender(float dt)
 						addComponentOption = false;
 						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MESH) == nullptr)
 						{
-							ComponentMesh* newComp = new ComponentMesh();
-							newComp->SetParent(app->editor->hierarchyPanel->currentGO);
+							ComponentMesh* newComp = new ComponentMesh(*app->editor->hierarchyPanel->currentGO);
 
 							app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
 						}
@@ -87,8 +86,7 @@ void InspectorPanel::OnRender(float dt)
 						addComponentOption = false;
 						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL) == nullptr)
 						{
-							ComponentMaterial* newComp = new ComponentMaterial();
-							newComp->SetParent(app->editor->hierarchyPanel->currentGO);
+							ComponentMaterial* newComp = new ComponentMaterial(*app->editor->hierarchyPanel->currentGO);
 
 							app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
 						}
@@ -99,8 +97,7 @@ void InspectorPanel::OnRender(float dt)
 						addComponentOption = false;
 						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::TRANSFORM) == nullptr)
 						{
-							ComponentTransform* newComp = new ComponentTransform();
-							newComp->SetParent(app->editor->hierarchyPanel->currentGO);
+							ComponentTransform* newComp = new ComponentTransform(*app->editor->hierarchyPanel->currentGO);
 
 							app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
 						}
@@ -111,8 +108,7 @@ void InspectorPanel::OnRender(float dt)
 						addComponentOption = false;
 						if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::TRANSFORM) == nullptr)
 						{
-							ComponentCamera* newComp = new ComponentCamera();
-							newComp->SetParent(app->editor->hierarchyPanel->currentGO);
+							ComponentCamera* newComp = new ComponentCamera(*app->editor->hierarchyPanel->currentGO);
 
 							app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
 						}

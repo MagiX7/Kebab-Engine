@@ -7,29 +7,6 @@
 
 #include "mmgr/mmgr.h"
 
-ComponentCamera::ComponentCamera()
-{
-	this->parent = nullptr;
-	this->active = true;
-	this->type = ComponentType::CAMERA;
-	
-	frustumCulling = true;
-
-	fovVertical = 70.0f;
-	fovHorizontal = 80.0f;
-
-	planeFar = 200.f;
-	planeNear = 1.f;
-
-	frustum.SetPerspective(fovHorizontal, fovVertical);
-
-	frustum.SetFrame(vec(0, 0, 0), vec(0, 0, 1), vec(0, 1, 0));
-
-	frustum.SetViewPlaneDistances(planeNear, planeFar);
-
-	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumRightHanded);
-}
-
 ComponentCamera::ComponentCamera(GameObject& compOwner)
 {
 	this->SetParent(&compOwner);
