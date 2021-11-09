@@ -97,7 +97,7 @@ bool Camera3D::Update(float dt)
 
 	// Zoom ===============================================================
 	float3 zoom(0, 0, 0); 
-	float4 viewDim = app->editor->viewportPanel->GetViewportDimensions();
+	float4 viewDim = app->editor->viewportPanel->GetDimensions();
 
 	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
 		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
@@ -118,11 +118,10 @@ bool Camera3D::Update(float dt)
 	}
 	
 	// Mouse Picking
-	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered())
 	{
 		GameObject* picked = MousePickGameObject();
-		if (picked)
-			app->editor->hierarchyPanel->currentGO = picked;
+		app->editor->hierarchyPanel->currentGO = picked;
 	}
 
 
@@ -356,9 +355,22 @@ void Camera3D::Load(JSON_Object* root)
 	position = pos;
 }
 
+ComponentMesh* Camera3D::GetComponentMeshFromChilds(GameObject* parent)
+{
+	for (auto& child : parent->GetChilds())
+	{
+		ComponentMesh* m = (ComponentMesh*)child->GetComponent(ComponentType::MESH);
+		if (m)
+			return m;
+
+		if (child->GetChilds().size() > 0) GetComponentMeshFromChilds(child);
+	}
+	return nullptr;
+}
+
 GameObject* Camera3D::MousePickGameObject()
 {
-	float2 size = app->editor->viewportPanel->GetViewportSize();
+	float2 size = app->editor->viewportPanel->GetSize();
 	
 	float x = app->input->GetMouseX();
 	float y = app->input->GetMouseY();
@@ -366,12 +378,8 @@ GameObject* Camera3D::MousePickGameObject()
 	float normalizedX = -(1.0f - (float(x) * 2.0f) / size.x);
 	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;
 
-
-	/*float2 pos = { x,y };
-	pos.Normalize();*/
-
 	LineSegment picking = cam->frustum.UnProjectLineSegment(normalizedX, normalizedY);
-
+	
 	float distance;
 	GameObject* hitted = ThrowRay(picking, distance);
 	if (hitted)
@@ -380,46 +388,51 @@ GameObject* Camera3D::MousePickGameObject()
 	return nullptr;
 }
 
-GameObject* Camera3D::ThrowRay(const LineSegment& ray, float& distance)
+GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
 {
 	for (auto& go : app->scene->GetGameObjects())
 	{
-		if (go->GetLocalAABB()->Intersects(ray))
+		/*ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+		if (!mesh)
+			mesh = GetComponentMeshFromChilds(go);
+		if (mesh)
 		{
-			return go;
-		}
+			GameObject* meshParent = mesh->GetParent();
+			while (meshParent->GetParent() != app->scene->GetRoot())
+				meshParent = meshParent->GetParent();*/
+
+		
+			ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+
+			//ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+			/*Ray localRay;
+			localRay.Transform(trans->GetLocalMatrix());
+			localRay.dir.Normalized();
+
+			Triangle triangle;
+			for (int i = 0; i < mesh->GetMesh()->indices.size();i+=3)
+			{
+				triangle.a = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i]].position;
+				triangle.b = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 1]].position;
+				triangle.c = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 2]].position;
+			}
+			float dist;
+			float3 hit;
+			if (localRay.Intersects(triangle, &dist, &hit))
+			{
+				distance = dist;
+				return go;
+			}*/
+
+			LineSegment localRay;
+			localRay = trans->GetGlobalMatrix().Inverted() * ray;
+			//localRay.Transform(trans->GetGlobalMatrix().Inverted());
+			if (go->GetLocalAABB()->Intersects(localRay))
+			{
+				return go;
+			}
+		
 	}
 
 	return nullptr;
-}
-
-std::vector<GameObject*> Camera3D::GetPickedChilds(const LineSegment& ray, GameObject* parent)
-{
-	std::vector<GameObject*> ret;
-
-	if (parent->GetChilds().size() > 0)
-	{
-		for (auto& child : parent->GetChilds())
-		{
-			if (child->GetLocalAABB()->Intersects(ray))
-			{
-				std::vector<GameObject*> childs = GetPickedChilds(ray, parent);
-				if (childs.size() > 0)
-					ret.insert(ret.begin(), childs.begin(), childs.end());
-			}
-
-			if (child->GetComponent(ComponentType::MESH))
-			{
-				if (child->GetLocalAABB()->Intersects(cam->frustum) && child->GetLocalAABB()->Intersects(ray))
-				{
-					ret.push_back(child);
-					/*float dist, end;
-					child->GetLocalAABB()->Intersects(ray, dist, end);
-					ret.push_back()*/
-				}
-			}
-		}
-	}
-
-	return ret;
 }

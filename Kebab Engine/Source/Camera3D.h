@@ -5,8 +5,9 @@
 
 #include "Math/float3.h"
 
-class ComponentCamera;
 class GameObject;
+class ComponentCamera;
+class ComponentMesh;
 
 class Camera3D : public Module
 {
@@ -38,10 +39,11 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
+	ComponentMesh* GetComponentMeshFromChilds(GameObject* parent);
+
 private:
 	GameObject* MousePickGameObject();
-	GameObject* ThrowRay(const LineSegment& ray, float& distance);
-	std::vector<GameObject*> GetPickedChilds(const LineSegment& ray, GameObject* parent);
+	GameObject* ThrowRay(LineSegment& ray, float& distance);
 
 public:
 	float3 reference, position;
