@@ -121,7 +121,6 @@ bool Camera3D::Update(float dt)
 		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
 
-		selectedGO->SetGlobalAABB(selectedGO);
 		AABB* boundBox = selectedGO->GetGlobalAABB();
 
 		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;

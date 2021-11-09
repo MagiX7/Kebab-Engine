@@ -37,7 +37,6 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     assetsPanel = new AssetsPanel();
 
     showAboutPanel = false;
-    wireframe = true;
     showWindows = true;
     closeApp = false;
 }

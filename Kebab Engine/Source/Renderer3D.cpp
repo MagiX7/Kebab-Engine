@@ -171,6 +171,8 @@ bool Renderer3D::PreUpdate(float dt)
 		wireframe = !wireframe;
 		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
+	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		drawAABB = !drawAABB;
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
@@ -201,12 +203,17 @@ bool Renderer3D::Draw(float dt)
 
 	for (const auto& go : gameObjects)
 	{
+		go->SetGlobalAABB(go);
+		go->GetGlobalAABB();
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 		if (mesh && mat && !app->camera->GetCamera()->frustumCulling) 
 			mesh->Draw(mat);
 		else if (mesh && mat && go->insideFrustum && app->camera->GetCamera()->frustumCulling) 
 			mesh->Draw(mat);
+		
+		if (drawAABB)
+			go->DrawAABB();
 	}
 	frameBuffer->Unbind();
 
@@ -281,6 +288,11 @@ void Renderer3D::SetWireframe()
 	LOG_CONSOLE("-- WIREFRAME -- set to %d", wireframe);
 }
 
+void Renderer3D::SetDrawAABB()
+{
+	drawAABB ? drawAABB = true : drawAABB = false;
+}
+
 void Renderer3D::Save(JSON_Object* root)
 {
 	json_object_set_value(root, name.c_str(), json_value_init_object());
@@ -292,6 +304,7 @@ void Renderer3D::Save(JSON_Object* root)
 	json_object_set_boolean(renObj, "color material", colorMaterial);
 	json_object_set_boolean(renObj, "texture2D", texture2D);
 	json_object_set_boolean(renObj, "wireframe", wireframe);
+	json_object_set_boolean(renObj, "drawaabb", drawAABB);
 }
 
 void Renderer3D::Load(JSON_Object* root)
@@ -305,6 +318,7 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
+	drawAABB = json_object_get_boolean(renObj, "drawaabb");
 	//drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
