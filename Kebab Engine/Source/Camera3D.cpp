@@ -117,9 +117,9 @@ bool Camera3D::Update(float dt)
 			cam->SetCameraPosition(position);
 		}
 	}
-	
+
 	// Mouse Picking
-	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered())
+	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered() && !ImGuizmo::IsUsing())
 	{
 		GameObject* picked = MousePickGameObject();
 		app->editor->hierarchyPanel->SetCurrent(picked);
@@ -142,7 +142,8 @@ bool Camera3D::Update(float dt)
 			CenterCameraToGO(boundBox);
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT
+			&& !ImGuizmo::IsUsing())
 		{
 			OrbitGO(boundBox, dx, dy);
 		}

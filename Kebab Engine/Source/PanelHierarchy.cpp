@@ -67,17 +67,17 @@ void HierarchyPanel::SetCurrent(GameObject* go)
 		currentGO = go;
 		selectedFromViewport = !selectedFromViewport;
 	}
-	else if (go && selectedFromViewport)
-	{
-		currentGO = nullptr;
-		selectedFromViewport = !selectedFromViewport;
-	}
+	//else if (go && selectedFromViewport)
+	//{
+	//	currentGO = nullptr;
+	//	selectedFromViewport = !selectedFromViewport;
+	//}
 
-	if (go == nullptr)
-	{
-		currentGO = go;
-		selectedFromViewport = false;
-	}
+	//if (go == nullptr)
+	//{
+	//	currentGO = go;
+	//	selectedFromViewport = false;
+	//}
 }
 
 void HierarchyPanel::DisplayHierarchy(GameObject* go)
