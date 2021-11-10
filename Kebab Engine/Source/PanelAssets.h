@@ -6,20 +6,11 @@
 #include <string>
 
 class GameObject;
-
-enum class AssetType
-{
-	FBX,
-	PNG,
-	NONE,
-};
+class Texture;
 
 struct Asset
 {
-	std::string name;
 	std::string path;
-
-	AssetType type = AssetType::NONE;
 
 	GameObject* gameObj;
 };
@@ -34,14 +25,20 @@ public:
 
 	void AddAsset(GameObject* gameObj);
 
-	void DisplayAsset(Asset* asset);
-	void DisplayPopMenu(Asset* asset);
+	void DisplayAssets();
+	void DisplayPopMenu();
 
 private:
 
 	std::vector<Asset*> assets;
 
-	std::string assetsDirectory;
+	std::string currentFolder;
+	std::string entryFolder;
 
-	bool popUpMenu;
+	Texture* folderTex;
+	Texture* modelTex;
+
+	int i = 0;
+
+	std::string popUpItem;
 };

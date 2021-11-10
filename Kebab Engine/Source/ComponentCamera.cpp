@@ -13,6 +13,8 @@ ComponentCamera::ComponentCamera(GameObject* compOwner)
 	this->active = true;
 	this->type = ComponentType::CAMERA;
 
+	cameraActive = false;
+
 	frustumCulling = true;
 
 	fovVertical = 70.0f;
@@ -129,6 +131,6 @@ void ComponentCamera::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		ImGui::Checkbox("Activate Camera", &cameraActive);
+		ImGui::Checkbox("Set as Current Camera", &cameraActive);
 	}
 }

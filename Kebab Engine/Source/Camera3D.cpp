@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Editor.h"
 #include "MainScene.h"
+#include "Renderer3D.h"
 
 #include "PanelHierarchy.h"
 #include "PanelViewport.h"
@@ -151,10 +152,10 @@ bool Camera3D::Update(float dt)
 	std::vector<GameObject*>::iterator it;
 	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
 	{
-		DrawInFrustumCulling((*it));
+		DrawInFrustumCulling((*it), app->renderer3D->currentCam);
 
 		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it));
+			PropagateDrawInFrustumCulling((*it), app->renderer3D->currentCam);
 	}
 
 	return true;
@@ -240,37 +241,37 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 	LookAt(reference);
 }
 
-void Camera3D::DrawInFrustumCulling(GameObject* go)
+void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
 	if (go->GetGlobalAABB()->IsFinite())
 	{
-		if (IntersectsAABB(go->GetGlobalAABB()))
+		if (IntersectsAABB(go->GetGlobalAABB(), camera))
 			go->insideFrustum = true;
 		else
 			go->insideFrustum = false;
 	}
 }
 
-void Camera3D::PropagateDrawInFrustumCulling(GameObject* go)
+void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
 	std::vector<GameObject*>::iterator it;
 
 	for (it = go->GetChilds().begin(); it != go->GetChilds().end(); it++)
 	{
-		DrawInFrustumCulling((*it));
+		DrawInFrustumCulling((*it), camera);
 
 		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it));
+			PropagateDrawInFrustumCulling((*it), camera);
 	}
 }
 
-bool Camera3D::IntersectsAABB(const AABB* aabb)
+bool Camera3D::IntersectsAABB(const AABB* aabb, ComponentCamera* camera)
 {
 	float3 corners[8];
 	aabb->GetCornerPoints(corners);
 
 	Plane planes[6];
-	cam->frustum.GetPlanes(planes);
+	camera->frustum.GetPlanes(planes);
 
 	for (uint i = 0; i < 6; ++i)
 	{

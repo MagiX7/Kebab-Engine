@@ -28,6 +28,8 @@ public:
 	float GetHorizontalFov() const;
 	float GetFarPlane() const;
 	float GetNearPlane() const;
+	inline bool CameraToCurrent() { return cameraActive; }
+	inline void DisableFromCurent() { cameraActive = false; }
 
 	void DrawOnInspector() override;
 
