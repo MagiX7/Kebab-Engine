@@ -21,12 +21,14 @@ public:
 
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
-	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
+	std::vector<GameObject*>& GetGameObjects();
 	void DeleteAllGameObjects();
 
 	GameObject* GetGameObjectByUuid(int uuid);
+	inline const GameObject* GetRoot() { return root; }
 
 private:
 	std::vector<GameObject*> gameObjects;
+	GameObject* root;
 
 };

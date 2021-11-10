@@ -32,6 +32,8 @@ bool MainScene::Start()
 	LOG_CONSOLE("Loading assets");
 
 	bool ret = true;
+    root = new GameObject("Scene");
+    gameObjects.push_back(root);
 
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 
@@ -63,7 +65,12 @@ bool MainScene::CleanUp()
 
 void MainScene::AddGameObject(GameObject* go)
 {
-    gameObjects.push_back(go);
+    if (!go->GetParent())
+    {
+        go->SetParent(root);
+        root->AddChild(go);
+    }
+    //gameObjects.push_back(go);
 }
 
 void MainScene::DeleteGameObject(GameObject* go)
@@ -74,8 +81,10 @@ void MainScene::DeleteGameObject(GameObject* go)
     {
         if (*it == go)
         {
-            gameObjects.erase(it);
-            gameObjects.shrink_to_fit();
+            root->GetChilds().erase(it);
+            root->GetChilds().shrink_to_fit();
+            //gameObjects.erase(it);
+            //gameObjects.shrink_to_fit();
 
             app->renderer3D->EraseGameObject(go);
             app->editor->hierarchyPanel->currentGO = nullptr;
@@ -86,20 +95,25 @@ void MainScene::DeleteGameObject(GameObject* go)
     }
 }
 
+std::vector<GameObject*>& MainScene::GetGameObjects()
+{
+    return root->GetChilds();
+}
+
 void MainScene::DeleteAllGameObjects()
 {
-    for (auto& go : gameObjects)
+    for (auto& go : root->GetChilds()/*gameObjects*/)
     {
         delete go;
         go = nullptr;
     }
-
-    gameObjects.clear();
+    root->GetChilds().clear();
+    //gameObjects.clear();
 }
 
 GameObject* MainScene::GetGameObjectByUuid(int uuid)
 {
-    for (const auto& go : gameObjects)
+    for (const auto& go : root->GetChilds()/*gameObjects*/)
         if (go->GetUuid() == uuid) return go;
 
     return nullptr;

@@ -46,11 +46,12 @@ public:
 
 	void DrawAABB();
 
-	bool insideFrustum;
-
 	void Save(JSON_Array* array);
 	JSON_Value* Load(JSON_Object* obj);
 	
+public:
+	bool insideFrustum;
+
 private:
 	void LoadComponents(JSON_Array* compsArray, GameObject* parent);
 
