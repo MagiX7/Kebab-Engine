@@ -4,6 +4,8 @@
 
 #include "Parser.h"
 
+#include "ImGuizmo/ImGuizmo.h"
+
 class ConfigPanel;
 class ConsolePanel;
 class ViewportPanel;
@@ -33,6 +35,7 @@ public:
 private:
 	void InitImGui();
 	
+	void OnMainMenuRender(bool& showDemoWindow);
 	void ShowAboutPanel();
 
 	void SetImGuiStyle();
@@ -56,5 +59,7 @@ private:
 	bool closeApp;
 
 	JSON_Value* sceneValue;
-	//char* buffer;
+
+	ImGuizmo::OPERATION guizmoOperation;
+	ImGuizmo::MODE guizmoMode;
 };

@@ -27,8 +27,11 @@ public:
 	const float3& GetScale() const { return scale; }
 	const Quat& GetRotation() const { return rotation; }
 
-	inline const float4x4& GetLocalMatrix() const{ return localTransformMat; }
-	inline const float4x4& GetGlobalMatrix() const { return globalTransformMat; }
+	// Transform matrix
+	inline float4x4& GetLocalMatrix() { return localTransformMat; }
+	inline float4x4& GetGlobalMatrix() { return globalTransformMat; }
+
+	void SetLocalMatrix(const float4x4& transform);
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
