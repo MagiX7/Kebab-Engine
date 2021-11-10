@@ -11,6 +11,8 @@
 
 #include "PanelHierarchy.h"
 
+#include "TextureLoader.h"
+
 #include "mmgr/mmgr.h"
 
 #include <vector>
@@ -25,7 +27,12 @@ AssetsPanel::AssetsPanel()
     scroll = 0;
 
 	popUpMenu = false;
-	assetsDirectory = "Assets/";
+
+	entryFolder = "Assets/";
+	currentFolder = entryFolder;
+
+	folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/folder_icon.png");
+	modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/model_icon.png");
 }
 
 AssetsPanel::~AssetsPanel()
@@ -54,21 +61,8 @@ void AssetsPanel::OnRender(float dt)
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 		}
 
-		if (ImGui::CollapsingHeader("Assets", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			for (int i = 0; i < assets.size(); ++i)
-			{
-				DisplayAsset(assets[i]);
-			}
+		DisplayAssets();
 
-
-
-			/*for (auto& p : std::filesystem::directory_iterator(assetsDirectory))
-			{
-				std::string path = p.path().string();
-				ImGui::Text("%s", path.c_str());
-			}*/
-		}
     }
 	ImGui::End();
 }
@@ -83,24 +77,65 @@ void AssetsPanel::AddAsset(GameObject* gameObj)
 	assets.push_back(aux);
 }
 
-void AssetsPanel::DisplayAsset(Asset* asset)
+void AssetsPanel::DisplayAssets()
 {
-	ImGuiTreeNodeFlags flags = 0;
-	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-	flags |= ImGuiTreeNodeFlags_Leaf;
+	std::vector<std::string> dirList;
+	std::vector<std::string> fileList;
 
-	ImGui::TreeNodeEx(asset->name.c_str(), flags);
+	app->fileSystem->DiscoverFiles(currentFolder.c_str(), fileList, dirList);
 
-	if (ImGui::IsItemClicked(1))
+	ImGui::Columns(10, 0, false);
+
+	if (currentFolder != entryFolder)
 	{
-		popUpMenu = true;
-	}
-	if (popUpMenu)
-	{
-		DisplayPopMenu(asset);
+		if (ImGui::Button("Back", { 100,100 }));
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			std::string prev = currentFolder.substr(0, currentFolder.find_last_of("/"));
+			prev = prev.substr(0, prev.find_last_of("/") + 1);
+			currentFolder = prev;
+		}
+
+		ImGui::NextColumn();
 	}
 
-	ImGui::TreePop();
+	for (std::vector<std::string>::const_iterator it = dirList.begin(); it != dirList.end(); it++)
+	{
+		ImGui::ImageButton((ImTextureID)folderTex->GetID(), { 100,100 });
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			char aux[128] = "";
+				sprintf_s(aux, 128, "%s%s", currentFolder.c_str(), (*it).c_str());
+
+				if (app->fileSystem->IsDirectory(aux))
+				{
+					sprintf_s(aux, 128, "%s%s/", currentFolder.c_str(), (*it).c_str());
+						currentFolder = aux;
+				}
+		}
+
+		ImGui::Text((*it).c_str());
+
+		ImGui::NextColumn();
+	}
+
+	for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
+	{
+		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
+		if (strcmp(aux.c_str(), ".fbx") == 0)
+			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
+		else
+			ImGui::Button((*it).c_str(), { 100,100 });
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			
+		}
+
+		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
+
+		ImGui::NextColumn();
+	}
+
 }
 
 void AssetsPanel::DisplayPopMenu(Asset* asset)
@@ -116,7 +151,7 @@ void AssetsPanel::DisplayPopMenu(Asset* asset)
 			sprintf_s(name, 32, "%s.fbx", asset->name.c_str());
 
 			char path[128] = "";
-			app->fileSystem->FindFilePath(name, path, assetsDirectory.c_str());
+			app->fileSystem->FindFilePath(name, path, currentFolder.c_str());
 
 			char auxPath[128] = "";
 			sprintf_s(auxPath, 128, "%s", path);

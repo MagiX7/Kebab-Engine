@@ -6,6 +6,7 @@
 #include <string>
 
 class GameObject;
+class Texture;
 
 enum class AssetType
 {
@@ -34,14 +35,20 @@ public:
 
 	void AddAsset(GameObject* gameObj);
 
-	void DisplayAsset(Asset* asset);
+	void DisplayAssets();
 	void DisplayPopMenu(Asset* asset);
 
 private:
 
 	std::vector<Asset*> assets;
 
-	std::string assetsDirectory;
+	std::string currentFolder;
+	std::string entryFolder;
+
+	Texture* folderTex;
+	Texture* modelTex;
+
+	int i = 0;
 
 	bool popUpMenu;
 };

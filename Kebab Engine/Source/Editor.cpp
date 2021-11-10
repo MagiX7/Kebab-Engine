@@ -35,7 +35,6 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     viewportPanel = new ViewportPanel();
     hierarchyPanel = new HierarchyPanel();
     inspectorPanel = new InspectorPanel();
-    assetsPanel = new AssetsPanel();
 
     showAboutPanel = false;
     showWindows = true;
@@ -49,6 +48,8 @@ Editor::~Editor()
 bool Editor::Start()
 {
     InitImGui();
+
+    assetsPanel = new AssetsPanel();
 
 	return true;
 }
