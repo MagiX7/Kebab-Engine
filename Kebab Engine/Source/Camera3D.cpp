@@ -121,7 +121,8 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered())
 	{
 		GameObject* picked = MousePickGameObject();
-		app->editor->hierarchyPanel->currentGO = picked;
+		app->editor->hierarchyPanel->SetCurrent(picked);
+		//app->editor->hierarchyPanel->currentGO = picked;
 	}
 
 
@@ -412,7 +413,25 @@ GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
 		{
 			GameObject* meshParent = mesh->GetParent();
 			while (meshParent->GetParent() != app->scene->GetRoot())
-				meshParent = meshParent->GetParent();*/
+				meshParent = meshParent->GetParent();
+
+
+			ComponentTransform* trans = (ComponentTransform*)meshParent->GetComponent(ComponentType::TRANSFORM);
+			Triangle triangle;
+			for (int i = 0; i < mesh->GetMesh()->indices.size(); i += 3)
+			{
+				triangle.a = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i]].position;
+				triangle.b = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 1]].position;
+				triangle.c = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 2]].position;
+
+				Ray localRay = ray.ToRay();
+				localRay.Transform(trans->GetGlobalMatrix().Inverted());
+				if (localRay.Intersects(triangle))
+				{
+					return go;
+				}
+			}
+		}*/
 
 		
 		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
