@@ -39,6 +39,8 @@ public:
 private:
 	void UpdateTransform(float4x4 newTransform);
 
+	void RecomputeGlobalMat();
+
 	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
 
 	void DrawOnInspector();
@@ -50,7 +52,7 @@ private:
 	Quat rotation;
 
 	float4x4 localTransformMat;
-	float4x4 worldTransformMat;
+	float4x4 globalTransformMat;
 
 
 	float3 guiPos;

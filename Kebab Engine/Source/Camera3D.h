@@ -5,6 +5,7 @@
 
 #include "Math/float3.h"
 
+class GameObject;
 class ComponentCamera;
 class GameObject;
 
@@ -37,6 +38,12 @@ public:
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
+
+private:
+	GameObject* MousePickGameObject();
+	GameObject* ThrowRay(LineSegment& ray, float& distance);
+
+public:
 
 	float3 reference, position;
 

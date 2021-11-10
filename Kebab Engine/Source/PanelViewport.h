@@ -17,7 +17,7 @@ public:
 
 	inline float2 const& GetViewportSize() const { return viewportSize; }
 
-	float4 GetViewportDimensions();
+	float4 GetDimensions();
 	bool IsHovered();
 
 private:

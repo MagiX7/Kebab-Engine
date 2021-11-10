@@ -61,16 +61,18 @@ void HierarchyPanel::OnRender(float dt)
 
 void HierarchyPanel::SetCurrent(GameObject* go)
 {
-	if (go && !selectedFromViewport)
+	currentGO = go;
+	selectedFromViewport = !selectedFromViewport;
+
+	/*if (go && !selectedFromViewport)
 	{
-		currentGO = go;
 		selectedFromViewport = !selectedFromViewport;
 	}
-	//else if (go && selectedFromViewport)
-	//{
-	//	currentGO = nullptr;
-	//	selectedFromViewport = !selectedFromViewport;
-	//}
+	else if (go && selectedFromViewport)
+	{
+		currentGO = nullptr;
+		selectedFromViewport = !selectedFromViewport;
+	}*/
 
 	//if (go == nullptr)
 	//{

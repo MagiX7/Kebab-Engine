@@ -97,7 +97,7 @@ bool Camera3D::Update(float dt)
 
 	// Zoom ===============================================================
 	float3 zoom(0, 0, 0); 
-	float4 viewDim = app->editor->viewportPanel->GetViewportDimensions();
+	float4 viewDim = app->editor->viewportPanel->GetDimensions();
 
 	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
 		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
@@ -354,4 +354,40 @@ void Camera3D::Load(JSON_Object* root)
 	float3x4 worldMat{ rotMat, pos };
 	cam->frustum.SetWorldMatrix(worldMat);
 	position = pos;
+}
+
+GameObject* Camera3D::MousePickGameObject()
+{
+	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
+	ImVec2 p = ImGui::GetIO().MousePos;
+
+	ImVec2 mouseWinPos = ImVec2(p.x - winDimensions.x, p.y - winDimensions.y);
+	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
+	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
+
+	LineSegment picking = cam->frustum.UnProjectLineSegment(x, y);
+
+	float distance;
+	GameObject* hitted = ThrowRay(picking, distance);
+	if (hitted)
+		return hitted;
+
+	return nullptr;
+}
+
+GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
+{
+	for (auto& go : app->scene->GetGameObjects())
+	{
+		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+
+		LineSegment localRay = ray;
+		localRay.Transform(trans->GetGlobalMatrix().Inverted());
+		if (go->GetGlobalAABB()->Intersects(localRay))
+		{
+			return go;
+		}
+	}
+
+	return nullptr;
 }

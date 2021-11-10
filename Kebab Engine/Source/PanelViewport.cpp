@@ -45,7 +45,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
     ImGui::End();
 }
 
-float4 ViewportPanel::GetViewportDimensions()
+float4 ViewportPanel::GetDimensions()
 {
     return viewportDimensions;
 }
