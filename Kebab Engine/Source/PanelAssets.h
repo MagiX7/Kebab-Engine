@@ -8,19 +8,9 @@
 class GameObject;
 class Texture;
 
-enum class AssetType
-{
-	FBX,
-	PNG,
-	NONE,
-};
-
 struct Asset
 {
-	std::string name;
 	std::string path;
-
-	AssetType type = AssetType::NONE;
 
 	GameObject* gameObj;
 };
@@ -36,7 +26,7 @@ public:
 	void AddAsset(GameObject* gameObj);
 
 	void DisplayAssets();
-	void DisplayPopMenu(Asset* asset);
+	void DisplayPopMenu(std::string fileName);
 
 private:
 
@@ -51,4 +41,5 @@ private:
 	int i = 0;
 
 	bool popUpMenu;
+	std::string popUpItem;
 };

@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 
 #include "GameObject.h"
+#include "ComponentMesh.h"
 
 #include "PanelHierarchy.h"
 
@@ -31,8 +32,13 @@ AssetsPanel::AssetsPanel()
 	entryFolder = "Assets/";
 	currentFolder = entryFolder;
 
-	folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/folder_icon.png");
-	modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/model_icon.png");
+	folderTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/folder_icon.kbtexture");
+	modelTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/model_icon.kbtexture");
+	
+	if (folderTex == nullptr)
+		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/folder_icon.png");
+	if (modelTex == nullptr)
+		modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/model_icon.png");
 }
 
 AssetsPanel::~AssetsPanel()
@@ -63,18 +69,32 @@ void AssetsPanel::OnRender(float dt)
 
 		DisplayAssets();
 
+		if (popUpMenu && popUpItem != "")
+			DisplayPopMenu(popUpItem);
     }
 	ImGui::End();
 }
 
 void AssetsPanel::AddAsset(GameObject* gameObj)
 {
-	Asset* aux = new Asset();
+	/*Asset* aux = new Asset();
 	aux->gameObj = gameObj;
-	aux->name = gameObj->GetName().c_str();
-	aux->type = AssetType::FBX;
 
-	assets.push_back(aux);
+	ComponentMesh* mesh = (ComponentMesh*)gameObj->GetComponent(ComponentType::MESH);
+	if (mesh != nullptr)
+		aux->path = mesh->GetMesh()->GetPath();
+
+	if (gameObj->GetChilds().size() != 0)
+	{
+		std::vector<GameObject*>::iterator it;
+
+		for (it = gameObj->GetChilds().begin(); it != gameObj->GetChilds().end(); it++)
+		{
+			AddAsset((*it));
+		}
+	}
+
+	assets.push_back(aux);*/
 }
 
 void AssetsPanel::DisplayAssets()
@@ -122,13 +142,19 @@ void AssetsPanel::DisplayAssets()
 	for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
 	{
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
-		if (strcmp(aux.c_str(), ".fbx") == 0)
+		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
+
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			
+		}
+		else if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+		{
+			popUpMenu = true;
+			popUpItem = (*it);
 		}
 
 		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
@@ -138,45 +164,65 @@ void AssetsPanel::DisplayAssets()
 
 }
 
-void AssetsPanel::DisplayPopMenu(Asset* asset)
+void AssetsPanel::DisplayPopMenu(std::string fileName)
 {
-	ImGui::OpenPopup(asset->name.c_str());
-	if (ImGui::BeginPopup(asset->name.c_str()))
+	ImGui::OpenPopup(fileName.c_str());
+	if (ImGui::BeginPopup(fileName.c_str()))
 	{
 		if (ImGui::Button("Delete"))
 		{
 			popUpMenu = false;
 
-			char name[32] = "";
-			sprintf_s(name, 32, "%s.fbx", asset->name.c_str());
-
 			char path[128] = "";
-			app->fileSystem->FindFilePath(name, path, currentFolder.c_str());
-
-			char auxPath[128] = "";
-			sprintf_s(auxPath, 128, "%s", path);
+			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), fileName.c_str());
 
 			int status;
-			status = remove(auxPath);
-			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", asset->name.c_str()); }
-			else { LOG_CONSOLE("Error to Delete %s", asset->name.c_str()); }
+			status = remove(path);
+			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
+			else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
 
-			std::vector<Asset*>::iterator it;
-
-			for (it = assets.begin(); it != assets.end(); ++it)
+			std::string aux = fileName.substr(fileName.find_last_of("."), fileName.length());
+			if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			{
-				if (*it == asset)
-				{
-					assets.erase(it);
-					assets.shrink_to_fit();
+				aux = fileName.substr(fileName.length(), fileName.find_last_of("."));
 
-					app->scene->DeleteGameObject(asset->gameObj);
-					break;
-				}
+				char path[128] = "";
+				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
+
+				status = remove(path);
+				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
+				else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
 			}
+			/*else if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
+			{
+				aux = fileName.substr(fileName.length(), fileName.find_last_of("."));
+
+				char path[128] = "";
+				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
+
+				status = remove(path);
+				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
+				else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
+			}*/
+
+			//std::vector<Asset*>::iterator it;
+
+			//for (it = assets.begin(); it != assets.end(); ++it)
+			//{
+			//	if (*it == asset)
+			//	{
+			//		assets.erase(it);
+			//		assets.shrink_to_fit();
+
+			//		app->scene->DeleteGameObject(asset->gameObj);
+			//		break;
+			//	}
+			//}
 		}
 		if (ImGui::Button("Import to Scene"))
 		{
+			popUpMenu = false;
+
 			//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 		}
 
