@@ -27,14 +27,13 @@ public:
 	const float3& GetScale() const { return scale; }
 	const Quat& GetRotation() const { return rotation; }
 
-	inline const float4x4& GetLocalMatrix() const{ return localTransformMat; }
-	inline const float4x4& GetGlobalMatrix() const { return globalTransformMat; }
+	inline const float4x4& GetLocalMatrix() { return localTransformMat; }
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 private:
-	void RecomputeGlobalMat();
+	void UpdateTransform(float4x4 newTransform);
 
 	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
 
@@ -47,7 +46,7 @@ private:
 	Quat rotation;
 
 	float4x4 localTransformMat;
-	float4x4 globalTransformMat;
+	float4x4 worldTransformMat;
 
 
 	float3 guiPos;

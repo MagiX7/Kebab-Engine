@@ -12,7 +12,7 @@ ComponentTransform::ComponentTransform(GameObject* compOwner)
 	this->active = true;
 
 	localTransformMat = float4x4::identity;
-	globalTransformMat = float4x4::identity;
+	worldTransformMat = float4x4::identity;
 
 	guiPos = { 0,0,0 };
 	guiRot = { 0,0,0 };
@@ -132,25 +132,12 @@ void ComponentTransform::Load(JSON_Object* obj, GameObject* parent)
 	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 }
 
-void ComponentTransform::RecomputeGlobalMat()
+void ComponentTransform::UpdateTransform(float4x4 newTransform)
 {
-	if (parent->GetParent())
-	{
-		ComponentTransform* tr = (ComponentTransform*)parent->GetParent()->GetComponent(ComponentType::TRANSFORM);
-		localTransformMat = tr->globalTransformMat * localTransformMat;
-	}
-	else
-	{
-		globalTransformMat = localTransformMat;
-	}
 }
 
 void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat& newQuat, float3& newScale)
 {
-	RecomputeGlobalMat();
-
-	parent->UpdateAABB(globalTransformMat);
-
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
 	for (; it != parent->GetChilds().end(); ++it)
 	{

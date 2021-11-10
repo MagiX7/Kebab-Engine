@@ -35,7 +35,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
     ImGui::End();
 }
 
-float4 ViewportPanel::GetDimensions()
+float4 ViewportPanel::GetViewportDimensions()
 {
     return viewportDimensions;
 }

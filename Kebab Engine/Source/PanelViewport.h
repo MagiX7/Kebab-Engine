@@ -15,9 +15,9 @@ public:
 
 	void OnRender(FrameBuffer* frameBuffer);
 
-	inline float2 const& GetSize() const { return viewportSize; }
+	inline float2 const& GetViewportSize() const { return viewportSize; }
 
-	float4 GetDimensions();
+	float4 GetViewportDimensions();
 	bool IsHovered();
 
 private:
