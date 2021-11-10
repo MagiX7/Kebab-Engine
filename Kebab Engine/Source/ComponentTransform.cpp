@@ -34,7 +34,7 @@ void ComponentTransform::Disable()
 
 void ComponentTransform::DrawOnInspector()
 {
-	float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
+	//float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
 	ImVec2 size = ImGui::GetWindowSize();
 
 	float len = parent->GetName().size();
@@ -54,7 +54,7 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetTranslation(guiPos);
 			PropagateTransform(parent, position, rotation, scale);
-			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
 			parent->UpdateAABB(transformAABB);
 			ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
 			if (parentCam != nullptr)
@@ -72,7 +72,7 @@ void ComponentTransform::DrawOnInspector()
 
 			SetRotation(x * y * z);
 			PropagateTransform(parent, position, rotation, scale);
-			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
 			parent->UpdateAABB(transformAABB);
 		}
 
@@ -83,10 +83,34 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetScale(guiScale);
 			PropagateTransform(parent, position, rotation, scale);
-			transformAABB = float4x4::FromTRS(position, rotation, scale);
+			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
 			parent->UpdateAABB(transformAABB);
 		}
 	}
+}
+
+void ComponentTransform::SetLocalMatrix(const float4x4& transform)
+{
+	localTransformMat = transform;
+
+	//shearXy Yx Zy
+	//rotation = { transform.shearXy, transform.shearYx, transform.shearZy, 1 };
+	/*float4x4 rot;
+	float3 p = { 0,0,0 };*/
+	transform.Decompose(position, rotation, scale);
+	
+	//position.x = transform.shearWx;
+	//position.y = transform.shearWy;
+	//position.z = transform.shearWz;
+
+	//scale = transform.ExtractScale();
+
+	//localTransformMat.Decompose(position, rotation, scale);
+	guiPos = position;
+	guiRot = { rotation.x, rotation.y, rotation.z };
+	guiScale = scale;
+
+	PropagateTransform(parent, position, rotation, scale);
 }
 
 JSON_Value* ComponentTransform::Save()
@@ -138,6 +162,10 @@ void ComponentTransform::UpdateTransform(float4x4 newTransform)
 
 void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat& newQuat, float3& newScale)
 {
+	RecomputeGlobalMat();
+
+	//parent->UpdateAABB(globalTransformMat);
+	
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
 	for (; it != parent->GetChilds().end(); ++it)
 	{

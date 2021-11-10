@@ -13,12 +13,15 @@ public:
 	ViewportPanel();
 	virtual ~ViewportPanel();
 
-	void OnRender(FrameBuffer* frameBuffer);
+	void OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION& op, const ImGuizmo::MODE& mode);
 
 	inline float2 const& GetViewportSize() const { return viewportSize; }
 
 	float4 GetViewportDimensions();
 	bool IsHovered();
+
+private:
+	void DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MODE& mode);
 
 private:
 	float2 viewportSize;

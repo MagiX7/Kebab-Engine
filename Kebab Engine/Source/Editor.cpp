@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Camera3D.h"
 #include "FileSystem.h"
 #include "Editor.h"
 
@@ -9,6 +10,8 @@
 
 #include "Buffer.h"
 #include "MeshLoader.h"
+
+#include "ComponentCamera.h"
 
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
@@ -132,119 +135,34 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
-
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGuiWindowFlags flags = 0;
-    //flags |= ImGuiWindowFlags_MenuBar;
-    //flags |= ImGuiWindowFlags_NoMove;
+    ImGuizmo::BeginFrame();
 
     static bool showDemoWindow = false;
+    OnMainMenuRender(showDemoWindow);
 
-    ImGui::DockSpaceOverViewport();
-
-    if (ImGui::BeginMainMenuBar())
+    if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE)
     {
-        if (ImGui::BeginMenu("File"))
+        if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
         {
-            if (ImGui::MenuItem("Save Scene", "Crtl + S"))
-            {
-                SaveScene();
-            }
-            if (ImGui::MenuItem("Open Scene"))
-            {
-                LoadScene();
-            }
-            if (ImGui::MenuItem("Exit"))
-            {
-                closeApp = true;
-                ImGui::EndMenu();
-            }
-            ImGui::EndMenu();
+            guizmoOperation = ImGuizmo::TRANSLATE;
+            //hierarchyPanel->currentGO->DrawGuizmo();
         }
-        if (ImGui::BeginMenu("GameObject"))
+        else if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
         {
-            if (ImGui::MenuItem("Cube"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
-
-            if (ImGui::MenuItem("Pyramid"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
-            
-            if(ImGui::MenuItem("Plane"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
-            
-            if (ImGui::MenuItem("Sphere"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
-
-            if (ImGui::MenuItem("Empty GameObject"))
-            {
-                GameObject* go = new GameObject("Empty Game Object");
-                app->scene->AddGameObject(go);
-            }
-            ImGui::EndMenu();
+            guizmoOperation = ImGuizmo::ROTATE;
+            //hierarchyPanel->currentGO->DrawGuizmo();
         }
-
-        if (ImGui::BeginMenu("View"))
+        else if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
         {
-            if (ImGui::MenuItem("Console window"))
-            {
-                consolePanel->active = !consolePanel->active;
-            }
-            if (ImGui::MenuItem("Configuration window"))
-            {
-                configPanel->active = !configPanel->active;
-            }
-            if (ImGui::MenuItem("Hierarchy window"))
-            {
-                hierarchyPanel->active = !hierarchyPanel->active;
-            }
-            if (ImGui::MenuItem("Inspector window"))
-            {
-                inspectorPanel->active = !inspectorPanel->active;
-            }
-            if (ImGui::MenuItem("Assets window"))
-            {
-                assetsPanel->active = !assetsPanel->active;
-            }
-            ImGui::Checkbox("Show Editor Windows", &showWindows);
-            ImGui::EndMenu();
+            guizmoOperation = ImGuizmo::SCALE;
+            //hierarchyPanel->currentGO->DrawGuizmo();
         }
-        if (ImGui::BeginMenu("Help"))
-        {
-            if (ImGui::MenuItem("Gui Demo"))
-            {
-                showDemoWindow = !showDemoWindow;
-            }
-            if (ImGui::MenuItem("Documentation"))
-            {
-                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine", NULL, NULL, SW_SHOWNORMAL);
-            }
-            if (ImGui::MenuItem("Download Latest"))
-            {
-                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/archive/refs/heads/main.zip", NULL, NULL, SW_SHOWNORMAL);
-            }
-            if (ImGui::MenuItem("Report a bug"))
-            {
-                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
-            }
-            if (ImGui::MenuItem("About"))
-            {
-                showAboutPanel = !showAboutPanel;
-                scroll = 0;
-            }
-
-            ImGui::EndMenu();
-        }
-
-        ImGui::EndMainMenuBar();
     }
 
     SimulationControl();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    if(frameBuffer)
-        viewportPanel->OnRender(frameBuffer);
+    if(frameBuffer) viewportPanel->OnRender(frameBuffer, guizmoOperation, guizmoMode);
     ImGui::PopStyleVar();
 
     if (showDemoWindow)
@@ -340,6 +258,114 @@ void Editor::LoadScene()
             if (go->GetComponent(ComponentType::MESH) && go->GetComponent(ComponentType::MATERIAL))
                 app->renderer3D->Submit(go);
         }
+    }
+}
+
+void Editor::OnMainMenuRender(bool& showDemoWindow)
+{
+    static float f = 0.0f;
+    static int counter = 0;
+
+    ImGuiWindowFlags flags = 0;
+    //flags |= ImGuiWindowFlags_MenuBar;
+    //flags |= ImGuiWindowFlags_NoMove;
+
+    ImGui::DockSpaceOverViewport();
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Save Scene", "Crtl + S"))
+            {
+                SaveScene();
+            }
+            if (ImGui::MenuItem("Open Scene"))
+            {
+                LoadScene();
+            }
+            if (ImGui::MenuItem("Exit"))
+            {
+                closeApp = true;
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            if (ImGui::MenuItem("Cube"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+
+            if (ImGui::MenuItem("Pyramid"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+
+            if (ImGui::MenuItem("Plane"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
+
+            if (ImGui::MenuItem("Sphere"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+
+            if (ImGui::MenuItem("Empty GameObject"))
+            {
+                GameObject* go = new GameObject("Empty Game Object");
+                app->scene->AddGameObject(go);
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("View"))
+        {
+            if (ImGui::MenuItem("Console window"))
+            {
+                consolePanel->active = !consolePanel->active;
+            }
+            if (ImGui::MenuItem("Configuration window"))
+            {
+                configPanel->active = !configPanel->active;
+            }
+            if (ImGui::MenuItem("Hierarchy window"))
+            {
+                hierarchyPanel->active = !hierarchyPanel->active;
+            }
+            if (ImGui::MenuItem("Inspector window"))
+            {
+                inspectorPanel->active = !inspectorPanel->active;
+            }
+            if (ImGui::MenuItem("Assets window"))
+            {
+                assetsPanel->active = !assetsPanel->active;
+            }
+            ImGui::Checkbox("Show Editor Windows", &showWindows);
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Help"))
+        {
+            if (ImGui::MenuItem("Gui Demo"))
+            {
+                showDemoWindow = !showDemoWindow;
+            }
+            if (ImGui::MenuItem("Documentation"))
+            {
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Download Latest"))
+            {
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/archive/refs/heads/main.zip", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Report a bug"))
+            {
+                ShellExecute(NULL, "open", "https://github.com/MagiX7/Kebab-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("About"))
+            {
+                showAboutPanel = !showAboutPanel;
+                scroll = 0;
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
     }
 }
 

@@ -1,7 +1,14 @@
 #include "Application.h"
-#include "PanelViewport.h"
 
+#include "Input.h"
+#include "Camera3D.h"
 #include "Renderer3D.h"
+#include "Editor.h"
+
+#include "ComponentCamera.h"
+
+#include "PanelViewport.h"
+#include "PanelHierarchy.h"
 
 ViewportPanel::ViewportPanel()
 {
@@ -14,7 +21,7 @@ ViewportPanel::~ViewportPanel()
 {
 }
 
-void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
+void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION& op, const ImGuizmo::MODE& mode)
 {
     ImGui::Begin("Viewport");
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
@@ -32,6 +39,9 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer)
 
     uint32_t image = frameBuffer->GetColorAttachment();
     ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
+
+    DrawGuizmo(op, mode);
+
     ImGui::End();
 }
 
@@ -43,4 +53,40 @@ float4 ViewportPanel::GetViewportDimensions()
 bool ViewportPanel::IsHovered()
 {
     return hovered;
+}
+
+void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MODE& mode)
+{
+    GameObject* go = app->editor->hierarchyPanel->currentGO;
+    if (go)
+    {
+        ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+
+        ComponentCamera* cam = app->camera->GetCamera();
+
+        float4x4 model = tr->GetLocalMatrix();
+        model.Transpose();
+
+        ImGuizmo::Enable(true);
+        ImGuizmo::SetRect(viewportDimensions.x, viewportDimensions.y, viewportDimensions.z, viewportDimensions.w);
+
+        ImGuizmo::SetDrawlist();
+
+        ImGuizmo::Manipulate(cam->GetViewMatrix().ptr(), cam->GetProjectionMatrix().ptr(), op, mode, model.ptr());
+
+        if (ImGuizmo::IsUsing())
+        {
+            model.Transpose();
+            /*float3 p, s;
+            Quat r;*/
+            tr->SetLocalMatrix(model);
+
+            //shearXy Yx Zy
+
+            /*model.Decompose(p, r, s);
+            tr->SetTranslation(p);
+            tr->SetRotation(r);
+            tr->SetScale(s);*/
+        }
+    }
 }

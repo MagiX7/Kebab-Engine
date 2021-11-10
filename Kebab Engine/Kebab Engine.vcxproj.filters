@@ -127,6 +127,21 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\GraphEditor.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImGradient.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImSequencer.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -273,6 +288,24 @@
     <ClInclude Include="Source\Mesh.h">
       <Filter>Source Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\GraphEditor.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\ImCurveEdit.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\ImGradient.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\ImGuizmo.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\ImSequencer.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuizmo\ImZoomSlider.h">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -316,6 +349,9 @@
     </Filter>
     <Filter Include="Source Files\3rd Parties\par">
       <UniqueIdentifier>{55b5e136-9c8d-4466-ad0b-80e12d90e867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\ImGuizmo">
+      <UniqueIdentifier>{5a7db031-16b8-4dce-bad8-93826c156368}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

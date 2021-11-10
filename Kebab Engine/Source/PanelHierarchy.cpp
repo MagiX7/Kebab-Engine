@@ -59,6 +59,26 @@ void HierarchyPanel::OnRender(float dt)
 	ImGui::End();
 }
 
+void HierarchyPanel::SetCurrent(GameObject* go)
+{
+	if (go && !selectedFromViewport)
+	{
+		currentGO = go;
+		selectedFromViewport = !selectedFromViewport;
+	}
+	//else if (go && selectedFromViewport)
+	//{
+	//	currentGO = nullptr;
+	//	selectedFromViewport = !selectedFromViewport;
+	//}
+
+	//if (go == nullptr)
+	//{
+	//	currentGO = go;
+	//	selectedFromViewport = false;
+	//}
+}
+
 void HierarchyPanel::DisplayHierarchy(GameObject* go)
 {
 	ImGuiTreeNodeFlags flags = 0;
