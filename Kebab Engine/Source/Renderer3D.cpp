@@ -161,7 +161,7 @@ bool Renderer3D::PreUpdate(float dt)
 {
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	for (const auto& go : gameObjects)
 	{
 		ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
@@ -170,10 +170,20 @@ bool Renderer3D::PreUpdate(float dt)
 		{
 			if (auxCam->CameraToCurrent())
 			{
-				currentCam = auxCam;
+				if (camsActive == 0)
+				{
+					camsActive++;
+					currentCam = auxCam;
+				}
+				else if (camsActive > 0 && auxCam != currentCam)
+				{
+					currentCam->DisableFromCurent();
+					currentCam = auxCam;
+				}
 			}
-			else 
+			else if (!currentCam->CameraToCurrent() && currentCam == auxCam)
 			{
+				camsActive--;
 				currentCam = app->camera->GetCamera();
 			}
 		}

@@ -26,7 +26,7 @@ public:
 	void AddAsset(GameObject* gameObj);
 
 	void DisplayAssets();
-	void DisplayPopMenu(std::string fileName);
+	void DisplayPopMenu();
 
 private:
 
@@ -40,6 +40,5 @@ private:
 
 	int i = 0;
 
-	bool popUpMenu;
 	std::string popUpItem;
 };

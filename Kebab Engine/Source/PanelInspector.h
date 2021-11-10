@@ -12,5 +12,4 @@ public:
 
 private:
 
-	bool addComponentOption;
 };

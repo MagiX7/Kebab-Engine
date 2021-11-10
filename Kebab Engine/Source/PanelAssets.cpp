@@ -27,8 +27,6 @@ AssetsPanel::AssetsPanel()
     active = true;
     scroll = 0;
 
-	popUpMenu = false;
-
 	entryFolder = "Assets/";
 	currentFolder = entryFolder;
 
@@ -69,8 +67,8 @@ void AssetsPanel::OnRender(float dt)
 
 		DisplayAssets();
 
-		if (popUpMenu && popUpItem != "")
-			DisplayPopMenu(popUpItem);
+		if (popUpItem != "")
+			DisplayPopMenu();
     }
 	ImGui::End();
 }
@@ -153,8 +151,8 @@ void AssetsPanel::DisplayAssets()
 		}
 		else if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 		{
-			popUpMenu = true;
-			popUpItem = (*it);
+			ImGui::OpenPopup((*it).c_str());
+			popUpItem = (*it).c_str();
 		}
 
 		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
@@ -164,34 +162,31 @@ void AssetsPanel::DisplayAssets()
 
 }
 
-void AssetsPanel::DisplayPopMenu(std::string fileName)
+void AssetsPanel::DisplayPopMenu()
 {
-	ImGui::OpenPopup(fileName.c_str());
-	if (ImGui::BeginPopup(fileName.c_str()))
+	if (ImGui::BeginPopup(popUpItem.c_str()))
 	{
 		if (ImGui::Button("Delete"))
 		{
-			popUpMenu = false;
-
 			char path[128] = "";
-			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), fileName.c_str());
+			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
 
 			int status;
 			status = remove(path);
-			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
-			else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
+			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
+			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
-			std::string aux = fileName.substr(fileName.find_last_of("."), fileName.length());
+			std::string aux = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
 			if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			{
-				aux = fileName.substr(fileName.length(), fileName.find_last_of("."));
+				aux = popUpItem.substr(popUpItem.length(), popUpItem.find_last_of("."));
 
 				char path[128] = "";
 				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
 
 				status = remove(path);
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
+				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
+				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 			}
 			/*else if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			{
@@ -218,12 +213,14 @@ void AssetsPanel::DisplayPopMenu(std::string fileName)
 			//		break;
 			//	}
 			//}
+
+			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Import to Scene"))
 		{
-			popUpMenu = false;
 
-			//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+
+			ImGui::CloseCurrentPopup();
 		}
 
 		ImGui::EndPopup();

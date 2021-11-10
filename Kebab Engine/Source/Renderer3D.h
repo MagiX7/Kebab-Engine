@@ -74,4 +74,6 @@ private:
 	std::vector<uint32_t> indices;
 	uint32_t numIndices;
 	uint32_t numVertices;*/
+
+	float camsActive;
 };
