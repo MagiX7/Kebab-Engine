@@ -15,9 +15,8 @@ HierarchyPanel::HierarchyPanel()
 	goDragging = nullptr;
 	optionsPopup = false;
 	parentingPopup = false;
-	selectedFromViewport = false;
 
-	currentGO = nullptr;
+	goDragging = nullptr;
 	goClicked = nullptr;
 }
 
@@ -86,11 +85,6 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
 	if (go->GetChilds().size() <= 0) flags |= ImGuiTreeNodeFlags_Leaf;
-	if (selectedFromViewport)
-	{
-		flags |= ImGuiTreeNodeFlags_DefaultOpen;
-		//selectedFromViewport = false;
-	}
 	
 	bool opened = ImGui::TreeNodeEx(go->GetName().c_str(), flags);
 

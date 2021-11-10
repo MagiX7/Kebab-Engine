@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Window.h"
 #include "Camera3D.h"
 
 #include "Input.h"
@@ -98,7 +97,7 @@ bool Camera3D::Update(float dt)
 
 	// Zoom ===============================================================
 	float3 zoom(0, 0, 0); 
-	float4 viewDim = app->editor->viewportPanel->GetDimensions();
+	float4 viewDim = app->editor->viewportPanel->GetViewportDimensions();
 
 	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
 		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
@@ -125,7 +124,6 @@ bool Camera3D::Update(float dt)
 		app->editor->hierarchyPanel->SetCurrent(picked);
 		//app->editor->hierarchyPanel->currentGO = picked;
 	}
-
 
 	// Focus
 	if (app->editor->hierarchyPanel->currentGO != nullptr)
@@ -356,95 +354,4 @@ void Camera3D::Load(JSON_Object* root)
 	float3x4 worldMat{ rotMat, pos };
 	cam->frustum.SetWorldMatrix(worldMat);
 	position = pos;
-}
-
-ComponentMesh* Camera3D::GetComponentMeshFromChilds(GameObject* parent)
-{
-	for (auto& child : parent->GetChilds())
-	{
-		ComponentMesh* m = (ComponentMesh*)child->GetComponent(ComponentType::MESH);
-		if (m)
-			return m;
-
-		if (child->GetChilds().size() > 0) GetComponentMeshFromChilds(child);
-	}
-	return nullptr;
-}
-
-GameObject* Camera3D::MousePickGameObject()
-{
-	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
-	/*int mouseX = app->input->GetMouseX();
-	int mouseY = app->input->GetMouseY();*/
-
-	ImVec2 p = ImGui::GetIO().MousePos;
-
-	/*printf("ImGui Mouse  %f %f\n", p.x, p.y);
-	printf("SDL Mouse  %i %i\n", mouseX, mouseY);*/
-
-
-	/*float x = app->input->GetMouseX();
-	float y = app->input->GetMouseY();*/
-	
-	/*float normalizedX = -(1.0f - (float(x) * 2.0f) / size.x);
-	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;*/
-
-	//ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winDimensions.x - cursorX, mousePos.y - winDimensions.y - cursorY);
-	ImVec2 mouseWinPos = ImVec2(p.x - winDimensions.x, p.y - winDimensions.y);
-	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
-	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
-
-	LineSegment picking = cam->frustum.UnProjectLineSegment(x, y);
-	
-	float distance;
-	GameObject* hitted = ThrowRay(picking, distance);
-	if (hitted)
-		return hitted;
-
-	return nullptr;
-}
-
-GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
-{
-	for (auto& go : app->scene->GetGameObjects())
-	{
-		/*ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if (!mesh)
-			mesh = GetComponentMeshFromChilds(go);
-		if (mesh)
-		{
-			GameObject* meshParent = mesh->GetParent();
-			while (meshParent->GetParent() != app->scene->GetRoot())
-				meshParent = meshParent->GetParent();
-
-
-			ComponentTransform* trans = (ComponentTransform*)meshParent->GetComponent(ComponentType::TRANSFORM);
-			Triangle triangle;
-			for (int i = 0; i < mesh->GetMesh()->indices.size(); i += 3)
-			{
-				triangle.a = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i]].position;
-				triangle.b = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 1]].position;
-				triangle.c = mesh->GetMesh()->vertices[mesh->GetMesh()->indices[i + 2]].position;
-
-				Ray localRay = ray.ToRay();
-				localRay.Transform(trans->GetGlobalMatrix().Inverted());
-				if (localRay.Intersects(triangle))
-				{
-					return go;
-				}
-			}
-		}*/
-
-		
-		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-
-		LineSegment localRay = ray;
-		localRay.Transform(trans->GetGlobalMatrix().Inverted());
-		if (go->GetGlobalAABB()->Intersects(localRay))
-		{
-			return go;
-		}
-	}
-
-	return nullptr;
 }
