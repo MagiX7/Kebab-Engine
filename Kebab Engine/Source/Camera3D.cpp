@@ -360,30 +360,65 @@ GameObject* Camera3D::MousePickGameObject()
 {
 	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
 	ImVec2 p = ImGui::GetIO().MousePos;
+	int mouseX = app->input->GetMouseX();
+	int mouseY = app->input->GetMouseY();
 
-	ImVec2 mouseWinPos = ImVec2(p.x - winDimensions.x, p.y - winDimensions.y);
+	printf("%f %f\n", p.x, p.y);
+	printf("%i %i\n", mouseX, mouseY);
+
+
+	ImVec2 mouseWinPos = ImVec2(p.x - winDimensions.x, p.y- winDimensions.y);
 	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
 	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
 
 	LineSegment picking = cam->frustum.UnProjectLineSegment(x, y);
 
-	float distance;
-	GameObject* hitted = ThrowRay(picking, distance);
+	float3 hitPoint;
+	GameObject* hitted = ThrowRay(picking, hitPoint, app->scene->GetRoot());
 	if (hitted)
+	{
+		while (hitted->GetParent())
+			hitted = hitted->GetParent();
+
 		return hitted;
+	}
 
 	return nullptr;
 }
 
-GameObject* Camera3D::ThrowRay(LineSegment& ray, float& distance)
+GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* gameObject)
 {
-	for (auto& go : app->scene->GetGameObjects())
+	float3 hp;
+	Ray ray = line.ToRay();
+	for (auto& go : gameObject->GetChilds())
 	{
+		/*ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+		if (meshComp)
+		{
+			Triangle triangle;
+			for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+			{
+				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+
+				if (ray.Intersects(triangle))
+				{
+					return go;
+				}
+			}
+		}
+		else
+		{
+			ThrowRay(line, hitPoint, go);
+		}*/
+
+
 		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
-		LineSegment localRay = ray;
-		localRay.Transform(trans->GetGlobalMatrix().Inverted());
-		if (go->GetGlobalAABB()->Intersects(localRay))
+		LineSegment localLine = line;
+		localLine.Transform(trans->GetGlobalMatrix().Transposed());
+		if (go->GetGlobalAABB()->Intersects(localLine))
 		{
 			return go;
 		}

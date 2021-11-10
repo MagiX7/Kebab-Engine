@@ -54,8 +54,9 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetTranslation(guiPos);
 			PropagateTransform(parent, position, rotation, scale);
-			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
-			parent->UpdateAABB(transformAABB);
+			
+			/*float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);*/
 			ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
 			if (parentCam != nullptr)
 				parentCam->SetCameraPosition(guiPos);
@@ -72,8 +73,8 @@ void ComponentTransform::DrawOnInspector()
 
 			SetRotation(x * y * z);
 			PropagateTransform(parent, position, rotation, scale);
-			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
-			parent->UpdateAABB(transformAABB);
+			/*float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);*/
 		}
 
 		ImGui::Separator();
@@ -83,8 +84,8 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetScale(guiScale);
 			PropagateTransform(parent, position, rotation, scale);
-			float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
-			parent->UpdateAABB(transformAABB);
+			/*float4x4 transformAABB = float4x4::FromTRS(position, rotation, scale);
+			parent->UpdateAABB(transformAABB);*/
 		}
 	}
 }
@@ -177,7 +178,7 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 {
 	RecomputeGlobalMat();
 
-	//parent->UpdateAABB(globalTransformMat);
+	parent->UpdateAABB(globalTransformMat);
 	
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
 	for (; it != parent->GetChilds().end(); ++it)

@@ -41,7 +41,7 @@ public:
 
 private:
 	GameObject* MousePickGameObject();
-	GameObject* ThrowRay(LineSegment& ray, float& distance);
+	GameObject* ThrowRay(LineSegment& ray, float3& hitPoint, GameObject* go = nullptr);
 
 public:
 

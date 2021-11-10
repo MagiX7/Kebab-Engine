@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 
+#include "GameObject.h"
+
 #include "Globals.h"
 
 #include <vector>
@@ -21,12 +23,14 @@ public:
 
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
-	inline std::vector<GameObject*>& GetGameObjects() { return gameObjects; }
+	inline std::vector<GameObject*>& GetGameObjects() { return root->GetChilds(); }
 	void DeleteAllGameObjects();
 
+	inline GameObject* GetRoot() { return root; }
 	GameObject* GetGameObjectByUuid(int uuid);
 
 private:
-	std::vector<GameObject*> gameObjects;
+	//std::vector<GameObject*> gameObjects;
+	GameObject* root;
 
 };
