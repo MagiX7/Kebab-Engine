@@ -371,8 +371,14 @@ ComponentMesh* Camera3D::GetComponentMeshFromChilds(GameObject* parent)
 GameObject* Camera3D::MousePickGameObject()
 {
 	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
-	int mouseX = app->input->GetMouseX();
-	int mouseY = app->input->GetMouseY();
+	/*int mouseX = app->input->GetMouseX();
+	int mouseY = app->input->GetMouseY();*/
+
+	ImVec2 p = ImGui::GetIO().MousePos;
+
+	/*printf("ImGui Mouse  %f %f\n", p.x, p.y);
+	printf("SDL Mouse  %i %i\n", mouseX, mouseY);*/
+
 
 	/*float x = app->input->GetMouseX();
 	float y = app->input->GetMouseY();*/
@@ -381,7 +387,7 @@ GameObject* Camera3D::MousePickGameObject()
 	float normalizedY = 1.0f - (float(y) * 2.0f) / size.y;*/
 
 	//ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winDimensions.x - cursorX, mousePos.y - winDimensions.y - cursorY);
-	ImVec2 mouseWinPos = ImVec2(mouseX - winDimensions.x, mouseY - winDimensions.y);
+	ImVec2 mouseWinPos = ImVec2(p.x - winDimensions.x, p.y - winDimensions.y);
 	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
 	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
 
