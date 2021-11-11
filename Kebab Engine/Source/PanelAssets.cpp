@@ -9,6 +9,7 @@
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 #include "PanelHierarchy.h"
 
@@ -32,15 +33,21 @@ AssetsPanel::AssetsPanel()
 
 	folderTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/folder_icon.kbtexture");
 	modelTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/model_icon.kbtexture");
-	
+	pngTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/texture_icon.kbtexture");
+
 	if (folderTex == nullptr)
-		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/folder_icon.png");
+		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/folder_icon.png");
 	if (modelTex == nullptr)
-		modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/model_icon.png");
+		modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/model_icon.png");
+	if (pngTex == nullptr)
+		pngTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/texture_icon.png");
 }
 
 AssetsPanel::~AssetsPanel()
 {
+	delete folderTex;
+	delete modelTex;
+	delete pngTex;
 }
 
 void AssetsPanel::OnRender(float dt)
@@ -63,6 +70,10 @@ void AssetsPanel::OnRender(float dt)
 			}
 			if (scroll <= 0) scroll = 0;
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
+
+
+			if (ImGui::IsItemHovered())
+				printf("hey");
 		}
 
 		DisplayAssets();
@@ -142,6 +153,8 @@ void AssetsPanel::DisplayAssets()
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
 		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
+		else if (strcmp(aux.c_str(), ".dds") == 0 || strcmp(aux.c_str(), ".png") == 0 || strcmp(aux.c_str(), ".jpg") == 0)
+			ImGui::ImageButton((ImTextureID)pngTex->GetID(), { 100,100 });
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
 
@@ -218,7 +231,47 @@ void AssetsPanel::DisplayPopMenu()
 		}
 		if (ImGui::Button("Import to Scene"))
 		{
+			char path[128] = "";
+			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
 
+			std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
+			
+			if (strcmp(extension.c_str(), ".fbx") == 0 || strcmp(extension.c_str(), ".obj") == 0)
+			{
+				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path));
+				LOG_CONSOLE("Asset Imported Succesfully");
+			}
+			else if (strcmp(extension.c_str(), ".dds") == 0 || strcmp(extension.c_str(), ".png") == 0 || strcmp(extension.c_str(), ".jpg") == 0)
+			{
+				GameObject* target = app->editor->hierarchyPanel->currentGO;
+				if (target)
+				{
+					if (target->GetComponent(ComponentType::MESH))
+					{
+						for (int i = 0; i < target->GetComponents().size(); ++i)
+						{
+							ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
+							GameObject* parent = target->GetParent();
+							/*while (parent && target != parent)
+								target = target->GetParent();*/
+
+								//std::string a = (target->GetName() + '/' + name + '.' + extension);
+							ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
+							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path));
+						}
+					}
+					else
+					{
+						std::string message = "Couldn't apply texture, selected game object "
+							+ target->GetName()
+							+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
+						LOG_CONSOLE(message.c_str());
+					}
+				}
+				else LOG_CONSOLE("Please select a Game Object with mesh to apply the texture %s", popUpItem);
+			}
+			else
+				LOG_CONSOLE("Asset can't be imported");
 
 			ImGui::CloseCurrentPopup();
 		}

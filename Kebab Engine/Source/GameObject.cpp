@@ -1,6 +1,6 @@
+#include "Application.h"
 #include "GameObject.h"
 
-#include "Application.h"
 #include "MainScene.h"
 
 #include "Globals.h"
