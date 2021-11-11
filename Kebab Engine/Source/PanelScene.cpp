@@ -1,6 +1,7 @@
 #include "Application.h"
+#include "Camera3D.h"
 #include "Renderer3D.h"
-
+#include "MainScene.h"
 //#include "ComponentCamera.h"
 
 #include "PanelScene.h"
@@ -25,17 +26,23 @@ void ScenePanel::OnRender(FrameBuffer* frameBuffer)
 
     //hovered = ImGui::IsWindowHovered();
 
-    if (size.x != viewportPanelSize.x || size.y != viewportPanelSize.y)
+    if(ImGui::IsItemActive())
+        app->camera->SetCurrentCamera(app->scene->GetCamera());
+
+    //if (app->camera->GetCurrentCamera()->cameraType == CameraType::GAME)
     {
-        frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
-        size = { viewportPanelSize.x, viewportPanelSize.y };
-        app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
+        if (size.x != viewportPanelSize.x || size.y != viewportPanelSize.y)
+        {
+            frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
+            size = { viewportPanelSize.x, viewportPanelSize.y };
+            app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
+        }
+
+        dimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };
+
+        uint32_t image = frameBuffer->GetColorAttachment();
+        ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
     }
-
-    dimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };
-
-    uint32_t image = frameBuffer->GetColorAttachment();
-    ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
 
     ImGui::End();
 }

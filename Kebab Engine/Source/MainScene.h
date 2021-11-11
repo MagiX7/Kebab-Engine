@@ -30,7 +30,7 @@ public:
 	inline GameObject* GetRoot() { return root; }
 	GameObject* GetGameObjectByUuid(int uuid);
 
-	const ComponentCamera* GetCamera() { return camera; }
+	ComponentCamera* GetCamera() { return camera; }
 
 private:
 	//std::vector<GameObject*> gameObjects;

@@ -8,12 +8,12 @@
 class GameObject;
 class ComponentCamera;
 class GameObject;
-
-enum class CameraType
-{
-	EDITOR,
-	GAME
-};
+//
+//enum class CameraType
+//{
+//	EDITOR,
+//	GAME
+//};
 
 class Camera3D : public Module
 {
@@ -33,10 +33,10 @@ public:
 
 	float* GetViewMatrix();
 	float* GetProjectionMatrix();
-	ComponentCamera* GetCamera();
+	ComponentCamera* GetCurrentCamera();
 	void SetEditorCamera(ComponentCamera* cam);
 	void SetGameCamera(ComponentCamera* cam);
-	void SetCurrentCamera(CameraType type);
+	void SetCurrentCamera(ComponentCamera* cam);
 
 	void CenterCameraToGO(AABB* boundBox);
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
@@ -55,11 +55,12 @@ private:
 public:
 
 	float3 reference, position;
+	ComponentCamera* editorCam;
 
 private:
 
 	ComponentCamera* currentCam;
-	ComponentCamera* editorCam;
+	//ComponentCamera* editorCam;
 	ComponentCamera* gameCam;
 
 	bool focusing;

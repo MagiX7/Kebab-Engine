@@ -55,7 +55,7 @@ bool Renderer3D::Init(JSON_Object* root)
 		ret = false;
 	}
 	
-	currentCam = app->camera->GetCamera();
+	currentCam = app->camera->GetCurrentCamera();
 
 	if(ret == true)
 	{
@@ -184,18 +184,22 @@ bool Renderer3D::PreUpdate(float dt)
 			else if (!currentCam->CameraToCurrent() && currentCam == auxCam)
 			{
 				camsActive--;
-				currentCam = app->camera->GetCamera();
+				currentCam = app->camera->GetCurrentCamera();
 			}
 		}
 	}
 	
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
+	//glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
+	ComponentCamera* c = app->camera->GetCurrentCamera();
+
+	glLoadMatrixf(c->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
-	float4x4 mat = currentCam->frustum.ViewMatrix();
+	//float4x4 mat = currentCam->frustum.ViewMatrix();
+	//glLoadMatrixf(mat.Transposed().ptr());
+	float4x4 mat = c->frustum.ViewMatrix();
 	glLoadMatrixf(mat.Transposed().ptr());
-
 	
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{

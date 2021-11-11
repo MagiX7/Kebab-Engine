@@ -2,6 +2,7 @@
 #include "MainScene.h"
 
 #include "Input.h"
+#include "Camera3D.h"
 #include "Renderer3D.h"
 #include "Editor.h"
 
@@ -35,10 +36,17 @@ bool MainScene::Start()
     root = new GameObject("Scene");
 
     GameObject* goCam = new GameObject("Main Camera");
-    camera = new ComponentCamera(goCam);
+    camera = new ComponentCamera(goCam, CameraType::GAME);
+    camera->SetCameraPosition({ 0,0,0 });
+    camera->Look({ 0,0,0 });
+
+    ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
+    tr->SetTranslation({ -5,5,2 });
+
     goCam->AddComponent(camera);
 
     AddGameObject(goCam);
+    app->camera->SetGameCamera(camera);
 
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 

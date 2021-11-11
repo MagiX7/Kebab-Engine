@@ -85,7 +85,7 @@ Component* GameObject::CreateComponent(ComponentType type, std::string meshPath)
 		break;
 
 	case ComponentType::CAMERA:
-		ret = new ComponentCamera(this);
+		ret = new ComponentCamera(this, CameraType::NONE);
 		components.push_back(ret);
 		break;
 

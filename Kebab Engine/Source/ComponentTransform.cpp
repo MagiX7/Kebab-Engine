@@ -90,6 +90,12 @@ void ComponentTransform::SetLocalMatrix(const float4x4& transform)
 	transform.Decompose(position, rotation, scale);
 
 	guiPos = position;
+	//guiRot = rotation.ToEulerXYX();
+	float3 r = { rotation.x, rotation.y, rotation.z };
+	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
+	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
+
+	//guiRot = math::RadToDeg(guiRot);
 	guiRot = { rotation.x, rotation.y, rotation.z };
 	guiScale = scale;
 
