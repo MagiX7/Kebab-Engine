@@ -127,7 +127,8 @@ bool Camera3D::Update(float dt)
 		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered() && !ImGuizmo::IsUsing())
 		{
 			GameObject* picked = MousePickGameObject();
-			app->editor->hierarchyPanel->SetCurrent(picked);
+			if(picked)
+				app->editor->hierarchyPanel->SetCurrent(picked);
 			//app->editor->hierarchyPanel->currentGO = picked;
 		}
 
@@ -158,10 +159,10 @@ bool Camera3D::Update(float dt)
 	std::vector<GameObject*>::iterator it;
 	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
 	{
-		DrawInFrustumCulling((*it), app->renderer3D->currentCam);
+		DrawInFrustumCulling((*it), currentCam);
 
 		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it), app->renderer3D->currentCam);
+			PropagateDrawInFrustumCulling((*it), currentCam);
 	}
 
 	return true;

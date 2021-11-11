@@ -1,5 +1,8 @@
 #include "Application.h"
+#include "Renderer3D.h"
+
 #include "MeshLoader.h"
+#include "TextureLoader.h"
 
 #include "MainScene.h"
 #include "Editor.h"
@@ -405,8 +408,6 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
 
 KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject* parent)
 {
-    KbMesh* mesh = new KbMesh(fileName);
-
     std::string name;
     int start = fileName.find_last_of('\\');
     if (start <= 0)
@@ -415,7 +416,9 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     if (start <= 0)
         name = CUSTOM_DIR + fileName;
     else
-        name = fileName.substr(start + 1);
+        name = fileName;
+    
+    KbMesh* mesh = new KbMesh(name.c_str());
 
     char* buffer;
     if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
@@ -461,7 +464,6 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
     std::queue<GameObject*> q;
     std::vector<std::pair<GameObject*, std::string>> gosMeshes;
 
-
     //q.push(go);
     for (auto& child : go->GetChilds())
         q.push(child);
@@ -494,7 +496,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
 
 
     //std::string n = go->GetName() + ".Meshes";
-    json_object_dotset_value(modelObj, "Model.Meshes", arrValue);
+    json_object_set_value(modelObj, "Meshes", arrValue);
     json_object_set_number(modelObj, "parent uuid", go->GetUuid());
 
     for (int i = 0; i < gosMeshes.size(); ++i)
@@ -504,30 +506,39 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
 
         json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
         json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
-        json_object_set_string(obj, "path", gosMeshes[i].second.c_str());
+        json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
+
+        ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
+        std::string texPath = mat->GetCurrentTexture()->GetPath();
+
+        json_object_set_string(obj, "texture path", texPath.size() > 0 ? texPath.c_str() : "Checkers");
         
         json_array_append_value(arr, value);
     }
     //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 
-    int size = json_serialization_size(modelValue);
+    int size = json_serialization_size_pretty(modelValue);
     char* buffer = new char[size];
     json_serialize_to_buffer(modelValue, buffer, size);
 
-    std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
 
-    app->fileSystem->Save(path.c_str(), &buffer, size);
+    std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
+    json_serialize_to_file(modelValue, path.c_str());
+    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
+
+    //if (app->fileSystem->Save(path.c_str(), &buffer, size) > 0)
+    //    LOG_CONSOLE("SALUDOS");
 
     delete[] buffer;
 
-    json_value_free(modelValue);
+    //json_value_free(modelValue);
     
 }
 
 // Send the file name, NOT the path
 GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
 {
-    GameObject* ret = 0;
+    GameObject* ret = nullptr;
 
     std::string path = "Library/Models/" + fileName;
 
@@ -537,9 +548,12 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
         modelValue = json_parse_string(buffer);
         JSON_Object* modelObj = json_value_get_object(modelValue);
 
-        ret = new GameObject(fileName);
+        int s = fileName.find_last_of('/');
+        int e = fileName.find_last_of('.');
+        std::string n = fileName.substr(s + 1, e);
+        ret = new GameObject(n);
 
-        JSON_Array* arr = json_object_get_array(modelObj, "Model.Meshes");
+        JSON_Array* arr = json_object_get_array(modelObj, "Meshes");
 
         int size = json_array_get_count(arr);
         for (int i = 0; i < size; ++i)
@@ -547,7 +561,8 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             JSON_Object* obj = json_array_get_object(arr, i);
             int ownerUuid = json_object_get_number(obj, "owner uuid");
             const char* ownerName = json_object_get_string(obj, "owner name");
-            const char* meshPath = json_object_get_string(obj, "path");
+            const char* meshPath = json_object_get_string(obj, "mesh path");
+            const char* texPath = json_object_get_string(obj, "texture path");
 
             GameObject* owner = new GameObject(ownerName, ownerUuid);
 
@@ -555,12 +570,22 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
 
             KbMesh* mesh = LoadMeshCustomFormat(meshPath, owner);
             meshComp->SetData(mesh->vertices, mesh->indices);
+            meshComp->SetParent(owner);
+
+            Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(texPath);
+
+            ComponentMaterial* matComp = new ComponentMaterial(owner);
+            matComp->AddTexture(tex);
+            matComp->SetParent(owner);
 
             owner->AddComponent(meshComp);
+            owner->AddComponent(matComp);
             ret->AddChild(owner);
             owner->SetParent(ret);
+
+            //app->renderer3D->Submit(owner);
         }
     }
-
+    if (ret) app->scene->AddGameObject(ret);
     return ret;
 }

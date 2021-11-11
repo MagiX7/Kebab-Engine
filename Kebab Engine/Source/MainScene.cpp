@@ -48,12 +48,8 @@ bool MainScene::Start()
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
 
-    GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
-
-
-    GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
-    app->renderer3D->Submit(test);
-
+    //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+    //app->renderer3D->Submit(bh);
 
 	return ret;
 }
@@ -63,6 +59,19 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
+
+    if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+    {
+        GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
+        app->renderer3D->Submit(test);
+
+    }
+    if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+    {
+        GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+        app->renderer3D->Submit(bh);
+    }
+
 
     return true;
 }
