@@ -532,7 +532,6 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
     std::string path = "Library/Models/" + fileName;
 
     char* buffer;
-    //JSON_Value* modelValue;
     if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
     {
         modelValue = json_parse_string(buffer);
@@ -550,15 +549,16 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             const char* ownerName = json_object_get_string(obj, "owner name");
             const char* meshPath = json_object_get_string(obj, "path");
 
-            GameObject* child = new GameObject(ownerName, ownerUuid);
+            GameObject* owner = new GameObject(ownerName, ownerUuid);
 
-            ComponentMesh* meshComp = new ComponentMesh(child, meshPath);
+            ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
 
-            KbMesh* mesh = LoadMeshCustomFormat(meshPath, child);
+            KbMesh* mesh = LoadMeshCustomFormat(meshPath, owner);
             meshComp->SetData(mesh->vertices, mesh->indices);
 
-            child->AddComponent(meshComp);
-            ret->AddChild(child);
+            owner->AddComponent(meshComp);
+            ret->AddChild(owner);
+            owner->SetParent(ret);
         }
     }
 
