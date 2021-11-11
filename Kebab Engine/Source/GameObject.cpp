@@ -225,7 +225,9 @@ AABB* GameObject::GetGlobalAABB()
 
 void GameObject::UpdateAABB(float4x4& newTrans)
 {
-	OBB obb = localAABB.Transform(newTrans);
+	//OBB obb = localAABB.Transform(newTrans);
+	OBB obb = localAABB.ToOBB();
+	obb.Transform(newTrans);
 	globalAABB.SetNegativeInfinity();
 	globalAABB.Enclose(obb);
 }

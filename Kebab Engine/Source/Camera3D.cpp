@@ -417,7 +417,7 @@ GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* 
 		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
 		LineSegment localLine = line;
-		localLine.Transform(trans->GetGlobalMatrix().Transposed());
+		//localLine.Transform(trans->GetLocalMatrix().Transposed());
 		if (go->GetGlobalAABB()->Intersects(localLine))
 		{
 			return go;

@@ -133,10 +133,11 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 
 	aabb.SetNegativeInfinity();
 	int size = vertices.size();
-	aabb.Enclose(&vertices.data()->position, size);
+	//aabb.Enclose(&vertices.data()->position, size);
+	for (int i = 0; i < size; ++i)
+		aabb.Enclose(vertices[i].position);
 
 	parent->SetGlobalAABB(aabb);
-	//this->parent->AddAABB();
 }
 
 void ComponentMesh::SetMeshPath(const std::string& path)
