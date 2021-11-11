@@ -41,6 +41,7 @@ public:
 	void AddAABB();
 	AABB* GetLocalAABB();
 	void SetGlobalAABB(GameObject* parent);
+	void SetGlobalAABB(const AABB& aabb);
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 

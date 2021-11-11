@@ -195,6 +195,20 @@ void GameObject::SetGlobalAABB(GameObject* p)
 	p->localAABB.Enclose(localAABB.minPoint, localAABB.maxPoint);
 }
 
+void GameObject::SetGlobalAABB(const AABB& aabb)
+{
+	localAABB = aabb;
+	ComponentTransform* tr = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
+	localAABB.Transform(tr->GetLocalMatrix());
+
+	globalAABB.Enclose(localAABB);
+
+	if (parent && parent != app->scene->GetRoot())
+	{
+		parent->SetGlobalAABB(globalAABB);
+	}
+}
+
 AABB* GameObject::GetLocalAABB()
 {
 	return &localAABB;
@@ -202,10 +216,10 @@ AABB* GameObject::GetLocalAABB()
 
 AABB* GameObject::GetGlobalAABB()
 {
-	ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
+	/*ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
 	OBB obb = localAABB.Transform(compTrans->GetLocalMatrix());
 	globalAABB.SetNegativeInfinity();
-	globalAABB.Enclose(obb);
+	globalAABB.Enclose(obb);*/
 	return &globalAABB;
 }
 

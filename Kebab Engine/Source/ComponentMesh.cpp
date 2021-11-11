@@ -128,7 +128,15 @@ void ComponentMesh::Draw(ComponentMaterial* mat)
 void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*std::vector<Texture> textures*/)
 {
 	mesh->SetData(vertices, indices);
-	this->parent->AddAABB();
+
+	AABB aabb;
+
+	aabb.SetNegativeInfinity();
+	int size = vertices.size();
+	aabb.Enclose(&vertices.data()->position, size);
+
+	parent->SetGlobalAABB(aabb);
+	//this->parent->AddAABB();
 }
 
 void ComponentMesh::SetMeshPath(const std::string& path)
