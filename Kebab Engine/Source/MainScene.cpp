@@ -28,11 +28,17 @@ MainScene::~MainScene()
 // Load assets
 bool MainScene::Start()
 {
-	LOG_CONSOLE("Loading assets");
+    LOG_CONSOLE("Loading assets");
 
-	bool ret = true;
+    bool ret = true;
 
     root = new GameObject("Scene");
+
+    GameObject* goCam = new GameObject("Main Camera");
+    camera = new ComponentCamera(goCam);
+    goCam->AddComponent(camera);
+
+    AddGameObject(goCam);
 
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 

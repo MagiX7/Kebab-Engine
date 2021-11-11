@@ -22,12 +22,13 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	position = vec(0.0f, 0.0f, 0.0f);
 	reference = vec(0.0f, 0.0f, 0.0f);
 
-	cam = new ComponentCamera(nullptr);
+	editorCam = new ComponentCamera(nullptr);
+	currentCam = editorCam;
 
 	focusing = false;
 
-	cam->SetCameraPosition(position);
-	cam->Look(reference);
+	currentCam->SetCameraPosition(position);
+	currentCam->Look(reference);
 }
 
 Camera3D::~Camera3D()
@@ -54,7 +55,9 @@ bool Camera3D::CleanUp()
 {
 	LOG("Cleaning camera");
 
-	delete(cam);
+	delete(currentCam);
+	delete editorCam;
+	delete gameCam;
 
 	return true;
 }
@@ -74,25 +77,25 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		// Movement of camera ====================================================================================
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += currentCam->frustum.Front() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= currentCam->frustum.Front() * speed;
 
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= currentCam->frustum.WorldRight() * speed;
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += currentCam->frustum.WorldRight() * speed;
 
 		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= float3::unitY * speed * 0.5f;
 		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += float3::unitY * speed * 0.5f;
 
 		position += newPos;
 
-		cam->SetCameraPosition(position);
+		currentCam->SetCameraPosition(position);
 
 		// Rotation of camera ================================================================================
 		math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
-		math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
+		math::Quat rotationY = math::Quat::RotateAxisAngle(currentCam->frustum.WorldRight(), dy * DEGTORAD);
 		math::Quat finalRotation = rotationX * rotationY;
 
-		cam->frustum.Transform(finalRotation);
+		currentCam->frustum.Transform(finalRotation);
 	}
 
 	// Zoom ===============================================================
@@ -105,15 +108,15 @@ bool Camera3D::Update(float dt)
 	{
 		if (app->input->GetMouseZ() < 0)
 		{
-			zoom -= cam->frustum.Front() * speed;
+			zoom -= currentCam->frustum.Front() * speed;
 			position += zoom;
-			cam->SetCameraPosition(position);
+			currentCam->SetCameraPosition(position);
 		}
 		if (app->input->GetMouseZ() > 0)
 		{
-			zoom += cam->frustum.Front() * speed;
+			zoom += currentCam->frustum.Front() * speed;
 			position += zoom;
-			cam->SetCameraPosition(position);
+			currentCam->SetCameraPosition(position);
 		}
 	}
 
@@ -162,47 +165,66 @@ bool Camera3D::Update(float dt)
 
 void Camera3D::LookAt( const float3& point)
 {
-	cam->Look(point);
+	currentCam->Look(point);
 	reference = point;
 }
 
 void Camera3D::MoveTo(const float3& pos)
 {
-	cam->SetCameraPosition(pos);
+	currentCam->SetCameraPosition(pos);
 	position = pos;
 }
 
 void Camera3D::SetPosLook(const float3& pos, const float3& pointLook)
 {
-	cam->Look(pointLook);
+	currentCam->Look(pointLook);
 	reference = pointLook;
-	cam->SetCameraPosition(pos);
+	currentCam->SetCameraPosition(pos);
 	position = pos;
 }
 
 void Camera3D::SetRatio(float ratio)
 {
-	cam->frustum.SetHorizontalFovAndAspectRatio(Atan(ratio * Tan(cam->frustum.VerticalFov() / 2)) * 2, ratio);
+	currentCam->frustum.SetHorizontalFovAndAspectRatio(Atan(ratio * Tan(currentCam->frustum.VerticalFov() / 2)) * 2, ratio);
 }
 
 float* Camera3D::GetViewMatrix()
 {
-	return cam->GetViewMatrix().ptr();
+	return currentCam->GetViewMatrix().ptr();
 }
 
 float* Camera3D::GetProjectionMatrix()
 {
-	return cam->GetProjectionMatrix().ptr();
+	return currentCam->GetProjectionMatrix().ptr();
 }
 
 ComponentCamera* Camera3D::GetCamera()
 {
-	return cam;
+	return currentCam;
+}
+
+void Camera3D::SetEditorCamera(ComponentCamera* cam)
+{
+	editorCam = cam;
+}
+
+void Camera3D::SetGameCamera(ComponentCamera* cam)
+{
+	gameCam = cam;
+}
+
+void Camera3D::SetCurrentCamera(CameraType type)
+{
+	switch (type)
+	{
+		case CameraType::EDITOR: currentCam = editorCam; break;
+		case CameraType::GAME: currentCam = gameCam; break;
+	}
 }
 
 void Camera3D::CenterCameraToGO(AABB* boundBox)
 {
-	float dist = boundBox->Size().y / Tan(cam->GetVerticalFov() / 2);;
+	float dist = boundBox->Size().y / Tan(currentCam->GetVerticalFov() / 2);;
 	float3 dir = boundBox->CenterPoint() - position;
 
 	if (Distance(boundBox->CenterPoint(), position) > dist + 0.5f)
@@ -219,24 +241,24 @@ void Camera3D::CenterCameraToGO(AABB* boundBox)
 	}
 
 	reference = boundBox->CenterPoint();
-	cam->SetCameraPosition(position);
-	cam->Look(reference);
+	currentCam->SetCameraPosition(position);
+	currentCam->Look(reference);
 }
 
 void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 {
 	reference = boundBox->CenterPoint();
 
-	float3 dir = cam->GetCameraPosition() - reference;
+	float3 dir = currentCam->GetCameraPosition() - reference;
 
-	math::Quat rotationX = math::Quat::RotateAxisAngle(cam->frustum.Up(), dx * DEGTORAD);
-	math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
+	math::Quat rotationX = math::Quat::RotateAxisAngle(currentCam->frustum.Up(), dx * DEGTORAD);
+	math::Quat rotationY = math::Quat::RotateAxisAngle(currentCam->frustum.WorldRight(), dy * DEGTORAD);
 	math::Quat finalRotation = rotationX * rotationY;
 
 	dir = finalRotation.Transform(dir);
 
 	position = dir + reference;
-	cam->SetCameraPosition(position);
+	currentCam->SetCameraPosition(position);
 	LookAt(reference);
 }
 
@@ -301,7 +323,7 @@ void Camera3D::Save(JSON_Object* root)
 	json_object_set_value(camObj, "worldmatrix", json_value_init_object());
 	JSON_Object* worldObj = json_object_get_object(camObj, "worldmatrix");
 
-	float3x4 worldMat = cam->frustum.WorldMatrix();
+	float3x4 worldMat = currentCam->frustum.WorldMatrix();
 
 	json_object_set_number(worldObj, "x0", worldMat.At(0, 0));
 	json_object_set_number(worldObj, "y0", worldMat.At(1, 0));
@@ -352,7 +374,7 @@ void Camera3D::Load(JSON_Object* root)
 	pos.z = json_object_get_number(worldObj, "z3");
 
 	float3x4 worldMat{ rotMat, pos };
-	cam->frustum.SetWorldMatrix(worldMat);
+	currentCam->frustum.SetWorldMatrix(worldMat);
 	position = pos;
 }
 
@@ -371,7 +393,7 @@ GameObject* Camera3D::MousePickGameObject()
 	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
 	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
 
-	LineSegment picking = cam->frustum.UnProjectLineSegment(x, y);
+	LineSegment picking = currentCam->frustum.UnProjectLineSegment(x, y);
 
 	float3 hitPoint;
 	GameObject* hitted = ThrowRay(picking, hitPoint, app->scene->GetRoot());

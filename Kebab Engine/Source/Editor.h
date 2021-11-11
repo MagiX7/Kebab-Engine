@@ -9,6 +9,7 @@
 class ConfigPanel;
 class ConsolePanel;
 class ViewportPanel;
+class ScenePanel;
 class InspectorPanel;
 class HierarchyPanel;
 class AssetsPanel;
@@ -50,6 +51,7 @@ public:
 	HierarchyPanel* hierarchyPanel;
 	InspectorPanel* inspectorPanel;
 	AssetsPanel* assetsPanel;
+	ScenePanel* scenePanel;
 
 	bool showAboutPanel;
 	bool wireframe;

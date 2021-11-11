@@ -144,7 +144,8 @@ void GameObject::AddComponent(Component* comp)
 {
 	components.push_back(comp);
 
-	AddAABB();
+	if(comp->GetComponentType() == ComponentType::MESH)
+		AddAABB();
 }
 
 void GameObject::AddChild(GameObject* child)

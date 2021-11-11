@@ -18,6 +18,7 @@
 #include "PanelHierarchy.h"
 #include "PanelInspector.h"
 #include "PanelViewport.h"
+#include "PanelScene.h"
 #include "PanelAssets.h"
 
 
@@ -38,6 +39,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     viewportPanel = new ViewportPanel();
     hierarchyPanel = new HierarchyPanel();
     inspectorPanel = new InspectorPanel();
+    scenePanel = new ScenePanel();
 
     showAboutPanel = false;
     showWindows = true;
@@ -94,6 +96,8 @@ bool Editor::CleanUp()
     inspectorPanel = nullptr;
     delete(assetsPanel);
     assetsPanel = nullptr;
+    delete (scenePanel);
+    scenePanel = nullptr;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -162,8 +166,13 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     SimulationControl();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    if(frameBuffer) viewportPanel->OnRender(frameBuffer, guizmoOperation, guizmoMode);
+    if (frameBuffer)
+    {
+        viewportPanel->OnRender(frameBuffer, guizmoOperation, guizmoMode);
+        scenePanel->OnRender(frameBuffer);
+    }
     ImGui::PopStyleVar();
+
 
     if (showDemoWindow)
     {

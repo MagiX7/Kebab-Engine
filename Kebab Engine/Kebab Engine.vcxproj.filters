@@ -142,6 +142,9 @@
     <ClCompile Include="Source\External\ImGuizmo\ImSequencer.cpp">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelScene.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\ImGuizmo\ImZoomSlider.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelScene.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

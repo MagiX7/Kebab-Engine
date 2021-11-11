@@ -2,12 +2,13 @@
 #include "Module.h"
 
 #include "GameObject.h"
+#include "ComponentCamera.h"
 
 #include "Globals.h"
 
 #include <vector>
 
-#define BOUNCER_TIME 200
+//#define BOUNCER_TIME 200
 
 class GameObject;
 
@@ -29,8 +30,11 @@ public:
 	inline GameObject* GetRoot() { return root; }
 	GameObject* GetGameObjectByUuid(int uuid);
 
+	const ComponentCamera* GetCamera() { return camera; }
+
 private:
 	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
 
+	ComponentCamera* camera;
 };

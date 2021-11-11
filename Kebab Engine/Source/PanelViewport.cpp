@@ -77,16 +77,7 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
         if (ImGuizmo::IsUsing())
         {
             model.Transpose();
-            /*float3 p, s;
-            Quat r;*/
             tr->SetLocalMatrix(model);
-
-            //shearXy Yx Zy
-
-            /*model.Decompose(p, r, s);
-            tr->SetTranslation(p);
-            tr->SetRotation(r);
-            tr->SetScale(s);*/
         }
     }
 }
