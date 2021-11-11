@@ -241,6 +241,11 @@ bool Renderer3D::Draw(float dt)
 		
 		if (drawAABB)
 			go->DrawAABB();
+		
+		ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+
+		if (auxCam)
+			auxCam->DrawFrustum();
 	}
 
 	frameBuffer->Unbind();

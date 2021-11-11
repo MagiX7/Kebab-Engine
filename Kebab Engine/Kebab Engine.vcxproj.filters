@@ -142,6 +142,9 @@
     <ClCompile Include="Source\External\ImGuizmo\ImSequencer.cpp">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Source\QuadTree.cpp">
+      <Filter>Source Files\Space Partition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="Source\External\ImGuizmo\ImZoomSlider.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="Source\QuadTree.h">
+      <Filter>Source Files\Space Partition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -352,6 +358,9 @@
     </Filter>
     <Filter Include="Source Files\3rd Parties\ImGuizmo">
       <UniqueIdentifier>{5a7db031-16b8-4dce-bad8-93826c156368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Space Partition">
+      <UniqueIdentifier>{c885deab-4f4c-4461-8643-f0c3e8129fdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

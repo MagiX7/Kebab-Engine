@@ -106,6 +106,9 @@ bool Editor::CleanUp()
     inspectorPanel = nullptr;
     delete(assetsPanel);
     assetsPanel = nullptr;
+    delete playTex;
+    delete pauseTex;
+    delete stopTex;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();

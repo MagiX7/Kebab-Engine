@@ -59,6 +59,7 @@
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Parser.cpp" />
+    <ClCompile Include="Source\QuadTree.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
+    <ClInclude Include="Source\QuadTree.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Texture.h" />

@@ -71,49 +71,84 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 40.0f * dt;
 
-	if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (app->renderer3D->currentCam == cam)
 	{
-		// Movement of camera ====================================================================================
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
-
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
-
-		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= float3::unitY * speed * 0.5f;
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += float3::unitY * speed * 0.5f;
-
-		position += newPos;
-
-		cam->SetCameraPosition(position);
-
-		// Rotation of camera ================================================================================
-		math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
-		math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
-		math::Quat finalRotation = rotationX * rotationY;
-
-		cam->frustum.Transform(finalRotation);
-	}
-
-	// Zoom ===============================================================
-	float3 zoom(0, 0, 0); 
-	float4 viewDim = app->editor->viewportPanel->GetDimensions();
-
-	if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
-		ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
-		app->editor->viewportPanel->IsHovered())
-	{
-		if (app->input->GetMouseZ() < 0)
+		if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{
-			zoom -= cam->frustum.Front() * speed;
-			position += zoom;
+			// Movement of camera ====================================================================================
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += cam->frustum.Front() * speed;
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= cam->frustum.Front() * speed;
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= cam->frustum.WorldRight() * speed;
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += cam->frustum.WorldRight() * speed;
+
+			if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) newPos -= float3::unitY * speed * 0.5f;
+			if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) newPos += float3::unitY * speed * 0.5f;
+
+			position += newPos;
+
 			cam->SetCameraPosition(position);
+
+			// Rotation of camera ================================================================================
+			math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
+			math::Quat rotationY = math::Quat::RotateAxisAngle(cam->frustum.WorldRight(), dy * DEGTORAD);
+			math::Quat finalRotation = rotationX * rotationY;
+
+			cam->frustum.Transform(finalRotation);
 		}
-		if (app->input->GetMouseZ() > 0)
+
+		// Zoom ===============================================================
+		float3 zoom(0, 0, 0);
+		float4 viewDim = app->editor->viewportPanel->GetDimensions();
+
+		if (ImGui::GetMousePos().x > viewDim.x && ImGui::GetMousePos().x < viewDim.x + viewDim.z &&
+			ImGui::GetMousePos().y > viewDim.y && ImGui::GetMousePos().y < viewDim.y + viewDim.w &&
+			app->editor->viewportPanel->IsHovered())
 		{
-			zoom += cam->frustum.Front() * speed;
-			position += zoom;
-			cam->SetCameraPosition(position);
+			if (app->input->GetMouseZ() < 0)
+			{
+				zoom -= cam->frustum.Front() * speed;
+				position += zoom;
+				cam->SetCameraPosition(position);
+			}
+			if (app->input->GetMouseZ() > 0)
+			{
+				zoom += cam->frustum.Front() * speed;
+				position += zoom;
+				cam->SetCameraPosition(position);
+			}
+		}
+
+		// Focus
+		if (app->editor->hierarchyPanel->currentGO != nullptr)
+		{
+			GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
+			ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
+
+			AABB* boundBox = selectedGO->GetGlobalAABB();
+
+			if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
+
+			if (focusing == true)
+			{
+				CenterCameraToGO(boundBox);
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT
+				&& !ImGuizmo::IsUsing())
+			{
+				OrbitGO(boundBox, dx, dy);
+			}
+		}
+
+		// Frustum Culling
+		std::vector<GameObject*>::iterator it;
+		for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
+		{
+			DrawInFrustumCulling((*it), app->renderer3D->currentCam);
+
+			if ((*it)->GetChilds().size() != 0)
+				PropagateDrawInFrustumCulling((*it), app->renderer3D->currentCam);
 		}
 	}
 
@@ -123,38 +158,6 @@ bool Camera3D::Update(float dt)
 		GameObject* picked = MousePickGameObject();
 		app->editor->hierarchyPanel->SetCurrent(picked);
 		//app->editor->hierarchyPanel->currentGO = picked;
-	}
-
-	// Focus
-	if (app->editor->hierarchyPanel->currentGO != nullptr)
-	{
-		GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
-		ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
-
-		AABB* boundBox = selectedGO->GetGlobalAABB();
-
-		if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
-
-		if (focusing == true)
-		{
-			CenterCameraToGO(boundBox);
-		}
-
-		if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT
-			&& !ImGuizmo::IsUsing())
-		{
-			OrbitGO(boundBox, dx, dy);
-		}
-	}
-
-	// Frustum Culling
-	std::vector<GameObject*>::iterator it;
-	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
-	{
-		DrawInFrustumCulling((*it), app->renderer3D->currentCam);
-
-		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it), app->renderer3D->currentCam);
 	}
 
 	return true;
