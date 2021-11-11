@@ -169,7 +169,7 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 	parent->UpdateAABB(localTransformMat);
 
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
-	for (; it != parent->GetChilds().end(); ++it)
+	for (; it != go->GetChilds().end(); ++it)
 	{
 		ComponentTransform* childTrans = (ComponentTransform*)(*it)->GetComponent(ComponentType::TRANSFORM);
 		ComponentTransform* parentTrans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);			
@@ -182,10 +182,17 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 		childTrans->SetScale(newScale);
 		(*it)->UpdateAABB(childTrans->GetLocalMatrix());
 
-		ComponentCamera* childCam = (ComponentCamera*)(*it)->GetComponent(ComponentType::CAMERA);
+	}
 
-		if (childCam != nullptr)
-			childCam->SetCameraPosition(childTrans->GetTranslation());
+	ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+	ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	if (cam)
+	{
+		cam->SetCameraPosition(tr->GetTranslation());
+
+		/*float3 r = rotation.ToEulerXYZ();
+		r = math::RadToDeg(r);
+		cam->Look(r);*/
 	}
 }
 

@@ -132,6 +132,6 @@ void ComponentCamera::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		ImGui::Checkbox("Set as Current Camera", &cameraActive);
+		//ImGui::Checkbox("Set as Current Camera", &cameraActive);
 	}
 }

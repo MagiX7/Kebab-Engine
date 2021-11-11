@@ -55,9 +55,10 @@ bool Camera3D::CleanUp()
 {
 	LOG("Cleaning camera");
 
-	delete(editorCam);
-	delete editorCam;
-	delete gameCam;
+	delete currentCam;
+	currentCam = nullptr;
+	//if(editorCam) delete editorCam;
+	//if(gameCam) delete gameCam;
 
 	return true;
 }
@@ -417,18 +418,22 @@ GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* 
 {
 	float3 hp;
 	Ray ray = line.ToRay();
+
 	for (auto& go : gameObject->GetChilds())
 	{
-		/*ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+		/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+		ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 		if (meshComp)
 		{
 			Triangle triangle;
 			for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
 			{
 				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+				triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+				triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
+				float4x4 m = trans->GetLocalMatrix().Transposed();
+				ray.Transform(m);
 				if (ray.Intersects(triangle))
 				{
 					return go;
