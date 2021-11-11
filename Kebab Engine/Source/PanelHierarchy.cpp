@@ -22,7 +22,6 @@ HierarchyPanel::HierarchyPanel()
 
 HierarchyPanel::~HierarchyPanel()
 {
-
 }
 
 void HierarchyPanel::OnRender(float dt)

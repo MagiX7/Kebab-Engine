@@ -20,6 +20,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 #define ASSETS_DIR "Assets/Resources/"
@@ -71,6 +74,8 @@ GameObject* MeshLoader::LoadModel(std::string path)
     GameObject* baseGO = new GameObject(name);
 
     ProcessNode(scene->mRootNode, scene, baseGO, name);
+
+    SaveModelCustomFormat(baseGO);
 
     app->scene->AddGameObject(baseGO);
     app->editor->assetsPanel->AddAsset(baseGO);
@@ -448,4 +453,114 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     indices.clear();
 
     return mesh;
+}
+
+void MeshLoader::SaveModelCustomFormat(GameObject* go)
+{
+    int ran = 0;
+    std::queue<GameObject*> q;
+    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
+
+
+    //q.push(go);
+    for (auto& child : go->GetChilds())
+        q.push(child);
+
+    while (!q.empty())
+    {
+        GameObject* curr = q.front();
+        ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+
+        if (m)
+        {
+            std::pair<GameObject*, std::string> g;
+            g.first = curr;
+            g.second = m->GetMesh()->GetPath();
+            gosMeshes.push_back(g);
+            ran++;
+        }
+
+        q.pop();
+        if (curr->GetChilds().size() > 0)
+            for (auto& c : curr->GetChilds())
+                q.push(c);
+    }
+
+    modelValue = json_value_init_object();
+    JSON_Object* modelObj = json_value_get_object(modelValue);
+
+    JSON_Value* arrValue = json_value_init_array();
+    JSON_Array* arr = json_value_get_array(arrValue);
+
+
+    //std::string n = go->GetName() + ".Meshes";
+    json_object_dotset_value(modelObj, "Model.Meshes", arrValue);
+    json_object_set_number(modelObj, "parent uuid", go->GetUuid());
+
+    for (int i = 0; i < gosMeshes.size(); ++i)
+    {
+        JSON_Value* value = json_value_init_object();
+        JSON_Object* obj = json_object(value);
+
+        json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
+        json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
+        json_object_set_string(obj, "path", gosMeshes[i].second.c_str());
+        
+        json_array_append_value(arr, value);
+    }
+    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
+
+    int size = json_serialization_size(modelValue);
+    char* buffer = new char[size];
+    json_serialize_to_buffer(modelValue, buffer, size);
+
+    std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
+
+    app->fileSystem->Save(path.c_str(), &buffer, size);
+
+    delete[] buffer;
+
+    json_value_free(modelValue);
+    
+}
+
+// Send the file name, NOT the path
+GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
+{
+    GameObject* ret = 0;
+
+    std::string path = "Library/Models/" + fileName;
+
+    char* buffer;
+    //JSON_Value* modelValue;
+    if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
+    {
+        modelValue = json_parse_string(buffer);
+        JSON_Object* modelObj = json_value_get_object(modelValue);
+
+        ret = new GameObject(fileName);
+
+        JSON_Array* arr = json_object_get_array(modelObj, "Model.Meshes");
+
+        int size = json_array_get_count(arr);
+        for (int i = 0; i < size; ++i)
+        {
+            JSON_Object* obj = json_array_get_object(arr, i);
+            int ownerUuid = json_object_get_number(obj, "owner uuid");
+            const char* ownerName = json_object_get_string(obj, "owner name");
+            const char* meshPath = json_object_get_string(obj, "path");
+
+            GameObject* child = new GameObject(ownerName, ownerUuid);
+
+            ComponentMesh* meshComp = new ComponentMesh(child, meshPath);
+
+            KbMesh* mesh = LoadMeshCustomFormat(meshPath, child);
+            meshComp->SetData(mesh->vertices, mesh->indices);
+
+            child->AddComponent(meshComp);
+            ret->AddChild(child);
+        }
+    }
+
+    return ret;
 }

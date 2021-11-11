@@ -32,6 +32,8 @@ public:
 	void SaveMeshCustomFormat(ComponentMesh* mesh);
 	KbMesh* LoadMeshCustomFormat(const std::string& fileName, GameObject* parent);
 
+	void SaveModelCustomFormat(GameObject* go);
+	GameObject* LoadModelCustomFormat(const std::string& filename);
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
 
@@ -54,4 +56,6 @@ private:
 
 	std::vector<KbMesh> meshes;
 	std::string directory;
+
+	JSON_Value* modelValue;
 };

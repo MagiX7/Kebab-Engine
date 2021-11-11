@@ -48,7 +48,12 @@ bool MainScene::Start()
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+    GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+
+
+    GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
+    app->renderer3D->Submit(test);
+
 
 	return ret;
 }
