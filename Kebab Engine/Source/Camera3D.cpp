@@ -124,11 +124,10 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing())
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing() && !ImGuizmo::IsOver())
 		{
 			GameObject* picked = MousePickGameObject();
-			if(picked)
-				app->editor->hierarchyPanel->SetCurrent(picked);
+			app->editor->hierarchyPanel->SetCurrent(picked);
 			//app->editor->hierarchyPanel->currentGO = picked;
 		}
 

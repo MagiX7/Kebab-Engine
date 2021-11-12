@@ -93,10 +93,11 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path)
 
 		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
 		LOG_CONSOLE("Custom file format texture %s loaded!", path);
+		
+		delete[] buffer;
 	}
 	else LOG_CONSOLE("Could not load custom file format texture %s", path);
 
-	delete[] buffer;
 	
 	return ret;
 }

@@ -11,7 +11,7 @@ Texture::Texture(void* data, int width, int height, std::string path)
 {
 	this->width = width;
 	this->height = height;
-	//this->path = path;
+	this->path = path;
 	this->type = TextureType::DIFFUSE;
 
 	int start = path.find_last_of('\\');

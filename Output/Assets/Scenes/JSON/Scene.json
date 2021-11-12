@@ -2,13 +2,38 @@
     "Scene": {
         "GameObjects": [
             {
-                "name": "Baker House",
-                "uuid": -903175441,
+                "name": "Main Camera",
+                "uuid": -1985492479,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
                             "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Baker House",
+                "uuid": -1921741516,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 3.4265182018280029,
                             "y": 0,
                             "z": 0
                         },
@@ -28,13 +53,13 @@
             },
             {
                 "name": "Chimney",
-                "uuid": -1960117833,
-                "parent uuid": -903175441,
+                "uuid": 0,
+                "parent uuid": -1921741516,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
+                            "x": 3.4265182018280029,
                             "y": 0,
                             "z": 0
                         },
@@ -48,30 +73,28 @@
                             "x": 1,
                             "y": 1,
                             "z": 1
-                        }
-                    },
-                    {
-                        "Type": 2,
-                        "Texture": {
-                            "path": "Library\/Textures\/Baker_house.kbtexture"
                         }
                     },
                     {
                         "Type": 1,
                         "mesh path": "Library\/Meshes\/Chimney.kbmesh",
                         "mesh name": "Chimney.kbmesh"
+                    },
+                    {
+                        "Type": 2,
+                        "path": "Library\/Textures\/Baker_house.kbtexture"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": 1182045001,
-                "parent uuid": -903175441,
+                "uuid": 0,
+                "parent uuid": -1921741516,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
+                            "x": 3.4265182018280029,
                             "y": 0,
                             "z": 0
                         },
@@ -88,15 +111,108 @@
                         }
                     },
                     {
+                        "Type": 1,
+                        "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
+                        "mesh name": "Baker_house.kbmesh"
+                    },
+                    {
                         "Type": 2,
-                        "Texture": {
-                            "path": "Library\/Textures\/Baker_house.kbtexture"
+                        "path": "Library\/Textures\/Baker_house.kbtexture"
+                    }
+                ]
+            },
+            {
+                "name": "Avril",
+                "uuid": -157102468,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": -7.1410431861877441,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Avril Avant",
+                "uuid": 0,
+                "parent uuid": -157102468,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": -7.1410431861877441,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
                         }
                     },
                     {
                         "Type": 1,
-                        "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
-                        "mesh name": "Baker_house.kbmesh"
+                        "mesh path": "Library\/Meshes\/Avril Avant.kbmesh",
+                        "mesh name": "Avril Avant.kbmesh"
+                    },
+                    {
+                        "Type": 2,
+                        "path": "Library\/Textures\/Head_Albedo.kbtexture"
+                    }
+                ]
+            },
+            {
+                "name": "Body",
+                "uuid": 0,
+                "parent uuid": -157102468,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": -7.1410431861877441,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 1,
+                        "mesh path": "Library\/Meshes\/Body.kbmesh",
+                        "mesh name": "Body.kbmesh"
+                    },
+                    {
+                        "Type": 2,
+                        "path": "Library\/Textures\/Body_Albedo.kbtexture"
                     }
                 ]
             }

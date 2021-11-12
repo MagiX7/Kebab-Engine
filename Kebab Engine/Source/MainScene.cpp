@@ -72,6 +72,11 @@ bool MainScene::Update(float dt)
         GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
         app->renderer3D->Submit(bh);
     }
+    if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+    {
+        GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+        app->renderer3D->Submit(bh);
+    }
 
 
     return true;
