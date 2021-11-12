@@ -35,6 +35,6 @@ public:
 private:
 	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
-
+	GameObject* avril;
 	ComponentCamera* camera;
 };
