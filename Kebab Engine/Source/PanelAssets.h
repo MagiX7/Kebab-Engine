@@ -37,8 +37,7 @@ private:
 
 	Texture* folderTex;
 	Texture* modelTex;
-
-	int i = 0;
+	Texture* pngTex;
 
 	std::string popUpItem;
 };

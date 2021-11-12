@@ -14,6 +14,7 @@ class InspectorPanel;
 class HierarchyPanel;
 class AssetsPanel;
 class FrameBuffer;
+class Texture;
 
 class Editor : public Module
 {
@@ -66,4 +67,8 @@ private:
 
 	ImGuizmo::OPERATION guizmoOperation;
 	ImGuizmo::MODE guizmoMode;
+
+	Texture* playTex;
+	Texture* pauseTex;
+	Texture* stopTex;
 };

@@ -10,6 +10,7 @@
 
 #include "Buffer.h"
 #include "MeshLoader.h"
+#include "TextureLoader.h"
 
 #include "ComponentCamera.h"
 
@@ -55,6 +56,17 @@ bool Editor::Start()
     InitImGui();
 
     assetsPanel = new AssetsPanel();
+
+    playTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/play_icon.kbtexture");
+    pauseTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/pause_icon.kbtexture");
+    stopTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/stop_icon.kbtexture");
+
+    if (playTex == nullptr)
+        playTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/play_icon.png");
+    if (pauseTex == nullptr)
+        pauseTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/pause_icon.png");
+    if (stopTex == nullptr)
+        stopTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/stop_icon.png");
 
 	return true;
 }
@@ -451,17 +463,21 @@ void Editor::ShowAboutPanel()
 
 void Editor::SimulationControl()
 {
-    if (ImGui::Begin("SimulationControl", NULL, ImGuiWindowFlags_NoTitleBar))
+    if (ImGui::Begin("SimulationControl", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
     {
-        if (ImGui::Button("Play"));
+        float width = ImGui::GetWindowWidth();
 
-        ImGui::SameLine();
+        ImGui::SameLine(width / 2 - 60);
 
-        if (ImGui::Button("Stop"));
+        if (ImGui::ImageButton((ImTextureID)playTex->GetID(), { 30,30 }));
 
-        ImGui::SameLine();
+        ImGui::SameLine(width / 2);
 
-        if (ImGui::Button("Reset"));
+        if (ImGui::ImageButton((ImTextureID)pauseTex->GetID(), { 30,30 }));
+
+        ImGui::SameLine(width / 2 + 60);
+
+        if (ImGui::ImageButton((ImTextureID)stopTex->GetID(), { 30,30 }));
 
         ImGui::End();
     }
