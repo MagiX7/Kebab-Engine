@@ -20,7 +20,7 @@ ComponentCamera::ComponentCamera(GameObject* compOwner)
 	fovVertical = 70.0f;
 	fovHorizontal = 80.0f;
 
-	planeFar = 50.f;
+	planeFar = 20.f;
 	planeNear = 0.1f;
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
@@ -147,10 +147,6 @@ void ComponentCamera::DrawFrustum()
 		frustum.CornerPoint(6).x ,frustum.CornerPoint(6).y ,frustum.CornerPoint(6).z,
 		frustum.CornerPoint(7).x ,frustum.CornerPoint(7).y ,frustum.CornerPoint(7).z };
 
-	for (uint i = 0; i < 24; i++)
-	{
-		corners[i] = corners[i]/5;
-	}
 
 	glBegin(GL_LINES);
 	glVertex3d(corners[0], corners[1], corners[2]);
@@ -206,9 +202,4 @@ void ComponentCamera::DrawFrustum()
 	glVertex3d(corners[18], corners[19], corners[20]);
 	glVertex3d(corners[21], corners[22], corners[23]);
 	glEnd();
-
-	for (uint i = 0; i < 24; i++)
-	{
-		corners[i] = corners[i] * 5;
-	}
 }

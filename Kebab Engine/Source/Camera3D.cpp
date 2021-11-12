@@ -28,6 +28,8 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 
 	cam->SetCameraPosition(position);
 	cam->Look(reference);
+
+	cam->SetFarPlane(50);
 }
 
 Camera3D::~Camera3D()
