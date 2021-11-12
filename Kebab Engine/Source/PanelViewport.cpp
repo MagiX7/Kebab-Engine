@@ -28,6 +28,9 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
     hovered = ImGui::IsWindowHovered();
 
+    if (ImGui::IsItemActive())
+        app->camera->SetCurrentCamera(app->camera->editorCam);
+
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
     {
         frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
@@ -62,7 +65,7 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
     {
         ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
-        ComponentCamera* cam = app->camera->GetCamera();
+        ComponentCamera* cam = app->camera->GetCurrentCamera();
 
         float4x4 model = tr->GetLocalMatrix();
         model.Transpose();
@@ -77,16 +80,7 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
         if (ImGuizmo::IsUsing())
         {
             model.Transpose();
-            /*float3 p, s;
-            Quat r;*/
             tr->SetLocalMatrix(model);
-
-            //shearXy Yx Zy
-
-            /*model.Decompose(p, r, s);
-            tr->SetTranslation(p);
-            tr->SetRotation(r);
-            tr->SetScale(s);*/
         }
     }
 }

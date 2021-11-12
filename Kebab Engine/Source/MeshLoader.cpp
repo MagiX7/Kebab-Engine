@@ -1,5 +1,8 @@
 #include "Application.h"
+#include "Renderer3D.h"
+
 #include "MeshLoader.h"
+#include "TextureLoader.h"
 
 #include "MainScene.h"
 #include "Editor.h"
@@ -20,6 +23,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 #define ASSETS_DIR "Assets/Resources/"
@@ -71,6 +77,8 @@ GameObject* MeshLoader::LoadModel(std::string path)
     GameObject* baseGO = new GameObject(name);
 
     ProcessNode(scene->mRootNode, scene, baseGO, name);
+
+    SaveModelCustomFormat(baseGO);
 
     app->scene->AddGameObject(baseGO);
     app->editor->assetsPanel->AddAsset(baseGO);
@@ -400,8 +408,6 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
 
 KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject* parent)
 {
-    KbMesh* mesh = new KbMesh(fileName);
-
     std::string name;
     int start = fileName.find_last_of('\\');
     if (start <= 0)
@@ -410,7 +416,9 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     if (start <= 0)
         name = CUSTOM_DIR + fileName;
     else
-        name = fileName.substr(start + 1);
+        name = fileName;
+    
+    KbMesh* mesh = new KbMesh(name.c_str());
 
     char* buffer;
     if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
@@ -448,4 +456,135 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     indices.clear();
 
     return mesh;
+}
+
+void MeshLoader::SaveModelCustomFormat(GameObject* go)
+{
+    int ran = 0;
+    std::queue<GameObject*> q;
+    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
+
+    //q.push(go);
+    for (auto& child : go->GetChilds())
+        q.push(child);
+
+    while (!q.empty())
+    {
+        GameObject* curr = q.front();
+        ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+
+        if (m)
+        {
+            std::pair<GameObject*, std::string> g;
+            g.first = curr;
+            g.second = m->GetMesh()->GetPath();
+            gosMeshes.push_back(g);
+            ran++;
+        }
+
+        q.pop();
+        if (curr->GetChilds().size() > 0)
+            for (auto& c : curr->GetChilds())
+                q.push(c);
+    }
+
+    modelValue = json_value_init_object();
+    JSON_Object* modelObj = json_value_get_object(modelValue);
+
+    JSON_Value* arrValue = json_value_init_array();
+    JSON_Array* arr = json_value_get_array(arrValue);
+
+
+    //std::string n = go->GetName() + ".Meshes";
+    json_object_set_value(modelObj, "Meshes", arrValue);
+    json_object_set_number(modelObj, "parent uuid", go->GetUuid());
+
+    for (int i = 0; i < gosMeshes.size(); ++i)
+    {
+        JSON_Value* value = json_value_init_object();
+        JSON_Object* obj = json_object(value);
+
+        json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
+        json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
+        json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
+
+        ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
+        std::string texPath = mat->GetCurrentTexture()->GetPath();
+
+        json_object_set_string(obj, "texture path", texPath.size() > 0 ? texPath.c_str() : "Checkers");
+        
+        json_array_append_value(arr, value);
+    }
+    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
+
+    int size = json_serialization_size_pretty(modelValue);
+    char* buffer = new char[size];
+    json_serialize_to_buffer(modelValue, buffer, size);
+
+
+    std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
+    json_serialize_to_file(modelValue, path.c_str());
+    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
+
+    //if (app->fileSystem->Save(path.c_str(), &buffer, size) > 0)
+    //    LOG_CONSOLE("SALUDOS");
+
+    delete[] buffer;
+
+    //json_value_free(modelValue);
+    
+}
+
+// Send the file name, NOT the path
+GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
+{
+    GameObject* ret = nullptr;
+
+    std::string path = "Library/Models/" + fileName;
+
+    char* buffer;
+    if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
+    {
+        modelValue = json_parse_string(buffer);
+        JSON_Object* modelObj = json_value_get_object(modelValue);
+
+        int s = fileName.find_last_of('/');
+        int e = fileName.find_last_of('.');
+        std::string n = fileName.substr(s + 1, e);
+        ret = new GameObject(n);
+
+        JSON_Array* arr = json_object_get_array(modelObj, "Meshes");
+
+        int size = json_array_get_count(arr);
+        for (int i = 0; i < size; ++i)
+        {
+            JSON_Object* obj = json_array_get_object(arr, i);
+            int ownerUuid = json_object_get_number(obj, "owner uuid");
+            const char* ownerName = json_object_get_string(obj, "owner name");
+            const char* meshPath = json_object_get_string(obj, "mesh path");
+            const char* texPath = json_object_get_string(obj, "texture path");
+
+            GameObject* owner = new GameObject(ownerName, ownerUuid);
+
+            ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
+
+            KbMesh* mesh = LoadMeshCustomFormat(meshPath, owner);
+            meshComp->SetData(mesh->vertices, mesh->indices);
+            meshComp->SetParent(owner);
+
+            Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(texPath);
+
+            ComponentMaterial* matComp = new ComponentMaterial(owner);
+            matComp->AddTexture(tex);
+            matComp->SetParent(owner);
+
+            owner->AddComponent(meshComp);
+            owner->AddComponent(matComp);
+            ret->AddChild(owner);
+            owner->SetParent(ret);
+            ret->SetGlobalAABB(*owner->GetGlobalAABB());
+        }
+    }
+    if (ret) app->scene->AddGameObject(ret);
+    return ret;
 }

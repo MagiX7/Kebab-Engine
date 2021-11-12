@@ -7,11 +7,12 @@
 
 #include "mmgr/mmgr.h"
 
-ComponentCamera::ComponentCamera(GameObject* compOwner)
+ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType camerType)
 {
 	this->SetParent(compOwner);
 	this->active = true;
 	this->type = ComponentType::CAMERA;
+	this->cameraType = cameraType;
 
 	cameraActive = false;
 
@@ -131,6 +132,6 @@ void ComponentCamera::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		ImGui::Checkbox("Set as Current Camera", &cameraActive);
+		//ImGui::Checkbox("Set as Current Camera", &cameraActive);
 	}
 }
