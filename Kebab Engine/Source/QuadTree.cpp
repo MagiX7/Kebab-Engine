@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 
+#include "mmgr/mmgr.h"
+
 QuadNode::QuadNode()
 {
 	uperNode = nullptr;
@@ -38,26 +40,42 @@ void QuadTree::Clear()
 
 }
 
-bool QuadTree::Insert(Gameobject* go)
+bool QuadTree::Insert(GameObject* go)
 {
 	QuadNode* node = root;
+	
+	bool theNode = false;
 
-	while (true)
+	if (go->GetGlobalAABB()->IsFinite())
 	{
-		if (node->bucket.size() <= MAX_BUCKET)
+		while (node != nullptr)
 		{
-			node->bucket.push_back(go);
-			return true;
+			if (node->section.Intersects(*go->GetGlobalAABB()))
+			{
+				if (node->bucket.size() > MAX_BUCKET)
+				{
+					if (node->underNodes.size() == 0)
+						Divide(node);
+
+					std::vector<QuadNode*>::iterator it;
+					for (it = node->underNodes.begin(); it != node->underNodes.end(); it++)
+					{
+						if ((*it)->section.Intersects(*go->GetGlobalAABB()))
+						{
+							if ((*it)->bucket.size() <= MAX_BUCKET)
+								(*it)->bucket.push_back(go);
+						}
+					}
+
+					return true;
+				}
+				else if (node->bucket.size() <= MAX_BUCKET)
+				{
+					node->bucket.push_back(go);
+					return true;
+				}
+			}
 		}
-
-		if (node->underNodes.size() == 0)
-		{
-			Divide(node);
-
-			
-		}
-		
-
 	}
 
 	return false;

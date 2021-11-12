@@ -4,7 +4,7 @@
 
 #include <vector>
 
-class Gameobject;
+class GameObject;
 
 #define MAX_BUCKET 5
 
@@ -34,8 +34,8 @@ public:
 
 	void Clear();
 
-	bool Insert(Gameobject* go);
-	bool Remove(Gameobject* go);
+	bool Insert(GameObject* go);
+	bool Remove(GameObject* go);
 
 	void Divide(QuadNode* node);
 
