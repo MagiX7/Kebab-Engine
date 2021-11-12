@@ -55,8 +55,8 @@ bool Camera3D::CleanUp()
 {
 	LOG("Cleaning camera");
 
-	delete currentCam;
-	currentCam = nullptr;
+	//delete currentCam;
+	//currentCam = nullptr;
 	//if(editorCam) delete editorCam;
 	//if(gameCam) delete gameCam;
 
@@ -124,7 +124,7 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && app->editor->viewportPanel->IsHovered() && !ImGuizmo::IsUsing())
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing())
 		{
 			GameObject* picked = MousePickGameObject();
 			if(picked)

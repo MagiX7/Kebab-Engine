@@ -59,7 +59,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-	SetGlobalAABB(this);
+	//SetGlobalAABB(this);
 }
 
 // TODO: Should check if the component already exists
@@ -144,14 +144,16 @@ void GameObject::AddComponent(Component* comp)
 {
 	components.push_back(comp);
 
-	if(comp->GetComponentType() == ComponentType::MESH)
-		AddAABB();
+	//if(comp->GetComponentType() == ComponentType::MESH)
+	AddAABB();
 }
 
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
-	SetGlobalAABB(this);
+	ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
+	//parent->UpdateAABB(tr->GetLocalMatrix());
+	//SetGlobalAABB(this);
 }
 
 void GameObject::AddAABB()

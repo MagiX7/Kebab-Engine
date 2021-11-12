@@ -17,6 +17,8 @@ ComponentTransform::ComponentTransform(GameObject* compOwner)
 	guiPos = { 0,0,0 };
 	guiRot = { 0,0,0 };
 	guiScale = { 1,1,1 };
+
+	RecomputeGlobalMat();
 }
 
 ComponentTransform::~ComponentTransform()

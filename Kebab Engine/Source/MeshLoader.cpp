@@ -582,8 +582,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             owner->AddComponent(matComp);
             ret->AddChild(owner);
             owner->SetParent(ret);
-
-            //app->renderer3D->Submit(owner);
+            ret->SetGlobalAABB(*owner->GetGlobalAABB());
         }
     }
     if (ret) app->scene->AddGameObject(ret);
