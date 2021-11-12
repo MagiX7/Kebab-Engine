@@ -12,7 +12,6 @@ ScenePanel::ScenePanel()
 {
     dimensions = { 0,0,0,0 };
     size = { 0,0 };
-
 }
 
 ScenePanel::~ScenePanel()
@@ -26,8 +25,8 @@ void ScenePanel::OnRender(FrameBuffer* frameBuffer)
 
     //hovered = ImGui::IsWindowHovered();
 
-    if(ImGui::IsItemActive())
-        app->camera->SetCurrentCamera(app->scene->GetCamera());
+    /*if(ImGui::IsItemActive())
+        app->camera->SetCurrentCamera(app->scene->GetCamera());*/
 
     //if (app->camera->GetCurrentCamera()->cameraType == CameraType::GAME)
     {

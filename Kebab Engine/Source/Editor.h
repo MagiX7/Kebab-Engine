@@ -13,6 +13,7 @@ class ScenePanel;
 class InspectorPanel;
 class HierarchyPanel;
 class AssetsPanel;
+class ScenePreviewPanel;
 class FrameBuffer;
 class Texture;
 
@@ -27,7 +28,7 @@ public:
 	bool Draw(float dt);
 	bool CleanUp() override;
 
-	bool OnImGuiRender(float dt, FrameBuffer* frameBuffer);
+	bool OnImGuiRender(float dt, FrameBuffer* frameBuffer, FrameBuffer* sceneFbo);
 
 	//void Save(JSON_Object* root) override;
 
@@ -53,6 +54,7 @@ public:
 	InspectorPanel* inspectorPanel;
 	AssetsPanel* assetsPanel;
 	ScenePanel* scenePanel;
+	ScenePreviewPanel* previewScenePanel;
 
 	bool showAboutPanel;
 	bool wireframe;
