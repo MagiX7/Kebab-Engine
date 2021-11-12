@@ -2,6 +2,7 @@
 #include "MainScene.h"
 
 #include "Input.h"
+#include "Camera3D.h"
 #include "Renderer3D.h"
 #include "Editor.h"
 
@@ -28,13 +29,28 @@ MainScene::~MainScene()
 // Load assets
 bool MainScene::Start()
 {
-	LOG_CONSOLE("Loading assets");
+    LOG_CONSOLE("Loading assets");
 
-	bool ret = true;
+    bool ret = true;
 
     root = new GameObject("Scene");
 
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+    GameObject* goCam = new GameObject("Main Camera");
+    camera = new ComponentCamera(goCam, CameraType::GAME);
+    camera->SetCameraPosition({ -5,5,2 });
+    camera->Look({ 0,0,0 });
+
+    ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
+    //tr->SetTranslation({ -5,5,2 });
+
+    //tr->SetTranslation(camera->GetCameraPosition());
+    goCam->AddComponent(camera);
+
+    AddGameObject(goCam);
+    app->camera->SetGameCamera(camera);
+
+    //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+    //app->renderer3D->Submit(bh);
 
 	return ret;
 }
@@ -44,6 +60,24 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
+
+    if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+    {
+        GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
+        app->renderer3D->Submit(test);
+
+    }
+    if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+    {
+        GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+        app->renderer3D->Submit(bh);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+    {
+        GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+        app->renderer3D->Submit(bh);
+    }
+
 
     return true;
 }

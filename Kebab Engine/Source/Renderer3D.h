@@ -51,7 +51,7 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 
-	ComponentCamera* currentCam;
+	//ComponentCamera* currentCam;
 
 	bool depth;
 	bool cullFace;

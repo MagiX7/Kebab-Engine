@@ -101,7 +101,7 @@ void InspectorPanel::OnRender(float dt)
 				{
 					if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::CAMERA) == nullptr)
 					{
-						ComponentCamera* newComp = new ComponentCamera(app->editor->hierarchyPanel->currentGO);
+						ComponentCamera* newComp = new ComponentCamera(app->editor->hierarchyPanel->currentGO, CameraType::GAME);
 
 						app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
 					}

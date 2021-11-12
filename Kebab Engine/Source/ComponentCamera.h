@@ -5,10 +5,17 @@
 #include "Geometry/Frustum.h"
 #include "GameObject.h"
 
+enum class CameraType
+{
+	NONE = -1,
+	EDITOR,
+	GAME
+};
+
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera(GameObject* compOwner);
+	ComponentCamera(GameObject* compOwner, CameraType camerType);
 	~ComponentCamera();
 
 	void SetCameraPosition(const vec& position);
@@ -38,6 +45,9 @@ public:
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
+
+public:
+	CameraType cameraType;
 	Frustum frustum;
 
 	bool frustumCulling;

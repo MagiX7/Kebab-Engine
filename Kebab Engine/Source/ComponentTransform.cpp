@@ -17,6 +17,8 @@ ComponentTransform::ComponentTransform(GameObject* compOwner)
 	guiPos = { 0,0,0 };
 	guiRot = { 0,0,0 };
 	guiScale = { 1,1,1 };
+
+	RecomputeGlobalMat();
 }
 
 ComponentTransform::~ComponentTransform()
@@ -108,6 +110,12 @@ void ComponentTransform::SetLocalMatrix(const float4x4& transform)
 	transform.Decompose(position, rotation, scale);
 
 	guiPos = position;
+	//guiRot = rotation.ToEulerXYX();
+	float3 r = { rotation.x, rotation.y, rotation.z };
+	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
+	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
+
+	//guiRot = math::RadToDeg(guiRot);
 	guiRot = { rotation.x, rotation.y, rotation.z };
 	guiScale = scale;
 
@@ -181,7 +189,7 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 	parent->UpdateAABB(localTransformMat);
 
 	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
-	for (; it != parent->GetChilds().end(); ++it)
+	for (; it != go->GetChilds().end(); ++it)
 	{
 		ComponentTransform* childTrans = (ComponentTransform*)(*it)->GetComponent(ComponentType::TRANSFORM);
 		ComponentTransform* parentTrans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);			
@@ -194,10 +202,17 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 		childTrans->SetScale(newScale);
 		(*it)->UpdateAABB(childTrans->GetLocalMatrix());
 
-		ComponentCamera* childCam = (ComponentCamera*)(*it)->GetComponent(ComponentType::CAMERA);
+	}
 
-		if (childCam != nullptr)
-			childCam->SetCameraPosition(childTrans->GetTranslation());
+	ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+	ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	if (cam)
+	{
+		cam->SetCameraPosition(tr->GetTranslation());
+
+		/*float3 r = rotation.ToEulerXYZ();
+		r = math::RadToDeg(r);
+		cam->Look(r);*/
 	}
 }
 

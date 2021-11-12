@@ -145,6 +145,9 @@
     <ClCompile Include="Source\QuadTree.cpp">
       <Filter>Source Files\Space Partition</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelScene.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="Source\QuadTree.h">
       <Filter>Source Files\Space Partition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelScene.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

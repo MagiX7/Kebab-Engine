@@ -22,7 +22,6 @@ HierarchyPanel::HierarchyPanel()
 
 HierarchyPanel::~HierarchyPanel()
 {
-
 }
 
 void HierarchyPanel::OnRender(float dt)
@@ -131,37 +130,38 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 
 
 	////////////////// Drag and drop //////////////////
-	//if (ImGui::BeginDragDropSource())
-	//{
-	//	goDragging = go;
+	if (ImGui::BeginDragDropSource())
+	{
+		goDragging = go;
+		payloadLabel = "label";
 
-	//	ImGui::SetDragDropPayload("childs", go, sizeof(GameObject));
-	//	ImGui::Text(go->GetName().c_str());
-	//	ImGui::EndDragDropSource();
-	//}
+		ImGui::SetDragDropPayload(payloadLabel.c_str(), goDragging, sizeof(GameObject));
+		ImGui::Text(go->GetName().c_str());
+		ImGui::EndDragDropSource();
+	}
 
-	//if (ImGui::BeginDragDropTarget())
-	//{
-	//	if (ImGui::AcceptDragDropPayload("childs"))
-	//	{
-	//		if (goDragging)
-	//		{
-	//			GameObject* oldParent = goDragging->GetParent();
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (ImGui::AcceptDragDropPayload(payloadLabel.c_str()))
+		{
+			if (goDragging)
+			{
+				GameObject* oldParent = goDragging->GetParent();
 
-	//			std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
-	//			while (*it != goDragging)
-	//				++it;
-	//			oldParent->GetChilds().erase(it);
+				std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
+				while (*it != goDragging)
+					++it;
+				oldParent->GetChilds().erase(it);
 
-	//			GameObject* newParent = go->GetParent();
+				GameObject* newParent = go->GetParent();
 
-	//			//newParent->AddChild(goDragging);
-	//			go->AddChild(goDragging);
-	//			goDragging = nullptr;
-	//		}
-	//	}
-	//	ImGui::EndDragDropTarget();
-	//}
+				//newParent->AddChild(goDragging);
+				go->AddChild(goDragging);
+				goDragging = nullptr;
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 }
 
 void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)

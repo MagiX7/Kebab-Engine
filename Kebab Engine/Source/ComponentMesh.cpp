@@ -173,6 +173,15 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 
 	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
 
+	AABB aabb;
+
+	aabb.SetNegativeInfinity();
+	int size = mesh->vertices.size();
+	//aabb.Enclose(&vertices.data()->position, size);
+	for (int i = 0; i < size; ++i)
+		aabb.Enclose(mesh->vertices[i].position);
+
+	parent->SetGlobalAABB(aabb);
 	//this->parent = parent;
 }
 
