@@ -75,7 +75,7 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 40.0f * dt;
 
-	if (currentCam == editorCam)
+	if (currentCam == editorCam && app->editor->viewportPanel->IsHovered())
 	{
 		if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{

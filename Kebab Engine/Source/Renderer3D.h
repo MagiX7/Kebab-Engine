@@ -46,6 +46,10 @@ public:
 
 	void DrawGrid();
 
+private:
+	void DoRender();
+	void PushCamera(ComponentCamera* cam);
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -68,7 +72,8 @@ private:
 	/*VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;*/
-	FrameBuffer* frameBuffer;
+	FrameBuffer* editorFbo;
+	FrameBuffer* sceneFbo;
 
 	/*std::vector<float3> vertices;
 	std::vector<uint32_t> indices;

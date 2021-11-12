@@ -30,3 +30,22 @@ private:
 
 	bool hovered;
 };
+
+class ScenePreviewPanel : public Panel
+{
+public:
+	ScenePreviewPanel();
+	virtual ~ScenePreviewPanel();
+
+	void OnRender(FrameBuffer* frameBuffer);
+
+	void SetSize(const float2& newSize);
+
+private:
+
+	float2 size;
+	float4 dimensions;
+
+
+	//friend float4 ViewportPanel::GetDimensions();
+};
