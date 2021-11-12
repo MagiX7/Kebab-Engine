@@ -13,6 +13,8 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
@@ -416,45 +418,53 @@ GameObject* Camera3D::MousePickGameObject()
 
 GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* gameObject)
 {
+	std::queue<GameObject*> q;
+
 	float3 hp;
 	Ray ray = line.ToRay();
 
 	for (auto& go : gameObject->GetChilds())
-	{
-		/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-		ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if (meshComp)
-		{
-			Triangle triangle;
-			for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
-			{
-				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-				triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-				triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+		q.push(go);
 
-				float4x4 m = trans->GetLocalMatrix().Transposed();
-				ray.Transform(m);
-				if (ray.Intersects(triangle))
-				{
-					return go;
-				}
+	/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+	if (meshComp)
+	{
+		Triangle triangle;
+		for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+		{
+			triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+			triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+			triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+
+			float4x4 m = trans->GetLocalMatrix().Transposed();
+			ray.Transform(m);
+			if (ray.Intersects(triangle))
+			{
+				return go;
 			}
 		}
-		else
-		{
-			ThrowRay(line, hitPoint, go);
-		}*/
-
-
-		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-
-		LineSegment localLine = line;
-		//localLine.Transform(trans->GetLocalMatrix().Transposed());
-		if (go->GetGlobalAABB()->Intersects(localLine))
-		{
-			return go;
-		}
 	}
+	else
+	{
+		ThrowRay(line, hitPoint, go);
+	}*/
+
+	while (!q.empty())
+	{
+		GameObject* curr = q.front();
+		ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+
+		q.pop();
+		LineSegment localLine = line;
+		if (curr->GetGlobalAABB()->Intersects(localLine))
+			return curr;
+
+		if (curr->GetChilds().size() > 0)
+			for (auto& child : curr->GetChilds())
+				q.push(child);
+	}
+
 
 	return nullptr;
 }

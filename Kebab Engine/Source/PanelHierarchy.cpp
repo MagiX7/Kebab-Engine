@@ -133,31 +133,35 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	if (ImGui::BeginDragDropSource())
 	{
 		goDragging = go;
-		payloadLabel = "label";
+		//payloadLabel = "label";
 
-		ImGui::SetDragDropPayload(payloadLabel.c_str(), goDragging, sizeof(GameObject));
+		ImGui::SetDragDropPayload("TREENODE", goDragging, sizeof(GameObject));
 		ImGui::Text(go->GetName().c_str());
 		ImGui::EndDragDropSource();
 	}
 
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (ImGui::AcceptDragDropPayload(payloadLabel.c_str()))
+		if (ImGui::AcceptDragDropPayload("TREENODE"))
 		{
 			if (goDragging)
 			{
-				GameObject* oldParent = goDragging->GetParent();
+				//if (goDragging->GetChilds().size() > 0)
+				{
 
-				std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
-				while (*it != goDragging)
-					++it;
-				oldParent->GetChilds().erase(it);
+					GameObject* oldParent = goDragging->GetParent();
 
-				GameObject* newParent = go->GetParent();
+					std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
+					while (*it != goDragging)
+						++it;
+					oldParent->GetChilds().erase(it);
 
-				//newParent->AddChild(goDragging);
-				go->AddChild(goDragging);
-				goDragging = nullptr;
+					GameObject* newParent = go->GetParent();
+
+					//newParent->AddChild(goDragging);
+					go->AddChild(goDragging);
+					goDragging = nullptr;
+				}
 			}
 		}
 		ImGui::EndDragDropTarget();

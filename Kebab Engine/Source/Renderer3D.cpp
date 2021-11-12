@@ -373,12 +373,18 @@ void Renderer3D::EraseGameObject(GameObject* go)
 		}
 	}
 
-	std::vector<GameObject*>::iterator it = gameObjects.begin();
-	while (*it != go && it != gameObjects.end())
-		++it;
+	if (go->GetComponent(ComponentType::MESH))
+	{
+		if (gameObjects.size() > 0)
+		{
+			std::vector<GameObject*>::iterator it = gameObjects.begin();
+			while (*it != go && it != gameObjects.end())
+				++it;
 
-	gameObjects.erase(it);
-	gameObjects.shrink_to_fit();
+			gameObjects.erase(it);
+			gameObjects.shrink_to_fit();
+		}
+	}
 }
 
 void Renderer3D::EraseAllGameObjects()
@@ -438,8 +444,6 @@ void Renderer3D::DrawGrid()
 
 void Renderer3D::DoRender()
 {
-	
-	
 	DrawGrid();
 
 	for (const auto& go : gameObjects)

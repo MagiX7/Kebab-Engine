@@ -182,7 +182,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
     {
         scenePanel->OnRender(sceneFbo);
         viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
-        previewScenePanel->OnRender(sceneFbo);
+        if (showWindows && previewScenePanel->active) previewScenePanel->OnRender(sceneFbo);
     }
     ImGui::PopStyleVar();
 
@@ -357,6 +357,11 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             {
                 assetsPanel->active = !assetsPanel->active;
             }
+            if (ImGui::MenuItem("Scene preview"))
+            {
+                previewScenePanel->active = !previewScenePanel;
+            }
+
             ImGui::Checkbox("Show Editor Windows", &showWindows);
             ImGui::EndMenu();
         }
