@@ -420,7 +420,7 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     
     KbMesh* mesh = new KbMesh(name.c_str());
 
-    char* buffer;
+    char* buffer = nullptr;
     if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
         LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
 
@@ -523,7 +523,10 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
         json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
 
         ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
-        std::string texPath = mat->GetCurrentTexture()->GetPath();
+        std::string texPath;
+
+        if (mat->GetCurrentTexture() != nullptr)
+            texPath = mat->GetCurrentTexture()->GetPath();
 
         json_object_set_string(obj, "texture path", texPath.size() > 0 ? texPath.c_str() : "Checkers");
         

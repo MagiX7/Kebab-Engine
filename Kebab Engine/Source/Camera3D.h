@@ -64,4 +64,5 @@ private:
 	ComponentCamera* gameCam;
 
 	bool focusing;
+	bool orbiting;
 };
