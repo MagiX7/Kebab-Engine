@@ -420,7 +420,7 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     
     KbMesh* mesh = new KbMesh(name.c_str());
 
-    char* buffer;
+    char* buffer = nullptr;
     if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
         LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
 
@@ -499,6 +499,20 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
     json_object_set_value(modelObj, "Meshes", arrValue);
     json_object_set_number(modelObj, "parent uuid", go->GetUuid());
 
+    ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+    json_object_set_number(modelObj, "pos x", tr->GetTranslation().x);
+    json_object_set_number(modelObj, "pos y", tr->GetTranslation().y);
+    json_object_set_number(modelObj, "pos z", tr->GetTranslation().z);
+
+    json_object_set_number(modelObj, "rot x", tr->GetRotation().x);
+    json_object_set_number(modelObj, "rot y", tr->GetRotation().y);
+    json_object_set_number(modelObj, "rot z", tr->GetRotation().z);
+    json_object_set_number(modelObj, "rot w", tr->GetRotation().w);
+
+    json_object_set_number(modelObj, "scale x", tr->GetScale().x);
+    json_object_set_number(modelObj, "scale y", tr->GetScale().y);
+    json_object_set_number(modelObj, "scale z", tr->GetScale().z);
+
     for (int i = 0; i < gosMeshes.size(); ++i)
     {
         JSON_Value* value = json_value_init_object();
@@ -509,7 +523,10 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
         json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
 
         ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
-        std::string texPath = mat->GetCurrentTexture()->GetPath();
+        std::string texPath;
+
+        if (mat->GetCurrentTexture() != nullptr)
+            texPath = mat->GetCurrentTexture()->GetPath();
 
         json_object_set_string(obj, "texture path", texPath.size() > 0 ? texPath.c_str() : "Checkers");
         
@@ -553,6 +570,29 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
         std::string n = fileName.substr(s + 1, e);
         ret = new GameObject(n);
 
+        float3 p = { 0,0,0 };
+        p.x = json_object_get_number(modelObj, "pos x");
+        p.y = json_object_get_number(modelObj, "pos y");
+        p.z = json_object_get_number(modelObj, "pos z");
+        
+        Quat r = { 0,0,0,1 };
+        r.x = json_object_get_number(modelObj, "rot x");
+        r.y = json_object_get_number(modelObj, "rot y");
+        r.z = json_object_get_number(modelObj, "rot z");
+        r.w = json_object_get_number(modelObj, "rot w");
+
+        float3 sc = { 0,0,0 };
+        sc.x = json_object_get_number(modelObj, "scale x");
+        sc.y = json_object_get_number(modelObj, "scale y");
+        sc.z = json_object_get_number(modelObj, "scale z");
+
+        ComponentTransform* parentTr = (ComponentTransform*)ret->GetComponent(ComponentType::TRANSFORM);
+        /*tr->SetTranslation(p);
+        tr->SetRotation(r);
+        tr->SetScale(sc);*/
+        parentTr->SetLocalMatrix(float4x4::FromTRS(p, r, sc));
+
+
         JSON_Array* arr = json_object_get_array(modelObj, "Meshes");
 
         int size = json_array_get_count(arr);
@@ -565,6 +605,9 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             const char* texPath = json_object_get_string(obj, "texture path");
 
             GameObject* owner = new GameObject(ownerName, ownerUuid);
+            ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
+            trans->SetLocalMatrix(parentTr->GetLocalMatrix());
+
 
             ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
 

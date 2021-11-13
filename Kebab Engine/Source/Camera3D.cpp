@@ -13,6 +13,8 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
@@ -26,6 +28,7 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	currentCam = editorCam;
 
 	focusing = false;
+	orbiting = false;
 
 	editorCam->SetCameraPosition(position);
 	editorCam->Look(reference);
@@ -77,7 +80,7 @@ bool Camera3D::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 40.0f * dt;
 
-	if (currentCam == editorCam)
+	if (currentCam == editorCam && app->editor->viewportPanel->IsHovered())
 	{
 		if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{
@@ -125,21 +128,13 @@ bool Camera3D::Update(float dt)
 			}
 		}
 
-		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing() && !ImGuizmo::IsOver())
-		{
-			GameObject* picked = MousePickGameObject();
-			app->editor->hierarchyPanel->SetCurrent(picked);
-			//app->editor->hierarchyPanel->currentGO = picked;
-		}
-
 		// Focus
 		if (app->editor->hierarchyPanel->currentGO != nullptr)
 		{
 			GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 			ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
 
-			AABB* boundBox = selectedGO->GetGlobalAABB();
+			AABB* boundBox = selectedGO->GetLocalAABB();
 
 			if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) focusing = true;
 
@@ -151,8 +146,20 @@ bool Camera3D::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT
 				&& !ImGuizmo::IsUsing())
 			{
+				orbiting = true;
 				OrbitGO(boundBox, dx, dy);
 			}
+			if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_UP && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP
+				&& !ImGuizmo::IsUsing())
+				orbiting = false;
+		}
+
+		// Mouse Picking
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing() && !ImGuizmo::IsOver() && orbiting == false && focusing == false)
+		{
+			GameObject* picked = MousePickGameObject();
+			app->editor->hierarchyPanel->SetCurrent(picked);
+			//app->editor->hierarchyPanel->currentGO = picked;
 		}
 	}
 
@@ -418,45 +425,53 @@ GameObject* Camera3D::MousePickGameObject()
 
 GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* gameObject)
 {
+	std::queue<GameObject*> q;
+
 	float3 hp;
 	Ray ray = line.ToRay();
 
 	for (auto& go : gameObject->GetChilds())
-	{
-		/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-		ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		if (meshComp)
-		{
-			Triangle triangle;
-			for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
-			{
-				triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-				triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-				triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+		q.push(go);
 
-				float4x4 m = trans->GetLocalMatrix().Transposed();
-				ray.Transform(m);
-				if (ray.Intersects(triangle))
-				{
-					return go;
-				}
+	/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+	if (meshComp)
+	{
+		Triangle triangle;
+		for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+		{
+			triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+			triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+			triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+
+			float4x4 m = trans->GetLocalMatrix().Transposed();
+			ray.Transform(m);
+			if (ray.Intersects(triangle))
+			{
+				return go;
 			}
 		}
-		else
-		{
-			ThrowRay(line, hitPoint, go);
-		}*/
-
-
-		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-
-		LineSegment localLine = line;
-		//localLine.Transform(trans->GetLocalMatrix().Transposed());
-		if (go->GetGlobalAABB()->Intersects(localLine))
-		{
-			return go;
-		}
 	}
+	else
+	{
+		ThrowRay(line, hitPoint, go);
+	}*/
+
+	while (!q.empty())
+	{
+		GameObject* curr = q.front();
+		ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+
+		q.pop();
+		LineSegment localLine = line;
+		if (curr->GetGlobalAABB()->Intersects(localLine))
+			return curr;
+
+		if (curr->GetChilds().size() > 0)
+			for (auto& child : curr->GetChilds())
+				q.push(child);
+	}
+
 
 	return nullptr;
 }

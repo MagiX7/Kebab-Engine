@@ -4,6 +4,9 @@
 #include "Camera3D.h"
 #include "Renderer3D.h"
 #include "Editor.h"
+#include "FileSystem.h"
+
+#include "PanelScene.h"
 
 #include "ComponentCamera.h"
 
@@ -28,8 +31,8 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
     hovered = ImGui::IsWindowHovered();
 
-    if (ImGui::IsItemActive())
-        app->camera->SetCurrentCamera(app->camera->editorCam);
+    /*if (ImGui::IsItemActive())
+        app->camera->SetCurrentCamera(app->camera->editorCam);*/
 
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
     {
@@ -42,6 +45,46 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
     uint32_t image = frameBuffer->GetColorAttachment();
     ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM");
+
+        if (payload != nullptr)
+        {
+            std::string dragPath = (const char*)payload->Data;
+            std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
+            std::string ext = name.substr(name.find_last_of("."), name.size());
+            name = name.substr(0, name.find_last_of("."));
+
+            bool isCustom = false;
+
+            if (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0)
+            {
+                isCustom = true;
+
+                name += ".kbmodel";
+
+                GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat(name);
+                if (bh)
+                    app->renderer3D->Submit(bh);
+                else
+                {
+                    isCustom = false;
+                    name = name.substr(0, name.find_last_of("."));
+                }
+            }
+            if (isCustom == false && (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0))
+            {
+                GameObject* bh = MeshLoader::GetInstance()->LoadModel(dragPath);
+                app->renderer3D->Submit(bh);
+            }
+            /*if (strcmp(ext.c_str(), ".dds") == 0 || strcmp(ext.c_str(), ".png") == 0 || strcmp(ext.c_str(), ".jpg") == 0)
+                ext = ".kbtexture";*/
+        }
+
+        ImGui::EndDragDropTarget();
+    }
 
     DrawGuizmo(op, mode);
 
@@ -83,4 +126,46 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
             tr->SetLocalMatrix(model);
         }
     }
+}
+
+
+////////////////////////////////////////////////
+/////////////// ScenePreview ///////////////////
+////////////////////////////////////////////////
+
+ScenePreviewPanel::ScenePreviewPanel()
+{
+    dimensions = { 0,0,0,0 };
+    size = { 0,0 };
+}
+
+ScenePreviewPanel::~ScenePreviewPanel()
+{
+}
+
+void ScenePreviewPanel::OnRender(FrameBuffer* frameBuffer)
+{
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize;
+
+    bool close = false;
+    ImGui::Begin("Scene Preview", &close, flags);
+
+    float4 sd = app->editor->scenePanel->GetDimensions();
+    
+    if (size.x != sd.z * 0.4f || size.y != sd.w * 0.4f)
+        size = { sd.z * 0.4f, sd.w * 0.4f };
+
+
+    ImVec2 s = ImGui::GetWindowSize();
+    float4 vd = app->editor->viewportPanel->GetDimensions();
+    float2 p = { vd.x + vd.z - s.x - 5, vd.y + vd.w - s.y - 5 };
+
+    uint32_t image = frameBuffer->GetColorAttachment();
+    ImGui::Image((void*)image, { size.x, size.y }, { 0,1 }, { 1,0 });
+    ImGui::End();
+}
+
+void ScenePreviewPanel::SetSize(const float2& newSize)
+{
+    size = newSize;
 }

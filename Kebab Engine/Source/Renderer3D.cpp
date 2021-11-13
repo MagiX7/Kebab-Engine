@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "Renderer3D.h"
+#include "MainScene.h"
 
 /* #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -151,7 +152,8 @@ bool Renderer3D::Init(JSON_Object* root)
 	FrameBufferProperties props;
 	props.width = w;
 	props.height = h;
-	frameBuffer = new FrameBuffer(props);
+	editorFbo = new FrameBuffer(props);
+	sceneFbo = new FrameBuffer(props);
 
 	return ret;
 }
@@ -189,22 +191,23 @@ bool Renderer3D::PreUpdate(float dt)
 		}
 	}
 	
-	glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
-	ComponentCamera* c = app->camera->GetCurrentCamera();
+	//glMatrixMode(GL_PROJECTION);
+	////glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
+	//ComponentCamera* c = app->camera->GetCurrentCamera();
 
-	glLoadMatrixf(c->frustum.ProjectionMatrix().Transposed().ptr());
+	//glLoadMatrixf(c->frustum.ProjectionMatrix().Transposed().ptr());
 
-	glMatrixMode(GL_MODELVIEW);
-	//float4x4 mat = currentCam->frustum.ViewMatrix();
+	//glMatrixMode(GL_MODELVIEW);
+	////float4x4 mat = currentCam->frustum.ViewMatrix();
+	////glLoadMatrixf(mat.Transposed().ptr());
+	//float4x4 mat = c->frustum.ViewMatrix();
 	//glLoadMatrixf(mat.Transposed().ptr());
-	float4x4 mat = c->frustum.ViewMatrix();
-	glLoadMatrixf(mat.Transposed().ptr());
 	
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		wireframe = !wireframe;
-		wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		SetWireframe();
+		//wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		drawAABB = !drawAABB;
@@ -223,38 +226,25 @@ bool Renderer3D::PreUpdate(float dt)
 // Draw present buffer to screen
 bool Renderer3D::Draw(float dt)
 {
-	app->editor->OnImGuiRender(dt, frameBuffer);
-	frameBuffer->Bind();
+	app->editor->OnImGuiRender(dt, editorFbo, sceneFbo);
 
+	editorFbo->Bind();
+	PushCamera(app->camera->editorCam);
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	DrawGrid();
+	DoRender();
+	glPopMatrix();
+	editorFbo->Unbind();
 
-	for (const auto& go : gameObjects)
-	{
-		go->SetGlobalAABB(go);
-		go->GetGlobalAABB();
-		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
-		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-		
-		if (mesh && mat && !app->camera->GetCurrentCamera()->frustumCulling)
-			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->GetCurrentCamera()->frustumCulling)
-			mesh->Draw(mat);
-		
-		mesh->Draw(mat);
-		
-		if (drawAABB)
-			go->DrawAABB();
-		
-		ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+	sceneFbo->Bind();
+	PushCamera(app->scene->GetCamera());
+	glClearColor(0.1f, 0.1f, 0.1f, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (auxCam)
-			auxCam->DrawFrustum();
-	}
-
-	frameBuffer->Unbind();
+	DoRender();
+	glPopMatrix();
+	sceneFbo->Unbind();
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -267,7 +257,8 @@ bool Renderer3D::CleanUp()
 
 	meshes.clear();
 
-	delete(frameBuffer);
+	delete(editorFbo);
+	delete(sceneFbo);
 
 	SDL_GL_DeleteContext(context);
 
@@ -382,12 +373,18 @@ void Renderer3D::EraseGameObject(GameObject* go)
 		}
 	}
 
-	std::vector<GameObject*>::iterator it = gameObjects.begin();
-	while (*it != go && it != gameObjects.end())
-		++it;
+	if (go->GetComponent(ComponentType::MESH))
+	{
+		if (gameObjects.size() > 0)
+		{
+			std::vector<GameObject*>::iterator it = gameObjects.begin();
+			while (*it != go && it != gameObjects.end())
+				++it;
 
-	gameObjects.erase(it);
-	gameObjects.shrink_to_fit();
+			gameObjects.erase(it);
+			gameObjects.shrink_to_fit();
+		}
+	}
 }
 
 void Renderer3D::EraseAllGameObjects()
@@ -443,4 +440,37 @@ void Renderer3D::DrawGrid()
 	glEnd();
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Renderer3D::DoRender()
+{
+	DrawGrid();
+
+	for (const auto& go : gameObjects)
+	{
+		go->SetGlobalAABB(go);
+		go->GetGlobalAABB();
+		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
+		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+
+		if (mesh && mat && !app->camera->GetCurrentCamera()->frustumCulling)
+			mesh->Draw(mat);
+		else if (mesh && mat && go->insideFrustum && app->camera->GetCurrentCamera()->frustumCulling)
+			mesh->Draw(mat);
+
+		mesh->Draw(mat);
+
+		if (drawAABB)
+			go->DrawAABB();
+	}
+}
+
+void Renderer3D::PushCamera(ComponentCamera* cam)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
+
+	glMatrixMode(GL_MODELVIEW);
+	float4x4 mat = cam->frustum.ViewMatrix();
+	glLoadMatrixf(mat.Transposed().ptr());
 }

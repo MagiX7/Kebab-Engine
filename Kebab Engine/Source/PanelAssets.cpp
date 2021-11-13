@@ -80,7 +80,7 @@ void AssetsPanel::OnRender(float dt)
 
 		if (popUpItem != "")
 			DisplayPopMenu();
-    }
+	}
 	ImGui::End();
 }
 
@@ -134,13 +134,13 @@ void AssetsPanel::DisplayAssets()
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			char aux[128] = "";
-				sprintf_s(aux, 128, "%s%s", currentFolder.c_str(), (*it).c_str());
+			sprintf_s(aux, 128, "%s%s", currentFolder.c_str(), (*it).c_str());
 
-				if (app->fileSystem->IsDirectory(aux))
-				{
-					sprintf_s(aux, 128, "%s%s/", currentFolder.c_str(), (*it).c_str());
-						currentFolder = aux;
-				}
+			if (app->fileSystem->IsDirectory(aux))
+			{
+				sprintf_s(aux, 128, "%s%s/", currentFolder.c_str(), (*it).c_str());
+				currentFolder = aux;
+			}
 		}
 
 		ImGui::Text((*it).c_str());
@@ -150,6 +150,9 @@ void AssetsPanel::DisplayAssets()
 
 	for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
 	{
+		std::string dragpath = currentFolder + (*it);
+		ImGui::PushID(dragpath.c_str());
+
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
 		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
@@ -158,11 +161,12 @@ void AssetsPanel::DisplayAssets()
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
 
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		if (ImGui::BeginDragDropSource())
 		{
-			
+			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
+			ImGui::EndDragDropSource();
 		}
-		else if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 		{
 			ImGui::OpenPopup((*it).c_str());
 			popUpItem = (*it).c_str();
@@ -171,6 +175,8 @@ void AssetsPanel::DisplayAssets()
 		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
 
 		ImGui::NextColumn();
+
+		ImGui::PopID();
 	}
 
 }

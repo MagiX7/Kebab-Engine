@@ -138,6 +138,8 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 		aabb.Enclose(vertices[i].position);
 
 	parent->SetGlobalAABB(aabb);
+	ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+	parent->UpdateAABB(tr->GetLocalMatrix());
 }
 
 void ComponentMesh::SetMeshPath(const std::string& path)

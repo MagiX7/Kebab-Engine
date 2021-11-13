@@ -16,6 +16,8 @@ public:
 
 	void OnRender(FrameBuffer* frameBuffer);
 
+	inline const float4& GetDimensions() const { return dimensions; }
+
 private:
 
 	float2 size;

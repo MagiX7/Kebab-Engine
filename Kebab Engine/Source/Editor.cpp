@@ -41,6 +41,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     hierarchyPanel = new HierarchyPanel();
     inspectorPanel = new InspectorPanel();
     scenePanel = new ScenePanel();
+    previewScenePanel = new ScenePreviewPanel();
 
     showAboutPanel = false;
     showWindows = true;
@@ -61,12 +62,9 @@ bool Editor::Start()
     pauseTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/pause_icon.kbtexture");
     stopTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/stop_icon.kbtexture");
 
-    if (playTex == nullptr)
-        playTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/play_icon.png");
-    if (pauseTex == nullptr)
-        pauseTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/pause_icon.png");
-    if (stopTex == nullptr)
-        stopTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/stop_icon.png");
+    if (!playTex) playTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/play_icon.png");
+    if (!pauseTex) pauseTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/pause_icon.png");
+    if (!stopTex) stopTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/stop_icon.png");
 
 	return true;
 }
@@ -113,6 +111,8 @@ bool Editor::CleanUp()
     delete stopTex;
     delete (scenePanel);
     scenePanel = nullptr;
+    delete(previewScenePanel);
+    previewScenePanel = nullptr;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -149,7 +149,7 @@ void Editor::InitImGui()
     ImGui_ImplOpenGL3_Init();
 }
 
-bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
+bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneFbo)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -181,10 +181,11 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* frameBuffer)
     SimulationControl();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    if (frameBuffer)
+    if (editorFbo)
     {
-        scenePanel->OnRender(frameBuffer);
-        viewportPanel->OnRender(frameBuffer, guizmoOperation, guizmoMode);
+        scenePanel->OnRender(sceneFbo);
+        viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
+        if (showWindows && previewScenePanel->active) previewScenePanel->OnRender(sceneFbo);
     }
     ImGui::PopStyleVar();
 
@@ -359,6 +360,11 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             {
                 assetsPanel->active = !assetsPanel->active;
             }
+            if (ImGui::MenuItem("Scene preview"))
+            {
+                previewScenePanel->active = !previewScenePanel;
+            }
+
             ImGui::Checkbox("Show Editor Windows", &showWindows);
             ImGui::EndMenu();
         }

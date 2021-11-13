@@ -14,9 +14,11 @@
 #include "Sphere.h"
 
 #include "parson.h"
-#include "mmgr/mmgr.h"
 
 #include <iostream>
+
+#include "mmgr/mmgr.h"
+
 
 MainScene::MainScene(bool startEnabled) : Module(startEnabled)
 {
@@ -49,6 +51,9 @@ bool MainScene::Start()
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
 
+
+    avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+    app->renderer3D->Submit(avril);
     //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
     //app->renderer3D->Submit(bh);
 
@@ -60,6 +65,8 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
+
+    static GameObject* a = nullptr;
 
     if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
     {
@@ -74,8 +81,13 @@ bool MainScene::Update(float dt)
     }
     if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
     {
-        GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
-        app->renderer3D->Submit(bh);
+        GameObject* a = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+        app->renderer3D->Submit(a);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+    {
+        MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
+        //app->renderer3D->Submit(bh);
     }
 
 
