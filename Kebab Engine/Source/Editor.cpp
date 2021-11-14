@@ -469,7 +469,9 @@ void Editor::ShowAboutPanel()
 
 void Editor::SimulationControl()
 {
-    if (ImGui::Begin("SimulationControl", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+    //ImGuiWindowFlags flags =ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove;
+    if (ImGui::Begin("##simulationcontrol", NULL, flags))
     {
         float width = ImGui::GetWindowWidth();
 

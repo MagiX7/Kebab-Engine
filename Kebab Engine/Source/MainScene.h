@@ -24,6 +24,7 @@ public:
 
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
+	void EraseGameObject(GameObject* go);
 	inline std::vector<GameObject*>& GetGameObjects() { return root->GetChilds(); }
 	void DeleteAllGameObjects();
 

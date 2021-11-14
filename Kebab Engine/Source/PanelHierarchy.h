@@ -22,8 +22,6 @@ public:
 	GameObject* currentGO;
 
 private:
-	std::string payloadLabel;
-
 	GameObject* goDragging;
 	GameObject* goClicked;
 	bool optionsPopup;

@@ -151,7 +151,7 @@ void GameObject::AddComponent(Component* comp)
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
-	ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
+	//ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
 	//parent->UpdateAABB(tr->GetLocalMatrix());
 	//SetGlobalAABB(this);
 }

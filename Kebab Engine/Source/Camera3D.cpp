@@ -127,7 +127,7 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Focus
-		if (app->editor->hierarchyPanel->currentGO != nullptr)
+		if (app->editor->hierarchyPanel->currentGO)
 		{
 			GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 			ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
@@ -153,7 +153,8 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing() && !ImGuizmo::IsOver() && orbiting == false && focusing == false)
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()
+			&& orbiting == false && focusing == false)
 		{
 			GameObject* picked = MousePickGameObject();
 			app->editor->hierarchyPanel->SetCurrent(picked);
@@ -412,7 +413,7 @@ GameObject* Camera3D::MousePickGameObject()
 	GameObject* hitted = ThrowRay(picking, hitPoint, app->scene->GetRoot());
 	if (hitted)
 	{
-		while (hitted->GetParent())
+		while (hitted->GetParent() && hitted->GetParent() != app->scene->GetRoot())
 			hitted = hitted->GetParent();
 
 		return hitted;

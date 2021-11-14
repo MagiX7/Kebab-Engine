@@ -62,22 +62,6 @@ void HierarchyPanel::SetCurrent(GameObject* go)
 {
 	currentGO = go;
 	selectedFromViewport = !selectedFromViewport;
-
-	/*if (go && !selectedFromViewport)
-	{
-		selectedFromViewport = !selectedFromViewport;
-	}
-	else if (go && selectedFromViewport)
-	{
-		currentGO = nullptr;
-		selectedFromViewport = !selectedFromViewport;
-	}*/
-
-	//if (go == nullptr)
-	//{
-	//	currentGO = go;
-	//	selectedFromViewport = false;
-	//}
 }
 
 void HierarchyPanel::DisplayHierarchy(GameObject* go)
@@ -87,6 +71,7 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 
 	if (go->GetChilds().size() <= 0) flags |= ImGuiTreeNodeFlags_Leaf;
 	
+	ImGui::PushID(go->GetUuid());
 	bool opened = ImGui::TreeNodeEx(go->GetName().c_str(), flags);
 
 	////////////////// Current GameObject assignation //////////////////
@@ -132,11 +117,19 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	////////////////// Drag and drop //////////////////
 	if (ImGui::BeginDragDropSource())
 	{
-		goDragging = go;
-		//payloadLabel = "label";
+		// TODO: Something weird happens when u drag and drop the last child
+		/*if (goDragging != go->GetParent())
+		{
+			goDragging = go;
+		}*/
+
+		if (goDragging && goDragging != go && goDragging->GetParent() == go->GetParent())
+			goDragging = go->GetChilds()[go->GetChilds().size()];
+		if(!goDragging)
+			goDragging = go;
 
 		ImGui::SetDragDropPayload("TREENODE", goDragging, sizeof(GameObject));
-		ImGui::Text(go->GetName().c_str());
+		ImGui::Text(goDragging->GetName().c_str());
 		ImGui::EndDragDropSource();
 	}
 
@@ -146,26 +139,29 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 		{
 			if (goDragging)
 			{
-				//if (goDragging->GetChilds().size() > 0)
+				GameObject* oldParent = goDragging->GetParent();
+
+				if (oldParent != app->scene->GetRoot())
 				{
-
-					GameObject* oldParent = goDragging->GetParent();
-
 					std::vector<GameObject*>::iterator it = oldParent->GetChilds().begin();
 					while (*it != goDragging)
 						++it;
 					oldParent->GetChilds().erase(it);
-
-					GameObject* newParent = go->GetParent();
-
-					//newParent->AddChild(goDragging);
-					go->AddChild(goDragging);
-					goDragging = nullptr;
 				}
+				else if(oldParent == app->scene->GetRoot())
+				{
+					goDragging->UnParent();
+					app->scene->EraseGameObject(goDragging);
+				}
+				go->AddChild(goDragging);
+				goDragging->SetParent(go);
+
+				goDragging = nullptr;	
 			}
 		}
 		ImGui::EndDragDropTarget();
 	}
+	ImGui::PopID();
 }
 
 void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
@@ -177,13 +173,12 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 		{
 			optionsPopup = false;
 
-			if (!go->GetParent())
+			if (go->GetParent() == app->scene->GetRoot())
 				app->scene->DeleteGameObject(go);
 			else
 			{
 				ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-				if (mesh)
-					app->renderer3D->EraseGameObject(go);
+				if (mesh) app->renderer3D->EraseGameObject(go);
 
 				GameObject* parent = go->GetParent();
 				parent->EraseChild(go);

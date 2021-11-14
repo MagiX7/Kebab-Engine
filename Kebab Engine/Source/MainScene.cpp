@@ -112,6 +112,7 @@ bool MainScene::CleanUp()
 void MainScene::AddGameObject(GameObject* go)
 {
     root->AddChild(go);
+    go->SetParent(root);
     //gameObjects.push_back(go);
 }
 
@@ -130,6 +131,20 @@ void MainScene::DeleteGameObject(GameObject* go)
             app->editor->hierarchyPanel->currentGO = nullptr;
             delete(go);
             go = nullptr;
+            break;
+        }
+    }
+}
+
+void MainScene::EraseGameObject(GameObject* go)
+{
+    std::vector<GameObject*>::iterator it = root->GetChilds().begin();
+
+    for (; it != root->GetChilds().end(); ++it)
+    {
+        if ((*it) == go)
+        {
+            root->GetChilds().erase(it);
             break;
         }
     }
