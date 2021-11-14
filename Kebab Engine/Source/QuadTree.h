@@ -17,11 +17,11 @@ public:
 	QuadNode* uperNode;
 
 	std::vector<QuadNode*> underNodes;
-	std::vector<Gameobject*> bucket;
+	std::vector<GameObject*> bucket;
 
 	AABB section;
 
-	int depth;
+	bool leaf;
 };
 
 class QuadTree
@@ -34,16 +34,17 @@ public:
 
 	void Clear();
 
-	bool Insert(GameObject* go);
-	bool Remove(GameObject* go);
+	void Insert(GameObject* go);
+	void Remove(GameObject* go);
 
 	void Divide(QuadNode* node);
 
-	void Calculate();
+	void RecalculateNode(QuadNode* node);
+	void RecalculateFromGO(GameObject* go);
 
 	void DrawTree();
 
-	bool Intersect(std::vector<Gameobject*>& bucket);
+	bool Intersect(std::vector<GameObject*>& bucket);
 
 private:
 	
