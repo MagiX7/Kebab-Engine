@@ -14,11 +14,11 @@
 
 #include "ComponentMaterial.h"
 
-//#include "Cube.h"
-//#include "Pyramid.h"
-//#include "Plane.h"
-//#include "Sphere.h"
-//#include "Cylinder.h"
+#include "KbCube.h"
+#include "KbPyramid.h"
+#include "KbPlane.h"
+#include "KbSphere.h"
+#include "KbCylinder.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -297,7 +297,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 {
     GameObject* go = nullptr;
-    /*Component* comp = nullptr;
+    KbMesh* mesh = nullptr;
     ComponentMaterial* matComp = nullptr;
 
     std::string name;
@@ -311,8 +311,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
                 name += " " + std::to_string(numCube);
             numCube++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
+            mesh = new KbCube({ -0.5,-0.5 , -0.5 }, { 1,1,1 });
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);*/
             break;
         }
 
@@ -323,8 +325,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numPyr > 0) name += " " + std::to_string(numPyr);
             numPyr++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);
+            mesh = new KbPyramid({ 0,0,0 }, 2, 1);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);*/
             break;
         }
 
@@ -334,9 +338,11 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             name = "Plane";
             if (numPlane > 0) name += " " + std::to_string(numPlane);
             numPlane++;
+            
+            mesh = new KbPlane({ -0.5f,0.0f, -0.5f }, { 1,1 });
 
-            go = new GameObject(name.c_str());
-            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);
+            /*go = new GameObject(name.c_str());
+            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);*/
             break;
         }
         
@@ -347,8 +353,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numSphere > 0) name += " " + std::to_string(numSphere);
             numSphere++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);
+            mesh = new KbSphere({ -0.5f,-0.5f,-0.5f }, 1, 15, 15);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);*/
             break;
         }
 
@@ -359,19 +367,27 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numCyl > 0) name = name += " " + std::to_string(numCyl);
             numCyl++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);
+            mesh = new KbCylinder({ -0.5f,-0.5f ,-0.5f }, 1, 1, 15);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);*/
             break;
         }
-
     }
-
-    if (go)
+    
+    if (mesh)
     {
-        go->AddComponent(comp);
+        go = new GameObject(name);
+        ComponentMesh* meshComp = new ComponentMesh(go);
+        go->AddComponent(meshComp);
+        
+        meshComp->SetMesh(mesh);
+
         ComponentMaterial* mat = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
+
         app->scene->AddGameObject(go);
-    }*/
+    }
+    
 
     return go;
 }

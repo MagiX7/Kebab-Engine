@@ -1,14 +1,11 @@
-#include "Cube.h"
+#include "KbCube.h"
 
 #include "Globals.h"
 
 #include "mmgr/mmgr.h"
 
-KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeometry(owner)
+KbCube::KbCube(math::float3 pos, math::float3 size)
 {
-    isKbGeometry = true;
-
-
     Vertex vertex;
     
     //// 0
@@ -260,7 +257,6 @@ KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeome
 
 
 
-
     uint32_t in[] =
     {
        0,1,2,
@@ -284,14 +280,13 @@ KbCube::KbCube(math::float3 pos, math::float3 size, GameObject* owner) : KbGeome
     };
     indices.insert(indices.begin(), in, in + 12 * 3);
 
-    SetUpBuffers();
+    SetUpMesh();
 }
 
 KbCube::~KbCube()
 {
     //RELEASE_ARRAY(vertices);
     //RELEASE_ARRAY(indices);
-    delete[](normals);
 }
 
 //void KbCube::Draw()

@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-#include "Mesh.h"
+#include "KbMesh.h"
 #include "Texture.h"
 
 #include "Vertex.h"
@@ -25,6 +25,7 @@ public:
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
 	void SetMeshPath(const std::string& path);
 
+	void SetMesh(KbMesh* newMesh);
 	inline KbMesh* GetMesh() const { return mesh; }
 
 	JSON_Value* Save() override;

@@ -1,9 +1,7 @@
-#include "Plane.h"
+#include "KbPlane.h"
 
-KbPlane::KbPlane(float3 position, float2 size, GameObject* owner) : KbGeometry(position, owner)
+KbPlane::KbPlane(float3 position, float2 size)
 {
-	isKbGeometry = true;
-
 	Vertex vertex;
 
 	// Top left
@@ -37,7 +35,7 @@ KbPlane::KbPlane(float3 position, float2 size, GameObject* owner) : KbGeometry(p
 	};
 	indices.insert(indices.begin(), in, in + 2 * 3);
 
-	SetUpBuffers();
+	SetUpMesh();
 }
 
 KbPlane::~KbPlane()

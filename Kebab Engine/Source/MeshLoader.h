@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mesh.h"
+#include "KbMesh.h"
 
 #include "GameObject.h"
 #include "ComponentMesh.h"

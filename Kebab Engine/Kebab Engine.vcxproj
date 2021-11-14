@@ -26,6 +26,8 @@
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\KbCube.cpp" />
+    <ClCompile Include="Source\KbCylinder.cpp" />
     <ClCompile Include="Source\External\ImGuizmo\GraphEditor.cpp" />
     <ClCompile Include="Source\External\ImGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="Source\External\ImGuizmo\ImGradient.cpp" />
@@ -44,7 +46,7 @@
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Material.cpp" />
-    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\KbMesh.cpp" />
     <ClCompile Include="Source\MeshLoader.cpp" />
     <ClCompile Include="Source\PanelAssets.cpp" />
     <ClCompile Include="Source\PanelConfiguration.cpp" />
@@ -60,8 +62,11 @@
     <ClCompile Include="Source\PanelScene.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Parser.cpp" />
+    <ClCompile Include="Source\KbPlane.cpp" />
+    <ClCompile Include="Source\KbPyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
+    <ClCompile Include="Source\KbSphere.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
@@ -77,6 +82,8 @@
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
+    <ClInclude Include="Source\KbCube.h" />
+    <ClInclude Include="Source\KbCylinder.h" />
     <ClInclude Include="Source\External\ImGuizmo\GraphEditor.h" />
     <ClInclude Include="Source\External\ImGuizmo\ImCurveEdit.h" />
     <ClInclude Include="Source\External\ImGuizmo\ImGradient.h" />
@@ -87,7 +94,7 @@
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Material.h" />
-    <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\KbMesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />
     <ClInclude Include="Source\PanelAssets.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
@@ -116,8 +123,11 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
+    <ClInclude Include="Source\KbPlane.h" />
+    <ClInclude Include="Source\KbPyramid.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
+    <ClInclude Include="Source\KbSphere.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
     <ClInclude Include="Source\Vertex.h" />
