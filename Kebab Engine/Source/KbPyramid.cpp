@@ -1,9 +1,7 @@
-#include "Pyramid.h"
+#include "KbPyramid.h"
 
-KbPyramid::KbPyramid(float3 pos, float height, float baseWidth, GameObject* parent) : KbGeometry(parent)
+KbPyramid::KbPyramid(float3 pos, float height, float baseWidth)
 {
-	isKbGeometry = true;
-
 	float ap = sqrt(pow(height, 2) + pow(baseWidth / 2, 2));
 
 	float distToCorner = sqrt(pow(baseWidth / 2, 2) + pow(baseWidth / 2, 2));
@@ -59,7 +57,7 @@ KbPyramid::KbPyramid(float3 pos, float height, float baseWidth, GameObject* pare
 	};
 	indices.insert(indices.begin(), in, in + 6 * 3);
 
-	SetUpBuffers();
+	SetUpMesh();
 }
 
 KbPyramid::~KbPyramid()

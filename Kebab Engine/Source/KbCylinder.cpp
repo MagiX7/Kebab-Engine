@@ -1,9 +1,7 @@
-#include "Cylinder.h"
+#include "KbCylinder.h"
 
-KbCylinder::KbCylinder(math::float3 pos, float baseRadius, float height, float sectors, GameObject* owner) : KbGeometry(pos, owner)
+KbCylinder::KbCylinder(math::float3 pos, float baseRadius, float height, float sectors)
 {
-    isKbGeometry = true;
-
     this->height = height;
     this->radius = baseRadius;
     this->sectors = sectors;
@@ -60,12 +58,12 @@ KbCylinder::KbCylinder(math::float3 pos, float baseRadius, float height, float s
         }
     }
 
-    SetUpBuffers();
-
+    SetUpMesh();
 }
 
 KbCylinder::~KbCylinder()
 {
+
 }
 
 std::vector<Vertex> KbCylinder::GetUnitCircleVertices()

@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "KbMesh.h"
 
 KbMesh::KbMesh(std::string path)
 {

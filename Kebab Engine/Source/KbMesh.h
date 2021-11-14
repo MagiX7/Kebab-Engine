@@ -8,6 +8,7 @@
 class KbMesh
 {
 public:
+	KbMesh() {};
 	KbMesh(std::string path);
 	KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 	virtual ~KbMesh();
@@ -29,7 +30,7 @@ public:
 	void SetPath(const std::string&);
 	void SetName(const std::string&);
 
-private:
+protected:
 	void SetUpMesh();
 
 public:

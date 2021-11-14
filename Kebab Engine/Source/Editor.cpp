@@ -327,6 +327,9 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             if (ImGui::MenuItem("Sphere"))
                 app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
 
+            if (ImGui::MenuItem("Cylinder"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
+
             if (ImGui::MenuItem("Empty GameObject"))
             {
                 GameObject* go = new GameObject("Empty Game Object");

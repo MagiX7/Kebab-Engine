@@ -1,10 +1,8 @@
-#include "Sphere.h"
+#include "KbSphere.h"
 
 // Slices for the X, stacks for the Y
-KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices, GameObject* owner) : KbGeometry(pos, owner)
+KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices)
 {
-    isKbGeometry = true;
-
     Vertex vertex;
 
     // Calc the vertices
@@ -42,7 +40,7 @@ KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices, GameObj
         indices.push_back(i + 1);
     }
 
-    SetUpBuffers();
+    SetUpMesh();
 }
 
 //void KbSphere::Draw(bool drawVertexNormals, bool drawTriangleNormals)

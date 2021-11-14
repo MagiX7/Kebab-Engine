@@ -10,8 +10,8 @@
 
 #include "MeshLoader.h"
 
-#include "Cube.h"
-#include "Sphere.h"
+#include "KbCube.h"
+#include "KbSphere.h"
 
 #include "parson.h"
 

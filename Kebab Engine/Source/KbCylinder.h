@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Geometry.h"
+#include "KbMesh.h"
 
-class KbCylinder : public KbGeometry
+class KbCylinder : public KbMesh
 {
 public:
-	KbCylinder(math::float3 pos, float baseRadius, float height, float sectors, GameObject* owner);
+	KbCylinder(math::float3 pos, float baseRadius, float height, float sectors);
 	virtual ~KbCylinder();
 
 	std::vector<Vertex> GetUnitCircleVertices();
