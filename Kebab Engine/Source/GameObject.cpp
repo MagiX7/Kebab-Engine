@@ -31,6 +31,7 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 		LCG lgc = LCG();
 		this->uuid = lgc.IntFast();
 	}
+	else this->uuid = uuid;
 }
 
 GameObject::~GameObject()

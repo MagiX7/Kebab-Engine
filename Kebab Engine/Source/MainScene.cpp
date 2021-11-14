@@ -16,6 +16,7 @@
 #include "parson.h"
 
 #include <iostream>
+#include <queue>
 
 #include "mmgr/mmgr.h"
 
@@ -81,8 +82,9 @@ bool MainScene::Update(float dt)
     }
     if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
     {
-        GameObject* a = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
-        app->renderer3D->Submit(a);
+        //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+        //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
+        app->renderer3D->Submit(avril);
     }
     if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
     {
@@ -163,8 +165,22 @@ void MainScene::DeleteAllGameObjects()
 
 GameObject* MainScene::GetGameObjectByUuid(int uuid)
 {
+    std::queue<GameObject*> q;
     for (const auto& go : root->GetChilds())
-        if (go->GetUuid() == uuid) return go;
+        q.push(go);
+        //if (go->GetUuid() == uuid) return go;
+
+    while (!q.empty())
+    {
+        GameObject* curr = q.front();
+        q.pop();
+
+        if (curr->GetUuid() == uuid) return curr;
+
+        for (const auto& child : curr->GetChilds())
+            q.push(child);
+    }
+
 
     return nullptr;
 }
