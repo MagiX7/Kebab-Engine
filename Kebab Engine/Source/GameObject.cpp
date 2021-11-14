@@ -210,6 +210,8 @@ void GameObject::SetGlobalAABB(const AABB& aabb)
 	{
 		parent->SetGlobalAABB(globalAABB);
 	}
+	
+	UpdateAABB(tr->GetLocalMatrix());
 }
 
 AABB* GameObject::GetLocalAABB()

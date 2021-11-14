@@ -154,7 +154,7 @@ bool Camera3D::Update(float dt)
 
 		// Mouse Picking
 		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()
-			&& orbiting == false && focusing == false)
+			&& !orbiting && !focusing)
 		{
 			GameObject* picked = MousePickGameObject();
 			app->editor->hierarchyPanel->SetCurrent(picked);
