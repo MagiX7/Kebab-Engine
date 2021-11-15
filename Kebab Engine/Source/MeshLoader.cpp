@@ -383,7 +383,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
         
         meshComp->SetMesh(mesh);
 
-        ComponentMaterial* mat = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
+        /*ComponentMaterial* mat = (ComponentMaterial*)*/go->CreateComponent(ComponentType::MATERIAL);    
 
         app->scene->AddGameObject(go);
     }

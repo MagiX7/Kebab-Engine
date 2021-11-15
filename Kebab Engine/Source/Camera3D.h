@@ -50,7 +50,7 @@ public:
 
 private:
 	GameObject* MousePickGameObject();
-	GameObject* ThrowRay(LineSegment& ray, float3& hitPoint, GameObject* go = nullptr);
+	std::vector<GameObject*> ThrowRay(LineSegment& ray, float3& hitPoint, bool& clearVector, GameObject* go = nullptr);
 
 public:
 
@@ -65,4 +65,7 @@ private:
 
 	bool focusing;
 	bool orbiting;
+
+	std::vector<GameObject*> pickedGos;
+	int pickedGosIt;
 };

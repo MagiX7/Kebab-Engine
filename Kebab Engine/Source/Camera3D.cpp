@@ -410,67 +410,89 @@ GameObject* Camera3D::MousePickGameObject()
 	LineSegment picking = editorCam->frustum.UnProjectLineSegment(x, y);
 
 	float3 hitPoint;
-	GameObject* hitted = ThrowRay(picking, hitPoint, app->scene->GetRoot());
-	if (hitted)
+
+	static bool clearVec = false;
+	if (pickedGos.size() <= 0)
+	{
+		//pickedGos.clear();
+		pickedGos = ThrowRay(picking, hitPoint, clearVec, app->scene->GetRoot());
+		pickedGosIt = 0;
+	}
+	
+	if (clearVec)
+		pickedGos.clear();
+
+	else if (pickedGos.size() > 0 &&  pickedGosIt <= pickedGos.size() - 1)
+		return pickedGos[pickedGosIt++];
+	
+	else if(pickedGos.size() == pickedGosIt)
+		pickedGos.clear();
+
+	
+	/*if (hitted)
 	{
 		while (hitted->GetParent() && hitted->GetParent() != app->scene->GetRoot())
 			hitted = hitted->GetParent();
 
 		return hitted;
-	}
+	}*/
 
 	return nullptr;
 }
 
-GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* gameObject)
+std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, bool& clearVector, GameObject* gameObject)
 {
-	std::queue<GameObject*> q;
+	std::vector<GameObject*> gos;
 
-	float3 hp;
-	Ray ray = line.ToRay();
+	std::queue<GameObject*> q;
 
 	for (auto& go : gameObject->GetChilds())
 		q.push(go);
 
-	/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-	ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-	if (meshComp)
-	{
-		Triangle triangle;
-		for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
-		{
-			triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-			triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-			triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
-
-			float4x4 m = trans->GetLocalMatrix().Transposed();
-			ray.Transform(m);
-			if (ray.Intersects(triangle))
-			{
-				return go;
-			}
-		}
-	}
-	else
-	{
-		ThrowRay(line, hitPoint, go);
-	}*/
-
 	while (!q.empty())
 	{
 		GameObject* curr = q.front();
-		ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
-
 		q.pop();
+
+		// AABB
 		LineSegment localLine = line;
 		if (curr->GetGlobalAABB()->Intersects(localLine))
-			return curr;
+		{
+			// Mesh
+			ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+			ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+			if (meshComp)
+			{
+				Triangle triangle;
+				for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+				{
+					triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+
+					float4x4 m = trans->GetLocalMatrix().Transposed();
+					Ray ray = localLine.ToRay();
+					ray.Transform(m);
+					if (ray.Intersects(triangle))
+					{
+						if(curr->GetParent())
+							gos.push_back(curr->GetParent());
+						gos.push_back(curr);
+						clearVector = false;
+						break;
+					}
+				}
+			}
+		}
 
 		if (curr->GetChilds().size() > 0)
 			for (auto& child : curr->GetChilds())
 				q.push(child);
 	}
 
+	if (!gos.size()) clearVector = true;
 
-	return nullptr;
+	return gos;
+
+	//return nullptr;
 }
