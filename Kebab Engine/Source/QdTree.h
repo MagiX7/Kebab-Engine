@@ -24,11 +24,11 @@ public:
 	bool leaf;
 };
 
-class QuadTree
+class QdTree
 {
 public:
-	QuadTree();
-	~QuadTree();
+	QdTree();
+	~QdTree();
 
 	void Create(AABB& limits);
 
@@ -39,8 +39,7 @@ public:
 
 	void Divide(QuadNode* node);
 
-	void RecalculateNode(QuadNode* node);
-	void RecalculateFromGO(GameObject* go);
+	void Recalculate();
 
 	void DrawTree();
 

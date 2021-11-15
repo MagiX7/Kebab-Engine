@@ -11,6 +11,7 @@
 //#define BOUNCER_TIME 200
 
 class GameObject;
+class QdTree;
 
 class MainScene : public Module
 {
@@ -32,9 +33,11 @@ public:
 
 	ComponentCamera* GetCamera() { return camera; }
 
+	QdTree* rootQT;
 private:
 	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
 	GameObject* avril;
 	ComponentCamera* camera;
+
 };

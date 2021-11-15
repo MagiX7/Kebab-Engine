@@ -117,7 +117,7 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
-    <ClInclude Include="Source\QuadTree.h" />
+    <ClInclude Include="Source\QdTree.h" />
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\Texture.h" />

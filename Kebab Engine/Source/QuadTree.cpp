@@ -1,6 +1,8 @@
-#include "QuadTree.h"
+#include "Application.h"
+#include "QdTree.h"
 
 #include "GameObject.h"
+#include "Renderer3D.h"
 
 #include <queue>
 
@@ -22,27 +24,27 @@ QuadNode::~QuadNode()
 	}
 }
 
-QuadTree::QuadTree()
+QdTree::QdTree()
 {
 	root = new QuadNode();
 }
 
-QuadTree::~QuadTree()
+QdTree::~QdTree()
 {
 	delete root;
 }
 
-void QuadTree::Create(AABB& limits)
+void QdTree::Create(AABB& limits)
 {
 	root->section = limits;
 }
 
-void QuadTree::Clear()
+void QdTree::Clear()
 {
 
 }
 
-void QuadTree::Insert(GameObject* go)
+void QdTree::Insert(GameObject* go)
 {
 	std::queue<QuadNode*> que;
 
@@ -79,7 +81,7 @@ void QuadTree::Insert(GameObject* go)
 	}
 }
 
-void QuadTree::Remove(GameObject* go)
+void QdTree::Remove(GameObject* go)
 {
 	std::queue<QuadNode*> que;
 
@@ -101,48 +103,57 @@ void QuadTree::Remove(GameObject* go)
 		{
 			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 			{
-				if (itNode->section.Intersects(*(*itGO)->GetGlobalAABB()) || itNode->section.Contains(*(*itGO)->GetGlobalAABB()))
+				if ((*itGO) = go)
 				{
 					itNode->bucket.erase(itGO);
+					break;
 				}
 			}
 		}
-
-		//if ()
 	}
 }
 
-void QuadTree::Divide(QuadNode* node)
+void QdTree::Divide(QuadNode* node)
 {
 	float3 minPoint, maxPoint;
+	float3 centerP = node->section.CenterPoint();
 
 	QuadNode* nod1 = new QuadNode();
 	nod1->uperNode = node;
 	minPoint = node->section.minPoint;
-	maxPoint = { node->section.CenterPoint().x, node->section.MaxY(), node->section.CenterPoint().z };
-	nod1->section.Enclose(minPoint, maxPoint);
+	maxPoint = { centerP.x, node->section.MaxY(), centerP.z };
+	nod1->section.minPoint = minPoint;
+	nod1->section.maxPoint = maxPoint;
 
 	QuadNode* nod2 = new QuadNode();
 	nod2->uperNode = node;
-	minPoint = { node->section.MinX(), node->section.MinY(), node->section.CenterPoint().z };
-	maxPoint = { node->section.CenterPoint().x, node->section.MaxY(), node->section.MaxZ() };
-	nod2->section.Enclose(minPoint, maxPoint);
+	minPoint = { node->section.MinX(), node->section.MinY(), centerP.z };
+	maxPoint = { centerP.x, node->section.MaxY(), node->section.MaxZ() };
+	nod2->section.minPoint = minPoint;
+	nod2->section.maxPoint = maxPoint;
 
 	QuadNode* nod3 = new QuadNode();
 	nod3->uperNode = node;
-	minPoint = { node->section.CenterPoint().x, node->section.MinY(), node->section.MinZ() };
-	maxPoint = { node->section.MaxX(), node->section.MaxY(), node->section.CenterPoint().z };
-	nod3->section.Enclose(minPoint, maxPoint);
+	minPoint = { centerP.x, node->section.MinY(), node->section.MinZ() };
+	maxPoint = { node->section.MaxX(), node->section.MaxY(), centerP.z };
+	nod3->section.minPoint = minPoint;
+	nod3->section.maxPoint = maxPoint;
 
 	QuadNode* nod4 = new QuadNode();
 	nod4->uperNode = node;
-	minPoint = { node->section.CenterPoint().x, node->section.MinY(), node->section.CenterPoint().z };
+	minPoint = { centerP.x, node->section.MinY(),centerP.z };
 	maxPoint = node->section.maxPoint;
-	nod4->section.Enclose(minPoint, maxPoint);
+	nod4->section.minPoint = minPoint;
+	nod4->section.maxPoint = maxPoint;
 
-	for (std::vector<GameObject*>::iterator itGO = node->bucket.begin(); itGO != node->bucket.end(); itGO++)
+	node->underNodes.push_back(nod1);
+	node->underNodes.push_back(nod2);
+	node->underNodes.push_back(nod3);
+	node->underNodes.push_back(nod4);
+
+	for (std::vector<QuadNode*>::iterator itUN = node->underNodes.begin(); itUN != node->underNodes.end(); itUN++)
 	{
-		for (std::vector<QuadNode*>::iterator itUN = node->underNodes.begin(); itUN != node->underNodes.end(); itUN++)
+		for (std::vector<GameObject*>::iterator itGO = node->bucket.begin(); itGO != node->bucket.end(); itGO++)
 		{
 			if ((*itUN)->section.Intersects(*(*itGO)->GetGlobalAABB()) || (*itUN)->section.Contains(*(*itGO)->GetGlobalAABB()))
 			{
@@ -155,52 +166,69 @@ void QuadTree::Divide(QuadNode* node)
 	node->bucket.clear();
 }
 
-void QuadTree::RecalculateNode(QuadNode* node)
+void QdTree::Recalculate()
 {
-	if (node->uperNode != nullptr)
+	std::queue<QuadNode*> que;
+	std::vector<GameObject*> gObjs;
+
+	que.push(root);
+
+	while (!que.empty())
 	{
-		int numLeafs = 0;
-		int numGO = 0;
+		QuadNode* itNode = que.front();
+		que.pop();
 
-		QuadNode* parent = node->uperNode;
-
-		for (std::vector<QuadNode*>::iterator it = parent->underNodes.begin(); it != parent->underNodes.end(); it++)
+		if (itNode->leaf == false)
 		{
-			if ((*it)->leaf)
+			for (std::vector<QuadNode*>::iterator itUN = itNode->underNodes.begin(); itUN != itNode->underNodes.end(); itUN++)
 			{
-				numLeafs++;
-				numGO += (*it)->bucket.size();
-			}
-			else
-			{
-				break;
+				que.push((*itUN));
 			}
 		}
-
-		if (numLeafs == 4 && numGO <= MAX_BUCKET)
+		else
 		{
-			std::vector<GameObject*> gObj;
-
-			for (std::vector<QuadNode*>::iterator it = parent->underNodes.begin(); it != parent->underNodes.end(); it++)
+			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 			{
-				for (std::vector<QuadNode*>::iterator it = parent->underNodes.begin(); it != parent->underNodes.end(); it++)
-				{
-
-				}
+				gObjs.push_back((*itGO));
 			}
+
+			itNode->bucket.clear();
 		}
+	}
+
+	for (std::vector<QuadNode*>::iterator itUN = root->underNodes.begin(); itUN != root->underNodes.end(); itUN++)
+	{
+		
+	}
+
+	for (std::vector<GameObject*>::iterator itGO = gObjs.begin(); itGO != gObjs.end(); itGO++)
+	{
+		Insert((*itGO));
 	}
 }
 
-void QuadTree::RecalculateFromGO(GameObject* go)
+void QdTree::DrawTree()
 {
+	std::queue<QuadNode*> que;
+	std::vector<GameObject*> gObjs;
+
+	que.push(root);
+
+	while (!que.empty())
+	{
+		QuadNode* itNode = que.front();
+		que.pop();
+
+		for (std::vector<QuadNode*>::iterator itUN = itNode->underNodes.begin(); itUN != itNode->underNodes.end(); itUN++)
+		{
+			que.push((*itUN));
+		}
+
+		app->renderer3D->DrawAABB(itNode->section);
+	}
 }
 
-void QuadTree::DrawTree()
-{
-}
-
-bool QuadTree::Intersect(std::vector<GameObject*>& bucket)
+bool QdTree::Intersect(std::vector<GameObject*>& bucket)
 {
 	return false;
 }

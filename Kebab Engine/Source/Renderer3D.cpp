@@ -24,6 +24,8 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
+#include "QdTree.h"
+
 #include "Math/float4x4.h"
 #include "SDL_opengl.h"
 #include "mmgr/mmgr.h"
@@ -442,9 +444,39 @@ void Renderer3D::DrawGrid()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+void Renderer3D::DrawAABB(AABB& aabb)
+{
+	GLdouble min[3] = { aabb.MinX(), aabb.MinY(), aabb.MinZ() };
+	GLdouble max[3] = { aabb.MaxX(), aabb.MaxY(), aabb.MaxZ() };
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3dv(&min[0]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], min[2]);
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3dv(&min[0]);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
+}
+
 void Renderer3D::DoRender()
 {
 	DrawGrid();
+	app->scene->rootQT->DrawTree();
 
 	for (const auto& go : gameObjects)
 	{
@@ -461,7 +493,7 @@ void Renderer3D::DoRender()
 		mesh->Draw(mat);
 
 		if (drawAABB)
-			go->DrawAABB();
+			DrawAABB(*go->GetGlobalAABB());
 	}
 }
 

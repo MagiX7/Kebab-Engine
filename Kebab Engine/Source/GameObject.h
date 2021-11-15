@@ -45,8 +45,6 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
-	void DrawAABB();
-
 	bool insideFrustum;
 
 	void Save(JSON_Array* array);

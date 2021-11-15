@@ -9,6 +9,7 @@
 #include "PanelHierarchy.h"
 
 #include "MeshLoader.h"
+#include "QdTree.h"
 
 #include "Cube.h"
 #include "Sphere.h"
@@ -57,6 +58,17 @@ bool MainScene::Start()
     //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
     //app->renderer3D->Submit(bh);
 
+    rootQT = new QdTree();
+    vec min = vec(-10, -10, -10);
+    vec max = vec(100, 100, 100);
+    AABB aabbAux;
+    aabbAux.minPoint = min;
+    aabbAux.maxPoint = max;
+    rootQT->Create(aabbAux);
+
+    rootQT->Insert(avril);
+    //rootQT->Recalculate();
+
 	return ret;
 }
 
@@ -72,6 +84,8 @@ bool MainScene::Update(float dt)
     {
         GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
         app->renderer3D->Submit(test);
+        rootQT->Insert(test);
+        //rootQT->Recalculate();
 
     }
     if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -89,7 +103,6 @@ bool MainScene::Update(float dt)
         MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
         //app->renderer3D->Submit(bh);
     }
-
 
     return true;
 }

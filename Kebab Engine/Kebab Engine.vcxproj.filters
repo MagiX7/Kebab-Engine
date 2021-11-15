@@ -312,7 +312,7 @@
     <ClInclude Include="Source\External\ImGuizmo\ImZoomSlider.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="Source\QuadTree.h">
+    <ClInclude Include="Source\QdTree.h">
       <Filter>Source Files\Space Partition</Filter>
     </ClInclude>
     <ClInclude Include="Source\PanelScene.h">
