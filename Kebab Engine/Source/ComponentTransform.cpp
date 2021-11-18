@@ -91,15 +91,15 @@ void ComponentTransform::DrawOnInspector()
 
 		if (parentCam != nullptr)
 		{
-			change = false;
+			/*change = false;
 
 			float3 pos;
 			float3x3 rot;
 
 			pos = globalTransformMat.TranslatePart();
-			rot = globalTransformMat.RotatePart();
+			rot = globalTransformMat.RotatePart();*/
 
-			parentCam->frustum.SetWorldMatrix(float3x4::FromTRS(pos, rot, float3(1, 1, 1)));
+			parentCam->frustum.SetWorldMatrix(localTransformMat.Float3x4Part());
 		}
 	}
 }

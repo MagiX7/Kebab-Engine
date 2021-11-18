@@ -240,6 +240,8 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	app->camera->gameCam->DrawFrustum();
+
 	DoRender();
 	glPopMatrix();
 	glPopMatrix();
@@ -517,6 +519,10 @@ void Renderer3D::DoRender()
 
 		if (drawAABB)
 			DrawAABB(*go->GetGlobalAABB());
+
+		/*ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+		if (cam)
+			cam->DrawFrustum();*/
 	}
 }
 

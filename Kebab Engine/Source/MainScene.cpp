@@ -41,7 +41,9 @@ bool MainScene::Start()
 
     GameObject* goCam = new GameObject("Main Camera");
     camera = new ComponentCamera(goCam, CameraType::GAME);
-    camera->SetCameraPosition({ -5,5,2 });
+    ComponentTransform* trans = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
+    trans->SetTranslation(float3(-5, 5, 2));
+    //camera->SetCameraPosition({ -5,5,2 });
     camera->Look({ 0,0,0 });
 
     ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
