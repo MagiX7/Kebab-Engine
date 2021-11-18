@@ -26,9 +26,14 @@
 
 #include "Math/float4x4.h"
 #include "SDL_opengl.h"
-#include "mmgr/mmgr.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+
+#include "optick.h"
+
+#include <queue>
+
+#include "mmgr/mmgr.h"
 
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
@@ -235,6 +240,7 @@ bool Renderer3D::Draw(float dt)
 
 	DoRender();
 	glPopMatrix();
+	glPopMatrix();
 	editorFbo->Unbind();
 
 	sceneFbo->Bind();
@@ -243,6 +249,7 @@ bool Renderer3D::Draw(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	DoRender();
+	glPopMatrix();
 	glPopMatrix();
 	sceneFbo->Unbind();
 
@@ -353,12 +360,28 @@ void Renderer3D::Load(JSON_Object* root)
 
 void Renderer3D::Submit(GameObject* go)
 {
-	if (go->GetChilds().size() > 0)
+	std::queue<GameObject*> q;
+	q.push(go);
+
+	while(!q.empty())
+	{
+		auto& curr = q.front();
+		q.pop();
+
+		if (curr->GetComponent(ComponentType::MESH))
+			if (std::find(gameObjects.begin(), gameObjects.end(), curr) == gameObjects.end())
+				gameObjects.push_back(curr);
+
+		for (auto& child : curr->GetChilds())
+			q.push(child);
+	}
+
+	/*if (go->GetChilds().size() > 0)
 		for (const auto& child : go->GetChilds())
 			Submit(child);
 
 	if(go->GetComponent(ComponentType::MESH))
-		gameObjects.push_back(go);
+		gameObjects.push_back(go);*/
 }
 
 void Renderer3D::EraseGameObject(GameObject* go)
@@ -467,6 +490,7 @@ void Renderer3D::DoRender()
 
 void Renderer3D::PushCamera(ComponentCamera* cam)
 {
+	OPTICK_EVENT("Push Camera");
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
 

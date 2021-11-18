@@ -10,6 +10,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
+#include "optick.h"
+
 #include "mmgr/mmgr.h"
 
 GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
@@ -152,7 +154,8 @@ void GameObject::AddComponent(Component* comp)
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
-	//ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
+	/*ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
+	tr->PropagateTransform(child, tr->GetTranslation(), tr->GetRotation(), tr->GetScale());*/
 	//parent->UpdateAABB(tr->GetLocalMatrix());
 	//SetGlobalAABB(this);
 }
@@ -315,6 +318,8 @@ JSON_Value* GameObject::Load(JSON_Object* obj)
 
 void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 {
+	OPTICK_EVENT("Load Components");
+
 	for (int j = 0; j < json_array_get_count(compsArray); ++j)
 	{
 		//Component* comp = nullptr;
@@ -340,8 +345,11 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 			parent->AddComponent(mat);
 
 		}
-		else if (type == 3);
-			//comp = new ComponentCamera(*parent);
-
+		else if (type == 4)
+		{
+			ComponentCamera* cam = new ComponentCamera(parent, CameraType::GAME);
+			cam->Load(compObj, parent);
+			parent->AddComponent(cam);
+		}
 	}
 }

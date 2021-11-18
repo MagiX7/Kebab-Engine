@@ -19,7 +19,7 @@ public:
 	~ComponentCamera();
 
 	void SetCameraPosition(const vec& position);
-	vec GetCameraPosition() const;
+	vec GetCameraPosition();
 
 	void Look(const vec& lookPoint);
 

@@ -44,7 +44,7 @@ bool MainScene::Start()
     camera->Look({ 0,0,0 });
 
     ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
-    //tr->SetTranslation({ -5,5,2 });
+    tr->SetTranslation({ -5,5,2 });
 
     //tr->SetTranslation(camera->GetCameraPosition());
     goCam->AddComponent(camera);
@@ -168,7 +168,6 @@ GameObject* MainScene::GetGameObjectByUuid(int uuid)
     std::queue<GameObject*> q;
     for (const auto& go : root->GetChilds())
         q.push(go);
-        //if (go->GetUuid() == uuid) return go;
 
     while (!q.empty())
     {

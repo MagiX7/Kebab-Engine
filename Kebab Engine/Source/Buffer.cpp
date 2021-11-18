@@ -129,7 +129,7 @@ FrameBuffer::~FrameBuffer()
 {
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteTextures(1, &colorAttachment);
-	glDeleteTextures(1, &depthAttachment);
+	glDeleteRenderbuffers(1, &depthAttachment);
 }
 
 void FrameBuffer::Bind() const
@@ -149,7 +149,7 @@ void FrameBuffer::Create()
 	{
 		glDeleteFramebuffers(1, &fbo);
 		glDeleteTextures(1, &colorAttachment);
-		glDeleteTextures(1, &depthAttachment);
+		glDeleteRenderbuffers(1, &depthAttachment);
 	}
 
 	glGenFramebuffers(1, &fbo);
@@ -167,17 +167,22 @@ void FrameBuffer::Create()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenRenderbuffers(1, &depthAttachment);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthAttachment);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, properties.width, properties.height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthAttachment);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	glGenTextures(1, &depthAttachment);
-	glBindTexture(GL_TEXTURE_2D, depthAttachment);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, properties.width, properties.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, 0);
-	//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, properties.width, properties.height);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachment, 0);
+	//glGenTextures(1, &depthAttachment);
+	//glBindTexture(GL_TEXTURE_2D, depthAttachment);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, properties.width, properties.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, 0);
+	////glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, properties.width, properties.height);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachment, 0);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	/*GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE)

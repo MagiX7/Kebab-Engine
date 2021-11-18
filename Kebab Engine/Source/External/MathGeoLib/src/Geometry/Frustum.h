@@ -232,11 +232,12 @@ public:
 
 	/// Returns the world-space position of this Frustum.
 	/** @see SetPos(), Front(), Up(). */
-	const vec &Pos() const { return pos; }
+	vec &Pos() { return pos; }
 
 	/// Returns the world-space camera look-at direction of this Frustum.
 	/** @see Pos(), SetFront(), Up(). */
-	const vec &Front() const { return front; }
+	// TODO: FRONT PUT CONST MATHGEOLIB
+	vec &Front() { return front; }
 
 	/// Returns the world-space camera up direction of this Frustum.
 	/** @see Pos(), Front(), SetUp(). */

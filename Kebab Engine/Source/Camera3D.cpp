@@ -13,6 +13,8 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
+#include "optick.h"
+
 #include <queue>
 
 #include "mmgr/mmgr.h"
@@ -227,13 +229,17 @@ void Camera3D::SetGameCamera(ComponentCamera* cam)
 
 void Camera3D::SetCurrentCamera(ComponentCamera* cam)
 {
-	currentCam = cam;
+	if (cam) currentCam = cam;
+	else currentCam = editorCam;
+}
 
-	/*switch (type)
+void Camera3D::SetCurrentCamera(CameraType type)
+{
+	switch (type)
 	{
 		case CameraType::EDITOR: currentCam = editorCam; break;
 		case CameraType::GAME: currentCam = gameCam; break;
-	}*/
+	}
 }
 
 void Camera3D::CenterCameraToGO(AABB* boundBox)
@@ -278,6 +284,8 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 
 void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
+	OPTICK_EVENT("Draw in frustum culling");
+
 	if (go->GetGlobalAABB()->IsFinite())
 	{
 		if (IntersectsAABB(go->GetGlobalAABB(), camera))
@@ -289,19 +297,37 @@ void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 
 void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
-	std::vector<GameObject*>::iterator it;
+	OPTICK_EVENT("Propagate Frustum Culling");
 
+	std::queue<GameObject*> q;
+	q.push(go);
+
+	while (!q.empty())
+	{
+		auto& curr = q.front();
+		q.pop();
+
+		DrawInFrustumCulling(curr, camera);
+
+		for (auto& child : curr->GetChilds())
+			q.push(child);
+	}
+
+
+	/*std::vector<GameObject*>::iterator it;
 	for (it = go->GetChilds().begin(); it != go->GetChilds().end(); it++)
 	{
 		DrawInFrustumCulling((*it), camera);
 
 		if ((*it)->GetChilds().size() != 0)
 			PropagateDrawInFrustumCulling((*it), camera);
-	}
+	}*/
 }
 
 bool Camera3D::IntersectsAABB(const AABB* aabb, ComponentCamera* camera)
 {
+	OPTICK_EVENT("Intestects AABB");
+
 	float3 corners[8];
 	aabb->GetCornerPoints(corners);
 

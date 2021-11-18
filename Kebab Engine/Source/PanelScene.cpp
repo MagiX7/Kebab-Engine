@@ -25,7 +25,7 @@ void ScenePanel::OnRender(FrameBuffer* frameBuffer)
 
     //hovered = ImGui::IsWindowHovered();
 
-    /*if(ImGui::IsItemActive())
+   /* if(ImGui::IsItemActive() && app->camera->GetCurrentCamera() != app->scene->GetCamera())
         app->camera->SetCurrentCamera(app->scene->GetCamera());*/
 
     //if (app->camera->GetCurrentCamera()->cameraType == CameraType::GAME)

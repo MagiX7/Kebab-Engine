@@ -33,9 +33,11 @@ public:
 
 	ComponentCamera* GetCamera() { return camera; }
 
+public:
+	ComponentCamera* camera;
+
 private:
 	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
 	GameObject* avril;
-	ComponentCamera* camera;
 };

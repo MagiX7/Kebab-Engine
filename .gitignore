@@ -34,11 +34,14 @@
 !Kebab Engine/Source/External/DevIL/lib/DevIL.lib
 !Kebab Engine/Source/External/DevIL/lib/ILU.lib
 !Kebab Engine/Source/External/DevIL/lib/ILUT.lib
+!Kebab Engine/Source/External/Optick/lib/OptickCore.lib
 
 # Executables
 *.exe
+!Kebab Engine/Source/External/Optick/Optick.exe
 *.out
 *.app
+
 
 # Ignore thumbnails created by windows
 Thumbs.db

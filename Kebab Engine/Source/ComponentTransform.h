@@ -23,9 +23,9 @@ public:
 	void SetRotation(const Quat& newRot);
 	void SetScale(const float3& newScale);
 
-	const float3& GetTranslation() const { return position; }
-	const float3& GetScale() const { return scale; }
-	const Quat& GetRotation() const { return rotation; }
+	float3& GetTranslation() { return position; }
+	float3& GetScale() { return scale; }
+	Quat& GetRotation() { return rotation; }
 
 	// Transform matrix
 	inline float4x4& GetLocalMatrix() { return localTransformMat; }
@@ -36,12 +36,13 @@ public:
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
+	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
+
 private:
 	void UpdateTransform(float4x4 newTransform);
 
 	void RecomputeGlobalMat();
 
-	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
 
 	void DrawOnInspector();
 
