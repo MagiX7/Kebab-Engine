@@ -11,12 +11,13 @@
 #include "MeshLoader.h"
 #include "QdTree.h"
 
-#include "Cube.h"
-#include "Sphere.h"
+#include "KbCube.h"
+#include "KbSphere.h"
 
 #include "parson.h"
 
 #include <iostream>
+#include <queue>
 
 #include "mmgr/mmgr.h"
 
@@ -44,7 +45,7 @@ bool MainScene::Start()
     camera->Look({ 0,0,0 });
 
     ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
-    //tr->SetTranslation({ -5,5,2 });
+    tr->SetTranslation({ -5,5,2 });
 
     //tr->SetTranslation(camera->GetCameraPosition());
     goCam->AddComponent(camera);
@@ -95,8 +96,9 @@ bool MainScene::Update(float dt)
     }
     if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
     {
-        GameObject* a = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
-        app->renderer3D->Submit(a);
+        //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+        //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
+        app->renderer3D->Submit(avril);
     }
     if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
     {
@@ -125,6 +127,7 @@ bool MainScene::CleanUp()
 void MainScene::AddGameObject(GameObject* go)
 {
     root->AddChild(go);
+    go->SetParent(root);
     //gameObjects.push_back(go);
 }
 
@@ -151,6 +154,20 @@ void MainScene::DeleteGameObject(GameObject* go)
     }
 }
 
+void MainScene::EraseGameObject(GameObject* go)
+{
+    std::vector<GameObject*>::iterator it = root->GetChilds().begin();
+
+    for (; it != root->GetChilds().end(); ++it)
+    {
+        if ((*it) == go)
+        {
+            root->GetChilds().erase(it);
+            break;
+        }
+    }
+}
+
 void MainScene::DeleteAllGameObjects()
 {
     for (auto& go : root->GetChilds())
@@ -164,8 +181,21 @@ void MainScene::DeleteAllGameObjects()
 
 GameObject* MainScene::GetGameObjectByUuid(int uuid)
 {
+    std::queue<GameObject*> q;
     for (const auto& go : root->GetChilds())
-        if (go->GetUuid() == uuid) return go;
+        q.push(go);
+
+    while (!q.empty())
+    {
+        GameObject* curr = q.front();
+        q.pop();
+
+        if (curr->GetUuid() == uuid) return curr;
+
+        for (const auto& child : curr->GetChilds())
+            q.push(child);
+    }
+
 
     return nullptr;
 }

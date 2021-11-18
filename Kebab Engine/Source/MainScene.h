@@ -25,6 +25,7 @@ public:
 
 	void AddGameObject(GameObject* go);
 	void DeleteGameObject(GameObject* go);
+	void EraseGameObject(GameObject* go);
 	inline std::vector<GameObject*>& GetGameObjects() { return root->GetChilds(); }
 	void DeleteAllGameObjects();
 
@@ -34,10 +35,11 @@ public:
 	ComponentCamera* GetCamera() { return camera; }
 
 	QdTree* rootQT;
+public:
+	ComponentCamera* camera;
+
 private:
 	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
 	GameObject* avril;
-	ComponentCamera* camera;
-
 };

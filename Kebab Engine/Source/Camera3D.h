@@ -8,12 +8,14 @@
 class GameObject;
 class ComponentCamera;
 class GameObject;
-//
+
 //enum class CameraType
 //{
 //	EDITOR,
 //	GAME
 //};
+
+enum class CameraType;
 
 class Camera3D : public Module
 {
@@ -37,6 +39,7 @@ public:
 	void SetEditorCamera(ComponentCamera* cam);
 	void SetGameCamera(ComponentCamera* cam);
 	void SetCurrentCamera(ComponentCamera* cam);
+	void SetCurrentCamera(CameraType type);
 
 	void CenterCameraToGO(AABB* boundBox);
 	void OrbitGO(AABB* boundBox, float& dx, float& dy);
@@ -50,7 +53,7 @@ public:
 
 private:
 	GameObject* MousePickGameObject();
-	GameObject* ThrowRay(LineSegment& ray, float3& hitPoint, GameObject* go = nullptr);
+	std::vector<GameObject*> ThrowRay(LineSegment& ray, float3& hitPoint, bool& clearVector, GameObject* go = nullptr);
 
 public:
 
@@ -65,4 +68,7 @@ private:
 
 	bool focusing;
 	bool orbiting;
+
+	std::vector<GameObject*> pickedGos;
+	int pickedGosIt;
 };

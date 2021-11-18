@@ -17,6 +17,14 @@ class ScenePreviewPanel;
 class FrameBuffer;
 class Texture;
 
+class MainScene;
+
+enum class SceneState
+{
+	EDIT = 0,
+	PLAY
+};
+
 class Editor : public Module
 {
 public:
@@ -32,8 +40,11 @@ public:
 
 	//void Save(JSON_Object* root) override;
 
-	void SaveScene();
-	void LoadScene();
+	void SerializeScene();
+	void UnserializeScene();
+
+	void OnScenePlay();
+	void OnSceneStop();
 
 private:
 	void InitImGui();
@@ -65,6 +76,8 @@ private:
 	bool showWindows;
 	bool closeApp;
 
+	bool onPlay;
+	
 	JSON_Value* sceneValue;
 
 	ImGuizmo::OPERATION guizmoOperation;
@@ -73,4 +86,8 @@ private:
 	Texture* playTex;
 	Texture* pauseTex;
 	Texture* stopTex;
+	Texture* nextFrameTex;
+
+	SceneState sceneState;
+	MainScene* initialScene;
 };

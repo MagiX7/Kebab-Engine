@@ -138,13 +138,32 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 		aabb.Enclose(vertices[i].position);
 
 	parent->SetGlobalAABB(aabb);
-	ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
-	parent->UpdateAABB(tr->GetLocalMatrix());
+
+	////// Now done in SetGlobalAABB //////
+	/*ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+	parent->UpdateAABB(tr->GetLocalMatrix());*/
 }
 
 void ComponentMesh::SetMeshPath(const std::string& path)
 {
 	mesh->SetPath(path);
+}
+
+void ComponentMesh::SetMesh(KbMesh* newMesh)
+{
+	delete mesh; mesh = nullptr;
+	mesh = newMesh;
+
+	AABB aabb;
+
+	aabb.SetNegativeInfinity();
+	int size = mesh->vertices.size();
+	//aabb.Enclose(&vertices.data()->position, size);
+	for (int i = 0; i < size; ++i)
+		aabb.Enclose(mesh->vertices[i].position);
+
+	parent->SetGlobalAABB(aabb);
+
 }
 
 JSON_Value* ComponentMesh::Save()

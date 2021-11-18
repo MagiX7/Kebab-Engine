@@ -22,6 +22,7 @@
 #include "PanelScene.h"
 #include "PanelAssets.h"
 
+#include "Optick/src/optick.h"
 
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -46,6 +47,10 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     showAboutPanel = false;
     showWindows = true;
     closeApp = false;
+    onPlay = false;
+
+    sceneState = SceneState::EDIT;
+    initialScene = nullptr;
 }
 
 Editor::~Editor()
@@ -61,10 +66,12 @@ bool Editor::Start()
     playTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/play_icon.kbtexture");
     pauseTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/pause_icon.kbtexture");
     stopTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/stop_icon.kbtexture");
+    nextFrameTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/next_frame_icon.kbtexture");
 
     if (!playTex) playTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/play_icon.png");
     if (!pauseTex) pauseTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/pause_icon.png");
     if (!stopTex) stopTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/stop_icon.png");
+    if (!nextFrameTex) nextFrameTex= TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/next_frame_icon.png");
 
 	return true;
 }
@@ -164,31 +171,46 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
         {
             guizmoOperation = ImGuizmo::TRANSLATE;
-            //hierarchyPanel->currentGO->DrawGuizmo();
         }
         else if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
         {
             guizmoOperation = ImGuizmo::ROTATE;
-            //hierarchyPanel->currentGO->DrawGuizmo();
         }
         else if (hierarchyPanel->currentGO && app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
         {
             guizmoOperation = ImGuizmo::SCALE;
-            //hierarchyPanel->currentGO->DrawGuizmo();
         }
     }
 
     SimulationControl();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
-    if (editorFbo)
-    {
-        scenePanel->OnRender(sceneFbo);
-        viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
-        if (showWindows && previewScenePanel->active) previewScenePanel->OnRender(sceneFbo);
-    }
-    ImGui::PopStyleVar();
 
+    switch (sceneState)
+    {
+        case SceneState::EDIT:
+        {
+            scenePanel->OnRender(sceneFbo);
+            
+            viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
+            if (showWindows && previewScenePanel->active)
+                previewScenePanel->OnRender(sceneFbo);
+
+            break;
+        }
+        case SceneState::PLAY:
+        {
+            viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
+            if (showWindows && previewScenePanel->active)
+                previewScenePanel->OnRender(sceneFbo);
+            
+            scenePanel->OnRender(sceneFbo);
+            break;
+        }
+
+    }
+
+    ImGui::PopStyleVar();
 
     if (showDemoWindow)
     {
@@ -229,8 +251,17 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
     return true;
 }
 
-void Editor::SaveScene()
+void Editor::SerializeScene()
 {
+    OPTICK_EVENT("Serialization");
+
+    //initialScene = app->scene;
+    
+    //JSON_Value* val = json_parse_file("Assets/Scenes/Scene.kbscene");
+    //if (sceneValue)
+    //    return;
+
+    //json_value_free(sceneValue);
     sceneValue = Parser::InitValue();
     JSON_Object* root = Parser::GetObjectByValue(sceneValue);
 
@@ -245,7 +276,7 @@ void Editor::SaveScene()
     size_t size = Parser::GetSerializationSize(sceneValue);
     char* buffer = new char[size];
     json_serialize_to_buffer(sceneValue, buffer, size);
-    if (app->fileSystem->Save("Assets/Scenes/Scene.kbscene", buffer, size) > 0)
+    if (app->fileSystem->Save("Library/Temp/Scene.kbscene", buffer, size) > 0)
         LOG_CONSOLE("Saved successfully");
     delete[] buffer;
 
@@ -253,14 +284,17 @@ void Editor::SaveScene()
     Parser::FreeValue(sceneValue);
 }
 
-void Editor::LoadScene()
+void Editor::UnserializeScene()
 {
+    //app->scene = initialScene;
+    OPTICK_EVENT("Unserialization");
+
     app->scene->DeleteAllGameObjects();
     app->renderer3D->EraseAllGameObjects();
     hierarchyPanel->currentGO = nullptr;
     
     char* buffer;
-    if(app->fileSystem->Load("Assets/Scenes/Scene.kbscene", &buffer) > 0)
+    if(app->fileSystem->Load("Library/Temp/Scene.kbscene", &buffer) > 0)
     {
         sceneValue = json_parse_string(buffer);
         JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
@@ -276,14 +310,47 @@ void Editor::LoadScene()
             GameObject* go = new GameObject(name, uuid);
 
             go->Load(obj);
+            ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+            if (cam)
+            {
+                app->scene->camera = cam;
 
-            if(!go->GetParent())
+                /*float3 f = cam->frustum.Front().Normalized();
+                float3 u = cam->frustum.Up().Normalized();
+
+                float3::Orthonormalize(f, u);
+                cam->frustum.SetFront(f);
+                cam->frustum.SetFront(u);*/
+
+                app->camera->SetGameCamera(cam);
+            }
+
+           if(!go->GetParent())
                 app->scene->AddGameObject(go);
 
             if (go->GetComponent(ComponentType::MESH) && go->GetComponent(ComponentType::MATERIAL))
                 app->renderer3D->Submit(go);
         }
+
+        json_value_free(sceneValue);
+        delete[] buffer;
+
+        app->fileSystem->Remove("Library/Temp/Scene.kbscene");
     }
+}
+
+void Editor::OnScenePlay()
+{
+    sceneState = SceneState::PLAY;
+    app->camera->SetCurrentCamera(CameraType::GAME);
+    SerializeScene();
+}
+
+void Editor::OnSceneStop()
+{
+    sceneState = SceneState::EDIT;
+    app->camera->SetCurrentCamera(CameraType::EDITOR);
+    UnserializeScene();
 }
 
 void Editor::OnMainMenuRender(bool& showDemoWindow)
@@ -303,11 +370,11 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
         {
             if (ImGui::MenuItem("Save Scene", "Crtl + S"))
             {
-                SaveScene();
+                SerializeScene();
             }
             if (ImGui::MenuItem("Open Scene"))
             {
-                LoadScene();
+                UnserializeScene();
             }
             if (ImGui::MenuItem("Exit"))
             {
@@ -329,6 +396,9 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
 
             if (ImGui::MenuItem("Sphere"))
                 app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+
+            if (ImGui::MenuItem("Cylinder"))
+                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
 
             if (ImGui::MenuItem("Empty GameObject"))
             {
@@ -472,13 +542,23 @@ void Editor::ShowAboutPanel()
 
 void Editor::SimulationControl()
 {
-    if (ImGui::Begin("SimulationControl", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+    
+    if (ImGui::Begin("##simulationcontrol", NULL, flags))
     {
         float width = ImGui::GetWindowWidth();
 
         ImGui::SameLine(width / 2 - 60);
 
-        if (ImGui::ImageButton((ImTextureID)playTex->GetID(), { 30,30 }));
+        Texture* tex = sceneState == SceneState::EDIT ? playTex : stopTex;
+
+        if (ImGui::ImageButton((ImTextureID)tex->GetID(), { 30,30 }))
+        {
+            if (sceneState == SceneState::EDIT)
+                OnScenePlay();
+            else if (sceneState == SceneState::PLAY)
+                OnSceneStop();
+        }
 
         ImGui::SameLine(width / 2);
 
@@ -486,7 +566,7 @@ void Editor::SimulationControl()
 
         ImGui::SameLine(width / 2 + 60);
 
-        if (ImGui::ImageButton((ImTextureID)stopTex->GetID(), { 30,30 }));
+        if (ImGui::ImageButton((ImTextureID)nextFrameTex->GetID(), { 30,30 }));
 
         ImGui::End();
     }

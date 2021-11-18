@@ -110,11 +110,78 @@ JSON_Value* ComponentCamera::Save()
 	JSON_Object* obj = Parser::GetObjectByValue(value);
 
 	json_object_set_number(obj, "Type", 4);
-	return nullptr;
+	
+	json_object_set_value(obj, "worldmatrix", json_value_init_object());
+	JSON_Object* worldObj = json_object_get_object(obj, "worldmatrix");
+
+	float3x4 worldMat = frustum.WorldMatrix();
+
+	json_object_set_number(worldObj, "x0", worldMat.At(0, 0));
+	json_object_set_number(worldObj, "y0", worldMat.At(1, 0));
+	json_object_set_number(worldObj, "z0", worldMat.At(2, 0));
+
+	json_object_set_number(worldObj, "x1", worldMat.At(0, 1));
+	json_object_set_number(worldObj, "y1", worldMat.At(1, 1));
+	json_object_set_number(worldObj, "z1", worldMat.At(2, 1));
+
+	json_object_set_number(worldObj, "x2", worldMat.At(0, 2));
+	json_object_set_number(worldObj, "y2", worldMat.At(1, 2));
+	json_object_set_number(worldObj, "z2", worldMat.At(2, 2));
+
+	json_object_set_number(worldObj, "x3", worldMat.At(0, 3));
+	json_object_set_number(worldObj, "y3", worldMat.At(1, 3));
+	json_object_set_number(worldObj, "z3", worldMat.At(2, 3));
+
+	return value;
 }
 
 void ComponentCamera::Load(JSON_Object* obj, GameObject* parent)
 {
+	/*float3 f = frustum.Front().Normalized();
+	float3 u = frustum.Up().Normalized();
+	float3::Orthonormalize(f, u);
+	frustum.SetFront(f);
+	frustum.SetUp(u);*/
+
+	//JSON_Object* camObj = json_object_get_object(root, name.c_str());
+	JSON_Object* worldObj = json_object_get_object(obj, "worldmatrix");
+
+	float3 pos = { 0,0,0 };
+	float3 rot = { 0,0,0 };
+	float3x3 rotMat;
+
+	rot.x = json_object_get_number(worldObj, "x0");
+	rot.y = json_object_get_number(worldObj, "y0");
+	rot.z = json_object_get_number(worldObj, "z0");
+
+	rotMat.SetCol(0, rot);
+
+	rot.x = json_object_get_number(worldObj, "x1");
+	rot.y = json_object_get_number(worldObj, "y1");
+	rot.z = json_object_get_number(worldObj, "z1");
+
+	rotMat.SetCol(1, rot);
+
+	rot.x = json_object_get_number(worldObj, "x2");
+	rot.y = json_object_get_number(worldObj, "y2");
+	rot.z = json_object_get_number(worldObj, "z2");
+
+	rotMat.SetCol(2, rot);
+
+	pos.x = json_object_get_number(worldObj, "x3");
+	pos.y = json_object_get_number(worldObj, "y3");
+	pos.z = json_object_get_number(worldObj, "z3");
+
+	float3x4 worldMat{ rotMat, pos };
+	frustum.SetWorldMatrix(worldMat);
+
+	frustum.SetPos(pos);
+
+	//float3 u = frustum.Up();
+	//float3 f = frustum.Front();
+	//float3::Orthonormalize(u, f);
+	//frustum.SetFront(f);
+	//frustum.SetUp(u);
 }
 
 float ComponentCamera::GetFarPlane() const
@@ -122,7 +189,7 @@ float ComponentCamera::GetFarPlane() const
 	return planeFar;
 }
 
-vec ComponentCamera::GetCameraPosition() const
+vec ComponentCamera::GetCameraPosition()
 {
 	return frustum.Pos();
 }

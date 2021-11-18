@@ -14,11 +14,11 @@
 
 #include "ComponentMaterial.h"
 
-//#include "Cube.h"
-//#include "Pyramid.h"
-//#include "Plane.h"
-//#include "Sphere.h"
-//#include "Cylinder.h"
+#include "KbCube.h"
+#include "KbPyramid.h"
+#include "KbPlane.h"
+#include "KbSphere.h"
+#include "KbCylinder.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -297,7 +297,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 {
     GameObject* go = nullptr;
-    /*Component* comp = nullptr;
+    KbMesh* mesh = nullptr;
     ComponentMaterial* matComp = nullptr;
 
     std::string name;
@@ -311,8 +311,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
                 name += " " + std::to_string(numCube);
             numCube++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);
+            mesh = new KbCube({ -0.5,-0.5 , -0.5 }, { 1,1,1 });
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);*/
             break;
         }
 
@@ -323,8 +325,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numPyr > 0) name += " " + std::to_string(numPyr);
             numPyr++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);
+            mesh = new KbPyramid({ 0,0,0 }, 2, 1);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);*/
             break;
         }
 
@@ -334,9 +338,11 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             name = "Plane";
             if (numPlane > 0) name += " " + std::to_string(numPlane);
             numPlane++;
+            
+            mesh = new KbPlane({ -0.5f,0.0f, -0.5f }, { 1,1 });
 
-            go = new GameObject(name.c_str());
-            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);
+            /*go = new GameObject(name.c_str());
+            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);*/
             break;
         }
         
@@ -347,8 +353,10 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numSphere > 0) name += " " + std::to_string(numSphere);
             numSphere++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);
+            mesh = new KbSphere({ -0.5f,-0.5f,-0.5f }, 1, 15, 15);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);*/
             break;
         }
 
@@ -359,19 +367,27 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             if (numCyl > 0) name = name += " " + std::to_string(numCyl);
             numCyl++;
 
-            go = new GameObject(name.c_str());
-            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);
+            mesh = new KbCylinder({ -0.5f,-0.5f ,-0.5f }, 1, 1, 15);
+
+            /*go = new GameObject(name.c_str());
+            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);*/
             break;
         }
-
     }
-
-    if (go)
+    
+    if (mesh)
     {
-        go->AddComponent(comp);
-        ComponentMaterial* mat = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
+        go = new GameObject(name);
+        ComponentMesh* meshComp = new ComponentMesh(go);
+        go->AddComponent(meshComp);
+        
+        meshComp->SetMesh(mesh);
+
+        /*ComponentMaterial* mat = (ComponentMaterial*)*/go->CreateComponent(ComponentType::MATERIAL);    
+
         app->scene->AddGameObject(go);
-    }*/
+    }
+    
 
     return go;
 }
@@ -471,6 +487,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
     while (!q.empty())
     {
         GameObject* curr = q.front();
+        q.pop();
         ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
 
         if (m)
@@ -482,7 +499,6 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
             ran++;
         }
 
-        q.pop();
         if (curr->GetChilds().size() > 0)
             for (auto& c : curr->GetChilds())
                 q.push(c);
@@ -495,9 +511,11 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
     JSON_Array* arr = json_value_get_array(arrValue);
 
 
-    //std::string n = go->GetName() + ".Meshes";
+    if(go != app->scene->GetRoot()) json_object_set_string(modelObj, "base name", go->GetName().c_str());
+
+    if(go->GetParent() != app->scene->GetRoot()) json_object_set_number(modelObj, "parent uuid", go->GetUuid());
+    json_object_set_number(modelObj, "uuid", go->GetUuid());
     json_object_set_value(modelObj, "Meshes", arrValue);
-    json_object_set_number(modelObj, "parent uuid", go->GetUuid());
 
     ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
     json_object_set_number(modelObj, "pos x", tr->GetTranslation().x);
@@ -518,6 +536,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
         JSON_Value* value = json_value_init_object();
         JSON_Object* obj = json_object(value);
 
+        json_object_set_number(obj, "parent uuid", gosMeshes[i].first->GetParent()->GetUuid());
         json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
         json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
         json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
@@ -540,7 +559,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go)
 
 
     std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
-    json_serialize_to_file(modelValue, path.c_str());
+    json_serialize_to_file_pretty(modelValue, path.c_str());
     //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 
     //if (app->fileSystem->Save(path.c_str(), &buffer, size) > 0)
@@ -568,7 +587,11 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
         int s = fileName.find_last_of('/');
         int e = fileName.find_last_of('.');
         std::string n = fileName.substr(s + 1, e);
-        ret = new GameObject(n);
+
+        int baseUuid = json_object_get_number(modelObj, "uuid");
+
+        ret = new GameObject(n, baseUuid);
+        app->scene->AddGameObject(ret);
 
         float3 p = { 0,0,0 };
         p.x = json_object_get_number(modelObj, "pos x");
@@ -594,20 +617,29 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
 
 
         JSON_Array* arr = json_object_get_array(modelObj, "Meshes");
+        std::queue<GameObject*> q;
 
         int size = json_array_get_count(arr);
         for (int i = 0; i < size; ++i)
         {
             JSON_Object* obj = json_array_get_object(arr, i);
             int ownerUuid = json_object_get_number(obj, "owner uuid");
+            int parentUuid = json_object_get_number(obj, "parent uuid");
+
             const char* ownerName = json_object_get_string(obj, "owner name");
             const char* meshPath = json_object_get_string(obj, "mesh path");
             const char* texPath = json_object_get_string(obj, "texture path");
+
 
             GameObject* owner = new GameObject(ownerName, ownerUuid);
             ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
             trans->SetLocalMatrix(parentTr->GetLocalMatrix());
 
+            GameObject* parent = app->scene->GetGameObjectByUuid(parentUuid);
+            if (parent)
+            {
+                parent->AddChild(owner);
+            }
 
             ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
 
@@ -623,11 +655,11 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
 
             owner->AddComponent(meshComp);
             owner->AddComponent(matComp);
-            ret->AddChild(owner);
+            //ret->AddChild(owner);
             owner->SetParent(ret);
             ret->SetGlobalAABB(*owner->GetGlobalAABB());
         }
     }
-    if (ret) app->scene->AddGameObject(ret);
+    //if (ret) app->scene->AddGameObject(ret);
     return ret;
 }

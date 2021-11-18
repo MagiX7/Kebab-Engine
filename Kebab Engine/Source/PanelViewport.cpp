@@ -31,7 +31,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
     hovered = ImGui::IsWindowHovered();
 
-    /*if (ImGui::IsItemActive())
+    /*if (ImGui::IsItemActive() && app->camera->GetCurrentCamera() != app->camera->editorCam)
         app->camera->SetCurrentCamera(app->camera->editorCam);*/
 
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)

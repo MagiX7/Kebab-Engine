@@ -13,6 +13,8 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
+#include "optick.h"
+
 #include <queue>
 
 #include "mmgr/mmgr.h"
@@ -129,7 +131,7 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Focus
-		if (app->editor->hierarchyPanel->currentGO != nullptr)
+		if (app->editor->hierarchyPanel->currentGO)
 		{
 			GameObject* selectedGO = app->editor->hierarchyPanel->currentGO;
 			ComponentTransform* compTransGO = (ComponentTransform*)selectedGO->GetComponent(ComponentType::TRANSFORM);
@@ -155,7 +157,8 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && /*app->editor->viewportPanel->IsHovered() &&*/ !ImGuizmo::IsUsing() && !ImGuizmo::IsOver() && orbiting == false && focusing == false)
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()
+			&& !orbiting && !focusing)
 		{
 			GameObject* picked = MousePickGameObject();
 			app->editor->hierarchyPanel->SetCurrent(picked);
@@ -228,13 +231,17 @@ void Camera3D::SetGameCamera(ComponentCamera* cam)
 
 void Camera3D::SetCurrentCamera(ComponentCamera* cam)
 {
-	currentCam = cam;
+	if (cam) currentCam = cam;
+	else currentCam = editorCam;
+}
 
-	/*switch (type)
+void Camera3D::SetCurrentCamera(CameraType type)
+{
+	switch (type)
 	{
 		case CameraType::EDITOR: currentCam = editorCam; break;
 		case CameraType::GAME: currentCam = gameCam; break;
-	}*/
+	}
 }
 
 void Camera3D::CenterCameraToGO(AABB* boundBox)
@@ -279,6 +286,8 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 
 void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
+	OPTICK_EVENT("Draw in frustum culling");
+
 	if (go->GetGlobalAABB()->IsFinite())
 	{
 		if (IntersectsAABB(go->GetGlobalAABB(), camera))
@@ -290,19 +299,37 @@ void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 
 void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
-	std::vector<GameObject*>::iterator it;
+	OPTICK_EVENT("Propagate Frustum Culling");
 
+	std::queue<GameObject*> q;
+	q.push(go);
+
+	while (!q.empty())
+	{
+		auto& curr = q.front();
+		q.pop();
+
+		DrawInFrustumCulling(curr, camera);
+
+		for (auto& child : curr->GetChilds())
+			q.push(child);
+	}
+
+
+	/*std::vector<GameObject*>::iterator it;
 	for (it = go->GetChilds().begin(); it != go->GetChilds().end(); it++)
 	{
 		DrawInFrustumCulling((*it), camera);
 
 		if ((*it)->GetChilds().size() != 0)
 			PropagateDrawInFrustumCulling((*it), camera);
-	}
+	}*/
 }
 
 bool Camera3D::IntersectsAABB(const AABB* aabb, ComponentCamera* camera)
 {
+	OPTICK_EVENT("Intestects AABB");
+
 	float3 corners[8];
 	aabb->GetCornerPoints(corners);
 
@@ -411,67 +438,89 @@ GameObject* Camera3D::MousePickGameObject()
 	LineSegment picking = editorCam->frustum.UnProjectLineSegment(x, y);
 
 	float3 hitPoint;
-	GameObject* hitted = ThrowRay(picking, hitPoint, app->scene->GetRoot());
-	if (hitted)
+
+	static bool clearVec = false;
+	if (pickedGos.size() <= 0)
 	{
-		while (hitted->GetParent())
+		//pickedGos.clear();
+		pickedGos = ThrowRay(picking, hitPoint, clearVec, app->scene->GetRoot());
+		pickedGosIt = 0;
+	}
+	
+	if (clearVec)
+		pickedGos.clear();
+
+	else if (pickedGos.size() > 0 &&  pickedGosIt <= pickedGos.size() - 1)
+		return pickedGos[pickedGosIt++];
+	
+	else if(pickedGos.size() == pickedGosIt)
+		pickedGos.clear();
+
+	
+	/*if (hitted)
+	{
+		while (hitted->GetParent() && hitted->GetParent() != app->scene->GetRoot())
 			hitted = hitted->GetParent();
 
 		return hitted;
-	}
+	}*/
 
 	return nullptr;
 }
 
-GameObject* Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, GameObject* gameObject)
+std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, bool& clearVector, GameObject* gameObject)
 {
-	std::queue<GameObject*> q;
+	std::vector<GameObject*> gos;
 
-	float3 hp;
-	Ray ray = line.ToRay();
+	std::queue<GameObject*> q;
 
 	for (auto& go : gameObject->GetChilds())
 		q.push(go);
 
-	/*ComponentTransform* trans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-	ComponentMesh* meshComp = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-	if (meshComp)
-	{
-		Triangle triangle;
-		for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
-		{
-			triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-			triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-			triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
-
-			float4x4 m = trans->GetLocalMatrix().Transposed();
-			ray.Transform(m);
-			if (ray.Intersects(triangle))
-			{
-				return go;
-			}
-		}
-	}
-	else
-	{
-		ThrowRay(line, hitPoint, go);
-	}*/
-
 	while (!q.empty())
 	{
 		GameObject* curr = q.front();
-		ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
-
 		q.pop();
+
+		// AABB
 		LineSegment localLine = line;
 		if (curr->GetGlobalAABB()->Intersects(localLine))
-			return curr;
+		{
+			// Mesh
+			ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+			ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+			if (meshComp)
+			{
+				Triangle triangle;
+				for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+				{
+					triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
+
+					float4x4 m = trans->GetLocalMatrix().Transposed();
+					Ray ray = localLine.ToRay();
+					ray.Transform(m);
+					if (ray.Intersects(triangle))
+					{
+						if(curr->GetParent())
+							gos.push_back(curr->GetParent());
+						gos.push_back(curr);
+						clearVector = false;
+						break;
+					}
+				}
+			}
+		}
 
 		if (curr->GetChilds().size() > 0)
 			for (auto& child : curr->GetChilds())
 				q.push(child);
 	}
 
+	if (!gos.size()) clearVector = true;
 
-	return nullptr;
+	return gos;
+
+	//return nullptr;
 }

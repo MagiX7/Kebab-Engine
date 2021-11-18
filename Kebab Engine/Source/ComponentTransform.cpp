@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 
+
 #include "imgui/imgui.h"
 
 ComponentTransform::ComponentTransform(GameObject* compOwner)
@@ -142,8 +143,6 @@ JSON_Value* ComponentTransform::Save()
 	Parser::DotSetObjectNumber(obj, "Scale.y", scale.y);
 	Parser::DotSetObjectNumber(obj, "Scale.z", scale.z);
 
-	// TODO: Save view matrix
-
 	return value;
 }
 
@@ -163,6 +162,7 @@ void ComponentTransform::Load(JSON_Object* obj, GameObject* parent)
 	scale.z = json_object_dotget_number(obj, "Scale.z");
 
 	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+	RecomputeGlobalMat();
 }
 
 void ComponentTransform::UpdateTransform(float4x4 newTransform)

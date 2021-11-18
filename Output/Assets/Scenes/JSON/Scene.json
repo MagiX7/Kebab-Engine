@@ -3,65 +3,15 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": -1985492479,
+                "uuid": 1637293831,
+                "parent uuid": 1636319137,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0
-                        },
-                        "Rotation": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0,
-                            "w": 1
-                        },
-                        "Scale": {
-                            "x": 1,
-                            "y": 1,
-                            "z": 1
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "Baker House",
-                "uuid": -1921741516,
-                "Components": [
-                    {
-                        "Type": 0,
-                        "Position": {
-                            "x": 3.4265182018280029,
-                            "y": 0,
-                            "z": 0
-                        },
-                        "Rotation": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0,
-                            "w": 1
-                        },
-                        "Scale": {
-                            "x": 1,
-                            "y": 1,
-                            "z": 1
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "Chimney",
-                "uuid": 0,
-                "parent uuid": -1921741516,
-                "Components": [
-                    {
-                        "Type": 0,
-                        "Position": {
-                            "x": 3.4265182018280029,
-                            "y": 0,
-                            "z": 0
+                            "x": -5,
+                            "y": 5,
+                            "z": 2
                         },
                         "Rotation": {
                             "x": 0,
@@ -76,59 +26,33 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh path": "Library\/Meshes\/Chimney.kbmesh",
-                        "mesh name": "Chimney.kbmesh"
-                    },
-                    {
-                        "Type": 2,
-                        "path": "Library\/Textures\/Baker_house.kbtexture"
-                    }
-                ]
-            },
-            {
-                "name": "Baker_house",
-                "uuid": 0,
-                "parent uuid": -1921741516,
-                "Components": [
-                    {
-                        "Type": 0,
-                        "Position": {
-                            "x": 3.4265182018280029,
-                            "y": 0,
-                            "z": 0
-                        },
-                        "Rotation": {
-                            "x": 0,
-                            "y": 0,
-                            "z": 0,
-                            "w": 1
-                        },
-                        "Scale": {
-                            "x": 1,
-                            "y": 1,
-                            "z": 1
+                        "Type": 4,
+                        "worldmatrix": {
+                            "x0": 0.371390700340271,
+                            "y0": 0,
+                            "z0": 0.92847675085067749,
+                            "x1": 0.63174837827682495,
+                            "y1": 0.73282814025878906,
+                            "z1": -0.2526993453502655,
+                            "x2": -0.68041384220123291,
+                            "y2": 0.68041384220123291,
+                            "z2": 0.27216553688049316,
+                            "x3": -5,
+                            "y3": 5,
+                            "z3": 2
                         }
-                    },
-                    {
-                        "Type": 1,
-                        "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
-                        "mesh name": "Baker_house.kbmesh"
-                    },
-                    {
-                        "Type": 2,
-                        "path": "Library\/Textures\/Baker_house.kbtexture"
                     }
                 ]
             },
             {
                 "name": "Avril",
-                "uuid": -157102468,
+                "uuid": 519425198,
+                "parent uuid": 1636319137,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -7.1410431861877441,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -148,13 +72,13 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": 0,
-                "parent uuid": -157102468,
+                "uuid": -1100263737,
+                "parent uuid": 519425198,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -7.1410431861877441,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -183,13 +107,13 @@
             },
             {
                 "name": "Body",
-                "uuid": 0,
-                "parent uuid": -157102468,
+                "uuid": 1465920387,
+                "parent uuid": 519425198,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -7.1410431861877441,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
