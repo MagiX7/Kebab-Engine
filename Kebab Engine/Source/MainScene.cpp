@@ -85,7 +85,7 @@ bool MainScene::Update(float dt)
         GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
         app->renderer3D->Submit(test);
         rootQT->Insert(test);
-        //rootQT->Recalculate();
+        rootQT->Recalculate();
 
     }
     if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -131,6 +131,9 @@ void MainScene::AddGameObject(GameObject* go)
 void MainScene::DeleteGameObject(GameObject* go)
 {
     std::vector<GameObject*>::iterator it;
+
+    rootQT->Remove(go);
+    rootQT->Recalculate();
 
     for (it = root->GetChilds().begin(); it != root->GetChilds().end(); ++it)
     {

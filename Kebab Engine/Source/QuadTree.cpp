@@ -16,8 +16,6 @@ QuadNode::QuadNode()
 
 QuadNode::~QuadNode()
 {
-	delete uperNode;
-
 	for (QuadNode* node : underNodes)
 	{
 		RELEASE(node);
@@ -189,17 +187,35 @@ void QdTree::Recalculate()
 		{
 			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 			{
-				gObjs.push_back((*itGO));
-			}
+				bool repeated = false;
 
-			itNode->bucket.clear();
+				for (std::vector<GameObject*>::iterator it = gObjs.begin(); it != gObjs.end(); it++)
+				{
+					if ((*itGO) == (*it))
+					{
+						repeated = true;
+					}
+				}
+
+				if (repeated == false)
+					gObjs.push_back((*itGO));
+			}
 		}
+	}
+
+	for (std::vector<GameObject*>::iterator itGO = gObjs.begin(); itGO != gObjs.end(); itGO++)
+	{
+		Remove((*itGO));
 	}
 
 	for (std::vector<QuadNode*>::iterator itUN = root->underNodes.begin(); itUN != root->underNodes.end(); itUN++)
 	{
-		
+		delete((*itUN));
 	}
+
+	root->underNodes.clear();
+	root->bucket.clear();
+	root->leaf = true;
 
 	for (std::vector<GameObject*>::iterator itGO = gObjs.begin(); itGO != gObjs.end(); itGO++)
 	{
