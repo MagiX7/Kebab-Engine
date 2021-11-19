@@ -50,7 +50,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
     {
         const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM");
 
-        if (payload != nullptr)
+        if (payload)
         {
             std::string dragPath = (const char*)payload->Data;
             std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
@@ -59,7 +59,8 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
             bool isCustom = false;
 
-            if (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0)
+            
+            if (ext == ".fbx" || ext == ".obj")
             {
                 isCustom = true;
 
@@ -74,7 +75,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                     name = name.substr(0, name.find_last_of("."));
                 }
             }
-            if (isCustom == false && (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0))
+            if (!isCustom && (ext == ".fbx" || ext == ".obj"))
             {
                 GameObject* bh = MeshLoader::GetInstance()->LoadModel(dragPath);
                 app->renderer3D->Submit(bh);

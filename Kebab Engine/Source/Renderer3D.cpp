@@ -233,16 +233,6 @@ bool Renderer3D::Draw(float dt)
 {
 	app->editor->OnImGuiRender(dt, editorFbo, sceneFbo);
 
-	editorFbo->Bind();
-	PushCamera(app->camera->editorCam);
-	glClearColor(0.1f, 0.1f, 0.1f, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	DoRender();
-	glPopMatrix();
-	glPopMatrix();
-	editorFbo->Unbind();
-
 	sceneFbo->Bind();
 	PushCamera(app->scene->GetCamera());
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
@@ -250,8 +240,16 @@ bool Renderer3D::Draw(float dt)
 
 	DoRender();
 	glPopMatrix();
-	glPopMatrix();
 	sceneFbo->Unbind();
+
+	editorFbo->Bind();
+	PushCamera(app->camera->editorCam);
+	glClearColor(0.1f, 0.1f, 0.1f, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	DoRender();
+	glPopMatrix();
+	editorFbo->Unbind();
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -491,8 +489,8 @@ void Renderer3D::DoRender()
 void Renderer3D::PushCamera(ComponentCamera* cam)
 {
 	OPTICK_EVENT("Push Camera");
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
 	float4x4 mat = cam->frustum.ViewMatrix();

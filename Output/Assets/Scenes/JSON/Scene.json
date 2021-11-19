@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": -885798592,
-                "parent uuid": 1761613731,
+                "uuid": 1422358897,
+                "parent uuid": 1421314582,
                 "Components": [
                     {
                         "Type": 0,
@@ -47,7 +47,7 @@
             {
                 "name": "Avril",
                 "uuid": 519425198,
-                "parent uuid": 1761613731,
+                "parent uuid": 1421314582,
                 "Components": [
                     {
                         "Type": 0,
@@ -113,7 +113,7 @@
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -63.862648010253906,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },

@@ -118,6 +118,8 @@ bool Editor::CleanUp()
     delete(previewScenePanel);
     previewScenePanel = nullptr;
 
+    app->fileSystem->Remove("Library/Temp");
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -197,7 +199,6 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         }
         case SceneState::PLAY:
         {
-
             viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
             if (showWindows && previewScenePanel->active)
                 previewScenePanel->OnRender(sceneFbo);
@@ -280,8 +281,17 @@ void Editor::SerializeScene()
     size_t size = Parser::GetSerializationSize(sceneValue);
     char* buffer = new char[size];
     json_serialize_to_buffer(sceneValue, buffer, size);
+
+    if (!app->fileSystem->Exists("Library/Temp"))
+    {
+        app->fileSystem->CreateDirectoryA("Library/Temp");
+        if (app->fileSystem->Exists("Library/Temp"));
+            LOG_CONSOLE("Path Library/Temp created successfully");
+    }
+
     if (app->fileSystem->Save("Library/Temp/Scene.kbscene", buffer, size) > 0)
         LOG_CONSOLE("Saved successfully");
+
     delete[] buffer;
 
     Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
@@ -355,6 +365,7 @@ void Editor::OnSceneStop()
 {
     sceneState = SceneState::EDIT;
     app->camera->SetCurrentCamera(CameraType::EDITOR);
+    app->SetRuntimeDt(0);
     UnserializeScene();
 }
 
