@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Renderer3D.h"
 
+#include "Geometry/Plane.h"
+
 #include <queue>
 
 #include "mmgr/mmgr.h"
@@ -35,11 +37,6 @@ QdTree::~QdTree()
 void QdTree::Create(AABB& limits)
 {
 	root->section = limits;
-}
-
-void QdTree::Clear()
-{
-
 }
 
 void QdTree::Insert(GameObject* go)
@@ -244,7 +241,9 @@ void QdTree::DrawTree()
 	}
 }
 
-bool QdTree::Intersect(std::vector<GameObject*>& bucket)
+bool QdTree::Intersect(Frustum* frustum)
 {
+
+
 	return false;
 }

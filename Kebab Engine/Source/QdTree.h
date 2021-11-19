@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Geometry/AABB.h"
+#include "Geometry/Frustum.h"
 
 #include <vector>
 
@@ -32,8 +33,6 @@ public:
 
 	void Create(AABB& limits);
 
-	void Clear();
-
 	void Insert(GameObject* go);
 	void Remove(GameObject* go);
 
@@ -43,7 +42,9 @@ public:
 
 	void DrawTree();
 
-	bool Intersect(std::vector<GameObject*>& bucket);
+	bool Intersect(Frustum* frustum);
+
+	QuadNode* GetRoot() { return root; }
 
 private:
 	

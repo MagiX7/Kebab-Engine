@@ -27,6 +27,7 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 	active = true;
 
 	insideFrustum = false;
+	isStatic = false;
 
 	if (uuid == 0)
 	{

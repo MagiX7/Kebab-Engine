@@ -154,9 +154,9 @@ void AssetsPanel::DisplayAssets()
 		ImGui::PushID(dragpath.c_str());
 
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
-		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
+		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0 || strcmp(aux.c_str(), ".kbmodel") == 0)
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
-		else if (strcmp(aux.c_str(), ".dds") == 0 || strcmp(aux.c_str(), ".png") == 0 || strcmp(aux.c_str(), ".jpg") == 0)
+		else if (strcmp(aux.c_str(), ".dds") == 0 || strcmp(aux.c_str(), ".png") == 0 || strcmp(aux.c_str(), ".jpg") == 0 || strcmp(aux.c_str(), ".kbtexture") == 0)
 			ImGui::ImageButton((ImTextureID)pngTex->GetID(), { 100,100 });
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });

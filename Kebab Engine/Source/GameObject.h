@@ -46,6 +46,7 @@ public:
 	void UpdateAABB(float4x4& newTrans);
 
 	bool insideFrustum;
+	bool isStatic;
 
 	void Save(JSON_Array* array);
 	JSON_Value* Load(JSON_Object* obj);
