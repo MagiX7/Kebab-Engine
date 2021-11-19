@@ -75,7 +75,7 @@ bool Application::Init()
 		//JSON_Object* root = json_value_get_object(value);
 		JSON_Object* appObj = Parser::GetObjectByName(root, "App");
 		//JSON_Object* appObj = json_object_get_object(root, "App");
-		dt = Parser::GetNumberByObject(appObj, "dt");
+		appDt = Parser::GetNumberByObject(appObj, "dt");
 		cappedMs = 1000.0f / Parser::GetNumberByObject(appObj, "max fps");
 
 		while (it != modules.end() && ret == true)
@@ -102,9 +102,14 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)msTimer.Read() / 1000.0f;
+	appDt = (float)msTimer.Read() / 1000.0f;
 	msTimer.Start();
 
+	if (editor->GetSceneState() == SceneState::EDIT)
+	{
+		runtimeDt = runtimeTimer.Read() / 1000.0f;
+		runtimeTimer.Start();
+	}
 }
 
 // ---------------------------------------------
@@ -156,7 +161,7 @@ void Application::Save()
 	//json_object_set_value(root, "App", json_value_init_object());
 	JSON_Object* appObj = Parser::GetObjectByName(root, "App");
 	//json_object_set_number(appObj, "dt", dt);
-	Parser::SetObjectNumber(appObj, "dt", dt);
+	Parser::SetObjectNumber(appObj, "dt", appDt);
 	//json_object_set_number(appObj, "max fps", GetMaxFPS());
 	Parser::SetObjectNumber(appObj, "max fps", GetMaxFPS());
 
@@ -184,7 +189,7 @@ bool Application::Update()
 
 	while (it != modules.end() && ret == true)
 	{
-		ret = (*it)->PreUpdate(dt);
+		ret = (*it)->PreUpdate(appDt);
 		it++;
 	}
 
@@ -192,7 +197,7 @@ bool Application::Update()
 
 	while (it != modules.end() && ret == true)
 	{
-		ret = (*it)->Update(dt);
+		ret = (*it)->Update(appDt);
 		it++;
 	}
 
@@ -200,7 +205,7 @@ bool Application::Update()
 
 	while (it != modules.end() && ret == true)
 	{
-		ret = (*it)->Draw(dt);
+		ret = (*it)->Draw(appDt);
 		it++;
 	}
 
@@ -244,7 +249,7 @@ void Application::SetMaxFPS(int fps)
 
 int& Application::GetFPS()
 {
-	int res = 1 / dt;
+	int res = 1 / appDt;
 	return res;
 }
 

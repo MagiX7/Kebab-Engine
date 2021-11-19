@@ -197,6 +197,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         }
         case SceneState::PLAY:
         {
+
             viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
             if (showWindows && previewScenePanel->active)
                 previewScenePanel->OnRender(sceneFbo);
@@ -218,6 +219,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
     if (showWindows)
     {
+        if(sceneState == SceneState::PLAY)
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
+        
         if (showAboutPanel) ShowAboutPanel();
 
         if (consolePanel->active) consolePanel->OnRender(dt);
@@ -225,6 +229,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
+        
+        if(sceneState == SceneState::PLAY)
+            ImGui::PopStyleColor();
     }
 
     ImGui::EndFrame();
@@ -340,6 +347,7 @@ void Editor::OnScenePlay()
 {
     sceneState = SceneState::PLAY;
     app->camera->SetCurrentCamera(CameraType::GAME);
+    app->editor->hierarchyPanel->currentGO = nullptr;
     SerializeScene();
 }
 
