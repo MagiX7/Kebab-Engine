@@ -105,9 +105,10 @@ void Application::PrepareUpdate()
 	appDt = (float)msTimer.Read() / 1000.0f;
 	msTimer.Start();
 
-	if (editor->GetSceneState() == SceneState::EDIT)
+	if (editor->GetSceneState() == SceneState::PLAY)
 	{
-		runtimeDt = runtimeTimer.Read() / 1000.0f;
+		runtimeDt = (float)runtimeTimer.Read() / 1000.0f;
+		printf("Runtime dt: %f\n", runtimeDt);
 		runtimeTimer.Start();
 	}
 }

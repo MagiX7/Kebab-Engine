@@ -234,7 +234,7 @@ bool Renderer3D::Draw(float dt)
 	app->editor->OnImGuiRender(dt, editorFbo, sceneFbo);
 
 	sceneFbo->Bind();
-	PushCamera(app->scene->GetCamera());
+	PushCamera(app->camera->gameCam);
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -59,12 +59,12 @@ public:
 
 	float3 reference, position;
 	ComponentCamera* editorCam;
+	ComponentCamera* gameCam;
 
 private:
 
 	ComponentCamera* currentCam;
 	//ComponentCamera* editorCam;
-	ComponentCamera* gameCam;
 
 	bool focusing;
 	bool orbiting;

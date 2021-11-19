@@ -109,22 +109,25 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
     {
         ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
-        ComponentCamera* cam = app->camera->GetCurrentCamera();
-
-        float4x4 model = tr->GetLocalMatrix();
-        model.Transpose();
-
-        ImGuizmo::Enable(true);
-        ImGuizmo::SetRect(viewportDimensions.x, viewportDimensions.y, viewportDimensions.z, viewportDimensions.w);
-
-        ImGuizmo::SetDrawlist();
-
-        ImGuizmo::Manipulate(cam->GetViewMatrix().ptr(), cam->GetProjectionMatrix().ptr(), op, mode, model.ptr());
-
-        if (ImGuizmo::IsUsing())
+        if (tr)
         {
+            ComponentCamera* cam = app->camera->GetCurrentCamera();
+
+            float4x4 model = tr->GetLocalMatrix();
             model.Transpose();
-            tr->SetLocalMatrix(model);
+
+            ImGuizmo::Enable(true);
+            ImGuizmo::SetRect(viewportDimensions.x, viewportDimensions.y, viewportDimensions.z, viewportDimensions.w);
+
+            ImGuizmo::SetDrawlist();
+
+            ImGuizmo::Manipulate(cam->GetViewMatrix().ptr(), cam->GetProjectionMatrix().ptr(), op, mode, model.ptr());
+
+            if (ImGuizmo::IsUsing())
+            {
+                model.Transpose();
+                tr->SetLocalMatrix(model);
+            }
         }
     }
 }
