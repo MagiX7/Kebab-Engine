@@ -42,7 +42,7 @@ public:
 
 	void DrawTree();
 
-	bool Intersect(Frustum* frustum);
+	void Intersect(Frustum* frustum);
 
 	QuadNode* GetRoot() { return root; }
 

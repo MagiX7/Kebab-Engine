@@ -367,6 +367,9 @@ void Renderer3D::Submit(GameObject* go)
 	std::queue<GameObject*> q;
 	q.push(go);
 
+	app->scene->rootQT->Insert(go);
+	app->scene->rootQT->Recalculate();
+
 	while(!q.empty())
 	{
 		auto& curr = q.front();
@@ -510,15 +513,20 @@ void Renderer3D::DoRender()
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
-		if (mesh && mat && !app->camera->GetCurrentCamera()->frustumCulling)
+		if (mesh && mat && !app->camera->editorCam->frustumCulling)
+		{
 			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->GetCurrentCamera()->frustumCulling)
+			if (drawAABB)
+				DrawAABB(*go->GetGlobalAABB());
+		}
+		else if (mesh && mat && (go->insideFrustum || go->GetParent()->insideFrustum) && app->camera->editorCam->frustumCulling)
+		{
 			mesh->Draw(mat);
+			if (drawAABB)
+				DrawAABB(*go->GetGlobalAABB());
+		}
 
-		mesh->Draw(mat);
-
-		if (drawAABB)
-			DrawAABB(*go->GetGlobalAABB());
+		//mesh->Draw(mat);
 
 		/*ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
 		if (cam)

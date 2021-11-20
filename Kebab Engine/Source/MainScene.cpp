@@ -55,22 +55,18 @@ bool MainScene::Start()
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
 
-
-    avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
-    app->renderer3D->Submit(avril);
-    //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
-    //app->renderer3D->Submit(bh);
-
     rootQT = new QdTree();
-    vec min = vec(-10, -10, -10);
-    vec max = vec(100, 100, 100);
+    vec min = vec(-50, -10, -50);
+    vec max = vec(50, 50, 50);
     AABB aabbAux;
     aabbAux.minPoint = min;
     aabbAux.maxPoint = max;
     rootQT->Create(aabbAux);
 
-    rootQT->Insert(avril);
-    //rootQT->Recalculate();
+    avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+    app->renderer3D->Submit(avril);
+    //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+    //app->renderer3D->Submit(bh);
 
 	return ret;
 }
@@ -87,9 +83,6 @@ bool MainScene::Update(float dt)
     {
         GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
         app->renderer3D->Submit(test);
-        rootQT->Insert(test);
-        rootQT->Recalculate();
-
     }
     if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
     {
@@ -107,6 +100,10 @@ bool MainScene::Update(float dt)
         MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
         //app->renderer3D->Submit(bh);
     }
+    if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+        rootQT->Recalculate();
+
+    rootQT->Intersect(&app->camera->editorCam->frustum);
 
     return true;
 }

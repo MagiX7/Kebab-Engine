@@ -154,9 +154,9 @@ void AssetsPanel::DisplayAssets()
 		ImGui::PushID(dragpath.c_str());
 
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
-		if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0 || strcmp(aux.c_str(), ".kbmodel") == 0)
+		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
-		else if (strcmp(aux.c_str(), ".dds") == 0 || strcmp(aux.c_str(), ".png") == 0 || strcmp(aux.c_str(), ".jpg") == 0 || strcmp(aux.c_str(), ".kbtexture") == 0)
+		else if (aux == ".dds" || aux == ".png" || aux == ".jpg" || aux == ".kbtexture")
 			ImGui::ImageButton((ImTextureID)pngTex->GetID(), { 100,100 });
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
@@ -196,7 +196,7 @@ void AssetsPanel::DisplayPopMenu()
 			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
 			std::string aux = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
-			if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
+			if (aux == ".fbx" || aux == ".obj")
 			{
 				aux = popUpItem.substr(popUpItem.length(), popUpItem.find_last_of("."));
 
@@ -242,12 +242,12 @@ void AssetsPanel::DisplayPopMenu()
 
 			std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
 			
-			if (strcmp(extension.c_str(), ".fbx") == 0 || strcmp(extension.c_str(), ".obj") == 0)
+			if (extension == ".fbx" || extension == ".obj")
 			{
 				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path));
 				LOG_CONSOLE("Asset Imported Succesfully");
 			}
-			else if (strcmp(extension.c_str(), ".dds") == 0 || strcmp(extension.c_str(), ".png") == 0 || strcmp(extension.c_str(), ".jpg") == 0)
+			else if (extension == ".dds" || extension == ".png" || extension == ".jpg")
 			{
 				GameObject* target = app->editor->hierarchyPanel->currentGO;
 				if (target)

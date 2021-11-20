@@ -1,1 +1,31 @@
-{"Meshes":[{"owner uuid":2098101671,"owner name":"Chimney","mesh path":"Library\/Meshes\/Chimney.kbmesh","texture path":"Library\/Textures\/Baker_house.kbtexture"},{"owner uuid":364027303,"owner name":"Baker_house","mesh path":"Library\/Meshes\/Baker_house.kbmesh","texture path":"Library\/Textures\/Baker_house.kbtexture"}],"parent uuid":-1430033940,"pos x":0,"pos y":0,"pos z":0,"rot x":0,"rot y":0,"rot z":0,"rot w":1,"scale x":1,"scale y":1,"scale z":1}
+{
+    "base name": "Baker House",
+    "parent uuid": -67986900,
+    "uuid": -67986900,
+    "Meshes": [
+        {
+            "parent uuid": -67986900,
+            "owner uuid": 1944260512,
+            "owner name": "Chimney",
+            "mesh path": "Library\/Meshes\/Chimney.kbmesh",
+            "texture path": "Library\/Textures\/Baker_house.kbtexture"
+        },
+        {
+            "parent uuid": -67986900,
+            "owner uuid": -424104797,
+            "owner name": "Baker_house",
+            "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
+            "texture path": "Library\/Textures\/Baker_house.kbtexture"
+        }
+    ],
+    "pos x": 0,
+    "pos y": 0,
+    "pos z": 0,
+    "rot x": 0,
+    "rot y": 0,
+    "rot z": 0,
+    "rot w": 1,
+    "scale x": 1,
+    "scale y": 1,
+    "scale z": 1
+}

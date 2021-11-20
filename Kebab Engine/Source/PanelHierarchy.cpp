@@ -5,6 +5,8 @@
 #include "MainScene.h"
 #include "Renderer3D.h"
 
+#include "QdTree.h"
+
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 
@@ -179,6 +181,9 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 			{
 				ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 				if (mesh) app->renderer3D->EraseGameObject(go);
+
+				app->scene->rootQT->Remove(go);
+				app->scene->rootQT->Recalculate();
 
 				GameObject* parent = go->GetParent();
 				parent->EraseChild(go);

@@ -59,7 +59,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
             bool isCustom = false;
 
-            if (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0)
+            if (ext == ".fbx" || ext == ".obj")
             {
                 isCustom = true;
 
@@ -74,7 +74,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                     name = name.substr(0, name.find_last_of("."));
                 }
             }
-            if (isCustom == false && (strcmp(ext.c_str(), ".fbx") == 0 || strcmp(ext.c_str(), ".obj") == 0))
+            if (isCustom == false && ext == ".fbx" || ext == ".obj")
             {
                 GameObject* bh = MeshLoader::GetInstance()->LoadModel(dragPath);
                 app->renderer3D->Submit(bh);
