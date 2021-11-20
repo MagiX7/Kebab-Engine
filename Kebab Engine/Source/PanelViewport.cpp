@@ -50,7 +50,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
     {
         const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_ITEM");
 
-        if (payload != nullptr)
+        if (payload)
         {
             std::string dragPath = (const char*)payload->Data;
             std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
@@ -59,6 +59,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
             bool isCustom = false;
 
+            
             if (ext == ".fbx" || ext == ".obj")
             {
                 isCustom = true;
@@ -74,7 +75,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                     name = name.substr(0, name.find_last_of("."));
                 }
             }
-            if (isCustom == false && ext == ".fbx" || ext == ".obj")
+            if (!isCustom && (ext == ".fbx" || ext == ".obj"))
             {
                 GameObject* bh = MeshLoader::GetInstance()->LoadModel(dragPath);
                 app->renderer3D->Submit(bh);
@@ -108,22 +109,25 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
     {
         ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 
-        ComponentCamera* cam = app->camera->GetCurrentCamera();
-
-        float4x4 model = tr->GetLocalMatrix();
-        model.Transpose();
-
-        ImGuizmo::Enable(true);
-        ImGuizmo::SetRect(viewportDimensions.x, viewportDimensions.y, viewportDimensions.z, viewportDimensions.w);
-
-        ImGuizmo::SetDrawlist();
-
-        ImGuizmo::Manipulate(cam->GetViewMatrix().ptr(), cam->GetProjectionMatrix().ptr(), op, mode, model.ptr());
-
-        if (ImGuizmo::IsUsing())
+        if (tr)
         {
+            ComponentCamera* cam = app->camera->GetCurrentCamera();
+
+            float4x4 model = tr->GetLocalMatrix();
             model.Transpose();
-            tr->SetLocalMatrix(model);
+
+            ImGuizmo::Enable(true);
+            ImGuizmo::SetRect(viewportDimensions.x, viewportDimensions.y, viewportDimensions.z, viewportDimensions.w);
+
+            ImGuizmo::SetDrawlist();
+
+            ImGuizmo::Manipulate(cam->GetViewMatrix().ptr(), cam->GetProjectionMatrix().ptr(), op, mode, model.ptr());
+
+            if (ImGuizmo::IsUsing())
+            {
+                model.Transpose();
+                tr->SetLocalMatrix(model);
+            }
         }
     }
 }

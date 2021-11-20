@@ -46,6 +46,7 @@ private:
 	std::list<Module*> modules;
 
 	Timer msTimer;
+	Timer runtimeTimer;
 	//Timer startupTime;
 	//Timer frameTime;
 	Timer lastSecFrameTime;
@@ -53,7 +54,8 @@ private:
 	uint32 prevLastSecFrameCount = 0;
 	uint64 frameCount = 0;
 
-	float dt;
+	float appDt;
+	float runtimeDt;
 	int	cappedMs = -1;
 
 	bool saveReq;
@@ -74,9 +76,12 @@ public:
 	void RequestLoad();
 
 	void SetMaxFPS(int fps);
-	inline float& GetDeltaTime() { return dt; }
+	inline float& GetDeltaTime() { return appDt; }
 	int& GetFPS();
 	float& GetMaxFPS();
+
+	inline float& GetRuntimeDt() { return runtimeDt; }
+	inline void SetRuntimeDt(float newDt) { runtimeDt = newDt; }
 
 private:
 

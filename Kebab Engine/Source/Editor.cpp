@@ -121,6 +121,8 @@ bool Editor::CleanUp()
     delete(previewScenePanel);
     previewScenePanel = nullptr;
 
+    app->fileSystem->Remove("Library/Temp");
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -221,6 +223,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
     if (showWindows)
     {
+        if(sceneState == SceneState::PLAY)
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
+        
         if (showAboutPanel) ShowAboutPanel();
 
         if (consolePanel->active) consolePanel->OnRender(dt);
@@ -228,6 +233,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
+        
+        if(sceneState == SceneState::PLAY)
+            ImGui::PopStyleColor();
     }
 
     ImGui::EndFrame();
@@ -276,8 +284,17 @@ void Editor::SerializeScene()
     size_t size = Parser::GetSerializationSize(sceneValue);
     char* buffer = new char[size];
     json_serialize_to_buffer(sceneValue, buffer, size);
+
+    if (!app->fileSystem->Exists("Library/Temp"))
+    {
+        app->fileSystem->CreateDirectoryA("Library/Temp");
+        if (app->fileSystem->Exists("Library/Temp"));
+            LOG_CONSOLE("Path Library/Temp created successfully");
+    }
+
     if (app->fileSystem->Save("Library/Temp/Scene.kbscene", buffer, size) > 0)
         LOG_CONSOLE("Saved successfully");
+
     delete[] buffer;
 
     Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
@@ -343,6 +360,7 @@ void Editor::OnScenePlay()
 {
     sceneState = SceneState::PLAY;
     app->camera->SetCurrentCamera(CameraType::GAME);
+    app->editor->hierarchyPanel->currentGO = nullptr;
     SerializeScene();
 }
 
@@ -350,6 +368,7 @@ void Editor::OnSceneStop()
 {
     sceneState = SceneState::EDIT;
     app->camera->SetCurrentCamera(CameraType::EDITOR);
+    app->SetRuntimeDt(0);
     UnserializeScene();
 }
 

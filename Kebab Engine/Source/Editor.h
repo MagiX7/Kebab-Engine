@@ -46,6 +46,8 @@ public:
 	void OnScenePlay();
 	void OnSceneStop();
 
+	inline const SceneState& GetSceneState() { return sceneState; }
+
 private:
 	void InitImGui();
 	

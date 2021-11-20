@@ -102,6 +102,13 @@ void ConfigPanel::OnRender(float dt)
             if (ImGui::SliderFloat("Max FPS", &limFPS, 0.0f, 120.0f, "%.1f"))
                 app->SetMaxFPS(limFPS);
 
+            static float runtimeFps = (1000 / app->GetRuntimeDt());
+            if(ImGui::SliderFloat("Runtime FPS", &runtimeFps, 0.0f, 120.0f, "%.1f"))
+            {
+                app->SetRuntimeDt(runtimeFps / 1000);
+            }
+
+
             ImGui::Text("Limit Framerate: %.1f", limFPS);
 
             // Histogram ============
