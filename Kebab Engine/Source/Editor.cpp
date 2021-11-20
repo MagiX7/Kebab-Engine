@@ -113,7 +113,10 @@ bool Editor::CleanUp()
     inspectorPanel = nullptr;
     delete(assetsPanel);
     assetsPanel = nullptr;
-    delete(scenePanel);
+    delete playTex;
+    delete pauseTex;
+    delete stopTex;
+    delete (scenePanel);
     scenePanel = nullptr;
     delete(previewScenePanel);
     previewScenePanel = nullptr;

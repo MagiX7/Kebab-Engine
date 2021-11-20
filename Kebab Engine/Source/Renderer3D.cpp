@@ -24,6 +24,8 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
+#include "QdTree.h"
+
 #include "Math/float4x4.h"
 #include "SDL_opengl.h"
 #include <gl/GL.h>
@@ -238,6 +240,8 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	app->camera->gameCam->DrawFrustum();
+
 	DoRender();
 	glPopMatrix();
 	sceneFbo->Unbind();
@@ -361,6 +365,9 @@ void Renderer3D::Submit(GameObject* go)
 	std::queue<GameObject*> q;
 	q.push(go);
 
+	app->scene->rootQT->Insert(go);
+	app->scene->rootQT->Recalculate();
+
 	while(!q.empty())
 	{
 		auto& curr = q.front();
@@ -463,9 +470,39 @@ void Renderer3D::DrawGrid()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+void Renderer3D::DrawAABB(AABB& aabb)
+{
+	GLdouble min[3] = { aabb.MinX(), aabb.MinY(), aabb.MinZ() };
+	GLdouble max[3] = { aabb.MaxX(), aabb.MaxY(), aabb.MaxZ() };
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3dv(&min[0]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], min[2]);
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3dv(&min[0]);
+	glVertex3d(min[0], min[1], max[2]);
+	glVertex3d(max[0], min[1], min[2]);
+	glVertex3d(max[0], min[1], max[2]);
+	glVertex3d(max[0], max[1], min[2]);
+	glVertex3dv(&max[0]);
+	glVertex3d(min[0], max[1], min[2]);
+	glVertex3d(min[0], max[1], max[2]);
+	glEnd();
+}
+
 void Renderer3D::DoRender()
 {
 	DrawGrid();
+	app->scene->rootQT->DrawTree();
 
 	for (const auto& go : gameObjects)
 	{
@@ -474,15 +511,24 @@ void Renderer3D::DoRender()
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
-		if (mesh && mat && !app->camera->GetCurrentCamera()->frustumCulling)
+		if (mesh && mat && !app->camera->editorCam->frustumCulling)
+		{
 			mesh->Draw(mat);
-		else if (mesh && mat && go->insideFrustum && app->camera->GetCurrentCamera()->frustumCulling)
+			if (drawAABB)
+				DrawAABB(*go->GetGlobalAABB());
+		}
+		else if (mesh && mat && (go->insideFrustum || go->GetParent()->insideFrustum) && app->camera->editorCam->frustumCulling)
+		{
 			mesh->Draw(mat);
+			if (drawAABB)
+				DrawAABB(*go->GetGlobalAABB());
+		}
 
-		mesh->Draw(mat);
+		//mesh->Draw(mat);
 
-		if (drawAABB)
-			go->DrawAABB();
+		/*ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+		if (cam)
+			cam->DrawFrustum();*/
 	}
 }
 

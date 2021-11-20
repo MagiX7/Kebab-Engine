@@ -45,6 +45,7 @@ public:
 	void EraseAllGameObjects();
 
 	void DrawGrid();
+	void DrawAABB(AABB& aabb);
 
 private:
 	void DoRender();

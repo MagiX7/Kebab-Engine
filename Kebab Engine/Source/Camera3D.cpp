@@ -34,6 +34,8 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 
 	editorCam->SetCameraPosition(position);
 	editorCam->Look(reference);
+
+	editorCam->SetFarPlane(100);
 }
 
 Camera3D::~Camera3D()
@@ -165,14 +167,14 @@ bool Camera3D::Update(float dt)
 	}
 
 	// Frustum Culling
-	std::vector<GameObject*>::iterator it;
+	/*std::vector<GameObject*>::iterator it;
 	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
 	{
 		DrawInFrustumCulling((*it), currentCam);
 
 		if ((*it)->GetChilds().size() != 0)
 			PropagateDrawInFrustumCulling((*it), currentCam);
-	}
+	}*/
 
 	return true;
 }

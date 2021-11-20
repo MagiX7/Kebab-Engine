@@ -62,6 +62,7 @@
     <ClCompile Include="Source\PanelScene.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Parser.cpp" />
+    <ClCompile Include="Source\QuadTree.cpp" />
     <ClCompile Include="Source\KbPlane.cpp" />
     <ClCompile Include="Source\KbPyramid.cpp" />
     <ClCompile Include="Source\Renderer3D.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelConsole.h" />
+    <ClInclude Include="Source\QdTree.h" />
     <ClInclude Include="Source\KbPlane.h" />
     <ClInclude Include="Source\KbPyramid.h" />
     <ClInclude Include="Source\Renderer3D.h" />

@@ -3,8 +3,8 @@
 
 #include "GameObject.h"
 
+#include "GL/glew.h"
 #include "imgui/imgui.h"
-
 #include "mmgr/mmgr.h"
 
 ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType camerType)
@@ -21,12 +21,12 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType camerType)
 	fovVertical = 70.0f;
 	fovHorizontal = 80.0f;
 
-	planeFar = 200.f;
+	planeFar = 20.f;
 	planeNear = 0.1f;
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
-	frustum.SetFrame(vec(0, 0, 0), vec(0, 0, 1), vec(0, 1, 0));
+	frustum.SetFrame(vec(0, 0, 0), vec(1, 0, 0), vec(0, 1, 0));
 
 	frustum.SetViewPlaneDistances(planeNear, planeFar);
 
@@ -201,4 +201,73 @@ void ComponentCamera::DrawOnInspector()
 	{
 		//ImGui::Checkbox("Set as Current Camera", &cameraActive);
 	}
+}
+
+void ComponentCamera::DrawFrustum()
+{
+	GLdouble corners[24] = { 
+		frustum.CornerPoint(0).x, frustum.CornerPoint(0).y, frustum.CornerPoint(0).z,
+		frustum.CornerPoint(1).x ,frustum.CornerPoint(1).y ,frustum.CornerPoint(1).z,
+		frustum.CornerPoint(2).x ,frustum.CornerPoint(2).y ,frustum.CornerPoint(2).z,
+		frustum.CornerPoint(3).x ,frustum.CornerPoint(3).y ,frustum.CornerPoint(3).z,
+		frustum.CornerPoint(4).x ,frustum.CornerPoint(4).y ,frustum.CornerPoint(4).z,
+		frustum.CornerPoint(5).x ,frustum.CornerPoint(5).y ,frustum.CornerPoint(5).z,
+		frustum.CornerPoint(6).x ,frustum.CornerPoint(6).y ,frustum.CornerPoint(6).z,
+		frustum.CornerPoint(7).x ,frustum.CornerPoint(7).y ,frustum.CornerPoint(7).z };
+
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[0], corners[1], corners[2]);
+	glVertex3d(corners[3], corners[4], corners[5]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3d(corners[0], corners[1], corners[2]);
+	glVertex3d(corners[6], corners[7], corners[8]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3d(corners[0], corners[1], corners[2]);
+	glVertex3d(corners[12], corners[13], corners[14]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[3], corners[4], corners[5]);
+	glVertex3d(corners[9], corners[10], corners[11]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3d(corners[3], corners[4], corners[5]);
+	glVertex3d(corners[15], corners[16], corners[17]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[6], corners[7], corners[8]);
+	glVertex3d(corners[9], corners[10], corners[11]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3d(corners[6], corners[7], corners[8]);
+	glVertex3d(corners[18], corners[19], corners[20]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[9], corners[10], corners[11]);
+	glVertex3d(corners[21], corners[22], corners[23]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[12], corners[13], corners[14]);
+	glVertex3d(corners[15], corners[16], corners[17]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3d(corners[12], corners[13], corners[14]);
+	glVertex3d(corners[18], corners[19], corners[20]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[15], corners[16], corners[17]);
+	glVertex3d(corners[21], corners[22], corners[23]);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVertex3d(corners[18], corners[19], corners[20]);
+	glVertex3d(corners[21], corners[22], corners[23]);
+	glEnd();
 }

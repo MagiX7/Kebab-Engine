@@ -9,6 +9,7 @@
 #include "PanelHierarchy.h"
 
 #include "MeshLoader.h"
+#include "QdTree.h"
 
 #include "KbCube.h"
 #include "KbSphere.h"
@@ -40,7 +41,9 @@ bool MainScene::Start()
 
     GameObject* goCam = new GameObject("Main Camera");
     camera = new ComponentCamera(goCam, CameraType::GAME);
-    camera->SetCameraPosition({ -5,5,2 });
+    ComponentTransform* trans = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
+    trans->SetTranslation(float3(-5, 5, 2));
+    //camera->SetCameraPosition({ -5,5,2 });
     camera->Look({ 0,0,0 });
 
     ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
@@ -52,6 +55,13 @@ bool MainScene::Start()
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
 
+    rootQT = new QdTree();
+    vec min = vec(-50, -10, -50);
+    vec max = vec(50, 50, 50);
+    AABB aabbAux;
+    aabbAux.minPoint = min;
+    aabbAux.maxPoint = max;
+    rootQT->Create(aabbAux);
 
     avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
     app->renderer3D->Submit(avril);
@@ -73,7 +83,6 @@ bool MainScene::Update(float dt)
     {
         GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
         app->renderer3D->Submit(test);
-
     }
     if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
     {
@@ -91,7 +100,10 @@ bool MainScene::Update(float dt)
         MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
         //app->renderer3D->Submit(bh);
     }
+    if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+        rootQT->Recalculate();
 
+    rootQT->Intersect(&app->camera->editorCam->frustum);
 
     return true;
 }
@@ -121,6 +133,9 @@ void MainScene::AddGameObject(GameObject* go)
 void MainScene::DeleteGameObject(GameObject* go)
 {
     std::vector<GameObject*>::iterator it;
+
+    rootQT->Remove(go);
+    rootQT->Recalculate();
 
     for (it = root->GetChilds().begin(); it != root->GetChilds().end(); ++it)
     {

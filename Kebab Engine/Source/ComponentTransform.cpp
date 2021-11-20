@@ -51,15 +51,13 @@ void ComponentTransform::DrawOnInspector()
 
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
+
 		ImGui::Text("Position");
 		if (ImGui::DragFloat3("position", guiPos.ptr(), 0.05f))
 		{
 			SetTranslation(guiPos);
 			PropagateTransform(parent, position, rotation, scale);
-			
-			ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
-			if (parentCam != nullptr)
-				parentCam->SetCameraPosition(guiPos);
 		}
 
 		ImGui::Separator();
@@ -82,6 +80,15 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetScale(guiScale);
 			PropagateTransform(parent, position, rotation, scale);
+		}
+
+		if (parentCam != nullptr)
+		{
+			float3x4 mat;
+			mat.SetRotatePart(rotation);
+			mat.SetTranslatePart(position);
+
+			parentCam->frustum.SetWorldMatrix(mat);
 		}
 	}
 }
