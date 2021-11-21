@@ -39,6 +39,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
         frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
         viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
         app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
+        app->camera->editorCam->CalculateFov(viewportPanelSize.x, viewportPanelSize.y);
     }
 
     viewportDimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };

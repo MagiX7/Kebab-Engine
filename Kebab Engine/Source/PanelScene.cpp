@@ -35,6 +35,7 @@ void ScenePanel::OnRender(FrameBuffer* frameBuffer)
             frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
             size = { viewportPanelSize.x, viewportPanelSize.y };
             app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
+            app->camera->gameCam->CalculateFov(viewportPanelSize.x, viewportPanelSize.y);
         }
 
         dimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };

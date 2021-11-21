@@ -31,6 +31,10 @@ public:
 	void SetFarPlane(const float& farPlane);
 	void SetNearPlane(const float& nearPlane);
 
+	void CalculateFov(float w, float h, int horizontalFov = 0);
+	void CalculateFov();
+
+
 	float GetVerticalFov() const;
 	float GetHorizontalFov() const;
 	float GetFarPlane() const;
@@ -56,6 +60,9 @@ private:
 
 	float fovVertical;
 	float fovHorizontal;
+
+	float currentWinWidth;
+	float currentWinHeight;
 
 	float planeFar;
 	float planeNear;

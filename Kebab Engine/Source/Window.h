@@ -33,7 +33,7 @@ public:
 	inline void SetWidthAndHeight(int w, int h) { width = w; height = h; }
 
 	inline float& GetBrightness() { return brightness; }
-	inline void GetWindowSize(int& w, int& h) { w = width; h = height; }
+	inline void GetSize(int& w, int& h) { w = width; h = height; }
 	bool GetFullscreen() { return fullscreen; }
 	bool GetFullscreenDesktop() { return fulldesktop; }
 	bool GetResizable() { return resizable; }

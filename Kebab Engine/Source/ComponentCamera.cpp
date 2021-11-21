@@ -1,4 +1,7 @@
 #include "Application.h"
+#include "Window.h"
+#include "Editor.h"
+#include "PanelScene.h"
 #include "ComponentCamera.h"
 
 #include "GameObject.h"
@@ -18,11 +21,21 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType camerType)
 
 	frustumCulling = true;
 
-	fovVertical = 70.0f;
-	fovHorizontal = 80.0f;
+	//fovVertical = 70.0f;
+	fovHorizontal = math::DegToRad(80.0f);
+
+	CalculateFov(1920, 1080, fovHorizontal);
+
+	/*int w, h;
+	app->window->GetSize(w, h);
+	fovVertical = 2 * math::Atan(math::Tan(fovHorizontal / 2) * h / w);*/
+
 
 	planeFar = 20.f;
 	planeNear = 0.1f;
+
+	currentWinHeight = 0;
+	currentWinWidth = 0;
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
@@ -64,6 +77,28 @@ void ComponentCamera::SetNearPlane(const float& nearPlane)
 {
 	frustum.SetViewPlaneDistances(nearPlane, planeFar);
 	planeNear = nearPlane;
+}
+
+void ComponentCamera::CalculateFov(float w, float h, int hfov)
+{
+	/*if (hfov)
+		fovHorizontal = hfov;*/
+
+	fovVertical = 2 * math::Atan(math::Tan(fovHorizontal / 2) * w / h);
+
+	frustum.SetVerticalFovAndAspectRatio(fovVertical, (w / h));
+	currentWinHeight = h;
+	currentWinWidth = w;
+
+	//frustum.SetPerspective(fovHorizontal, fovVertical);
+}
+
+void ComponentCamera::CalculateFov()
+{
+	float fovh = math::DegToRad(fovHorizontal);
+	fovVertical = 2 * math::Atan(math::Tan(fovh / 2) * (currentWinWidth / currentWinHeight));
+	frustum.SetVerticalFovAndAspectRatio(fovVertical, (currentWinWidth / currentWinHeight));
+
 }
 
 void ComponentCamera::SetFarPlane(const float& farPlane)
@@ -201,14 +236,16 @@ void ComponentCamera::DrawOnInspector()
 	{
 		if (ImGui::SliderFloat("FOV", &fovHorizontal, 0, 180))
 		{
-
+			CalculateFov();
 		}
 	}
 }
 
 void ComponentCamera::DrawFrustum()
 {
-	GLdouble corners[24] = { 
+
+	GLdouble corners[24] =
+	{
 		frustum.CornerPoint(0).x, frustum.CornerPoint(0).y, frustum.CornerPoint(0).z,
 		frustum.CornerPoint(1).x ,frustum.CornerPoint(1).y ,frustum.CornerPoint(1).z,
 		frustum.CornerPoint(2).x ,frustum.CornerPoint(2).y ,frustum.CornerPoint(2).z,
@@ -216,61 +253,51 @@ void ComponentCamera::DrawFrustum()
 		frustum.CornerPoint(4).x ,frustum.CornerPoint(4).y ,frustum.CornerPoint(4).z,
 		frustum.CornerPoint(5).x ,frustum.CornerPoint(5).y ,frustum.CornerPoint(5).z,
 		frustum.CornerPoint(6).x ,frustum.CornerPoint(6).y ,frustum.CornerPoint(6).z,
-		frustum.CornerPoint(7).x ,frustum.CornerPoint(7).y ,frustum.CornerPoint(7).z };
+		frustum.CornerPoint(7).x ,frustum.CornerPoint(7).y ,frustum.CornerPoint(7).z
+	};
 
+
+	glColor3f(1, 0, 0);
 
 	glBegin(GL_LINES);
+
 	glVertex3d(corners[0], corners[1], corners[2]);
 	glVertex3d(corners[3], corners[4], corners[5]);
-	glEnd();
-	glBegin(GL_LINES);
+	
 	glVertex3d(corners[0], corners[1], corners[2]);
 	glVertex3d(corners[6], corners[7], corners[8]);
-	glEnd();
-	glBegin(GL_LINES);
+	
 	glVertex3d(corners[0], corners[1], corners[2]);
 	glVertex3d(corners[12], corners[13], corners[14]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[3], corners[4], corners[5]);
 	glVertex3d(corners[9], corners[10], corners[11]);
-	glEnd();
-	glBegin(GL_LINES);
+	
 	glVertex3d(corners[3], corners[4], corners[5]);
 	glVertex3d(corners[15], corners[16], corners[17]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[6], corners[7], corners[8]);
 	glVertex3d(corners[9], corners[10], corners[11]);
-	glEnd();
-	glBegin(GL_LINES);
+
 	glVertex3d(corners[6], corners[7], corners[8]);
 	glVertex3d(corners[18], corners[19], corners[20]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[9], corners[10], corners[11]);
 	glVertex3d(corners[21], corners[22], corners[23]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[12], corners[13], corners[14]);
 	glVertex3d(corners[15], corners[16], corners[17]);
-	glEnd();
-	glBegin(GL_LINES);
+
 	glVertex3d(corners[12], corners[13], corners[14]);
 	glVertex3d(corners[18], corners[19], corners[20]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[15], corners[16], corners[17]);
 	glVertex3d(corners[21], corners[22], corners[23]);
-	glEnd();
 
-	glBegin(GL_LINES);
 	glVertex3d(corners[18], corners[19], corners[20]);
 	glVertex3d(corners[21], corners[22], corners[23]);
+
 	glEnd();
+
+	glColor3f(1, 1, 1);
 }

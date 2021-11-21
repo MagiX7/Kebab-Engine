@@ -160,7 +160,7 @@ void ConfigPanel::OnRender(float dt)
         if (ImGui::CollapsingHeader("Window"))
         {            
             brightness = app->window->GetBrightness();
-            app->window->GetWindowSize(width, height);
+            app->window->GetSize(width, height);
 
             if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
                 app->window->SetBrightness(brightness);

@@ -149,7 +149,7 @@ bool Renderer3D::Init(JSON_Object* root)
 	SetWireframe();
 
 	int w, h;
-	app->window->GetWindowSize(w, h);
+	app->window->GetSize(w, h);
 	OnResize(w, h);
 
 	/*vertexArray = new VertexArray();
@@ -240,9 +240,9 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	app->camera->gameCam->DrawFrustum();
 
 	DoRender();
+	glPopMatrix();
 	glPopMatrix();
 	sceneFbo->Unbind();
 
@@ -251,7 +251,10 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	app->camera->gameCam->DrawFrustum();
+
 	DoRender();
+	glPopMatrix();
 	glPopMatrix();
 	editorFbo->Unbind();
 
@@ -535,9 +538,11 @@ void Renderer3D::DoRender()
 void Renderer3D::PushCamera(ComponentCamera* cam)
 {
 	OPTICK_EVENT("Push Camera");
+	glPushMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
 
+	glPushMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	float4x4 mat = cam->frustum.ViewMatrix();
 	glLoadMatrixf(mat.Transposed().ptr());
