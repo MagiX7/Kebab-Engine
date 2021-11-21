@@ -500,7 +500,7 @@ std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint,
 
 					float4x4 m = trans->GetLocalMatrix().Transposed();
 					Ray ray = localLine.ToRay();
-					ray.Transform(m);
+					//ray.Transform(m);
 					if (ray.Intersects(triangle))
 					{
 						if(curr->GetParent())

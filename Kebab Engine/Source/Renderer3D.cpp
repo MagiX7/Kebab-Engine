@@ -535,8 +535,8 @@ void Renderer3D::DoRender()
 void Renderer3D::PushCamera(ComponentCamera* cam)
 {
 	OPTICK_EVENT("Push Camera");
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
 	float4x4 mat = cam->frustum.ViewMatrix();

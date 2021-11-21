@@ -199,7 +199,10 @@ void ComponentCamera::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		//ImGui::Checkbox("Set as Current Camera", &cameraActive);
+		if (ImGui::SliderFloat("FOV", &fovHorizontal, 0, 180))
+		{
+
+		}
 	}
 }
 

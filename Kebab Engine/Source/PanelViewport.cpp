@@ -111,7 +111,7 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
 
         if (tr)
         {
-            ComponentCamera* cam = app->camera->GetCurrentCamera();
+            ComponentCamera* cam = app->camera->editorCam;
 
             float4x4 model = tr->GetLocalMatrix();
             model.Transpose();
