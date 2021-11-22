@@ -53,6 +53,7 @@ public:
 	void OnSceneStepFrame();
 
 	inline const SceneState& GetSceneState() { return sceneState; }
+	inline void SetSceneState(const SceneState& newState) { sceneState = newState; }
 
 private:
 	void InitImGui();

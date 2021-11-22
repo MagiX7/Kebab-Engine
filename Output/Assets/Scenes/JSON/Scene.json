@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": -1383825156,
-                "parent uuid": 1281157649,
+                "uuid": 750851821,
+                "parent uuid": -1519880724,
                 "Components": [
                     {
                         "Type": 0,
@@ -46,8 +46,8 @@
             },
             {
                 "name": "Avril",
-                "uuid": 519425198,
-                "parent uuid": 1281157649,
+                "uuid": -1669987655,
+                "parent uuid": -1519880724,
                 "Components": [
                     {
                         "Type": 0,
@@ -72,8 +72,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": -1100263737,
-                "parent uuid": 519425198,
+                "uuid": -928597803,
+                "parent uuid": -1669987655,
                 "Components": [
                     {
                         "Type": 0,
@@ -107,8 +107,8 @@
             },
             {
                 "name": "Body",
-                "uuid": 1465920387,
-                "parent uuid": 519425198,
+                "uuid": -1627986683,
+                "parent uuid": -1669987655,
                 "Components": [
                     {
                         "Type": 0,

@@ -108,10 +108,20 @@ void Application::PrepareUpdate()
 	if (editor->GetSceneState() == SceneState::PLAY)
 	{
 		runtimeDt = (float)runtimeTimer.Read() / 1000.0f;
+		lastRuntimeDt = runtimeDt;
 
 		runtimeFrameCount++;
 
 		runtimeTimer.Start();
+	}
+	else if (editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
+	{
+		/*runtimeDt = (float)runtimeTimer.Read() / 1000.0f;
+		runtimeTimer.Start();*/
+		runtimeDt = lastRuntimeDt;
+		runtimeFrameCount++;
+		
+		editor->SetSceneState(SceneState::PAUSE);
 	}
 }
 

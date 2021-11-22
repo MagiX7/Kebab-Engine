@@ -207,6 +207,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
             break;
         }
         case SceneState::PAUSE:
+        case SceneState::STEP_ONE_FRAME:
         case SceneState::PLAY:
         {
             viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
@@ -402,7 +403,7 @@ void Editor::OnSceneResume()
 
 void Editor::OnSceneStepFrame()
 {
-
+    sceneState = SceneState::STEP_ONE_FRAME;
 }
 
 void Editor::OnMainMenuRender(bool& showDemoWindow)
@@ -621,15 +622,15 @@ void Editor::SimulationControl()
         if (ImGui::ImageButton((ImTextureID)pauseTex->GetID(), { 30,30 }))
         {
             OnScenePause();
-            /*if (sceneState == SceneState::PLAY)
-                OnScenePause();
-            else if (sceneState == SceneState::PAUSE)
-                OnSceneResume();*/
         }
 
         ImGui::SameLine(width / 2 + 60);
 
-        if (ImGui::ImageButton((ImTextureID)nextFrameTex->GetID(), { 30,30 }));
+        if (ImGui::ImageButton((ImTextureID)nextFrameTex->GetID(), { 30,30 }))
+        {
+            if (sceneState == SceneState::PAUSE)
+                OnSceneStepFrame();
+        }
 
         ImGui::End();
     }
