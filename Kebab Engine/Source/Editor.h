@@ -43,8 +43,8 @@ public:
 
 	//void Save(JSON_Object* root) override;
 
-	void SerializeScene();
-	void UnserializeScene();
+	void SerializeScene(const char* path);
+	void UnserializeScene(const char* path);
 
 	void OnScenePlay();
 	void OnSceneStop();
@@ -81,7 +81,10 @@ public:
 	bool wireframe;
 
 private:
-	float lastRuntimeDt;
+	std::string currentSaveDirectory;
+	std::string currentLoadDirectory;
+
+	//float lastRuntimeDt;
 	float scroll;
 
 	bool showWindows;

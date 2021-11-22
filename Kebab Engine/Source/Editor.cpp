@@ -23,6 +23,8 @@
 #include "PanelAssets.h"
 #include "PanelGameDebugInfo.h"
 
+#include "FileDialog.h"
+
 #include "Optick/src/optick.h"
 
 #include "GL/glew.h"
@@ -32,6 +34,8 @@
 #include "imgui/imgui_internal.h"
 
 #include "mmgr/mmgr.h"
+
+#define RUNTIME_SCENE_PATH "Library/Temp/Scene.kbscene"
 
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
@@ -54,7 +58,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     sceneState = SceneState::EDIT;
     initialScene = nullptr;
     
-    lastRuntimeDt = 0;
+    //lastRuntimeDt = 0;
 }
 
 Editor::~Editor()
@@ -233,8 +237,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
     if (showWindows)
     {
-        if (sceneState != SceneState::EDIT)
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
+        //if (sceneState != SceneState::EDIT)
+        //    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
         
         if (showAboutPanel) ShowAboutPanel();
 
@@ -245,8 +249,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (assetsPanel->active) assetsPanel->OnRender(dt);
         if (gameDebugInfoPanel->active) gameDebugInfoPanel->OnRender(dt);
         
-        if (sceneState != SceneState::EDIT)
-            ImGui::PopStyleColor();
+        //if (sceneState != SceneState::EDIT)
+        //    ImGui::PopStyleColor();
     }
 
     ImGui::EndFrame();
@@ -270,7 +274,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
     return true;
 }
 
-void Editor::SerializeScene()
+void Editor::SerializeScene(const char* path)
 {
     OPTICK_EVENT("Serialization");
 
@@ -303,7 +307,8 @@ void Editor::SerializeScene()
             LOG_CONSOLE("Path Library/Temp created successfully");
     }
 
-    if (app->fileSystem->Save("Library/Temp/Scene.kbscene", buffer, size) > 0)
+
+    if (app->fileSystem->Save(path, buffer, size) > 0)
         LOG_CONSOLE("Saved successfully");
 
     delete[] buffer;
@@ -312,7 +317,7 @@ void Editor::SerializeScene()
     Parser::FreeValue(sceneValue);
 }
 
-void Editor::UnserializeScene()
+void Editor::UnserializeScene(const char* path)
 {
     //app->scene = initialScene;
     OPTICK_EVENT("Unserialization");
@@ -322,7 +327,7 @@ void Editor::UnserializeScene()
     hierarchyPanel->currentGO = nullptr;
     
     char* buffer;
-    if(app->fileSystem->Load("Library/Temp/Scene.kbscene", &buffer) > 0)
+    if(app->fileSystem->Load(path, &buffer) > 0)
     {
         sceneValue = json_parse_string(buffer);
         JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
@@ -372,7 +377,7 @@ void Editor::OnScenePlay()
     sceneState = SceneState::PLAY;
     app->camera->SetCurrentCamera(CameraType::GAME);
     app->editor->hierarchyPanel->currentGO = nullptr;
-    SerializeScene();
+    SerializeScene(RUNTIME_SCENE_PATH);
 }
 
 void Editor::OnSceneStop()
@@ -380,21 +385,20 @@ void Editor::OnSceneStop()
     sceneState = SceneState::EDIT;
     app->camera->SetCurrentCamera(CameraType::EDITOR);
     app->SetRuntimeDt(0);
-    UnserializeScene();
+    app->SetRuntimeFramesAmount(0);
+    UnserializeScene(RUNTIME_SCENE_PATH);
 }
 
 void Editor::OnScenePause()
 {
     if (sceneState == SceneState::PAUSE)
     {
-        app->SetRuntimeDt(lastRuntimeDt);
+        app->SetRuntimeDt(app->GetLastRuntimeDt());
         sceneState = SceneState::PLAY;
     }
     else if (sceneState == SceneState::PLAY)
     {
-        lastRuntimeDt = app->GetRuntimeDt();
         app->SetRuntimeDt(0);
-        app->SetRuntimeFramesAmount(0);
         sceneState = SceneState::PAUSE;
     }
 }
@@ -426,11 +430,21 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
         {
             if (ImGui::MenuItem("Save Scene", "Crtl + S"))
             {
-                SerializeScene();
+                //std::string path = FileDialog::SaveFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
+
+                SerializeScene(currentSaveDirectory.c_str());
             }
-            if (ImGui::MenuItem("Open Scene"))
+            if (ImGui::MenuItem("Save Scene As...", "Crtl + S"))
             {
-                UnserializeScene();
+                std::string path = FileDialog::SaveFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
+                currentSaveDirectory = path;
+                SerializeScene(path.c_str());
+            }
+            if (ImGui::MenuItem("Open Scene..."))
+            {
+                std::string path = FileDialog::OpenFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
+                currentLoadDirectory = path;
+                UnserializeScene(path.c_str());
             }
             if (ImGui::MenuItem("Exit"))
             {

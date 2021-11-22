@@ -54,6 +54,8 @@ bool MainScene::Start()
 
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
+    app->editor->hierarchyPanel->SetCurrent(goCam); // Avoid weird behaviours of the cam. Ideal woudl be setting again to nullptr
+    //app->editor->hierarchyPanel->SetCurrent(nullptr);
 
     rootQT = new QdTree();
     vec min = vec(-50, -10, -50);
@@ -103,7 +105,7 @@ bool MainScene::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
         rootQT->Recalculate();
 
-    rootQT->Intersect(&app->camera->editorCam->frustum);
+    rootQT->Intersect(&app->camera->gameCam->frustum);
 
     return true;
 }
@@ -194,7 +196,6 @@ GameObject* MainScene::GetGameObjectByUuid(int uuid)
         for (const auto& child : curr->GetChilds())
             q.push(child);
     }
-
 
     return nullptr;
 }

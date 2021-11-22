@@ -318,7 +318,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
                 name += " " + std::to_string(numCube);
             numCube++;
 
-            mesh = new KbCube({ -0.5,-0.5 , -0.5 }, { 1,1,1 });
+            mesh = new KbCube(/*go->GetUuid(), */ { -0.5, -0.5, -0.5 }, {1,1,1});
 
             /*go = new GameObject(name.c_str());
             comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);*/
