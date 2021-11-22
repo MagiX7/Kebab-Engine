@@ -142,7 +142,24 @@ bool Camera3D::Update(float dt)
 
 			if (focusing == true)
 			{
-				CenterCameraToGO(boundBox);
+				if (boundBox->IsDegenerate())
+				{
+					float dist = 20;
+					float3 dir = compTransGO->GetTranslation() - position;
+
+					if (Distance(compTransGO->GetTranslation(), position) > dist + 0.5f)
+						position += dir.Normalized();
+					else if (Distance(compTransGO->GetTranslation(), position) < dist - 0.5f)
+						position -= dir.Normalized();
+					else
+						focusing = false;
+
+					reference = compTransGO->GetTranslation();
+					editorCam->SetCameraPosition(position);
+					editorCam->Look(reference);
+				}
+				else
+					CenterCameraToGO(boundBox);
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT
@@ -246,7 +263,7 @@ void Camera3D::SetCurrentCamera(CameraType type)
 
 void Camera3D::CenterCameraToGO(AABB* boundBox)
 {
-	float dist = boundBox->Size().y / Tan(editorCam->GetVerticalFov() / 2);;
+	float dist = boundBox->Size().y / Tan(editorCam->GetVerticalFov() / 2);
 	float3 dir = boundBox->CenterPoint() - position;
 
 	if (Distance(boundBox->CenterPoint(), position) > dist + 0.5f)
