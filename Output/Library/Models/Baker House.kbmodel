@@ -1,17 +1,17 @@
 {
     "base name": "Baker House",
-    "uuid": -1739962140,
+    "uuid": -1666424184,
     "Meshes": [
         {
-            "parent uuid": -1739962140,
-            "owner uuid": 1135267733,
+            "parent uuid": -1666424184,
+            "owner uuid": 1403466006,
             "owner name": "Chimney",
             "mesh path": "Library\/Meshes\/Chimney.kbmesh",
             "texture path": "Library\/Textures\/Baker_house.kbtexture"
         },
         {
-            "parent uuid": -1739962140,
-            "owner uuid": -1722550844,
+            "parent uuid": -1666424184,
+            "owner uuid": 1562134135,
             "owner name": "Baker_house",
             "mesh path": "Library\/Meshes\/Baker_house.kbmesh",
             "texture path": "Library\/Textures\/Baker_house.kbtexture"

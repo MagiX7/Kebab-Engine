@@ -69,6 +69,7 @@
     <ClCompile Include="Source\Renderer3D.cpp" />
     <ClCompile Include="Source\MainScene.cpp" />
     <ClCompile Include="Source\KbSphere.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
@@ -132,6 +133,8 @@
     <ClInclude Include="Source\Renderer3D.h" />
     <ClInclude Include="Source\MainScene.h" />
     <ClInclude Include="Source\KbSphere.h" />
+    <ClInclude Include="Source\Resource.h" />
+    <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
     <ClInclude Include="Source\Vertex.h" />

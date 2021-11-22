@@ -163,7 +163,7 @@ void ComponentTransform::RecomputeGlobalMat()
 	if (parent->GetParent())
 	{
 		ComponentTransform* tr = (ComponentTransform*)parent->GetParent()->GetComponent(ComponentType::TRANSFORM);
-		localTransformMat = tr->globalTransformMat * localTransformMat;
+		globalTransformMat = tr->globalTransformMat * localTransformMat;
 	}
 	else
 	{

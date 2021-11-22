@@ -88,9 +88,6 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Texture.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ComponentTransform.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
@@ -118,14 +115,8 @@
     <ClCompile Include="Source\PanelAssets.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Material.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Parser.cpp">
       <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\KbMesh.cpp">
-      <Filter>Source Files\Render</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\ImGuizmo\GraphEditor.cpp">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
@@ -165,6 +156,18 @@
     </ClCompile>
     <ClCompile Include="Source\PanelGameDebugInfo.cpp">
       <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KbMesh.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,12 +270,6 @@
     <ClInclude Include="Source\External\parson\src\parson.h">
       <Filter>Source Files\3rd Parties\JParson</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vertex.h">
-      <Filter>Source Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Texture.h">
-      <Filter>Source Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
@@ -303,14 +300,8 @@
     <ClInclude Include="Source\PanelAssets.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Material.h">
-      <Filter>Source Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Parser.h">
       <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbMesh.h">
-      <Filter>Source Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\ImGuizmo\GraphEditor.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
@@ -353,6 +344,24 @@
     </ClInclude>
     <ClInclude Include="Source\PanelGameDebugInfo.h">
       <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbMesh.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Resource.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vertex.h">
+      <Filter>Source Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +412,9 @@
     </Filter>
     <Filter Include="Source Files\Space Partition">
       <UniqueIdentifier>{c885deab-4f4c-4461-8643-f0c3e8129fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{bcd7c564-7380-49c8-a1e3-0973e7377868}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

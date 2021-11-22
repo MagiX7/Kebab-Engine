@@ -18,10 +18,10 @@ Application::Application()
 {
 	window = new Window();
 	input = new Input();
-	scene = new MainScene();
 	renderer3D = new Renderer3D();
 	camera = new Camera3D();
 	editor = new Editor();
+	scene = new MainScene();
 	fileSystem = new FileSystem();
 
 	// The order of calls is very important!
