@@ -5,15 +5,6 @@
 #include "Globals.h"
 #include "Timer.h"
 
-/* #include "Module.h"
-#include "Window.h"
-#include "Input.h"
-#include "MainScene.h"
-#include "Renderer3D.h"
-#include "Camera3D.h"
-#include "Editor.h"
-#include "FileSystem.h"*/
-
 #include "parson.h"
 
 #include <list>
@@ -53,6 +44,7 @@ private:
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;
 	uint64 frameCount = 0;
+	uint64 runtimeFrameCount = 0;
 
 	float appDt;
 	float runtimeDt;
@@ -82,6 +74,7 @@ public:
 
 	inline float& GetRuntimeDt() { return runtimeDt; }
 	inline void SetRuntimeDt(float newDt) { runtimeDt = newDt; }
+	inline const int& GetRuntimeFramesAmount() { return runtimeFrameCount; }
 
 private:
 

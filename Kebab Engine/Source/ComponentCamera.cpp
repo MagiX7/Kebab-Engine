@@ -10,25 +10,26 @@
 #include "imgui/imgui.h"
 #include "mmgr/mmgr.h"
 
-ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType camerType)
+ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 {
 	this->SetParent(compOwner);
 	this->active = true;
 	this->type = ComponentType::CAMERA;
 	this->cameraType = cameraType;
 
-	cameraActive = false;
+	if (cameraType == CameraType::GAME)
+	{
+		frustumCulling = true;
+	}
 
-	frustumCulling = true;
-
-	//fovVertical = 70.0f;
 	fovHorizontal = math::DegToRad(80.0f);
-
 	CalculateFov(1920, 1080, fovHorizontal);
-
-	/*int w, h;
-	app->window->GetSize(w, h);
-	fovVertical = 2 * math::Atan(math::Tan(fovHorizontal / 2) * h / w);*/
+	
+	//else
+	//{
+	//	fovVertical = 70.0f;
+	//	fovHorizontal = 80;
+	//}
 
 
 	planeFar = 20.f;
@@ -234,8 +235,10 @@ void ComponentCamera::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-		if (ImGui::SliderFloat("FOV", &fovHorizontal, 0, 180))
+		static float hfovdeg = math::RadToDeg(fovHorizontal);
+		if (ImGui::SliderFloat("FOV", &hfovdeg, 1, 179))
 		{
+			fovHorizontal = hfovdeg;
 			CalculateFov();
 		}
 	}

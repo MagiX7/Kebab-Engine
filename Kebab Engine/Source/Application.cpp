@@ -108,7 +108,9 @@ void Application::PrepareUpdate()
 	if (editor->GetSceneState() == SceneState::PLAY)
 	{
 		runtimeDt = (float)runtimeTimer.Read() / 1000.0f;
-		printf("Runtime dt: %f\n", runtimeDt);
+
+		runtimeFrameCount++;
+
 		runtimeTimer.Start();
 	}
 }

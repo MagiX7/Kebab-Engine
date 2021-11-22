@@ -163,6 +163,9 @@
     <ClCompile Include="Source\KbSphere.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelGameDebugInfo.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -347,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="Source\KbSphere.h">
       <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelGameDebugInfo.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@ class InspectorPanel;
 class HierarchyPanel;
 class AssetsPanel;
 class ScenePreviewPanel;
+class GameDebugInfoPanel;
 class FrameBuffer;
 class Texture;
 
@@ -22,7 +23,9 @@ class MainScene;
 enum class SceneState
 {
 	EDIT = 0,
-	PLAY
+	PLAY,
+	PAUSE,
+	STEP_ONE_FRAME
 };
 
 class Editor : public Module
@@ -45,6 +48,9 @@ public:
 
 	void OnScenePlay();
 	void OnSceneStop();
+	void OnScenePause();
+	void OnSceneResume();
+	void OnSceneStepFrame();
 
 	inline const SceneState& GetSceneState() { return sceneState; }
 
@@ -68,11 +74,13 @@ public:
 	AssetsPanel* assetsPanel;
 	ScenePanel* scenePanel;
 	ScenePreviewPanel* previewScenePanel;
+	GameDebugInfoPanel* gameDebugInfoPanel;
 
 	bool showAboutPanel;
 	bool wireframe;
 
 private:
+	float lastRuntimeDt;
 	float scroll;
 
 	bool showWindows;

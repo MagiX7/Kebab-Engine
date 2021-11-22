@@ -21,6 +21,7 @@
 #include "PanelViewport.h"
 #include "PanelScene.h"
 #include "PanelAssets.h"
+#include "PanelGameDebugInfo.h"
 
 #include "Optick/src/optick.h"
 
@@ -43,6 +44,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     inspectorPanel = new InspectorPanel();
     scenePanel = new ScenePanel();
     previewScenePanel = new ScenePreviewPanel();
+    gameDebugInfoPanel = new GameDebugInfoPanel();
 
     showAboutPanel = false;
     showWindows = true;
@@ -51,6 +53,8 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
 
     sceneState = SceneState::EDIT;
     initialScene = nullptr;
+    
+    lastRuntimeDt = 0;
 }
 
 Editor::~Editor()
@@ -202,6 +206,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
             break;
         }
+        case SceneState::PAUSE:
         case SceneState::PLAY:
         {
             viewportPanel->OnRender(editorFbo, guizmoOperation, guizmoMode);
@@ -225,7 +230,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
     if (showWindows)
     {
-        if(sceneState == SceneState::PLAY)
+        if (sceneState != SceneState::EDIT)
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
         
         if (showAboutPanel) ShowAboutPanel();
@@ -235,8 +240,9 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
+        if (gameDebugInfoPanel->active) gameDebugInfoPanel->OnRender(dt);
         
-        if(sceneState == SceneState::PLAY)
+        if (sceneState != SceneState::EDIT)
             ImGui::PopStyleColor();
     }
 
@@ -374,6 +380,31 @@ void Editor::OnSceneStop()
     UnserializeScene();
 }
 
+void Editor::OnScenePause()
+{
+    if (sceneState == SceneState::PAUSE)
+    {
+        app->SetRuntimeDt(lastRuntimeDt);
+        sceneState = SceneState::PLAY;
+    }
+    else if (sceneState == SceneState::PLAY)
+    {
+        lastRuntimeDt = app->GetRuntimeDt();
+        app->SetRuntimeDt(0);
+        sceneState = SceneState::PAUSE;
+    }
+}
+
+void Editor::OnSceneResume()
+{
+    //app->SetRuntimeDt(lastRuntimeDt);
+}
+
+void Editor::OnSceneStepFrame()
+{
+
+}
+
 void Editor::OnMainMenuRender(bool& showDemoWindow)
 {
     static float f = 0.0f;
@@ -454,6 +485,10 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             if (ImGui::MenuItem("Scene preview"))
             {
                 previewScenePanel->active = !previewScenePanel;
+            }
+            if (ImGui::MenuItem("Game Debug Info"))
+            {
+                gameDebugInfoPanel->active = !gameDebugInfoPanel->active;
             }
 
             ImGui::Checkbox("Show Editor Windows", &showWindows);
@@ -577,13 +612,20 @@ void Editor::SimulationControl()
         {
             if (sceneState == SceneState::EDIT)
                 OnScenePlay();
-            else if (sceneState == SceneState::PLAY)
+            else if (sceneState == SceneState::PLAY || sceneState == SceneState::PAUSE)
                 OnSceneStop();
         }
 
         ImGui::SameLine(width / 2);
 
-        if (ImGui::ImageButton((ImTextureID)pauseTex->GetID(), { 30,30 }));
+        if (ImGui::ImageButton((ImTextureID)pauseTex->GetID(), { 30,30 }))
+        {
+            OnScenePause();
+            /*if (sceneState == SceneState::PLAY)
+                OnScenePause();
+            else if (sceneState == SceneState::PAUSE)
+                OnSceneResume();*/
+        }
 
         ImGui::SameLine(width / 2 + 60);
 
