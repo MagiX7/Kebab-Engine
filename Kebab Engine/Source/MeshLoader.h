@@ -25,7 +25,7 @@ public:
 
 	virtual ~MeshLoader();
 
-	GameObject* LoadModel(std::string path);
+	GameObject* LoadModel(std::string path, bool loadOnScene = false);
 
 	GameObject* LoadKbGeometry(KbGeometryType type);
 

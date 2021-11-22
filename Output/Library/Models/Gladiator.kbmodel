@@ -1,0 +1,30 @@
+{
+    "base name": "Gladiator",
+    "uuid": -1419995560,
+    "Meshes": [
+        {
+            "parent uuid": -1419995560,
+            "owner uuid": 2046268797,
+            "owner name": "Gladiator_weapon",
+            "mesh path": "Library\/Meshes\/Gladiator_weapon.kbmesh",
+            "texture path": "Checkers"
+        },
+        {
+            "parent uuid": -1419995560,
+            "owner uuid": -1266184197,
+            "owner name": "Gladiator",
+            "mesh path": "Library\/Meshes\/Gladiator.kbmesh",
+            "texture path": "Checkers"
+        }
+    ],
+    "pos x": 0,
+    "pos y": 0,
+    "pos z": 0,
+    "rot x": 0,
+    "rot y": 0,
+    "rot z": 0,
+    "rot w": 1,
+    "scale x": 1,
+    "scale y": 1,
+    "scale z": 1
+}

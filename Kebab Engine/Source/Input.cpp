@@ -177,7 +177,7 @@ bool Input::PreUpdate(float dt)
 				});
 
 				if(extension == "fbx" || extension == "obj")
-					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir));
+					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir, true));
 				else if (extension == "dds" || extension == "png" || extension == "jpg")
 				{
 					GameObject* target = app->editor->hierarchyPanel->currentGO;

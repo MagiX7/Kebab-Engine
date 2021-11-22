@@ -1,0 +1,23 @@
+{
+    "base name": "Sora",
+    "uuid": -1950838482,
+    "Meshes": [
+        {
+            "parent uuid": -1950838482,
+            "owner uuid": -1864303755,
+            "owner name": "Sora",
+            "mesh path": "Library\/Meshes\/Sora.kbmesh",
+            "texture path": "Checkers"
+        }
+    ],
+    "pos x": 0,
+    "pos y": 0,
+    "pos z": 0,
+    "rot x": 0,
+    "rot y": 0,
+    "rot z": 0,
+    "rot w": 1,
+    "scale x": 1,
+    "scale y": 1,
+    "scale z": 1
+}

@@ -73,6 +73,8 @@ bool Editor::Start()
     if (!stopTex) stopTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/stop_icon.png");
     if (!nextFrameTex) nextFrameTex= TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/next_frame_icon.png");
 
+    assetsPanel->LoadAssetsToCustom();
+
 	return true;
 }
 

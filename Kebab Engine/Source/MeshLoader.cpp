@@ -56,7 +56,7 @@ void MeshLoader::CleanUp()
     instance = nullptr;
 }
 
-GameObject* MeshLoader::LoadModel(std::string path)
+GameObject* MeshLoader::LoadModel(std::string path, bool loadOnScene)
 {
     Assimp::Importer import;
     const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -80,10 +80,17 @@ GameObject* MeshLoader::LoadModel(std::string path)
 
     SaveModelCustomFormat(baseGO);
 
-    app->scene->AddGameObject(baseGO);
-    app->editor->assetsPanel->AddAsset(baseGO);
-
-    return baseGO;
+    if (loadOnScene)
+    {
+        app->scene->AddGameObject(baseGO);
+        app->editor->assetsPanel->AddAsset(baseGO);
+        return baseGO;
+    }
+    else
+    {
+        delete baseGO;
+        return nullptr;
+    }
 }
 
 void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO)

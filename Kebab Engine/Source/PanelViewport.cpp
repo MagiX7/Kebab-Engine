@@ -9,9 +9,13 @@
 #include "PanelScene.h"
 
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 #include "PanelViewport.h"
 #include "PanelHierarchy.h"
+
+#include "TextureLoader.h"
 
 ViewportPanel::ViewportPanel()
 {
@@ -56,33 +60,38 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
             std::string dragPath = (const char*)payload->Data;
             std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
             std::string ext = name.substr(name.find_last_of("."), name.size());
-            name = name.substr(0, name.find_last_of("."));
-
-            bool isCustom = false;
-
             
-            if (ext == ".fbx" || ext == ".obj")
+            if (ext == ".kbmodel")
             {
-                isCustom = true;
-
-                name += ".kbmodel";
-
                 GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat(name);
-                if (bh)
-                    app->renderer3D->Submit(bh);
-                else
-                {
-                    isCustom = false;
-                    name = name.substr(0, name.find_last_of("."));
-                }
-            }
-            if (!isCustom && (ext == ".fbx" || ext == ".obj"))
-            {
-                GameObject* bh = MeshLoader::GetInstance()->LoadModel(dragPath);
                 app->renderer3D->Submit(bh);
             }
-            /*if (strcmp(ext.c_str(), ".dds") == 0 || strcmp(ext.c_str(), ".png") == 0 || strcmp(ext.c_str(), ".jpg") == 0)
-                ext = ".kbtexture";*/
+            else if (ext == ".kbtexture")
+            {
+                if (app->editor->hierarchyPanel->currentGO)
+                {
+                    GameObject* target = app->editor->hierarchyPanel->currentGO;
+
+                    if (target->GetComponent(ComponentType::MESH))
+                    {
+                        for (int i = 0; i < target->GetComponents().size(); ++i)
+                        {
+                            ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
+                            GameObject* parent = target->GetParent();
+                            
+                            ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
+                            mat->AddTexture(TextureLoader::GetInstance()->LoadTextureCustomFormat(dragPath));
+                        }
+                    }
+                    else
+                    {
+                        std::string message = "Couldn't apply texture, selected game object "
+                            + target->GetName()
+                            + " doesn't have a mesh. Try with a child game object that has a mesh instead.";
+                        LOG_CONSOLE(message.c_str());
+                    }
+                }
+            }
         }
 
         ImGui::EndDragDropTarget();

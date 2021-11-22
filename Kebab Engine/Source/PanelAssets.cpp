@@ -14,10 +14,12 @@
 #include "PanelHierarchy.h"
 
 #include "TextureLoader.h"
+#include "MeshLoader.h"
 
 #include "mmgr/mmgr.h"
 
 #include <vector>
+#include <queue>
 
 //#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 //#include <experimental/filesystem>
@@ -28,12 +30,12 @@ AssetsPanel::AssetsPanel()
     active = true;
     scroll = 0;
 
-	entryFolder = "Assets/";
+	entryFolder = "Library/";
 	currentFolder = entryFolder;
 
 	folderTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/folder_icon.kbtexture");
 	modelTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/model_icon.kbtexture");
-	pngTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/texture_icon.kbtexture");
+	pngTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/texture_icon.kbtexture");
 
 	if (folderTex == nullptr)
 		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/folder_icon.png");
@@ -82,6 +84,40 @@ void AssetsPanel::OnRender(float dt)
 			DisplayPopMenu();
 	}
 	ImGui::End();
+}
+
+void AssetsPanel::LoadAssetsToCustom()
+{	
+	std::queue<std::string> que;
+
+	std::string entry = "Assets/";
+	que.push(entry);
+
+	while (!que.empty())
+	{
+		std::string currentFolderToLoad = que.front();
+		que.pop();
+
+		std::vector<std::string> dirList;
+		std::vector<std::string> fileList;
+
+		app->fileSystem->DiscoverFiles(currentFolderToLoad.c_str(), fileList, dirList);
+
+		for (std::vector<std::string>::const_iterator it = dirList.begin(); it != dirList.end(); it++)
+		{
+			std::string folderPath = currentFolderToLoad + (*it) + "/";
+			que.push(folderPath);
+		}
+
+		for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
+		{
+			std::string completePath = currentFolderToLoad + (*it);
+			
+			MeshLoader::GetInstance()->LoadModel(completePath);
+
+			TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+		}
+	}
 }
 
 void AssetsPanel::AddAsset(GameObject* gameObj)
@@ -244,7 +280,7 @@ void AssetsPanel::DisplayPopMenu()
 			
 			if (extension == ".fbx" || extension == ".obj")
 			{
-				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path));
+				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path, true));
 				LOG_CONSOLE("Asset Imported Succesfully");
 			}
 			else if (extension == ".dds" || extension == ".png" || extension == ".jpg")

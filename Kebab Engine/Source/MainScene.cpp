@@ -86,7 +86,7 @@ bool MainScene::Update(float dt)
     }
     if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
     {
-        GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
+        GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true);
         app->renderer3D->Submit(bh);
     }
     if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)

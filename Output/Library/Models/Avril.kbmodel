@@ -1,17 +1,17 @@
 {
     "base name": "Avril",
-    "uuid": 519425198,
+    "uuid": 502811054,
     "Meshes": [
         {
-            "parent uuid": 519425198,
-            "owner uuid": -1100263737,
+            "parent uuid": 502811054,
+            "owner uuid": -1890810908,
             "owner name": "Avril Avant",
             "mesh path": "Library\/Meshes\/Avril Avant.kbmesh",
             "texture path": "Library\/Textures\/Head_Albedo.kbtexture"
         },
         {
-            "parent uuid": -1100263737,
-            "owner uuid": 1465920387,
+            "parent uuid": 502811054,
+            "owner uuid": 1929434474,
             "owner name": "Body",
             "mesh path": "Library\/Meshes\/Body.kbmesh",
             "texture path": "Library\/Textures\/Body_Albedo.kbtexture"

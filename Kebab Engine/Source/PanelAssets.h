@@ -23,6 +23,7 @@ public:
 
 	void OnRender(float dt) override;
 
+	void LoadAssetsToCustom();
 	void AddAsset(GameObject* gameObj);
 
 	void DisplayAssets();
