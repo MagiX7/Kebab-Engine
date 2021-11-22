@@ -32,7 +32,7 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	focusing = false;
 	orbiting = false;
 
-	editorCam->SetCameraPosition(position);
+	editorCam->SetPosition(position);
 	editorCam->Look(reference);
 
 	editorCam->SetFarPlane(100);
@@ -67,6 +67,9 @@ bool Camera3D::CleanUp()
 	//if(editorCam) delete editorCam;
 	//if(gameCam) delete gameCam;
 
+	delete editorCam;
+	editorCam = nullptr;
+
 	return true;
 }
 
@@ -98,7 +101,7 @@ bool Camera3D::Update(float dt)
 
 			position += newPos;
 
-			editorCam->SetCameraPosition(position);
+			editorCam->SetPosition(position);
 
 			// Rotation of camera ================================================================================
 			math::Quat rotationX = math::Quat::RotateAxisAngle(float3::unitY, dx * DEGTORAD);
@@ -120,13 +123,13 @@ bool Camera3D::Update(float dt)
 			{
 				zoom -= editorCam->frustum.Front() * speed;
 				position += zoom;
-				editorCam->SetCameraPosition(position);
+				editorCam->SetPosition(position);
 			}
 			if (app->input->GetMouseZ() > 0)
 			{
 				zoom += editorCam->frustum.Front() * speed;
 				position += zoom;
-				editorCam->SetCameraPosition(position);
+				editorCam->SetPosition(position);
 			}
 		}
 
@@ -155,7 +158,7 @@ bool Camera3D::Update(float dt)
 						focusing = false;
 
 					reference = compTransGO->GetTranslation();
-					editorCam->SetCameraPosition(position);
+					editorCam->SetPosition(position);
 					editorCam->Look(reference);
 				}
 				else
@@ -204,7 +207,7 @@ void Camera3D::LookAt( const float3& point)
 
 void Camera3D::MoveTo(const float3& pos)
 {
-	editorCam->SetCameraPosition(pos);
+	editorCam->SetPosition(pos);
 	position = pos;
 }
 
@@ -212,7 +215,7 @@ void Camera3D::SetPosLook(const float3& pos, const float3& pointLook)
 {
 	editorCam->Look(pointLook);
 	reference = pointLook;
-	editorCam->SetCameraPosition(pos);
+	editorCam->SetPosition(pos);
 	position = pos;
 }
 
@@ -280,7 +283,7 @@ void Camera3D::CenterCameraToGO(AABB* boundBox)
 	}
 
 	reference = boundBox->CenterPoint();
-	editorCam->SetCameraPosition(position);
+	editorCam->SetPosition(position);
 	editorCam->Look(reference);
 }
 
@@ -288,7 +291,7 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 {
 	reference = boundBox->CenterPoint();
 
-	float3 dir = editorCam->GetCameraPosition() - reference;
+	float3 dir = editorCam->GetPosition() - reference;
 
 	math::Quat rotationX = math::Quat::RotateAxisAngle(editorCam->frustum.Up(), dx * DEGTORAD);
 	math::Quat rotationY = math::Quat::RotateAxisAngle(editorCam->frustum.WorldRight(), dy * DEGTORAD);
@@ -297,7 +300,7 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 	dir = finalRotation.Transform(dir);
 
 	position = dir + reference;
-	editorCam->SetCameraPosition(position);
+	editorCam->SetPosition(position);
 	LookAt(reference);
 }
 
@@ -455,12 +458,12 @@ GameObject* Camera3D::MousePickGameObject()
 	LineSegment picking = editorCam->frustum.UnProjectLineSegment(x, y);
 
 	float3 hitPoint;
-
+	float distance;
 	static bool clearVec = false;
 	if (pickedGos.size() <= 0)
 	{
-		//pickedGos.clear();
-		pickedGos = ThrowRay(picking, hitPoint, clearVec, app->scene->GetRoot());
+		// TODO: Check somehow if the user clicked outside the mesh and clear the list, otherwise keep iterating
+		pickedGos = ThrowRay(picking, hitPoint, clearVec, distance, app->scene->GetRoot());
 		pickedGosIt = 0;
 	}
 	
@@ -473,19 +476,10 @@ GameObject* Camera3D::MousePickGameObject()
 	else if(pickedGos.size() == pickedGosIt)
 		pickedGos.clear();
 
-	
-	/*if (hitted)
-	{
-		while (hitted->GetParent() && hitted->GetParent() != app->scene->GetRoot())
-			hitted = hitted->GetParent();
-
-		return hitted;
-	}*/
-
 	return nullptr;
 }
 
-std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, bool& clearVector, GameObject* gameObject)
+std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
 {
 	std::vector<GameObject*> gos;
 
@@ -515,15 +509,16 @@ std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint,
 					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
 					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
-					float4x4 m = trans->GetLocalMatrix().Transposed();
+					float4x4 m = trans->GetLocalMatrix().Inverted();
 					Ray ray = localLine.ToRay();
-					//ray.Transform(m);
-					if (ray.Intersects(triangle))
+					ray.Transform(m);
+					if (ray.Intersects(triangle, &dist, &hitPoint))
 					{
-						if(curr->GetParent())
+						if (curr->GetParent())
 							gos.push_back(curr->GetParent());
 						gos.push_back(curr);
 						clearVector = false;
+
 						break;
 					}
 				}
@@ -535,9 +530,9 @@ std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint,
 				q.push(child);
 	}
 
-	if (!gos.size()) clearVector = true;
+	if (gos.size() <= 0)
+		clearVector = true;
 
 	return gos;
 
-	//return nullptr;
 }

@@ -111,15 +111,15 @@ void Application::PrepareUpdate()
 		lastRuntimeDt = runtimeDt;
 
 		runtimeFrameCount++;
+		totalRuntimeFrameCount++;
 
 		runtimeTimer.Start();
 	}
 	else if (editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
 	{
-		/*runtimeDt = (float)runtimeTimer.Read() / 1000.0f;
-		runtimeTimer.Start();*/
 		runtimeDt = lastRuntimeDt;
 		runtimeFrameCount++;
+		totalRuntimeFrameCount++;
 		
 		editor->SetSceneState(SceneState::PAUSE);
 	}

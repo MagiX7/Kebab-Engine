@@ -197,7 +197,7 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 	ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
 	if (cam)
 	{
-		cam->SetCameraPosition(tr->GetTranslation());
+		cam->SetPosition(tr->GetTranslation());
 
 		/*float3 r = rotation.ToEulerXYZ();
 		r = math::RadToDeg(r);

@@ -240,11 +240,11 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	DoRender();
 	glPopMatrix();
 	glPopMatrix();
 	sceneFbo->Unbind();
+
 
 	editorFbo->Bind();
 	PushCamera(app->camera->editorCam);
@@ -285,12 +285,12 @@ void Renderer3D::OnResize(int width, int height)
 	app->camera->SetRatio(ratio);
 
 	glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-
 	glLoadMatrixf(app->camera->GetCurrentCamera()->frustum.ProjectionMatrix().Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
-	//glLoadIdentity();
+	float4x4 mat = app->camera->GetCurrentCamera()->frustum.ViewMatrix();
+	glLoadMatrixf(mat.Transposed().ptr());
+
 }
 
 void Renderer3D::SetDepth()

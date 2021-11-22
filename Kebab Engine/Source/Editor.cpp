@@ -146,6 +146,8 @@ void Editor::InitImGui()
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+    io.IniFilename = "Settings/imgui.ini";
+
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -392,6 +394,7 @@ void Editor::OnScenePause()
     {
         lastRuntimeDt = app->GetRuntimeDt();
         app->SetRuntimeDt(0);
+        app->SetRuntimeFramesAmount(0);
         sceneState = SceneState::PAUSE;
     }
 }

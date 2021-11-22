@@ -20,16 +20,14 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	if (cameraType == CameraType::GAME)
 	{
 		frustumCulling = true;
+		fovHorizontal = math::DegToRad(80.0f);
+	}
+	else
+	{
+		fovHorizontal = math::DegToRad(50);
 	}
 
-	fovHorizontal = math::DegToRad(80.0f);
 	CalculateFov(1920, 1080, fovHorizontal);
-	
-	//else
-	//{
-	//	fovVertical = 70.0f;
-	//	fovHorizontal = 80;
-	//}
 
 
 	planeFar = 20.f;
@@ -82,16 +80,11 @@ void ComponentCamera::SetNearPlane(const float& nearPlane)
 
 void ComponentCamera::CalculateFov(float w, float h, int hfov)
 {
-	/*if (hfov)
-		fovHorizontal = hfov;*/
-
 	fovVertical = 2 * math::Atan(math::Tan(fovHorizontal / 2) * w / h);
 
 	frustum.SetVerticalFovAndAspectRatio(fovVertical, (w / h));
 	currentWinHeight = h;
 	currentWinWidth = w;
-
-	//frustum.SetPerspective(fovHorizontal, fovVertical);
 }
 
 void ComponentCamera::CalculateFov()
@@ -99,7 +92,6 @@ void ComponentCamera::CalculateFov()
 	float fovh = math::DegToRad(fovHorizontal);
 	fovVertical = 2 * math::Atan(math::Tan(fovh / 2) * (currentWinWidth / currentWinHeight));
 	frustum.SetVerticalFovAndAspectRatio(fovVertical, (currentWinWidth / currentWinHeight));
-
 }
 
 void ComponentCamera::SetFarPlane(const float& farPlane)
@@ -108,7 +100,7 @@ void ComponentCamera::SetFarPlane(const float& farPlane)
 	planeFar = farPlane;
 }
 
-void ComponentCamera::SetCameraPosition(const vec& position)
+void ComponentCamera::SetPosition(const vec& position)
 {
 	frustum.SetPos(position);
 }
@@ -225,11 +217,10 @@ float ComponentCamera::GetFarPlane() const
 	return planeFar;
 }
 
-vec ComponentCamera::GetCameraPosition()
+vec ComponentCamera::GetPosition()
 {
 	return frustum.Pos();
 }
-
 
 void ComponentCamera::DrawOnInspector()
 {

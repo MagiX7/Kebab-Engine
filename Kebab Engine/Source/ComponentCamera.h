@@ -18,8 +18,8 @@ public:
 	ComponentCamera(GameObject* compOwner, CameraType camerType);
 	~ComponentCamera();
 
-	void SetCameraPosition(const vec& position);
-	vec GetCameraPosition();
+	void SetPosition(const vec& position);
+	vec GetPosition();
 
 	void Look(const vec& lookPoint);
 

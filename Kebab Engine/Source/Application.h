@@ -45,6 +45,7 @@ private:
 	uint32 prevLastSecFrameCount = 0;
 	uint64 frameCount = 0;
 	uint64 runtimeFrameCount = 0;
+	uint64 totalRuntimeFrameCount = 0;
 
 	float appDt;
 	float runtimeDt;
@@ -77,6 +78,7 @@ public:
 	inline float& GetRuntimeDt() { return runtimeDt; }
 	inline void SetRuntimeDt(float newDt) { lastRuntimeDt = runtimeDt; runtimeDt = newDt; }
 	inline const int& GetRuntimeFramesAmount() { return runtimeFrameCount; }
+	inline const int& GetToalRuntimeFramesAmount() { return totalRuntimeFrameCount; }
 	inline void SetRuntimeFramesAmount(const int& fa) { runtimeFrameCount = fa; }
 	inline const float GetLastRuntimeDt() { return lastRuntimeDt; }
 
