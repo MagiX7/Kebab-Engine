@@ -56,8 +56,10 @@ void ComponentTransform::DrawOnInspector()
 		ImGui::Text("Position");
 		if (ImGui::DragFloat3("position", guiPos.ptr(), 0.05f))
 		{
+			float3 translation = guiPos - position;
+
 			SetTranslation(guiPos);
-			PropagateTransform(parent, position, rotation, scale);
+			PropagateTransform(parent, translation, rotation, scale);
 		}
 
 		ImGui::Separator();
@@ -95,9 +97,16 @@ void ComponentTransform::DrawOnInspector()
 
 void ComponentTransform::SetLocalMatrix(const float4x4& transform)
 {
+	float3 prevPos, prevScale;
+	Quat prevRot;
+
+	localTransformMat.Decompose(prevPos, prevRot, prevScale);
+
 	localTransformMat = transform;
 
 	transform.Decompose(position, rotation, scale);
+
+	float3 translation = position - prevPos;
 
 	guiPos = position;
 	//guiRot = rotation.ToEulerXYX();
@@ -109,7 +118,7 @@ void ComponentTransform::SetLocalMatrix(const float4x4& transform)
 	guiRot = { rotation.x, rotation.y, rotation.z };
 	guiScale = scale;
 
-	PropagateTransform(parent, position, rotation, scale);
+	PropagateTransform(parent, translation, rotation, scale);
 }
 
 JSON_Value* ComponentTransform::Save()
@@ -185,12 +194,13 @@ void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat
 
 		if ((*it)->GetChilds().size() > 0)
 			PropagateTransform((*it), newPos, newQuat, newScale);
-		
-		childTrans->SetTranslation(newPos);
+
+		childTrans->SetTranslation(childTrans->GetTranslation() + newPos);
 		childTrans->SetRotation(newQuat);
 		childTrans->SetScale(newScale);
 		(*it)->UpdateAABB(childTrans->GetLocalMatrix());
 
+		childTrans->SetLocalMatrix(childTrans->localTransformMat);
 	}
 
 	ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
