@@ -103,7 +103,12 @@ bool MainScene::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
         rootQT->Recalculate();
 
-    rootQT->Intersect(&app->camera->editorCam->frustum);
+    if (app->editor->GetSceneState() == SceneState::EDIT)
+        rootQT->Intersect(&app->camera->editorCam->frustum);
+    else if (app->editor->GetSceneState() == SceneState::PLAY
+        || app->editor->GetSceneState() == SceneState::PAUSE
+        || app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
+        rootQT->Intersect(&app->camera->gameCam->frustum);
 
     return true;
 }
