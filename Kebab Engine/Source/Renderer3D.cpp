@@ -219,7 +219,7 @@ bool Renderer3D::PreUpdate(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		drawAABB = !drawAABB;
 	if (app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-		app->camera->GetCurrentCamera()->frustumCulling = !app->camera->GetCurrentCamera()->frustumCulling;
+		app->camera->gameCam->frustumCulling = !app->camera->gameCam->frustumCulling;
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);

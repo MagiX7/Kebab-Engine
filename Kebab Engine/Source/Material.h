@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Resource.h"
+
 #include <string>
 
 class Texture;
 
-class Material
+class Material : public Resource
 {
 public:
 	Material();

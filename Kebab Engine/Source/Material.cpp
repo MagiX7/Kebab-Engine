@@ -2,7 +2,7 @@
 
 #include "Texture.h"
 
-Material::Material()
+Material::Material() : Resource(ResourceType::MATERIAL)
 {
 }
 

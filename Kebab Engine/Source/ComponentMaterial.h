@@ -23,7 +23,7 @@ public:
 
 	void AddTexture(Texture* tex);
 
-	inline const Texture* GetCurrentTexture() { return currentTexture; }
+	inline Texture* GetCurrentTexture() { return currentTexture; }
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;

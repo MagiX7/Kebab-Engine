@@ -3,6 +3,7 @@
 
 #include "MeshLoader.h"
 #include "TextureLoader.h"
+#include "ResourceManager.h"
 
 #include "MainScene.h"
 #include "Editor.h"
@@ -214,13 +215,20 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     }
 
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
-    mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(imageName.c_str()));
+    Texture* tex = TextureLoader::GetInstance()->LoadTexture(imageName.c_str());
+    if (tex)
+    {
+        //if (!ResourceManager::GetInstance()->IsAlreadyLoaded(mat->GetCurrentTexture()->GetUUID()))
+        ResourceManager::GetInstance()->AddResource(tex);
+        mat->AddTexture(tex);
+    }
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    meshComp->SetData(vertices, indices/*, TextureLoader::GetInstance()->LoadTexture(imageName.c_str())*/);
+    meshComp->SetData(vertices, indices);
+    ResourceManager::GetInstance()->AddResource((Resource*)meshComp->GetMesh());
+
 
     SaveMeshCustomFormat(meshComp);
-    //meshComp = LoadMeshCustomFormat(baseGO->GetName().c_str(), baseGO);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 

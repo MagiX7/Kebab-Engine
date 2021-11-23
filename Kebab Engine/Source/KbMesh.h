@@ -1,14 +1,16 @@
 #pragma once
 
+#include "Resource.h"
+
 #include "Buffer.h"
 #include "Vertex.h"
 
 #include <vector>
 
-class KbMesh
+class KbMesh : public Resource
 {
 public:
-	KbMesh() {};
+	KbMesh() : Resource(ResourceType::MESH) {};
 	KbMesh(std::string path);
 	KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 	virtual ~KbMesh();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 class Resource;
 enum class ResourceType;
@@ -14,8 +15,14 @@ public:
 	int Find(const char* fileInAssets) const;
 	int ImportFile(const char* newFileInAssets);
 
-	const Resource* GetResource(int uuid) const;
+	std::shared_ptr<Resource*> GetResource(int uuid) const;
 	void DeleteResource(int uuid);
+
+	void AddResource(Resource* res);
+
+	bool IsAlreadyLoaded(int uuid);
+
+	int GetReferenceCount(int uuid);
 
 private:
 	ResourceManager();
@@ -23,8 +30,13 @@ private:
 
 	Resource* CreateNewResource(const char* assetsFile, ResourceType type);
 
+	int GenerateUUID();
+
 private:
 	static ResourceManager* instance;
 
-	std::map<int, Resource*> resources;
+	std::map<int, std::shared_ptr<Resource*>> resources;
+
+
+	int uuid = -2;
 };

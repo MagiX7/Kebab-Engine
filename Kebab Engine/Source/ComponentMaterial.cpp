@@ -1,8 +1,7 @@
 #include "ComponentMaterial.h"
 
 #include "TextureLoader.h"
-
-#include "Texture.h"
+#include "ResourceManager.h"
 
 #include "imgui/imgui.h"
 
@@ -81,6 +80,11 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::SameLine();
 			ImGui::Text("No texture.");
 		}
+		if (currentTexture)
+		{
+			std::string s = "References to texture " + std::to_string(ResourceManager::GetInstance()->GetReferenceCount(currentTexture->uuid));
+			ImGui::BulletText(s.c_str());
+		}
 	}
 }
 
@@ -90,9 +94,10 @@ void ComponentMaterial::AddTexture(Texture* tex)
 	if (std::find(textures.begin(), textures.end(), tex) == textures.end())
 	{
 		textures.push_back(tex);
-		texture = tex;
-		currentTexture = tex;
 	}
+	texture = tex;
+	texture->SetUUID(tex->uuid);
+	currentTexture = tex;
 }
 
 JSON_Value* ComponentMaterial::Save()

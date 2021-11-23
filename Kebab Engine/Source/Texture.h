@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Resource.h"
+
 #include "Buffer.h"
 
 #include "GL/glew.h"
@@ -15,7 +17,7 @@ enum class TextureType
 	HEIGHT_MAP,
 };
 
-class Texture
+class Texture : public Resource
 {
 public:
 	//Texture(unsigned char* pixels, int width, int height);

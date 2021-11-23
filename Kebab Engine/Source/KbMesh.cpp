@@ -1,11 +1,11 @@
 #include "KbMesh.h"
 
-KbMesh::KbMesh(std::string path)
+KbMesh::KbMesh(std::string path) : Resource(ResourceType::MESH)
 {
 	SetPath(path);
 }
 
-KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
+KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) : Resource(ResourceType::MESH)
 {
 	SetData(vertices, indices);
 }

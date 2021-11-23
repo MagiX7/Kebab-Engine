@@ -1,9 +1,13 @@
 #include "Application.h"
 #include "FileSystem.h"
 
-
 #include "ResourceManager.h"
 #include "Resource.h"
+
+#include "MeshLoader.h"
+#include "TextureLoader.h"
+
+#include <Algorithm/Random/LCG.cpp>
 
 
 ResourceManager* ResourceManager::instance = nullptr;
@@ -47,13 +51,61 @@ int ResourceManager::ImportFile(const char* newFileInAssets)
 	return 0;
 }
 
-const Resource* ResourceManager::GetResource(int uuid) const
+std::shared_ptr<Resource*> ResourceManager::GetResource(int uuid) const
 {
+	std::map<int, std::shared_ptr<Resource*>>::const_iterator it = resources.find(uuid);
+	std::map<int, std::shared_ptr<Resource*>>::const_iterator itEnd = resources.end();
+
+	if (it != itEnd)
+	{
+		return it->second;
+	}
+
 	return nullptr;
 }
 
 void ResourceManager::DeleteResource(int uuid)
 {
+	//std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
+	//if (it != resources.end() && std::shared_ptr<Resource*>::unique)
+	//{
+
+	//}
+}
+
+void ResourceManager::AddResource(Resource* res)
+{
+	//if (!IsAlreadyLoaded(res->GetUUID()))
+	//{
+		std::pair<int, std::shared_ptr<Resource*>> p;
+		p.second = std::make_shared<Resource*>(res);
+		uuid = GenerateUUID();
+		res->uuid = uuid;
+		//res->SetUUID(uuid);
+		p.first = res->GetUUID();
+
+		resources.insert(resources.end(), p);
+	//}
+}
+
+bool ResourceManager::IsAlreadyLoaded(int uuid)
+{
+	std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
+	if (it == resources.end())
+		return false;
+
+	return true;
+}
+
+int ResourceManager::GetReferenceCount(int uuid)
+{
+	std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
+
+	if (it != resources.end())
+	{
+		return it->second.use_count();
+	}
+	return -1;
 }
 
 ResourceManager::ResourceManager()
@@ -62,10 +114,34 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-
 }
 
 Resource* ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type)
 {
-	return nullptr;
+	Resource* ret = nullptr;
+
+	switch(type)
+	{
+		case ResourceType::TEXTURE:
+		{
+			ret = (Resource*)TextureLoader::GetInstance()->LoadTexture(assetsFile);
+			break;
+		}
+		
+		case ResourceType::MESH:
+		{
+			ret = (Resource*)MeshLoader::GetInstance()->LoadModel(assetsFile);
+			break;
+		}
+	}
+
+	ret->SetUUID(GenerateUUID());
+	
+	return ret;
+}
+
+int ResourceManager::GenerateUUID()
+{
+	LCG lgc = LCG();
+	return lgc.IntFast();
 }
