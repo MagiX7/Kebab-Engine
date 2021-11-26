@@ -19,11 +19,11 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 ComponentMaterial::~ComponentMaterial()
 {
-	for (auto& t : textures)
+	/*for (auto& t : textures)
 	{
 		delete t;
 		t = nullptr;
-	}
+	}*/
 	textures.clear();
 
 	delete checkersTexture;

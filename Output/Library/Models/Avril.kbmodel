@@ -1,23 +1,8 @@
 {
     "base name": "Avril",
-    "parent uuid": 800345629,
-    "uuid": 800345629,
-    "Meshes": [
-        {
-            "parent uuid": 800345629,
-            "owner uuid": 230145463,
-            "owner name": "Avril Avant",
-            "mesh path": "Library\/Meshes\/Avril Avant_1487435366.kbmesh",
-            "texture path": "Checkers"
-        },
-        {
-            "parent uuid": 800345629,
-            "owner uuid": 631163116,
-            "owner name": "Body",
-            "mesh path": "Library\/Meshes\/Body_1487435366.kbmesh",
-            "texture path": "Checkers"
-        }
-    ],
+    "parent uuid": 1610163798,
+    "uuid": 1610163798,
+    "Meshes": [],
     "pos x": 0,
     "pos y": 0,
     "pos z": 0,

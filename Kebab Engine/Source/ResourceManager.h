@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Vertex.h"
+
+#include <vector>
+#include <string>
 #include <map>
 #include <memory>
 
@@ -25,6 +29,7 @@ public:
 	int GetReferenceCount(int uuid);
 
 	std::shared_ptr<Resource> CreateNewResource(const char* assetsFile, ResourceType type);
+	std::shared_ptr<Resource> CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name);
 private:
 	ResourceManager();
 	virtual ~ResourceManager();

@@ -126,26 +126,47 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 			{
 				Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile);
 				tex->uuid = GenerateUUID();
-				Texture t = *tex;
-				ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(t);
+				ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
 
 				ret.get()->SetAssetsPath(assetsFile);
+				std::string tmp = assetsFile;
+				int start = tmp.find_last_of("/");
+				int end = tmp.find(".");
+				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "_" + std::to_string(tex->uuid) + ".kbtexture";
+				ret.get()->SetLibraryPath(lib);
+
+				TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)ret.get());
+
+				delete tex;
+				tex = nullptr;
 				
 				resources[ret.get()->uuid] = ret;
 			}
 
 			break;
 		}
-		
-		case ResourceType::MESH:
+		/*case ResourceType::MESH:
 		{
-
 			ret = std::make_shared<Resource>(type);
-
-
 			break;
-		}
+		}*/
 	}
+	return ret;
+}
+
+std::shared_ptr<Resource> ResourceManager::CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name)
+{
+	std::shared_ptr<Resource> ret = nullptr;
+
+	//KbMesh* mesh = new KbMesh(vertices, indices);
+	//mesh->uuid = GenerateUUID();
+	//
+	//ret = (std::shared_ptr<Resource>)std::make_shared<KbMesh>(*mesh);
+	//
+	//MeshLoader::GetInstance()->SaveMeshCustomFormat((KbMesh*)ret.get(), name);
+	//
+	//resources[ret.get()->uuid] = ret;
+
 	return ret;
 }
 

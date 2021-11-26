@@ -217,7 +217,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE);
     mat->AddTexture((Texture*)tex.get());
-    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
+    //TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
 
     //ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(),ResourceType::TEXTURE);
     //Texture* tex = TextureLoader::GetInstance()->LoadTexture(imageName.c_str());
@@ -227,11 +227,14 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     //    mat->AddTexture(tex);
     //}
 
-    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
 
-    std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(meshComp->GetMesh()->GetPath().c_str(), ResourceType::MESH);
+    /*std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(meshComp->GetMesh()->GetPath().c_str(), ResourceType::MESH);
+    meshComp->SetMesh((KbMesh*)m.get());*/
+    //SaveMeshCustomFormat(meshComp);
+
+    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
+    std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateMesh(vertices, indices, baseGO->GetName());
     meshComp->SetMesh((KbMesh*)m.get());
-    SaveMeshCustomFormat(meshComp);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
@@ -410,11 +413,11 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
     return go;
 }
 
-void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
+void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name)
 {
-    unsigned int ranges[2] = { mesh->GetMesh()->vertices.size(), mesh->GetMesh()->indices.size() };
+    unsigned int ranges[2] = { mesh->vertices.size(), mesh->indices.size() };
 
-    uint size = sizeof(ranges) + sizeof(Vertex) * mesh->GetMesh()->vertices.size() + sizeof(uint32_t) * mesh->GetMesh()->indices.size();
+    uint size = sizeof(ranges) + sizeof(Vertex) * mesh->vertices.size() + sizeof(uint32_t) * mesh->indices.size();
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -424,20 +427,26 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
     cursor += bytes;
 
 
-    bytes = sizeof(Vertex) * mesh->GetMesh()->vertices.size();
-    memcpy(cursor, mesh->GetMesh()->vertices.data(), bytes);
+    bytes = sizeof(Vertex) * mesh->vertices.size();
+    memcpy(cursor, mesh->vertices.data(), bytes);
     cursor += bytes;
 
-    bytes = sizeof(uint32_t) * mesh->GetMesh()->indices.size();
-    memcpy(cursor, mesh->GetMesh()->indices.data(), bytes);
+    bytes = sizeof(uint32_t) * mesh->indices.size();
+    memcpy(cursor, mesh->indices.data(), bytes);
     cursor += bytes;
 
-    std::string n = CUSTOM_DIR + mesh->GetParent()->GetName() + "_" + std::to_string(mesh->GetMesh()->uuid) + CUSTOM_EXTENSION;
-    mesh->SetMeshPath(n);
+    std::string n = CUSTOM_DIR + name + "_" + std::to_string(mesh->uuid) + CUSTOM_EXTENSION;
+    //mesh->SetMeshPath(n);
+    mesh->SetLibraryPath(n);
 
     app->fileSystem->Save(n.c_str(), fileBuffer, size);
 
     delete[] fileBuffer;
+}
+
+void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
+{
+    SaveMeshCustomFormat(mesh->GetMesh(), mesh->GetParent()->GetName());
 }
 
 KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject* parent)
