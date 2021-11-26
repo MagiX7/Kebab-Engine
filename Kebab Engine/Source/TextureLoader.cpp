@@ -113,7 +113,7 @@ void TextureLoader::SaveTextureCustomFormat(Texture* tex)
 		data = new ILubyte[size]; // Allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 		{
-			std::string n = CUSTOM_DIR + tex->GetName() + CUSTOM_EXTENSION;
+			std::string n = CUSTOM_DIR + tex->GetName() + "_" + std::to_string(tex->uuid) + CUSTOM_EXTENSION;
 			tex->SetPath(n);
 			app->fileSystem->Save(n.c_str(), data, size);
 		}

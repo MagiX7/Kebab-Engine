@@ -96,7 +96,7 @@ void ComponentMaterial::AddTexture(Texture* tex)
 		textures.push_back(tex);
 	}
 	texture = tex;
-	texture->SetUUID(tex->uuid);
+	//texture->SetUUID(tex->uuid);
 	currentTexture = tex;
 }
 

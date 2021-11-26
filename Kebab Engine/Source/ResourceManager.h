@@ -15,7 +15,7 @@ public:
 	int Find(const char* fileInAssets) const;
 	int ImportFile(const char* newFileInAssets);
 
-	std::shared_ptr<Resource*> GetResource(int uuid) const;
+	std::shared_ptr<Resource> GetResource(int uuid) const;
 	void DeleteResource(int uuid);
 
 	void AddResource(Resource* res);
@@ -24,18 +24,18 @@ public:
 
 	int GetReferenceCount(int uuid);
 
+	std::shared_ptr<Resource> CreateNewResource(const char* assetsFile, ResourceType type);
 private:
 	ResourceManager();
 	virtual ~ResourceManager();
 
-	Resource* CreateNewResource(const char* assetsFile, ResourceType type);
 
 	int GenerateUUID();
 
 private:
 	static ResourceManager* instance;
 
-	std::map<int, std::shared_ptr<Resource*>> resources;
+	std::map<int, std::shared_ptr<Resource>> resources;
 
 
 	int uuid = -2;

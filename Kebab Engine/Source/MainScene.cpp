@@ -65,7 +65,8 @@ bool MainScene::Start()
     aabbAux.maxPoint = max;
     rootQT->Create(aabbAux);
 
-    avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+    //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
+    avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     app->renderer3D->Submit(avril);
     //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
     //app->renderer3D->Submit(bh);

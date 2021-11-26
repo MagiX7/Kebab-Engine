@@ -215,19 +215,22 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     }
 
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
-    Texture* tex = TextureLoader::GetInstance()->LoadTexture(imageName.c_str());
-    if (tex)
-    {
-        //if (!ResourceManager::GetInstance()->IsAlreadyLoaded(mat->GetCurrentTexture()->GetUUID()))
-        ResourceManager::GetInstance()->AddResource(tex);
-        mat->AddTexture(tex);
-    }
+    std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE);
+    mat->AddTexture((Texture*)tex.get());
+    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
+
+    //ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(),ResourceType::TEXTURE);
+    //Texture* tex = TextureLoader::GetInstance()->LoadTexture(imageName.c_str());
+    //if (tex)
+    //{
+    //    //if (!ResourceManager::GetInstance()->IsAlreadyLoaded(mat->GetCurrentTexture()->GetUUID()))
+    //    mat->AddTexture(tex);
+    //}
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    meshComp->SetData(vertices, indices);
-    ResourceManager::GetInstance()->AddResource((Resource*)meshComp->GetMesh());
 
-
+    std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(meshComp->GetMesh()->GetPath().c_str(), ResourceType::MESH);
+    meshComp->SetMesh((KbMesh*)m.get());
     SaveMeshCustomFormat(meshComp);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
@@ -429,7 +432,7 @@ void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
     memcpy(cursor, mesh->GetMesh()->indices.data(), bytes);
     cursor += bytes;
 
-    std::string n = CUSTOM_DIR + mesh->GetParent()->GetName() + CUSTOM_EXTENSION;
+    std::string n = CUSTOM_DIR + mesh->GetParent()->GetName() + "_" + std::to_string(mesh->GetMesh()->uuid) + CUSTOM_EXTENSION;
     mesh->SetMeshPath(n);
 
     app->fileSystem->Save(n.c_str(), fileBuffer, size);
@@ -662,10 +665,12 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
 
+            ResourceManager::GetInstance()->CreateNewResource(texPath, ResourceType::TEXTURE);
             Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(texPath);
 
             ComponentMaterial* matComp = new ComponentMaterial(owner);
-            matComp->AddTexture(tex);
+            if(tex)
+                matComp->AddTexture(tex);
             matComp->SetParent(owner);
 
             owner->AddComponent(meshComp);

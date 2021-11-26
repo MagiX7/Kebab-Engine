@@ -40,25 +40,23 @@ int ResourceManager::ImportFile(const char* newFileInAssets)
 		type = ResourceType::TEXTURE;
 	}
 
-	Resource* res = CreateNewResource(newFileInAssets, type);
+	std::shared_ptr<Resource> res = CreateNewResource(newFileInAssets, type);
 	
 	char* fileBuffer;
 	app->fileSystem->Load(newFileInAssets, &fileBuffer);
 
 
-
-
 	return 0;
 }
 
-std::shared_ptr<Resource*> ResourceManager::GetResource(int uuid) const
+std::shared_ptr<Resource> ResourceManager::GetResource(int uuid) const
 {
-	std::map<int, std::shared_ptr<Resource*>>::const_iterator it = resources.find(uuid);
-	std::map<int, std::shared_ptr<Resource*>>::const_iterator itEnd = resources.end();
+	std::map<int, std::shared_ptr<Resource>>::const_iterator it = resources.find(uuid);
+	std::map<int, std::shared_ptr<Resource>>::const_iterator itEnd = resources.end();
 
 	if (it != itEnd)
 	{
-		return it->second;
+		return (*it).second;
 	}
 
 	return nullptr;
@@ -77,8 +75,8 @@ void ResourceManager::AddResource(Resource* res)
 {
 	//if (!IsAlreadyLoaded(res->GetUUID()))
 	//{
-		std::pair<int, std::shared_ptr<Resource*>> p;
-		p.second = std::make_shared<Resource*>(res);
+		std::pair<int, std::shared_ptr<Resource>> p;
+		p.second = std::make_shared<Resource>(res->GetResourceType());
 		uuid = GenerateUUID();
 		res->uuid = uuid;
 		//res->SetUUID(uuid);
@@ -90,7 +88,7 @@ void ResourceManager::AddResource(Resource* res)
 
 bool ResourceManager::IsAlreadyLoaded(int uuid)
 {
-	std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
+	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.find(uuid);
 	if (it == resources.end())
 		return false;
 
@@ -99,7 +97,7 @@ bool ResourceManager::IsAlreadyLoaded(int uuid)
 
 int ResourceManager::GetReferenceCount(int uuid)
 {
-	std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
+	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.find(uuid);
 
 	if (it != resources.end())
 	{
@@ -116,27 +114,38 @@ ResourceManager::~ResourceManager()
 {
 }
 
-Resource* ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type)
+std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type)
 {
-	Resource* ret = nullptr;
+	std::shared_ptr<Resource> ret = nullptr;
 
 	switch(type)
 	{
 		case ResourceType::TEXTURE:
 		{
-			ret = (Resource*)TextureLoader::GetInstance()->LoadTexture(assetsFile);
+			if(strcmp(assetsFile, "Checkers") != 0)
+			{
+				Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile);
+				tex->uuid = GenerateUUID();
+				Texture t = *tex;
+				ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(t);
+
+				ret.get()->SetAssetsPath(assetsFile);
+				
+				resources[ret.get()->uuid] = ret;
+			}
+
 			break;
 		}
 		
 		case ResourceType::MESH:
 		{
-			ret = (Resource*)MeshLoader::GetInstance()->LoadModel(assetsFile);
+
+			ret = std::make_shared<Resource>(type);
+
+
 			break;
 		}
 	}
-
-	ret->SetUUID(GenerateUUID());
-	
 	return ret;
 }
 
