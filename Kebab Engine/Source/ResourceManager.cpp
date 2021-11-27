@@ -7,6 +7,8 @@
 #include "MeshLoader.h"
 #include "TextureLoader.h"
 
+#include "Model.h"
+
 #include <Algorithm/Random/LCG.cpp>
 
 
@@ -95,6 +97,19 @@ bool ResourceManager::IsAlreadyLoaded(int uuid)
 	return true;
 }
 
+std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const char* assetsFile)
+{
+	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.begin();
+
+	for (; it != resources.end(); ++it)
+	{
+		if ((*it).second.get()->GetAssetsPath() == assetsFile)
+			return (*it).second;
+	}
+
+	return nullptr;
+}
+
 int ResourceManager::GetReferenceCount(int uuid)
 {
 	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.find(uuid);
@@ -145,11 +160,26 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 
 			break;
 		}
-		/*case ResourceType::MESH:
+
+		case ResourceType::MODEL:
 		{
-			ret = std::make_shared<Resource>(type);
-			break;
-		}*/
+			KbModel* model = new KbModel();
+
+			model->uuid = GenerateUUID();
+			ret = (std::shared_ptr<Resource>)std::make_shared<KbModel>(*model);
+
+			ret.get()->SetAssetsPath(assetsFile);
+			std::string tmp = assetsFile;
+			int start = tmp.find_last_of("/");
+			int end = tmp.find(".");
+			std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "_" + std::to_string(model->uuid) + ".kbmodel";
+			ret.get()->SetLibraryPath(tmp);
+
+			delete model;
+			model = nullptr;
+
+			resources[ret.get()->uuid] = ret;
+		}
 	}
 	return ret;
 }

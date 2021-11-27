@@ -7,6 +7,7 @@ enum class ResourceType
 	NONE = 0,
 	MESH,
 	TEXTURE,
+	MODEL,
 	MATERIAL
 };
 
@@ -23,6 +24,8 @@ public:
 	inline void SetUUID(int newUuid) { uuid = newUuid; }
 	inline void SetAssetsPath(const std::string& p) { assetsFile = p; }
 	inline void SetLibraryPath(const std::string& l) { libraryFile= l; }
+
+	inline const std::string& GetAssetsPath() { return assetsFile; }
 
 public:
 	int uuid;

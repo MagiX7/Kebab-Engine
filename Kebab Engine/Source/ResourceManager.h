@@ -25,6 +25,7 @@ public:
 	void AddResource(Resource* res);
 
 	bool IsAlreadyLoaded(int uuid);
+	std::shared_ptr<Resource> IsAlreadyLoaded(const char* assetsFile);
 
 	int GetReferenceCount(int uuid);
 

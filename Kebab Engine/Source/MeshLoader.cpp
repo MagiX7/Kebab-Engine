@@ -15,6 +15,7 @@
 
 #include "ComponentMaterial.h"
 
+#include "Model.h"
 #include "KbCube.h"
 #include "KbPyramid.h"
 #include "KbPlane.h"
@@ -57,18 +58,9 @@ void MeshLoader::CleanUp()
     instance = nullptr;
 }
 
-GameObject* MeshLoader::LoadModel(std::string path, bool loadOnScene)
+GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 {
-    Assimp::Importer import;
-    const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-    {
-        LOG_CONSOLE("ERROR::ASSIMP:: %s", import.GetErrorString());
-        return nullptr;
-    }
-    directory = path.substr(0, path.find_last_of('/'));
-
+ 
     int start = path.find_last_of('/') + 1;
     if (start == 0) start = path.find_last_of("\\") + 1;
     int end = path.find('.');
@@ -76,12 +68,44 @@ GameObject* MeshLoader::LoadModel(std::string path, bool loadOnScene)
     std::string name = path.substr(start, end - start);
 
     GameObject* baseGO = new GameObject(name);
+    
+    
+    std::shared_ptr<Resource> res = ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str());
+    
+    if (res)
+    {
+        KbModel* model = (KbModel*)res.get();
+        for (auto& mesh : model->GetMeshes())
+        {
+            ComponentMesh* meshComp = new ComponentMesh(baseGO);
+            meshComp->SetMesh(mesh);
+            baseGO->AddComponent(meshComp);
+        }
+    }
+    else
+    {
+        Assimp::Importer import;
+        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    ProcessNode(scene->mRootNode, scene, baseGO, name);
+        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+        {
+            LOG_CONSOLE("ERROR::ASSIMP:: %s", import.GetErrorString());
+            return nullptr;
+        }
+        directory = path.substr(0, path.find_last_of('/'));
+        
+        std::shared_ptr<Resource> model = ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL);
+        KbModel* newModel = (KbModel*)model.get();
+        ProcessNode(scene->mRootNode, scene, baseGO, name, path, newModel);
 
-    SaveModelCustomFormat(baseGO);
+        SaveModelCustomFormat(baseGO);
+    }
 
-    if (loadOnScene)
+    app->scene->AddGameObject(baseGO);
+    app->editor->assetsPanel->AddAsset(baseGO);
+    return baseGO;
+
+    /*if (loadOnScene)
     {
         app->scene->AddGameObject(baseGO);
         app->editor->assetsPanel->AddAsset(baseGO);
@@ -91,15 +115,15 @@ GameObject* MeshLoader::LoadModel(std::string path, bool loadOnScene)
     {
         delete baseGO;
         return nullptr;
-    }
+    }*/
 }
 
-void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO)
+void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model)
 {
     for (int i = 0; i < node->mNumMeshes; ++i)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        ProcessMesh(mesh, scene, baseGO, nameBaseGO);
+        ProcessMesh(mesh, scene, baseGO, nameBaseGO, path, model);
     }
     for (int i = 0; i < node->mNumChildren; ++i)
     {
@@ -122,12 +146,12 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
             go->SetParent(baseGO);
             if (baseGO) baseGO->AddChild(go);
 
-            ProcessNode(node->mChildren[i], scene, go, nameBaseGO);
+            ProcessNode(node->mChildren[i], scene, go, nameBaseGO, path, model);
             //app->scene->AddGameObject(go);
         }
         else
         {
-            ProcessNode(node->mChildren[i], scene, baseGO, nameBaseGO);
+            ProcessNode(node->mChildren[i], scene, baseGO, nameBaseGO, path, model);
         }
     }
 }
@@ -148,7 +172,7 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
 //    return textures;
 //}
 
-ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO)
+ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model)
 {
     //GameObject* go = new GameObject(mesh->mName.C_Str());
 
@@ -232,9 +256,16 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     meshComp->SetMesh((KbMesh*)m.get());*/
     //SaveMeshCustomFormat(meshComp);
 
+    //ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
+    //std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MESH);
+
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateMesh(vertices, indices, baseGO->GetName());
-    meshComp->SetMesh((KbMesh*)m.get());
+    KbMesh* m = new KbMesh(vertices, indices);
+    meshComp->SetMesh(m);
+    model->AddMesh(m);
+
+    ////std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateMesh(vertices, indices, baseGO->GetName());
+    ////meshComp->SetMesh((KbMesh*)m.get());
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
@@ -501,34 +532,40 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     return mesh;
 }
 
-void MeshLoader::SaveModelCustomFormat(GameObject* go)
+void MeshLoader::SaveModelCustomFormat(KbModel* model)
 {
     int ran = 0;
-    std::queue<GameObject*> q;
-    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
+    std::queue<KbMesh*> q;
+    std::vector<std::pair<KbMesh*, std::string>> meshes;
 
     //q.push(go);
-    for (auto& child : go->GetChilds())
-        q.push(child);
+    for (auto& mesh : model->GetMeshes())
+        q.push(mesh);
 
     while (!q.empty())
     {
-        GameObject* curr = q.front();
+        KbMesh* curr = q.front();
         q.pop();
-        ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+        //ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
 
-        if (m)
+        std::pair<KbMesh*, std::string> m;
+        m.first = curr;
+        m.second = curr->GetPath();
+        meshes.push_back(m);
+        ran++;
+
+        /*if (m)
         {
             std::pair<GameObject*, std::string> g;
             g.first = curr;
             g.second = m->GetMesh()->GetPath();
             gosMeshes.push_back(g);
             ran++;
-        }
+        }*/
 
-        if (curr->GetChilds().size() > 0)
+        /*if (curr->GetChilds().size() > 0)
             for (auto& c : curr->GetChilds())
-                q.push(c);
+                q.push(c);*/
     }
 
     modelValue = json_value_init_object();

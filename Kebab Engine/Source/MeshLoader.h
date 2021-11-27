@@ -8,6 +8,8 @@
 
 #include <assimp/scene.h>
 
+class KbModel;
+
 enum class KbGeometryType
 {
 	NONE = -1,
@@ -25,7 +27,7 @@ public:
 
 	virtual ~MeshLoader();
 
-	GameObject* LoadModel(std::string path, bool loadOnScene = false);
+	GameObject* LoadModel(const std::string& path, bool loadOnScene = false);
 
 	GameObject* LoadKbGeometry(KbGeometryType type);
 
@@ -33,7 +35,7 @@ public:
 	void SaveMeshCustomFormat(ComponentMesh* mesh);
 	KbMesh* LoadMeshCustomFormat(const std::string& fileName, GameObject* parent);
 
-	void SaveModelCustomFormat(GameObject* go);
+	void SaveModelCustomFormat(KbModel* model);
 	GameObject* LoadModelCustomFormat(const std::string& filename);
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
@@ -44,8 +46,8 @@ private:
 	MeshLoader();
 	MeshLoader(const MeshLoader&);
 
-	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, std::string nameBaseGO);
-	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, std::string nameBaseGO);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, const std::string& nameBaseGO, const std::string& path, KbModel* model);
+	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model);
 	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 public:
