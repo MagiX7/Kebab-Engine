@@ -241,31 +241,11 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE);
     mat->AddTexture((Texture*)tex.get());
-    //TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
-
-    //ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(),ResourceType::TEXTURE);
-    //Texture* tex = TextureLoader::GetInstance()->LoadTexture(imageName.c_str());
-    //if (tex)
-    //{
-    //    //if (!ResourceManager::GetInstance()->IsAlreadyLoaded(mat->GetCurrentTexture()->GetUUID()))
-    //    mat->AddTexture(tex);
-    //}
-
-
-    /*std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(meshComp->GetMesh()->GetPath().c_str(), ResourceType::MESH);
-    meshComp->SetMesh((KbMesh*)m.get());*/
-    //SaveMeshCustomFormat(meshComp);
-
-    //ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    //std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MESH);
-
+   
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
     meshComp->SetMesh(m);
     model->AddMesh(m);
-
-    ////std::shared_ptr<Resource> m = ResourceManager::GetInstance()->CreateMesh(vertices, indices, baseGO->GetName());
-    ////meshComp->SetMesh((KbMesh*)m.get());
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 

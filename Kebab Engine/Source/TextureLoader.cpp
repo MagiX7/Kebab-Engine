@@ -9,7 +9,7 @@
 
 #define ASSETS_DIR "Assets/3D Models/"
 #define CUSTOM_DIR "Library/Textures/"
-#define CUSTOM_EXTENSION ".kbtexture"
+#define CUSTOM_EXTENSION ".png"
 
 TextureLoader* TextureLoader::instance = nullptr;
 
@@ -55,14 +55,13 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 
 	if (!ilLoadImage(fileName))
 	{
-		//LOG_CONSOLE("Could not load Image from %s", fileName);
+		LOG_CONSOLE("Could not load Image from %s", fileName);
 	}
 	else
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
-		//textures.push_back(ret);
 
 		//SaveTextureCustomFormat(ret); <-- Done in ResourceManager
 		//ret = LoadTextureCustomFormat(ret->GetName());

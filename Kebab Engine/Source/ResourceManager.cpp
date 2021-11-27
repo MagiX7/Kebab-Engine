@@ -150,10 +150,10 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "_" + std::to_string(tex->uuid) + ".kbtexture";
 				ret.get()->SetLibraryPath(lib);
 
-				TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)ret.get());
+				TextureLoader::GetInstance()->SaveTextureCustomFormat(tex);
 
-				delete tex;
-				tex = nullptr;
+				/*delete tex;
+				tex = nullptr;*/
 				
 				resources[ret.get()->uuid] = ret;
 			}
