@@ -98,7 +98,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         KbModel* newModel = (KbModel*)model.get();
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, newModel);
 
-        SaveModelCustomFormat(baseGO);
+        SaveModelCustomFormat(baseGO, newModel->uuid);
     }
 
     app->scene->AddGameObject(baseGO);
@@ -532,40 +532,34 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName, GameObject
     return mesh;
 }
 
-void MeshLoader::SaveModelCustomFormat(KbModel* model)
+void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 {
     int ran = 0;
-    std::queue<KbMesh*> q;
-    std::vector<std::pair<KbMesh*, std::string>> meshes;
+    std::queue<GameObject*> q;
+    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
 
     //q.push(go);
-    for (auto& mesh : model->GetMeshes())
-        q.push(mesh);
+    for (auto& child : go->GetChilds())
+        q.push(child);
 
     while (!q.empty())
     {
-        KbMesh* curr = q.front();
+        GameObject* curr = q.front();
         q.pop();
-        //ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+        ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
 
-        std::pair<KbMesh*, std::string> m;
-        m.first = curr;
-        m.second = curr->GetPath();
-        meshes.push_back(m);
-        ran++;
-
-        /*if (m)
+        if (m)
         {
             std::pair<GameObject*, std::string> g;
             g.first = curr;
             g.second = m->GetMesh()->GetPath();
             gosMeshes.push_back(g);
             ran++;
-        }*/
+        }
 
-        /*if (curr->GetChilds().size() > 0)
+        if (curr->GetChilds().size() > 0)
             for (auto& c : curr->GetChilds())
-                q.push(c);*/
+                q.push(c);
     }
 
     modelValue = json_value_init_object();
@@ -622,7 +616,7 @@ void MeshLoader::SaveModelCustomFormat(KbModel* model)
     json_serialize_to_buffer(modelValue, buffer, size);
 
 
-    std::string path = "Library/Models/" + go->GetName() + ".kbmodel";
+    std::string path = "Library/Models/" + go->GetName() + "_" + std::to_string(modelUuid) + ".kbmodel";
     json_serialize_to_file_pretty(modelValue, path.c_str());
     //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 

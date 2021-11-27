@@ -94,10 +94,10 @@ void ComponentMaterial::AddTexture(Texture* tex)
 	if (std::find(textures.begin(), textures.end(), tex) == textures.end())
 	{
 		textures.push_back(tex);
+		texture = tex;
+		//texture->SetUUID(tex->uuid);
+		currentTexture = tex;
 	}
-	texture = tex;
-	//texture->SetUUID(tex->uuid);
-	currentTexture = tex;
 }
 
 JSON_Value* ComponentMaterial::Save()

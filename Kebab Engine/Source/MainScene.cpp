@@ -100,7 +100,7 @@ bool MainScene::Update(float dt)
     }
     if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
     {
-        MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
+        //MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
         //app->renderer3D->Submit(bh);
     }
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)

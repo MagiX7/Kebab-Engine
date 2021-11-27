@@ -35,7 +35,7 @@ public:
 	void SaveMeshCustomFormat(ComponentMesh* mesh);
 	KbMesh* LoadMeshCustomFormat(const std::string& fileName, GameObject* parent);
 
-	void SaveModelCustomFormat(KbModel* model);
+	void SaveModelCustomFormat(GameObject* go, int modelUuid);
 	GameObject* LoadModelCustomFormat(const std::string& filename);
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
