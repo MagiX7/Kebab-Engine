@@ -60,7 +60,6 @@ void MeshLoader::CleanUp()
 
 GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 {
- 
     int start = path.find_last_of('/') + 1;
     if (start == 0) start = path.find_last_of("\\") + 1;
     int end = path.find('.');
@@ -75,11 +74,14 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
     if (res)
     {
         KbModel* model = (KbModel*)res.get();
+        int i = 0;
         for (auto& mesh : model->GetMeshes())
         {
-            ComponentMesh* meshComp = new ComponentMesh(baseGO);
+            GameObject* go = new GameObject(mesh->GetOwnerName());
+            ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
             meshComp->SetMesh(mesh);
-            baseGO->AddComponent(meshComp);
+            baseGO->AddChild(go);
+            go->SetParent(baseGO);
         }
     }
     else
@@ -99,10 +101,12 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, newModel);
 
         SaveModelCustomFormat(baseGO, newModel->uuid);
+    
+        
+        app->editor->assetsPanel->AddAsset(baseGO);
     }
 
     app->scene->AddGameObject(baseGO);
-    app->editor->assetsPanel->AddAsset(baseGO);
     return baseGO;
 
     /*if (loadOnScene)
@@ -244,6 +248,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
    
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
+    m->SetOwnerName(baseGO->GetName());
     meshComp->SetMesh(m);
     model->AddMesh(m);
 

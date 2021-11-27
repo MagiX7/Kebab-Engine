@@ -28,9 +28,11 @@ public:
 	inline const IndexBuffer* GetIndexBuffer() const { return indexBuffer; }
 	inline const std::string& GetPath() const { return path; }
 	inline const std::string& GetName() const { return name; }
+	inline const std::string& GetOwnerName() const { return ownerName; }
 
 	void SetPath(const std::string&);
 	void SetName(const std::string&);
+	void SetOwnerName(const std::string&);
 
 protected:
 	void SetUpMesh();
@@ -48,4 +50,5 @@ private:
 
 	std::string path;
 	std::string name;
+	std::string ownerName;
 };

@@ -172,8 +172,8 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 			std::string tmp = assetsFile;
 			int start = tmp.find_last_of("/");
 			int end = tmp.find(".");
-			std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "_" + std::to_string(model->uuid) + ".kbmodel";
-			ret.get()->SetLibraryPath(tmp);
+			std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(model->uuid) + ".kbmodel";
+			ret.get()->SetLibraryPath(lib);
 
 			delete model;
 			model = nullptr;

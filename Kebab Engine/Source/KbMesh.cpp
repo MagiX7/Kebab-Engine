@@ -130,6 +130,11 @@ void KbMesh::SetName(const std::string& name)
 	this->name = name;
 }
 
+void KbMesh::SetOwnerName(const std::string& n)
+{
+	ownerName = n;
+}
+
 void KbMesh::SetUpMesh()
 {
 	vertexBuffer = new VertexBuffer();
