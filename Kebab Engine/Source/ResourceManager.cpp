@@ -103,15 +103,15 @@ std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const char* assetsFil
 
 	for (; it != resources.end(); ++it)
 	{
-		if ((*it).second.get()->HasMetaFile())
+		/*if ((*it).second.get()->HasMetaFile())
 		{
 			return FindMetaData(assetsFile);
-		}
+		}*/
 
-		/*if ((*it).second.get()->GetAssetsPath() == assetsFile)
+		if ((*it).second.get()->GetAssetsPath() == assetsFile)
 		{
 			return (*it).second;
-		}*/
+		}
 	}
 
 	//return FindMetaData(assetsFile);
@@ -158,9 +158,6 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 				int end = tmp.find(".");
 				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "_" + std::to_string(tex->uuid) + ".kbtexture";
 				ret.get()->SetLibraryPath(lib);
-
-				TextureLoader::GetInstance()->SaveTextureCustomFormat(tex);
-
 
 				/*delete tex;
 				tex = nullptr;*/

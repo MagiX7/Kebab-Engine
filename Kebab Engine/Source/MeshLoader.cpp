@@ -235,6 +235,8 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE);
     mat->AddTexture((Texture*)tex.get());
+    tex.get()->uuid = model->uuid;
+    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
    
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
@@ -392,7 +394,7 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
         start = fileName.find_last_of('/');
 
     if (start <= 0)
-        name = CUSTOM_DIR + fileName;
+        name = CUSTOM_DIR + fileName + CUSTOM_EXTENSION;
     else
         name = fileName;
     

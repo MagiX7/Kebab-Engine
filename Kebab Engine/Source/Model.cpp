@@ -26,10 +26,10 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 	hasMetaFile = true;
 
 	std::string p = assetsFile;
-	int end = p.find(".");
-	std::string path = p.substr(0, end);
-	path += ".meta";
-	metaFile = path;
+	//int end = p.find(".");
+	//std::string path = p.substr(0, end);
+	p += ".meta";
+	metaFile = p;
 
 	JSON_Value* value = json_value_init_object();
 	JSON_Object* obj = json_value_get_object(value);
@@ -51,7 +51,7 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 		json_array_append_value(arr, meshVal);
 	}
 
-	json_serialize_to_file_pretty(value, path.c_str());
+	json_serialize_to_file_pretty(value, p.c_str());
 	json_value_free(value);
 }
 

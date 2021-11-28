@@ -68,12 +68,12 @@ bool MainScene::Start()
     //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
     avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     app->renderer3D->Submit(avril);
-    avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
+    GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
+    app->renderer3D->Submit(a);
+    /*avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     app->renderer3D->Submit(avril);
     avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    app->renderer3D->Submit(avril);
-    avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    app->renderer3D->Submit(avril);
+    app->renderer3D->Submit(avril);*/
     //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
     //app->renderer3D->Submit(bh);
 
@@ -104,11 +104,7 @@ bool MainScene::Update(float dt)
         //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
         app->renderer3D->Submit(avril);
     }
-    if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-    {
-        //MeshLoader::GetInstance()->SaveModelCustomFormat(avril);
-        //app->renderer3D->Submit(bh);
-    }
+
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
         rootQT->Recalculate();
 

@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": 24191524,
-                "parent uuid": 1510417002,
+                "uuid": 1594802153,
+                "parent uuid": -1462625878,
                 "Components": [
                     {
                         "Type": 0,
@@ -46,8 +46,8 @@
             },
             {
                 "name": "Avril",
-                "uuid": 1382357178,
-                "parent uuid": 1510417002,
+                "uuid": 1854623549,
+                "parent uuid": -1462625878,
                 "Components": [
                     {
                         "Type": 0,
@@ -72,8 +72,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": 190071562,
-                "parent uuid": 1382357178,
+                "uuid": 1292521234,
+                "parent uuid": 1854623549,
                 "Components": [
                     {
                         "Type": 0,
@@ -95,20 +95,83 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh path": "Library\/Meshes\/Avril Avant.kbmesh",
-                        "mesh name": "Avril Avant.kbmesh"
+                        "Type": 2,
+                        "path": "Assets\/Resources\/Avril\/Head_Albedo.png"
                     },
                     {
-                        "Type": 2,
-                        "path": "Library\/Textures\/Head_Albedo.kbtexture"
+                        "Type": 1,
+                        "mesh uuid": -1939307402,
+                        "mesh path": "",
+                        "mesh name": "Avril Avant"
                     }
                 ]
             },
             {
                 "name": "Body",
-                "uuid": 941885555,
-                "parent uuid": 1382357178,
+                "uuid": -871790035,
+                "parent uuid": 1854623549,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "path": "Assets\/Resources\/Avril\/Body_Albedo.png"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": -1939307402,
+                        "mesh path": "",
+                        "mesh name": "Body"
+                    }
+                ]
+            },
+            {
+                "name": "Avril",
+                "uuid": 1715594152,
+                "parent uuid": -1462625878,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Avril Avant",
+                "uuid": 1405058501,
+                "parent uuid": 1715594152,
                 "Components": [
                     {
                         "Type": 0,
@@ -131,12 +194,41 @@
                     },
                     {
                         "Type": 1,
-                        "mesh path": "Library\/Meshes\/Body.kbmesh",
-                        "mesh name": "Body.kbmesh"
+                        "mesh uuid": -1939307402,
+                        "mesh path": "",
+                        "mesh name": "Avril Avant"
+                    }
+                ]
+            },
+            {
+                "name": "Body",
+                "uuid": 710354172,
+                "parent uuid": 1715594152,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
                     },
                     {
-                        "Type": 2,
-                        "path": "Library\/Textures\/Body_Albedo.kbtexture"
+                        "Type": 1,
+                        "mesh uuid": -1939307402,
+                        "mesh path": "",
+                        "mesh name": "Body"
                     }
                 ]
             }
