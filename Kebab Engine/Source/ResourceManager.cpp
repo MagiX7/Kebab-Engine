@@ -103,9 +103,18 @@ std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const char* assetsFil
 
 	for (; it != resources.end(); ++it)
 	{
-		if ((*it).second.get()->GetAssetsPath() == assetsFile)
+		if ((*it).second.get()->HasMetaFile())
+		{
+			return FindMetaData(assetsFile);
+		}
+
+		/*if ((*it).second.get()->GetAssetsPath() == assetsFile)
+		{
 			return (*it).second;
+		}*/
 	}
+
+	//return FindMetaData(assetsFile);
 
 	return nullptr;
 }
@@ -152,6 +161,7 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 
 				TextureLoader::GetInstance()->SaveTextureCustomFormat(tex);
 
+
 				/*delete tex;
 				tex = nullptr;*/
 				
@@ -174,6 +184,8 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 			int end = tmp.find(".");
 			std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(model->uuid) + ".kbmodel";
 			ret.get()->SetLibraryPath(lib);
+
+			//ret.get()->CreateMetaDataFile(assetsFile);
 
 			delete model;
 			model = nullptr;
@@ -204,4 +216,50 @@ int ResourceManager::GenerateUUID()
 {
 	LCG lgc = LCG();
 	return lgc.IntFast();
+}
+
+std::shared_ptr<Resource> ResourceManager::FindMetaData(const char* assetsFile)
+{
+	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.begin();
+
+	for (; it != resources.end(); ++it)
+	{
+		if ((*it).second.get()->HasMetaFile())
+		{
+			//(*it).second.get().LoadMetaFile();
+			(*it).second.get()->LoadMetaDataFile();
+
+			return (*it).second;
+		}
+	}
+
+	return nullptr;
+
+
+	//std::string libExt = "noext";
+	//std::string s = assetsFile;
+	//int startExt = s.find(".");
+	//std::string ext = s.substr(startExt);
+
+	//std::string libPath = "Library/";
+	//
+	//if (ext == ".fbx" || ext == ".obj") // We do not check meshes because they belong to a model. If the model is loaded, the meshes are too
+	//{
+	//	libPath += "Models/";
+	//	libExt = ".kbmodel";
+	//}
+	//
+	//else if (ext == ".png" || ext == ".jpg" || ext == ".dds")
+	//{
+	//	libPath += "Textures/";
+	//	libExt = ".kbtexture";
+	//}
+
+	//int startName = s.find_last_of("/");
+	//std::string name = s.substr(startName + 1, startExt - startName - 1);
+
+	//libPath += name/* + libExt*/;
+
+
+	//// Assets/Resources/Avril.fbx
 }

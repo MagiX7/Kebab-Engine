@@ -192,7 +192,7 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 	std::string path = json_object_get_string(obj, "mesh path");
 	std::string meshName = json_object_get_string(obj, "mesh name");
 
-	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str(), parent);
+	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str());
 
 	AABB aabb;
 

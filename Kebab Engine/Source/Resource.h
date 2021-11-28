@@ -26,6 +26,13 @@ public:
 	inline void SetLibraryPath(const std::string& l) { libraryFile= l; }
 
 	inline const std::string& GetAssetsPath() { return assetsFile; }
+	inline const std::string& GetLibraryPath() { return libraryFile; }
+
+	inline const bool HasMetaFile() const { return hasMetaFile; }
+
+	virtual void CreateMetaDataFile(const char* assetsFile) {};
+	virtual void LoadMetaDataFile() {};
+
 
 public:
 	int uuid;
@@ -35,5 +42,8 @@ protected:
 
 	std::string assetsFile;
 	std::string libraryFile;
+	std::string metaFile;
+
+	bool hasMetaFile = false;
 
 };

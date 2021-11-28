@@ -31,12 +31,14 @@ public:
 
 	std::shared_ptr<Resource> CreateNewResource(const char* assetsFile, ResourceType type);
 	std::shared_ptr<Resource> CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name);
+
+	int GenerateUUID();
+
+	std::shared_ptr<Resource> FindMetaData(const char* assetsFile);
+
 private:
 	ResourceManager();
 	virtual ~ResourceManager();
-
-
-	int GenerateUUID();
 
 private:
 	static ResourceManager* instance;

@@ -122,7 +122,8 @@ void KbMesh::SetPath(const std::string& path)
 	if (start <= 0)
 		start = path.find_last_of('/');
 
-	name = path.substr(start + 1);
+	int end = path.find(".");
+	name = path.substr(start + 1, end - start - 1);
 }
 
 void KbMesh::SetName(const std::string& name)
