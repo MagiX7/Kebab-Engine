@@ -643,7 +643,18 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             trans->SetLocalMatrix(parentTr->GetLocalMatrix());
 
             GameObject* parent = app->scene->GetGameObjectByUuid(parentUuid);
-            if (parent)
+
+            bool alreadyExist = false;
+
+            for (std::vector<GameObject*>::iterator it = parent->GetChilds().begin(); it != parent->GetChilds().end(); it++)
+            {
+                if ((*it)->GetUuid() == owner->GetUuid())
+                {
+                    alreadyExist = true;
+                }
+            }
+
+            if (parent && !alreadyExist)
             {
                 parent->AddChild(owner);
             }

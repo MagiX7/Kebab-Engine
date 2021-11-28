@@ -38,6 +38,8 @@ public:
 	inline std::vector<GameObject*>& GetChilds() { return childs; }
 	inline const std::string GetName() const { return name; }
 
+	inline void SetName(char* newName) { name = newName; }
+
 	void AddAABB();
 	AABB* GetLocalAABB();
 	void SetGlobalAABB(GameObject* parent);

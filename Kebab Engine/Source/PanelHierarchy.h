@@ -28,4 +28,6 @@ private:
 	bool parentingPopup;
 
 	bool selectedFromViewport;
+
+	bool rename;
 };
