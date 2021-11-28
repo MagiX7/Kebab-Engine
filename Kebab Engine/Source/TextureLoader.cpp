@@ -91,11 +91,11 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path)
 		textures.push_back(ret);
 
 		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
-		LOG_CONSOLE("Custom file format texture %s loaded!", path);
+		LOG_CONSOLE("Custom file format texture %s loaded!", path.c_str());
 		
 		delete[] buffer;
 	}
-	else LOG_CONSOLE("Could not load custom file format texture %s", path);
+	else LOG_CONSOLE("Could not load custom file format texture %s", path.c_str());
 
 	
 	return ret;
@@ -113,6 +113,7 @@ void TextureLoader::SaveTextureCustomFormat(Texture* tex)
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 		{
 			std::string n = CUSTOM_DIR + tex->GetName() + "__" + std::to_string(tex->uuid) + CUSTOM_EXTENSION;
+			tex->SetLibraryPath(n);
 			tex->SetPath(n);
 			app->fileSystem->Save(n.c_str(), data, size);
 		}

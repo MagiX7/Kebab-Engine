@@ -107,20 +107,33 @@ JSON_Value* ComponentMaterial::Save()
 
 	json_object_set_number(obj, "Type", 2);
 
-	if (currentTexture == checkersTexture) json_object_set_string(obj, "path", "Checkers");
-	if (currentTexture == texture) json_object_set_string(obj, "path", texture->GetPath().c_str());
+	if (currentTexture == checkersTexture)
+	{
+		json_object_set_string(obj, "path", "Checkers");
+		json_object_set_number(obj, "uuid", -1);
+	}
+	if (currentTexture == texture)
+	{
+		json_object_set_number(obj, "uuid", texture->uuid);
+		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
+	}
 
 	return value;
 }
 
 void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 {
-	const char* texName = json_object_dotget_string(obj, "path");
-	if (texName == "Checkers") currentTexture = checkersTexture;
+	delete texture;
+	currentTexture = nullptr;
+
+	std::string path = json_object_dotget_string(obj, "path");
+	if (path == "Checkers") currentTexture = checkersTexture;
 	else
 	{
-		if (texture) delete texture;
-		texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(texName);
+		int uuid = json_object_get_number(obj, "uuid");
+		//texName += "__" + std::to_string(uuid);
+		texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(path);
+		texture->uuid = uuid;
 		currentTexture = texture;
 	}
 

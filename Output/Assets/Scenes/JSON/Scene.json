@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": 1594802153,
-                "parent uuid": -1462625878,
+                "uuid": -717052222,
+                "parent uuid": -45670928,
                 "Components": [
                     {
                         "Type": 0,
@@ -46,8 +46,8 @@
             },
             {
                 "name": "Avril",
-                "uuid": 1854623549,
-                "parent uuid": -1462625878,
+                "uuid": -2033659129,
+                "parent uuid": -45670928,
                 "Components": [
                     {
                         "Type": 0,
@@ -72,8 +72,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": 1292521234,
-                "parent uuid": 1854623549,
+                "uuid": 2116096400,
+                "parent uuid": -2033659129,
                 "Components": [
                     {
                         "Type": 0,
@@ -96,11 +96,12 @@
                     },
                     {
                         "Type": 2,
-                        "path": "Assets\/Resources\/Avril\/Head_Albedo.png"
+                        "uuid": -1246619715,
+                        "path": "Library\/Textures\/Head_Albedo__-1246619715.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1939307402,
+                        "mesh uuid": -1246619715,
                         "mesh path": "",
                         "mesh name": "Avril Avant"
                     }
@@ -108,8 +109,8 @@
             },
             {
                 "name": "Body",
-                "uuid": -871790035,
-                "parent uuid": 1854623549,
+                "uuid": -1617685247,
+                "parent uuid": -2033659129,
                 "Components": [
                     {
                         "Type": 0,
@@ -132,11 +133,12 @@
                     },
                     {
                         "Type": 2,
-                        "path": "Assets\/Resources\/Avril\/Body_Albedo.png"
+                        "uuid": -1246619715,
+                        "path": "Library\/Textures\/Body_Albedo__-1246619715.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1939307402,
+                        "mesh uuid": -1246619715,
                         "mesh path": "",
                         "mesh name": "Body"
                     }
@@ -144,8 +146,8 @@
             },
             {
                 "name": "Avril",
-                "uuid": 1715594152,
-                "parent uuid": -1462625878,
+                "uuid": -1061123816,
+                "parent uuid": -45670928,
                 "Components": [
                     {
                         "Type": 0,
@@ -170,8 +172,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": 1405058501,
-                "parent uuid": 1715594152,
+                "uuid": -924414163,
+                "parent uuid": -1061123816,
                 "Components": [
                     {
                         "Type": 0,
@@ -194,7 +196,7 @@
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1939307402,
+                        "mesh uuid": -1246619715,
                         "mesh path": "",
                         "mesh name": "Avril Avant"
                     }
@@ -202,8 +204,8 @@
             },
             {
                 "name": "Body",
-                "uuid": 710354172,
-                "parent uuid": 1715594152,
+                "uuid": -1317311457,
+                "parent uuid": -1061123816,
                 "Components": [
                     {
                         "Type": 0,
@@ -226,7 +228,7 @@
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1939307402,
+                        "mesh uuid": -1246619715,
                         "mesh path": "",
                         "mesh name": "Body"
                     }
