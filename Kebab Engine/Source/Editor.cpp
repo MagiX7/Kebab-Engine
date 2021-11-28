@@ -22,6 +22,7 @@
 #include "PanelScene.h"
 #include "PanelAssets.h"
 #include "PanelGameDebugInfo.h"
+#include "PanelImportTexture.h"
 
 #include "FileDialog.h"
 
@@ -49,6 +50,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     scenePanel = new ScenePanel();
     previewScenePanel = new ScenePreviewPanel();
     gameDebugInfoPanel = new GameDebugInfoPanel();
+    panelImportTexture = new ImportTexturePanel();
 
     showAboutPanel = false;
     showWindows = true;
@@ -248,6 +250,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
         if (gameDebugInfoPanel->active) gameDebugInfoPanel->OnRender(dt);
+
+        if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         
         //if (sceneState != SceneState::EDIT)
         //    ImGui::PopStyleColor();

@@ -15,6 +15,7 @@ class HierarchyPanel;
 class AssetsPanel;
 class ScenePreviewPanel;
 class GameDebugInfoPanel;
+class ImportTexturePanel;
 class FrameBuffer;
 class Texture;
 
@@ -76,6 +77,7 @@ public:
 	ScenePanel* scenePanel;
 	ScenePreviewPanel* previewScenePanel;
 	GameDebugInfoPanel* gameDebugInfoPanel;
+	ImportTexturePanel* panelImportTexture;
 
 	bool showAboutPanel;
 	bool wireframe;

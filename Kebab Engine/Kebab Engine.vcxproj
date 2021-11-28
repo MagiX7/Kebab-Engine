@@ -61,6 +61,7 @@
     <ClCompile Include="Source\PanelConsole.cpp" />
     <ClCompile Include="Source\PanelGameDebugInfo.cpp" />
     <ClCompile Include="Source\PanelHierarchy.cpp" />
+    <ClCompile Include="Source\PanelImportTexture.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelScene.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Source\PanelAssets.h" />
     <ClInclude Include="Source\PanelGameDebugInfo.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
+    <ClInclude Include="Source\PanelImportTexture.h" />
     <ClInclude Include="Source\PanelInspector.h" />
     <ClInclude Include="Source\PanelScene.h" />
     <ClInclude Include="Source\PanelViewport.h" />

@@ -175,6 +175,9 @@
     <ClCompile Include="Source\Model.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelImportTexture.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="Source\Model.h">
       <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelImportTexture.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
