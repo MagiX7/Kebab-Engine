@@ -1,5 +1,6 @@
 #include "PanelImportTexture.h"
-#include "Texture.h"
+#include "TextureLoader.h"
+//#include "Texture.h"
 
 #include "ResourceManager.h"
 
@@ -83,7 +84,9 @@ void ImportTexturePanel::OnRender(float dt)
 	if (ImGui::Button("Import", { 60,25 }))
 	{
 		// TODO: Import/Load image
-		ResourceManager::GetInstance()->CreateTexture(assetsPath.c_str(), 0, props);
+		std::shared_ptr<Resource> texture = ResourceManager::GetInstance()->CreateTexture(assetsPath.c_str(), 0, props);
+		TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)texture.get(), 0);
+
 		active = false;
 	}
 

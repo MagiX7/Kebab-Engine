@@ -218,6 +218,8 @@ std::shared_ptr<Resource> ResourceManager::CreateTexture(const char* assetsFile,
 		"__" + std::to_string(modelUuid == 0 ? tex->uuid : modelUuid) + ".kbtexture";
 	ret.get()->SetLibraryPath(lib);
 
+	ret.get()->CreateMetaDataFile(assetsFile);
+
 	/*delete tex;
 	tex = nullptr;*/
 
