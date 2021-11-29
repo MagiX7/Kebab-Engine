@@ -514,13 +514,22 @@ void Renderer3D::DoRender()
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
-		if (mesh && mat && !app->camera->editorCam->frustumCulling)
+		ComponentCamera* cam = app->camera->editorCam;
+
+		if (app->editor->GetSceneState() == SceneState::EDIT)
+			cam = app->camera->editorCam;
+		else if (app->editor->GetSceneState() == SceneState::PLAY 
+			|| app->editor->GetSceneState() == SceneState::PAUSE 
+			|| app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
+			cam = app->camera->gameCam;
+
+		if (mesh && mat && !cam->frustumCulling)
 		{
 			mesh->Draw(mat);
 			if (drawAABB)
 				DrawAABB(*go->GetGlobalAABB());
 		}
-		else if (mesh && mat && (go->insideFrustum || go->GetParent()->insideFrustum) && app->camera->editorCam->frustumCulling)
+		else if (mesh && mat && (go->insideFrustum || go->GetParent()->insideFrustum) && cam->frustumCulling)
 		{
 			mesh->Draw(mat);
 			if (drawAABB)

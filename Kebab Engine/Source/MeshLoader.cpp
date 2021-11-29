@@ -603,11 +603,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             ComponentTransform* trans = (ComponentTransform*)owner->GetComponent(ComponentType::TRANSFORM);
             trans->SetLocalMatrix(parentTr->GetLocalMatrix());
 
-            GameObject* parent = app->scene->GetGameObjectByUuid(parentUuid);
-            if (parent)
-            {
-                parent->AddChild(owner);
-            }
+            ret->AddChild(owner);
 
             ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
 

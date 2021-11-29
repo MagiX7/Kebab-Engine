@@ -20,6 +20,8 @@ HierarchyPanel::HierarchyPanel()
 
 	goDragging = nullptr;
 	goClicked = nullptr;
+
+	rename = false;
 }
 
 HierarchyPanel::~HierarchyPanel()
@@ -287,6 +289,28 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				}
 			}
 		}
+		if (ImGui::Button("Rename"))
+			rename = !rename;
+
+		if (rename)
+		{
+			static char name[32] = "name";
+			sprintf_s(name, 32, go->GetName().c_str());
+			ImGui::BeginPopupContextItem();
+			ImGui::Text("Edit name:");
+			if (ImGui::InputText("##edit", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				go->SetName(name);
+				rename = false;
+				optionsPopup = false;
+			}
+			if (ImGui::Button("Close"))
+			{
+				rename = false;
+				optionsPopup = false;
+			}
+		}
+
 		ImGui::EndPopup();
 	}
 }
