@@ -251,32 +251,72 @@ std::shared_ptr<Resource> ResourceManager::FindMetaData(const char* assetsFile)
 	}
 
 	return nullptr;
+}
 
+//std::shared_ptr<Resource> ResourceManager::LoadMetaDataFile(const char* assetsFile, ResourceType type)
+//{
+//
+//	switch (type)
+//	{
+//		case ResourceType::MODEL:
+//		{
+//			return LoadModelMetaData(assetsFile);
+//			break;
+//		}
+//		case ResourceType::TEXTURE:
+//		{
+//			return LoadTextureMetaData(assetsFile);
+//			break;
+//		}
+//	}
+//
+//	return std::shared_ptr<Resource>();
+//}
 
-	//std::string libExt = "noext";
-	//std::string s = assetsFile;
-	//int startExt = s.find(".");
-	//std::string ext = s.substr(startExt);
+std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFile)
+{
+	std::shared_ptr<KbModel> ret = nullptr;
 
-	//std::string libPath = "Library/";
-	//
-	//if (ext == ".fbx" || ext == ".obj") // We do not check meshes because they belong to a model. If the model is loaded, the meshes are too
-	//{
-	//	libPath += "Models/";
-	//	libExt = ".kbmodel";
-	//}
-	//
-	//else if (ext == ".png" || ext == ".jpg" || ext == ".dds")
-	//{
-	//	libPath += "Textures/";
-	//	libExt = ".kbtexture";
-	//}
+	char* buffer;
+	if (app->fileSystem->Load(assetsFile, &buffer))
+	{
+		JSON_Value* value = json_parse_string(buffer);
+		JSON_Object* obj = json_value_get_object(value);
 
-	//int startName = s.find_last_of("/");
-	//std::string name = s.substr(startName + 1, startExt - startName - 1);
+		JSON_Array* arr = json_object_get_array(obj, "meshes");
 
-	//libPath += name/* + libExt*/;
+		for (int i = 0; i < json_array_get_count(arr); ++i)
+		{
+			JSON_Object* meshObj = json_array_get_object(arr, i);
+			std::string meshName = json_object_get_string(meshObj, "mesh name");
+			std::string meshLibPath = json_object_get_string(meshObj, "mesh library path");
+			std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
+			if (KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath))
+			{
+				KbModel* model = new KbModel();
+				model->uuid = json_object_get_number(obj, "model uuid");
+				ret = std::make_shared<KbModel>(*model);
+				
+				m->SetName(meshName);
+				m->SetAssetsPath(meshAssetsPath.c_str());
+				m->SetLibraryPath(meshLibPath);
+				ret.get()->AddMesh(m);
+			}
+			else
+			{
+				// TODO: Could be possible to generate the resource again if the file from library gets deleted?
+				ret = CreateNewResource(meshAssetsPath.c_str(), ResourceType::MODEL);
+				KbModel* model = (KbModel*)ret.get();
+				//MeshLoader::GetInstance()->SaveModelCustomFormat();
+			}
+		}
+	}
 
+	return ret;
 
-	//// Assets/Resources/Avril.fbx
+}
+
+std::shared_ptr<Resource> ResourceManager::LoadTextureMetaData(const char* assetsFile)
+{
+	return std::shared_ptr<Resource>();
 }

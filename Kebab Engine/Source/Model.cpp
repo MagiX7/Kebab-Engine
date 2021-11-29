@@ -55,9 +55,10 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 	json_value_free(value);
 }
 
+// USE RESOURCE MANAGER LOAD_X_METADATAFILE !!
 void KbModel::LoadMetaDataFile()
 {
-	for (auto& m : meshes)
+	/*for (auto& m : meshes)
 	{
 		delete m;
 	}
@@ -82,5 +83,5 @@ void KbModel::LoadMetaDataFile()
 			m->SetName(meshName);
 			meshes.push_back(m);
 		}
-	}
+	}*/
 }

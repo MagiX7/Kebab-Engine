@@ -70,11 +70,25 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
     
     
     std::shared_ptr<Resource> res = ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str());
-    
+    std::string metaPath = path + ".meta";
+
     if (res)
     {
         KbModel* model = (KbModel*)res.get();
-        int i = 0;
+        for (auto& mesh : model->GetMeshes())
+        {
+            GameObject* go = new GameObject(mesh->GetOwnerName());
+            ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
+            meshComp->SetMesh(mesh);
+            baseGO->AddChild(go);
+            go->SetParent(baseGO);
+        }
+    }
+    else if (app->fileSystem->Exists(metaPath.c_str()))
+    {
+        //res = ResourceManager::GetInstance()->CreateNewResource(metaPath.c_str(), ResourceType::MODEL);
+        res = ResourceManager::GetInstance()->LoadModelMetaData(metaPath.c_str());
+        KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
             GameObject* go = new GameObject(mesh->GetOwnerName());
@@ -444,9 +458,8 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
 
 void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 {
-    int ran = 0;
-    std::queue<GameObject*> q;
-    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
+    std::queue<GameObject*> q;          // Library path     // Assets path
+    std::vector<std::tuple<GameObject*, const std::string&, const std::string&>> gosMeshes;
 
     //q.push(go);
     for (auto& child : go->GetChilds())
@@ -460,11 +473,11 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 
         if (m)
         {
-            std::pair<GameObject*, std::string> g;
-            g.first = curr;
-            g.second = m->GetMesh()->GetLibraryPath();
-            gosMeshes.push_back(g);
-            ran++;
+            std::tuple<GameObject*, std::string, std::string> tuple;
+            std::get<0>(tuple) = curr;
+            std::get<1>(tuple) = m->GetMesh()->GetLibraryPath();
+            std::get<2>(tuple) = m->GetMesh()->GetAssetsPath();
+            gosMeshes.push_back(tuple);
         }
 
         if (curr->GetChilds().size() > 0)
@@ -503,13 +516,15 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     {
         JSON_Value* value = json_value_init_object();
         JSON_Object* obj = json_object(value);
+        
+        std::get<0>(gosMeshes[i]);
+        json_object_set_number(obj, "parent uuid", std::get<0>(gosMeshes[i])->GetParent()->GetUuid());
+        json_object_set_number(obj, "owner uuid", std::get<0>(gosMeshes[i])->GetUuid());
+        json_object_set_string(obj, "owner name", std::get<0>(gosMeshes[i])->GetName().c_str());
+        json_object_set_string(obj, "mesh library path", std::get<1>(gosMeshes[i]).c_str());
+        json_object_set_string(obj, "mesh assets path", std::get<2>(gosMeshes[i]).c_str());
 
-        json_object_set_number(obj, "parent uuid", gosMeshes[i].first->GetParent()->GetUuid());
-        json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
-        json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
-        json_object_set_string(obj, "mesh path", gosMeshes[i].second.c_str());
-
-        ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
+        ComponentMaterial* mat = (ComponentMaterial*)std::get<0>(gosMeshes[i])->GetComponent(ComponentType::MATERIAL);
         std::string texPath;
 
         if (mat->GetCurrentTexture() != nullptr)
