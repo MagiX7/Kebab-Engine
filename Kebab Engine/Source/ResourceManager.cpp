@@ -138,25 +138,25 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 	{
 		case ResourceType::TEXTURE:
 		{
-			if(strcmp(assetsFile, "Checkers") != 0)
-			{
-				Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile);
-				tex->uuid = GenerateUUID();
-				ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+			//if(strcmp(assetsFile, "Checkers") != 0)
+			//{
+			//	Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile);
+			//	tex->uuid = GenerateUUID();
+			//	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
 
-				ret.get()->SetAssetsPath(assetsFile);
-				std::string tmp = assetsFile;
-				int start = tmp.find_last_of("/");
-				int end = tmp.find(".");
-				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
-					"__" + std::to_string(uuid) + ".kbtexture";
-				ret.get()->SetLibraryPath(lib);
+			//	ret.get()->SetAssetsPath(assetsFile);
+			//	std::string tmp = assetsFile;
+			//	int start = tmp.find_last_of("/");
+			//	int end = tmp.find(".");
+			//	std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
+			//		"__" + std::to_string(uuid) + ".kbtexture";
+			//	ret.get()->SetLibraryPath(lib);
 
-				/*delete tex;
-				tex = nullptr;*/
-				
-				resources[ret.get()->uuid] = ret;
-			}
+			//	/*delete tex;
+			//	tex = nullptr;*/
+			//	
+			//	resources[ret.get()->uuid] = ret;
+			//}
 
 			break;
 		}
@@ -198,6 +198,31 @@ std::shared_ptr<Resource> ResourceManager::CreateMesh(const std::vector<Vertex>&
 	//MeshLoader::GetInstance()->SaveMeshCustomFormat((KbMesh*)ret.get(), name);
 	//
 	//resources[ret.get()->uuid] = ret;
+
+	return ret;
+}
+
+std::shared_ptr<Resource> ResourceManager::CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props)
+{
+	std::shared_ptr<Resource> ret = nullptr;
+
+	Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile, props);
+	tex->uuid = GenerateUUID();
+	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+
+	ret.get()->SetAssetsPath(assetsFile);
+	std::string tmp = assetsFile;
+	int start = tmp.find_last_of("/");
+	int end = tmp.find(".");
+	std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
+		"__" + std::to_string(modelUuid) + ".kbtexture";
+	ret.get()->SetLibraryPath(lib);
+
+	/*delete tex;
+	tex = nullptr;*/
+
+	resources[ret.get()->uuid] = ret;
+
 
 	return ret;
 }

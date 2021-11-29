@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture.h"
+
 #include <vector>
 
 class TextureLoader
@@ -10,7 +11,7 @@ public:
 
 	virtual ~TextureLoader();
 
-	Texture* LoadTexture(const char* fileName);
+	Texture* LoadTexture(const char* fileName, const TextureProperties& props = TextureProperties());
 	Texture* LoadTextureCustomFormat(const std::string& path);
 
 	void SaveTextureCustomFormat(Texture* tex, int uuid);
@@ -25,4 +26,6 @@ private:
 	void operator=(const TextureLoader&) {};
 
 	std::vector<Texture*> textures;
+
+	TextureProperties props;
 };

@@ -42,7 +42,7 @@ TextureLoader::~TextureLoader()
 	instance = nullptr;*/
 }
 
-Texture* TextureLoader::LoadTexture(const char* fileName)
+Texture* TextureLoader::LoadTexture(const char* fileName, const TextureProperties& props)
 {
 	Texture* ret = nullptr;
 
@@ -60,6 +60,19 @@ Texture* TextureLoader::LoadTexture(const char* fileName)
 	else
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		if (props.mipmap) iluBuildMipmaps();
+		//if (props.anystropy) 
+		if (props.alienify) iluAlienify();
+		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
+		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
+		if (props.contrast) iluContrast(props.contrastAmount);
+		if (props.equalization) iluEqualize();
+		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
+		if (props.negativity) iluNegative();
+		if (props.noise) iluNoisify(props.noiseAmount);
+		if (props.pixelization) iluPixelize(props.pixelSize);
+		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
 
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 

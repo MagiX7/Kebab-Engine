@@ -7,7 +7,8 @@
 #define CHECKERS_WIDTH 50
 
 
-Texture::Texture(void* data, int width, int height, std::string path) : Resource(ResourceType::TEXTURE)
+Texture::Texture(void* data, int width, int height, std::string path/*, const TextureProperties& props*/)
+	: Resource(ResourceType::TEXTURE)
 {
 	this->width = width;
 	this->height = height;
@@ -66,4 +67,24 @@ void Texture::Bind(unsigned int index) const
 void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::CreateMetaDataFile(const char* assetsFile)
+{
+	hasMetaFile = true;
+
+	std::string p = assetsFile;
+	p += ".meta";
+	metaFile = p;
+
+	JSON_Value* value = json_value_init_object();
+	JSON_Object* obj = json_value_get_object(value);
+
+	json_object_set_number(obj, "model uuid", uuid);
+
+	JSON_Value* arrVal = json_value_init_array();
+	JSON_Array* arr = json_value_get_array(arrVal);
+
+
+
 }

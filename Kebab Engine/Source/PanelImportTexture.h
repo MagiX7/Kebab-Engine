@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Panel.h"
+#include "TextureProperties.h"
+
+class Texture;
 
 namespace ImageCompression
 {
@@ -24,26 +27,10 @@ public:
 
 	void OnRender(float dt) override;
 
+	void SetTexture(Texture* tex);
+
 private:
+	Texture* tex;
 
-	// Settings
-	bool mipmap;
-	bool anystropy;
-
-
-	// Filters
-	bool gaussianBlur;
-	bool contrast;
-	bool averageBlur;
-	bool alienify;
-	bool equalization;
-	bool gammaCorrection;
-	bool negativity;
-	bool noise;
-	bool pixelization;
-	bool sharpening;
-
-	float contrastAmount;
-	float sharpenAmount;
-	float sharpenIterations;
+	TextureProperties props;
 };

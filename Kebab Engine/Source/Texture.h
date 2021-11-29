@@ -4,10 +4,27 @@
 
 #include "Buffer.h"
 
+#include "TextureProperties.h"
+
 #include "GL/glew.h"
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
+
+
+//namespace TextureSettings
+//{
+//	enum Compression
+//	{
+//		DXTC_FORMAT = 0,
+//		DXT1,
+//		DXT2,
+//		DXT3,
+//		DXT4,
+//		DXT5,
+//		DXT_NO_COMP
+//	};
+//}
 
 enum class TextureType
 {
@@ -22,7 +39,7 @@ class Texture : public Resource
 public:
 	//Texture(unsigned char* pixels, int width, int height);
 	Texture();
-	Texture(void* data, int width, int height, std::string path);
+	Texture(void* data, int width, int height, std::string path/*, const TextureProperties& props*/);
 	//Texture();
 	virtual ~Texture();
 
@@ -40,6 +57,10 @@ public:
 	inline void SetType(TextureType type) { this->type = type; }
 	inline const TextureType& GetType() const { return type; }
 
+	
+	void CreateMetaDataFile(const char* assetsFile) override;
+
+
 private:
 	unsigned int rendererID;
 	TextureType type;
@@ -53,4 +74,7 @@ private:
 
 	std::string path;
 	std::string name;
+
+
+	TextureProperties props;
 };

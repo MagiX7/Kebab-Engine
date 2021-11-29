@@ -143,6 +143,7 @@
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureLoader.h" />
+    <ClInclude Include="Source\TextureProperties.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />

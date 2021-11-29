@@ -2,6 +2,9 @@
 
 #include "Vertex.h"
 
+#include "Texture.h"
+//#include "TextureProperties.h"
+
 #include <vector>
 #include <string>
 #include <map>
@@ -31,6 +34,7 @@ public:
 
 	std::shared_ptr<Resource> CreateNewResource(const char* assetsFile, ResourceType type, int uuid = 0);
 	std::shared_ptr<Resource> CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name);
+	std::shared_ptr<Resource> CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props = TextureProperties());
 
 	int GenerateUUID();
 
@@ -45,6 +49,6 @@ private:
 
 	std::map<int, std::shared_ptr<Resource>> resources;
 
+	TextureProperties defaultTextureProps;
 
-	int uuid = -2;
 };
