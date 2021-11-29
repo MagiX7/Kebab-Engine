@@ -83,7 +83,6 @@ GameObject* MeshLoader::LoadModel(std::string path, bool loadOnScene)
     if (loadOnScene)
     {
         app->scene->AddGameObject(baseGO);
-        app->editor->assetsPanel->AddAsset(baseGO);
         return baseGO;
     }
     else

@@ -76,8 +76,8 @@ void AssetsPanel::OnRender(float dt)
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 
 
-			if (ImGui::IsItemHovered())
-				printf("hey");
+			/*if (ImGui::IsItemHovered())
+				printf("hey");*/
 		}
 
 		DisplayAssets();
@@ -120,28 +120,6 @@ void AssetsPanel::LoadAssetsToCustom()
 			TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
 		}
 	}
-}
-
-void AssetsPanel::AddAsset(GameObject* gameObj)
-{
-	/*Asset* aux = new Asset();
-	aux->gameObj = gameObj;
-
-	ComponentMesh* mesh = (ComponentMesh*)gameObj->GetComponent(ComponentType::MESH);
-	if (mesh != nullptr)
-		aux->path = mesh->GetMesh()->GetPath();
-
-	if (gameObj->GetChilds().size() != 0)
-	{
-		std::vector<GameObject*>::iterator it;
-
-		for (it = gameObj->GetChilds().begin(); it != gameObj->GetChilds().end(); it++)
-		{
-			AddAsset((*it));
-		}
-	}
-
-	assets.push_back(aux);*/
 }
 
 void AssetsPanel::DisplayAssets()
@@ -211,7 +189,6 @@ void AssetsPanel::DisplayAssets()
 		}
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 		{
-			ImGui::OpenPopup((*it).c_str());
 			popUpItem = (*it).c_str();
 		}
 
@@ -226,62 +203,54 @@ void AssetsPanel::DisplayAssets()
 
 void AssetsPanel::DisplayPopMenu()
 {
+	ImGui::OpenPopup(popUpItem.c_str());
+
+	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT))
+		popUpItem = "";
+
 	if (ImGui::BeginPopup(popUpItem.c_str()))
 	{
 		if (ImGui::Button("Delete"))
 		{
-			char path[128] = "";
-			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
+			std::string path = currentFolder + popUpItem;
 
 			int status;
-			status = remove(path);
+			status = remove(path.c_str());
 			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
 			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
-			std::string aux = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
-			if (aux == ".fbx" || aux == ".obj")
+			std::string fileName = popUpItem.substr(0, popUpItem.find_last_of("."));
+			std::string ext = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
+			
+			if (ext == ".kbmodel")
 			{
-				aux = popUpItem.substr(popUpItem.length(), popUpItem.find_last_of("."));
+				path = app->fileSystem->FindFilePath(fileName + ".fbx");
+				if (path != "")
+					remove(path.c_str());
 
-				char path[128] = "";
-				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
-
-				status = remove(path);
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".obj");
+				if (path != "")
+					remove(path.c_str());
 			}
-			/*else if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
+			else if (ext == ".kbtexture")
 			{
-				aux = fileName.substr(fileName.length(), fileName.find_last_of("."));
+				path = app->fileSystem->FindFilePath(fileName + ".png");
+				if (path != "")
+					remove(path.c_str());
 
-				char path[128] = "";
-				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
-
-				status = remove(path);
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
-			}*/
-
-			//std::vector<Asset*>::iterator it;
-
-			//for (it = assets.begin(); it != assets.end(); ++it)
-			//{
-			//	if (*it == asset)
-			//	{
-			//		assets.erase(it);
-			//		assets.shrink_to_fit();
-
-			//		app->scene->DeleteGameObject(asset->gameObj);
-			//		break;
-			//	}
-			//}
+				/*peth = "";
+				peth = app->fileSystem->FindFilePath(fileName + ".obj");
+				if (peth != "")
+					remove(peth.c_str());*/
+			}
 
 			ImGui::CloseCurrentPopup();
+			popUpItem = "";
 		}
 		if (ImGui::Button("Import to Scene"))
 		{
-			char path[128] = "";
-			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
+			std::string path = currentFolder + popUpItem;
 
 			std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
 			
@@ -306,7 +275,7 @@ void AssetsPanel::DisplayPopMenu()
 
 								//std::string a = (target->GetName() + '/' + name + '.' + extension);
 							ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path));
+							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path.c_str()));
 						}
 					}
 					else
@@ -323,6 +292,7 @@ void AssetsPanel::DisplayPopMenu()
 				LOG_CONSOLE("Asset can't be imported");
 
 			ImGui::CloseCurrentPopup();
+			popUpItem = "";
 		}
 
 		ImGui::EndPopup();

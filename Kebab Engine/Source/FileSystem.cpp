@@ -264,12 +264,40 @@ void FileSystem::NormalizePath(std::string & full_path) const
 	}
 }
 
-bool FileSystem::FindFilePath(const char* fileName, char* path, const char* directoryFrom)
+std::string FileSystem::FindFilePath(std::string fileName)
 {
+	std::queue<std::string> que;
 
+	que.push("");
 
+	std::string path = "";
 
-	return false;
+	while (!que.empty())
+	{
+		std::string currentFolder = que.front();
+		que.pop();
+
+		std::vector<std::string> dirList;
+		std::vector<std::string> fileList;
+
+		DiscoverFiles(currentFolder.c_str(), fileList, dirList);
+
+		for (std::vector<std::string>::const_iterator it = dirList.begin(); it != dirList.end(); it++)
+		{
+			que.push(currentFolder + (*it) + "/");
+		}
+
+		for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
+		{
+			if (fileName == (*it))
+			{
+				path = currentFolder + (*it);
+				return path;
+			}
+		}
+	}
+
+	return path;
 }
 
 unsigned int FileSystem::Load(const char* path, const char* file, char** buffer) const
