@@ -1,11 +1,11 @@
 {
     "App": {
-        "dt": 0.017000000923871994,
+        "dt": 0.016000000759959221,
         "max fps": 62
     },
     "window": {
-        "width": 1568,
-        "height": 897,
+        "width": 1317,
+        "height": 724,
         "brightness": 1,
         "fullscreen": false,
         "fulldesktop": false,

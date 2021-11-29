@@ -138,7 +138,7 @@ ResourceManager::~ResourceManager()
 {
 }
 
-std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type)
+std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type, int uuid)
 {
 	std::shared_ptr<Resource> ret = nullptr;
 
@@ -156,7 +156,7 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 				std::string tmp = assetsFile;
 				int start = tmp.find_last_of("/");
 				int end = tmp.find(".");
-				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(tex->uuid) + ".kbtexture";
+				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(uuid) + ".kbtexture";
 				ret.get()->SetLibraryPath(lib);
 
 				/*delete tex;
