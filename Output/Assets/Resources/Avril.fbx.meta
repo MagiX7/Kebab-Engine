@@ -1,13 +1,13 @@
 {
-    "model uuid": 862354640,
+    "model uuid": 1750443627,
     "meshes": [
         {
             "mesh name": "Avril Avant",
-            "mesh library path": "Library\/Meshes\/Avril Avant__862354640.kbmesh"
+            "mesh library path": "Library\/Meshes\/Avril Avant__1750443627.kbmesh"
         },
         {
             "mesh name": "Body",
-            "mesh library path": "Library\/Meshes\/Body__862354640.kbmesh"
+            "mesh library path": "Library\/Meshes\/Body__1750443627.kbmesh"
         }
     ]
 }

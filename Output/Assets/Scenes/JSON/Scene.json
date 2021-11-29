@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": 1168404466,
-                "parent uuid": -1912599093,
+                "uuid": -1913866484,
+                "parent uuid": -899949870,
                 "Components": [
                     {
                         "Type": 0,
@@ -46,8 +46,8 @@
             },
             {
                 "name": "Avril",
-                "uuid": -1789730556,
-                "parent uuid": -1912599093,
+                "uuid": 1352864087,
+                "parent uuid": -899949870,
                 "Components": [
                     {
                         "Type": 0,
@@ -72,8 +72,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": 1667152606,
-                "parent uuid": -1789730556,
+                "uuid": 48323429,
+                "parent uuid": 1352864087,
                 "Components": [
                     {
                         "Type": 0,
@@ -96,21 +96,21 @@
                     },
                     {
                         "Type": 2,
-                        "uuid": -1148150291,
-                        "path": "Library\/Textures\/Head_Albedo__-983105826.kbtexture"
+                        "uuid": 1990532113,
+                        "path": "Library\/Textures\/Head_Albedo__1750443627.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -238947837,
-                        "mesh library path": "",
+                        "mesh uuid": -913972923,
+                        "mesh library path": "Library\/Meshes\/Avril Avant__1750443627.kbmesh",
                         "mesh name": "Avril Avant"
                     }
                 ]
             },
             {
                 "name": "Body",
-                "uuid": -586727729,
-                "parent uuid": -1789730556,
+                "uuid": -564718709,
+                "parent uuid": 1352864087,
                 "Components": [
                     {
                         "Type": 0,
@@ -133,21 +133,21 @@
                     },
                     {
                         "Type": 2,
-                        "uuid": 739275708,
-                        "path": "Library\/Textures\/Body_Albedo__-983105826.kbtexture"
+                        "uuid": 759295885,
+                        "path": "Library\/Textures\/Body_Albedo__1750443627.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1547569456,
-                        "mesh library path": "",
+                        "mesh uuid": 1331380929,
+                        "mesh library path": "Library\/Meshes\/Body__1750443627.kbmesh",
                         "mesh name": "Body"
                     }
                 ]
             },
             {
                 "name": "Avril",
-                "uuid": -799756832,
-                "parent uuid": -1912599093,
+                "uuid": 905401132,
+                "parent uuid": -899949870,
                 "Components": [
                     {
                         "Type": 0,
@@ -172,8 +172,8 @@
             },
             {
                 "name": "Avril Avant",
-                "uuid": -1765056173,
-                "parent uuid": -799756832,
+                "uuid": -423411265,
+                "parent uuid": 905401132,
                 "Components": [
                     {
                         "Type": 0,
@@ -196,16 +196,16 @@
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -238947837,
-                        "mesh library path": "",
+                        "mesh uuid": -913972923,
+                        "mesh library path": "Library\/Meshes\/Avril Avant__1750443627.kbmesh",
                         "mesh name": "Avril Avant"
                     }
                 ]
             },
             {
                 "name": "Body",
-                "uuid": -700485638,
-                "parent uuid": -799756832,
+                "uuid": -462981984,
+                "parent uuid": 905401132,
                 "Components": [
                     {
                         "Type": 0,
@@ -228,8 +228,8 @@
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1547569456,
-                        "mesh library path": "",
+                        "mesh uuid": 1331380929,
+                        "mesh library path": "Library\/Meshes\/Body__1750443627.kbmesh",
                         "mesh name": "Body"
                     }
                 ]

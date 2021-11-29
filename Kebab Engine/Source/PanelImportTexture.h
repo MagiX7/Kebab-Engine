@@ -3,6 +3,8 @@
 #include "Panel.h"
 #include "TextureProperties.h"
 
+#include <string>
+
 class Texture;
 
 namespace ImageCompression
@@ -27,10 +29,10 @@ public:
 
 	void OnRender(float dt) override;
 
-	void SetTexture(Texture* tex);
+	void SetTexturePath(const char* assetsFile);
 
 private:
-	Texture* tex;
-
+	//Texture* tex;
+	std::string assetsPath;
 	TextureProperties props;
 };

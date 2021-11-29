@@ -5,7 +5,7 @@
 
 ImportTexturePanel::ImportTexturePanel()
 {
-	active = true;
+	active = false;
 }
 
 ImportTexturePanel::~ImportTexturePanel()
@@ -14,12 +14,13 @@ ImportTexturePanel::~ImportTexturePanel()
 
 void ImportTexturePanel::OnRender(float dt)
 {
-	ImGui::Begin("Texture Import Settings");
+	static bool close = false;
+	ImGui::Begin("Texture Import Settings", &close);
 
 	static int compression = ImageCompression::DXTC_FORMAT;
 	if (ImGui::Combo("Compression", &compression, "IL_DXTC_FORMAT\0IL_DXT1\0IL_DXT2\0IL_DXT3\0IL_DXT4\0IL_DXT5\0IL_DXT_NO_COMP\0", 5))
 	{
-		// TODO: Update current compression. Maybe a var in Texture?
+		// TODO: Update current compression
 	}
 
 	ImGui::Separator();
@@ -82,14 +83,14 @@ void ImportTexturePanel::OnRender(float dt)
 	if (ImGui::Button("Import", { 60,25 }))
 	{
 		// TODO: Import/Load image
-		ResourceManager::GetInstance()->CreateTexture(tex->GetAssetsPath().c_str(), 0, props);
+		ResourceManager::GetInstance()->CreateTexture(assetsPath.c_str(), 0, props);
 		active = false;
 	}
 
 	ImGui::End();
 }
 
-void ImportTexturePanel::SetTexture(Texture* tex)
+void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 {
-	this->tex = tex;
+	assetsPath = assetsFile;
 }

@@ -6,9 +6,11 @@
 #include "Editor.h"
 
 #include "PanelHierarchy.h"
+#include "PanelImportTexture.h"
 
-#include "MeshLoader.h"
-#include "TextureLoader.h"
+#include "ResourceManager.h"
+//#include "MeshLoader.h"
+//#include "TextureLoader.h"
 #include "ComponentMaterial.h"
 
 #include "imgui/imgui_impl_sdl.h"
@@ -180,6 +182,10 @@ bool Input::PreUpdate(float dt)
 					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir, true));
 				else if (extension == "dds" || extension == "png" || extension == "jpg")
 				{
+					app->editor->panelImportTexture->active = true;
+					app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());
+
+
 					GameObject* target = app->editor->hierarchyPanel->currentGO;
 					if (target)
 					{
@@ -194,7 +200,10 @@ bool Input::PreUpdate(float dt)
 
 									//std::string a = (target->GetName() + '/' + name + '.' + extension);
 								ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-								mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
+								app->editor->panelImportTexture->active = true;
+								app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());
+
+								//mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
 							}
 						}
 						else
