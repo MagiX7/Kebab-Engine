@@ -75,17 +75,9 @@ void ResourceManager::DeleteResource(int uuid)
 
 void ResourceManager::AddResource(Resource* res)
 {
-	//if (!IsAlreadyLoaded(res->GetUUID()))
-	//{
-		std::pair<int, std::shared_ptr<Resource>> p;
-		p.second = std::make_shared<Resource>(res->GetResourceType());
-		uuid = GenerateUUID();
-		res->uuid = uuid;
-		//res->SetUUID(uuid);
-		p.first = res->GetUUID();
-
-		resources.insert(resources.end(), p);
-	//}
+	KbMesh* m = (KbMesh*)res;
+	std::shared_ptr<Resource> resource = std::make_shared<KbMesh>(*m);
+	resources[res->uuid] = resource;
 }
 
 bool ResourceManager::IsAlreadyLoaded(int uuid)
@@ -156,7 +148,8 @@ std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsF
 				std::string tmp = assetsFile;
 				int start = tmp.find_last_of("/");
 				int end = tmp.find(".");
-				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(uuid) + ".kbtexture";
+				std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
+					"__" + std::to_string(uuid) + ".kbtexture";
 				ret.get()->SetLibraryPath(lib);
 
 				/*delete tex;

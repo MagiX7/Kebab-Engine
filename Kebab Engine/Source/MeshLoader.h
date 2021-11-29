@@ -31,8 +31,8 @@ public:
 
 	GameObject* LoadKbGeometry(KbGeometryType type);
 
-	void SaveMeshCustomFormat(KbMesh* mesh, const std::string& name);
-	void SaveMeshCustomFormat(ComponentMesh* mesh);
+	void SaveMeshCustomFormat(KbMesh* mesh, const std::string& name, int uuid);
+	void SaveMeshCustomFormat(ComponentMesh* mesh, int uuid);
 	KbMesh* LoadMeshCustomFormat(const std::string& fileName);
 
 	void SaveModelCustomFormat(GameObject* go, int modelUuid);

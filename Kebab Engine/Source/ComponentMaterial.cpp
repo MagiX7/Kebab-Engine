@@ -132,7 +132,7 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 	{
 		int uuid = json_object_get_number(obj, "uuid");
 		//texName += "__" + std::to_string(uuid);
-		texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(path);
+		//texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(path);
 		//ResourceManager::GetInstance()->CreateNewResource()
 		if (ResourceManager::GetInstance()->IsAlreadyLoaded(uuid))
 		{

@@ -13,7 +13,7 @@ public:
 	Texture* LoadTexture(const char* fileName);
 	Texture* LoadTextureCustomFormat(const std::string& path);
 
-	void SaveTextureCustomFormat(Texture* tex);
+	void SaveTextureCustomFormat(Texture* tex, int uuid);
 
 	void CleanUp();
 

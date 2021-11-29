@@ -5,7 +5,9 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 
-#include "MeshLoader.h"
+#include "ResourceManager.h"
+
+//#include "MeshLoader.h"
 #include "TextureLoader.h"
 
 #include "imgui/imgui.h"
@@ -176,7 +178,7 @@ JSON_Value* ComponentMesh::Save()
 	/*Parser::DotSetObjectNumber(obj, "vertices", mesh->GetVertices().size());
 	Parser::DotSetObjectNumber(obj, "indices", mesh->GetIndices().size());*/
 	Parser::DotSetObjectNumber(obj, "mesh uuid", mesh->uuid);
-	Parser::DotSetObjectString(obj, "mesh path", mesh->GetPath().c_str());
+	Parser::DotSetObjectString(obj, "mesh library path", mesh->GetLibraryPath().c_str());
 	Parser::DotSetObjectString(obj, "mesh name", mesh->GetName().c_str());
 
 
@@ -190,11 +192,17 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 	std::vector<uint32_t> indices;
 	indices.resize(json_object_get_number(obj, "indices"));*/
 	int uuid = json_object_get_number(obj, "mesh uuid");
-	std::string path = json_object_get_string(obj, "mesh path");
+	std::string path = json_object_get_string(obj, "mesh library path");
 	std::string meshName = json_object_get_string(obj, "mesh name");
 	meshName += "__" + std::to_string(uuid);
-	mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str());
-	mesh->uuid = uuid;
+	if (ResourceManager::GetInstance()->IsAlreadyLoaded(uuid))
+	{
+		std::shared_ptr<Resource> m = ResourceManager::GetInstance()->GetResource(uuid);
+		mesh = (KbMesh*)m.get();
+	}
+
+	/*mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str());
+	mesh->uuid = uuid;*/
 
 	AABB aabb;
 

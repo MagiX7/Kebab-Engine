@@ -305,7 +305,7 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 		}
 		else if (type == 1)
 		{
-			std::string p = json_object_get_string(compObj, "mesh path");
+			std::string p = json_object_get_string(compObj, "mesh library path");
 			ComponentMesh* m = new ComponentMesh(parent, p.c_str());
 			m->Load(compObj, parent);
 			parent->AddComponent(m);

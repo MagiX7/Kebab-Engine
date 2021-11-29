@@ -235,16 +235,18 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
     mat->AddTexture((Texture*)tex.get());
-    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get());
+    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
    
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
     m->SetName(mesh->mName.C_Str());
-    m->SetUUID(model->GetUUID());
+    //m->SetUUID(model->GetUUID());
+    m->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
     m->SetOwnerName(baseGO->GetName());
     meshComp->SetMesh(m);
     model->AddMesh(m);
-    SaveMeshCustomFormat(m, m->GetName());
+    ResourceManager::GetInstance()->AddResource(m);
+    SaveMeshCustomFormat(m, m->GetName(), model->uuid);
 
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
@@ -349,7 +351,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
     return go;
 }
 
-void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name)
+void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name, int uuid)
 {
     unsigned int ranges[2] = { mesh->vertices.size(), mesh->indices.size() };
 
@@ -371,7 +373,7 @@ void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name)
     memcpy(cursor, mesh->indices.data(), bytes);
     cursor += bytes;
 
-    std::string n = CUSTOM_DIR + name + "__" + std::to_string(mesh->uuid) + CUSTOM_EXTENSION;
+    std::string n = CUSTOM_DIR + name + "__" + std::to_string(uuid) + CUSTOM_EXTENSION;
     //mesh->SetMeshPath(n);
     mesh->SetLibraryPath(n);
 
@@ -380,9 +382,9 @@ void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name)
     delete[] fileBuffer;
 }
 
-void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh)
+void MeshLoader::SaveMeshCustomFormat(ComponentMesh* mesh, int uuid)
 {
-    SaveMeshCustomFormat(mesh->GetMesh(), mesh->GetParent()->GetName());
+    SaveMeshCustomFormat(mesh->GetMesh(), mesh->GetParent()->GetName(), uuid);
 }
 
 KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
