@@ -82,9 +82,44 @@ void Texture::CreateMetaDataFile(const char* assetsFile)
 
 	json_object_set_number(obj, "model uuid", uuid);
 
-	JSON_Value* arrVal = json_value_init_array();
-	JSON_Array* arr = json_value_get_array(arrVal);
 
+	// TODO: Save compression properly
+	json_object_dotset_number(obj, "properties.compression", props.compression);
+	json_object_dotset_boolean(obj, "properties.mipmap", props.mipmap);
+	json_object_dotset_boolean(obj, "properties.gaussianBlur", props.gaussianBlur);
+	if(props.gaussianBlur)
+		json_object_dotset_number(obj, "properties.gaussianBlurIterations", props.gaussianBlur);
 
+	json_object_dotset_boolean(obj, "properties.averageBlur", props.averageBlur);
+	if(props.averageBlur)
+		json_object_dotset_number(obj, "properties.averageBlurIterations", props.averageBlurIterations);
+	
+	json_object_dotset_boolean(obj, "properties.contrast", props.contrast);
+	if (props.contrast)
+		json_object_dotset_number(obj, "properties.contrastAmount", props.contrastAmount);
 
+	json_object_dotset_boolean(obj, "properties.alienify", props.alienify);
+	json_object_dotset_boolean(obj, "properties.equalization", props.equalization);
+	json_object_dotset_boolean(obj, "properties.gammaCorrection", props.gammaCorrection);
+	if(props.gammaCorrection)
+		json_object_dotset_number(obj, "properties.gammaCorrectionAmount", props.gammaCorrectionAmount);
+
+	json_object_dotset_boolean(obj, "properties.negativity", props.negativity);
+	json_object_dotset_boolean(obj, "properties.noise", props.noise);
+	if (props.noise)
+		json_object_dotset_number(obj, "properties.noiseAmount", props.noiseAmount);
+
+	json_object_dotset_boolean(obj, "properties.pixelizations", props.pixelization);
+	if(props.pixelization)
+		json_object_dotset_number(obj, "properties.pixelsSize", props.pixelsSize);
+
+	json_object_dotset_boolean(obj, "properties.sharpening", props.sharpening);
+	if (props.sharpening)
+	{
+		json_object_dotset_number(obj, "properties.sharpeningAmount", props.sharpeningAmount);
+		json_object_dotset_number(obj, "properties.sharpeningIterations", props.sharpeningIterations);
+	}
+
+	json_serialize_to_file_pretty(value, p.c_str());
+	json_value_free(value);
 }

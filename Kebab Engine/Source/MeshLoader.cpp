@@ -236,8 +236,10 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
     std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
     mat->AddTexture((Texture*)tex.get());
+    tex.get()->CreateMetaDataFile(imageName.c_str());
     TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
-   
+
+
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
     m->SetName(mesh->mName.C_Str());

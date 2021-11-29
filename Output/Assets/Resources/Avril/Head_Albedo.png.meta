@@ -1,0 +1,17 @@
+{
+    "model uuid": 1812620392,
+    "properties": {
+        "compression": 1802,
+        "mipmap": true,
+        "gaussianBlur": false,
+        "averageBlur": false,
+        "contrast": false,
+        "alienify": false,
+        "equalization": false,
+        "gammaCorrection": false,
+        "negativity": false,
+        "noise": false,
+        "pixelizations": false,
+        "sharpening": false
+    }
+}

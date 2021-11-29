@@ -57,8 +57,9 @@ public:
 	inline void SetType(TextureType type) { this->type = type; }
 	inline const TextureType& GetType() const { return type; }
 
+	inline void SetProperties(const TextureProperties& p) { props = p; }
 	
-	void CreateMetaDataFile(const char* assetsFile) override;
+	void CreateMetaDataFile(const char* assetsFile);
 
 
 private:

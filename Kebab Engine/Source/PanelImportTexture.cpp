@@ -67,7 +67,7 @@ void ImportTexturePanel::OnRender(float dt)
 
 			ImGui::TableNextColumn(); ImGui::Checkbox("Pixelization", &props.pixelization);
 			if(props.pixelization)
-				ImGui::SliderFloat("Pixels size", &props.pixelSize, 1.0f, 50.0f);
+				ImGui::SliderFloat("Pixels size", &props.pixelsSize, 1.0f, 50.0f);
 			ImGui::TableNextColumn(); ImGui::Checkbox("Sharpening", &props.sharpening);
 			if (props.sharpening)
 			{

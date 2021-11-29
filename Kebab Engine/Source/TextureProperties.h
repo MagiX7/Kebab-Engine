@@ -19,12 +19,14 @@ struct TextureProperties
 	bool pixelization = false;
 	bool sharpening = false;
 
-	int gaussianBlurIterations = 1.0f;
-	int averageBlurIterations = 1.0f;
+	int gaussianBlurIterations = 1;
+	int averageBlurIterations = 1;
 	float contrastAmount = 1.0f;
 	float gammaCorrectionAmount = 1.0f;
 	float noiseAmount = 1.0f;
-	float pixelSize = 1.0f;
+	float pixelsSize = 1.0f;
 	float sharpeningAmount = 1.0f;
 	int sharpeningIterations = 1;
+
+	// 20 items to save
 };

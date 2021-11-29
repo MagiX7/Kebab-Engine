@@ -71,10 +71,11 @@ Texture* TextureLoader::LoadTexture(const char* fileName, const TexturePropertie
 		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
 		if (props.negativity) iluNegative();
 		if (props.noise) iluNoisify(props.noiseAmount);
-		if (props.pixelization) iluPixelize(props.pixelSize);
+		if (props.pixelization) iluPixelize(props.pixelsSize);
 		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
 
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
+		ret->SetProperties(props);
 
 		//SaveTextureCustomFormat(ret); <-- Done in ResourceManager
 		//ret = LoadTextureCustomFormat(ret->GetName());
