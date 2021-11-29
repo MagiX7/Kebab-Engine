@@ -30,6 +30,8 @@ AssetsPanel::AssetsPanel()
     active = true;
     scroll = 0;
 
+	columns = 10;
+
 	entryFolder = "Library/";
 	currentFolder = entryFolder;
 
@@ -149,7 +151,12 @@ void AssetsPanel::DisplayAssets()
 
 	app->fileSystem->DiscoverFiles(currentFolder.c_str(), fileList, dirList);
 
-	ImGui::Columns(10, 0, false);
+	if ((ImGui::GetWindowWidth() / 130) < columns - 1)
+		columns--;
+	else if ((ImGui::GetWindowWidth() / 130) > columns + 1)
+		columns++;
+
+	ImGui::Columns(columns, 0, false);
 
 	if (currentFolder != entryFolder)
 	{

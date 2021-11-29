@@ -41,4 +41,6 @@ private:
 	Texture* pngTex;
 
 	std::string popUpItem;
+
+	float columns;
 };
