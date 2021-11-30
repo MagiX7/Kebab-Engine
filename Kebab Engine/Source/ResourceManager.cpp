@@ -73,10 +73,16 @@ void ResourceManager::DeleteResource(int uuid)
 	//}
 }
 
-void ResourceManager::AddResource(Resource* res)
+void ResourceManager::AddResource(KbMesh* res)
 {
-	KbMesh* m = (KbMesh*)res;
-	std::shared_ptr<Resource> resource = std::make_shared<KbMesh>(*m);
+	//KbMesh* m = (KbMesh*)res;
+	std::shared_ptr<Resource> resource = std::make_shared<KbMesh>(*res);
+	resources[res->uuid] = resource;
+}
+
+void ResourceManager::AddResource(Texture* res)
+{
+	std::shared_ptr<Resource> resource = std::make_shared<Texture>(*res);
 	resources[res->uuid] = resource;
 }
 
@@ -253,26 +259,6 @@ std::shared_ptr<Resource> ResourceManager::FindMetaData(const char* assetsFile)
 	return nullptr;
 }
 
-//std::shared_ptr<Resource> ResourceManager::LoadMetaDataFile(const char* assetsFile, ResourceType type)
-//{
-//
-//	switch (type)
-//	{
-//		case ResourceType::MODEL:
-//		{
-//			return LoadModelMetaData(assetsFile);
-//			break;
-//		}
-//		case ResourceType::TEXTURE:
-//		{
-//			return LoadTextureMetaData(assetsFile);
-//			break;
-//		}
-//	}
-//
-//	return std::shared_ptr<Resource>();
-//}
-
 std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFile)
 {
 	std::shared_ptr<KbModel> ret = nullptr;
@@ -285,7 +271,12 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 
 		JSON_Array* arr = json_object_get_array(obj, "meshes");
 
-		for (int i = 0; i < json_array_get_count(arr); ++i)
+		KbModel* model = new KbModel();
+		model->uuid = json_object_get_number(obj, "model uuid");
+		model->SetLibraryPath(json_object_get_string(obj, "model path"));
+
+		int size = json_array_get_count(arr);
+		for (int i = 0; i < size; ++i)
 		{
 			JSON_Object* meshObj = json_array_get_object(arr, i);
 			std::string meshName = json_object_get_string(meshObj, "mesh name");
@@ -293,14 +284,10 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			//std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
 			if (KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath))
 			{
-				KbModel* model = new KbModel();
-				model->uuid = json_object_get_number(obj, "model uuid");
-				ret = std::make_shared<KbModel>(*model);
-				
 				m->SetName(meshName);
 				//m->SetAssetsPath(meshAssetsPath.c_str());
 				m->SetLibraryPath(meshLibPath);
-				ret.get()->AddMesh(m);
+				model->AddMesh(m);
 			}
 			else
 			{
@@ -310,6 +297,9 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 				//MeshLoader::GetInstance()->SaveModelCustomFormat();
 			}
 		}
+
+		ret = std::make_shared<KbModel>(*model);
+		resources[ret.get()->uuid] = ret;
 	}
 
 	return ret;

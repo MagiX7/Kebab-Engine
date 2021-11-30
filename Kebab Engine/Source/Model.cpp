@@ -35,6 +35,8 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 	JSON_Object* obj = json_value_get_object(value);
 
 	json_object_set_number(obj, "model uuid", uuid);
+	json_object_set_string(obj, "model path", libraryFile.c_str());
+
 
 	JSON_Value* arrVal = json_value_init_array();
 	JSON_Array* arr = json_value_get_array(arrVal);

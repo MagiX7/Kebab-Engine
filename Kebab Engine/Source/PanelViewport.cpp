@@ -63,7 +63,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
             
             if (ext == ".kbmodel")
             {
-                GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat(name);
+                GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat(dragPath);
                 app->renderer3D->Submit(bh);
             }
             else if (ext == ".kbtexture")

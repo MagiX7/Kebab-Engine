@@ -12,6 +12,7 @@
 
 class Resource;
 class KbModel;
+class KbMesh;
 enum class ResourceType;
 
 class ResourceManager
@@ -26,7 +27,8 @@ public:
 	std::shared_ptr<Resource> GetResource(int uuid) const;
 	void DeleteResource(int uuid);
 
-	void AddResource(Resource* res);
+	void AddResource(KbMesh* res);
+	void AddResource(Texture* res);
 
 	bool IsAlreadyLoaded(int uuid);
 	std::shared_ptr<Resource> IsAlreadyLoaded(const char* assetsFile);

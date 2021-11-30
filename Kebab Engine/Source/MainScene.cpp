@@ -54,7 +54,7 @@ bool MainScene::Start()
 
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
-    app->editor->hierarchyPanel->SetCurrent(goCam); // Avoid weird behaviours of the cam. Ideal woudl be setting again to nullptr
+    app->editor->hierarchyPanel->SetCurrent(goCam); // Avoid weird behaviours of the cam. Ideal would be setting again to nullptr
     //app->editor->hierarchyPanel->SetCurrent(nullptr);
 
     rootQT = new QdTree();
@@ -68,8 +68,8 @@ bool MainScene::Start()
     //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
     avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     app->renderer3D->Submit(avril);
-    GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    app->renderer3D->Submit(a);
+    //GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
+    //app->renderer3D->Submit(a);
     /*avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     app->renderer3D->Submit(avril);
     avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
@@ -85,25 +85,6 @@ bool MainScene::Update(float dt)
 {
     if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->RequestSave();
     if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) app->RequestLoad();
-
-    static GameObject* a = nullptr;
-
-    if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-    {
-        GameObject* test = MeshLoader::GetInstance()->LoadModelCustomFormat("Baker House.kbmodel");
-        app->renderer3D->Submit(test);
-    }
-    if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-    {
-        GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true);
-        app->renderer3D->Submit(bh);
-    }
-    if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-    {
-        //avril = MeshLoader::GetInstance()->LoadModelCustomFormat("Avril.kbmodel");
-        //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-        app->renderer3D->Submit(avril);
-    }
 
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
         rootQT->Recalculate();

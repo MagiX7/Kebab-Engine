@@ -66,7 +66,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
     std::string name = path.substr(start, end - start);
 
-    GameObject* baseGO = new GameObject(name);
+    GameObject* baseGO;
     
     
     std::shared_ptr<Resource> res = ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str());
@@ -74,7 +74,8 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
     if (res)
     {
-//<<<<<<< HEAD
+        baseGO = new GameObject(name);
+
         KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
@@ -84,24 +85,28 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
             baseGO->AddChild(go);
             go->SetParent(baseGO);
         }
+
+        app->scene->AddGameObject(baseGO);
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
         //res = ResourceManager::GetInstance()->CreateNewResource(metaPath.c_str(), ResourceType::MODEL);
         res = ResourceManager::GetInstance()->LoadModelMetaData(metaPath.c_str());
-        KbModel* model = (KbModel*)res.get();
+
+        baseGO = LoadModelCustomFormat(res.get()->GetLibraryPath());
+
+        app->scene->AddGameObject(baseGO);
+
+        /*KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
-            GameObject* go = new GameObject(mesh->GetOwnerName());
+            GameObject* go = new GameObject(mesh->GetName());
+            ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
             meshComp->SetMesh(mesh);
             baseGO->AddChild(go);
             go->SetParent(baseGO);
-        }
-//=======
-//        app->scene->AddGameObject(baseGO);
-//        return baseGO;
-//>>>>>>> main
+        }*/
     }
     else
     {
@@ -115,6 +120,8 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         }
         directory = path.substr(0, path.find_last_of('/'));
         
+        baseGO = new GameObject(name);
+
         std::shared_ptr<Resource> model = ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL);
         KbModel* newModel = (KbModel*)model.get();
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, newModel);
@@ -123,9 +130,11 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         SaveModelCustomFormat(baseGO, newModel->uuid);
     
         //app->editor->assetsPanel->AddAsset(baseGO);
+        app->scene->AddGameObject(baseGO);
     }
 
-    app->scene->AddGameObject(baseGO);
+    
+    //app->scene->AddGameObject(baseGO);
 
     return baseGO;
 }
@@ -462,8 +471,8 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
 
 void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 {
-    std::queue<GameObject*> q;          // Library path     // Assets path
-    std::vector<std::tuple<GameObject*, const std::string&, const std::string&>> gosMeshes;
+    std::queue<GameObject*> q;          // Meshes Library path
+    std::vector<std::pair<GameObject*, std::string>> gosMeshes;
 
     //q.push(go);
     for (auto& child : go->GetChilds())
@@ -473,15 +482,17 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     {
         GameObject* curr = q.front();
         q.pop();
-        ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+        
 
-        if (m)
+        //std::pair<GameObject*, std::string> pair;
+        if (ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH))
         {
-            std::tuple<GameObject*, std::string, std::string> tuple;
-            std::get<0>(tuple) = curr;
-            std::get<1>(tuple) = m->GetMesh()->GetLibraryPath();
-            std::get<2>(tuple) = m->GetMesh()->GetAssetsPath();
-            gosMeshes.push_back(tuple);
+            // When the code goes onto the next iteration, pair is resetted and the values on the vector too
+            
+            //pair.first = curr;
+            //pair.second = m->GetMesh()->GetLibraryPath();
+            //std::get<2>(tuple) = m->GetMesh()->GetAssetsPath();
+            gosMeshes.push_back(std::pair<GameObject*, std::string>(curr, m->GetMesh()->GetLibraryPath()));
         }
 
         if (curr->GetChilds().size() > 0)
@@ -521,12 +532,11 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
         JSON_Value* value = json_value_init_object();
         JSON_Object* obj = json_object(value);
         
-        std::get<0>(gosMeshes[i]);
-        json_object_set_number(obj, "parent uuid", std::get<0>(gosMeshes[i])->GetParent()->GetUuid());
-        json_object_set_number(obj, "owner uuid", std::get<0>(gosMeshes[i])->GetUuid());
-        json_object_set_string(obj, "owner name", std::get<0>(gosMeshes[i])->GetName().c_str());
-        json_object_set_string(obj, "mesh library path", std::get<1>(gosMeshes[i]).c_str());
-        json_object_set_string(obj, "mesh assets path", std::get<2>(gosMeshes[i]).c_str());
+        json_object_set_number(obj, "parent uuid", gosMeshes[i].first->GetParent()->GetUuid());
+        json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
+        json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
+        json_object_set_string(obj, "mesh library path", gosMeshes[i].second.c_str());
+        //json_object_set_string(obj, "mesh assets path", std::get<2>(gosMeshes[i]).c_str());
 
         ComponentMaterial* mat = (ComponentMaterial*)std::get<0>(gosMeshes[i])->GetComponent(ComponentType::MATERIAL);
         std::string texPath;
@@ -558,12 +568,12 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     
 }
 
-// Send the file name, NOT the path
-GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
+// Send the PATH, not the file name
+GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
 {
     GameObject* ret = nullptr;
 
-    std::string path = "Library/Models/" + fileName;
+    //std::string path = "Library/Models/" + fileName;
 
     char* buffer;
     if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
@@ -571,14 +581,14 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
         modelValue = json_parse_string(buffer);
         JSON_Object* modelObj = json_value_get_object(modelValue);
 
-        int s = fileName.find_last_of('/');
-        int e = fileName.find_last_of('.');
-        std::string n = fileName.substr(s + 1, e);
+        int s = path.find_last_of('/');
+        int e = path.find("__");
+        std::string n = path.substr(s + 1, e - s - 1);
 
         int baseUuid = json_object_get_number(modelObj, "uuid");
 
         ret = new GameObject(n, baseUuid);
-        app->scene->AddGameObject(ret);
+        //app->scene->AddGameObject(ret);
 
         float3 p = { 0,0,0 };
         p.x = json_object_get_number(modelObj, "pos x");
@@ -614,7 +624,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
             int parentUuid = json_object_get_number(obj, "parent uuid");
 
             const char* ownerName = json_object_get_string(obj, "owner name");
-            const char* meshPath = json_object_get_string(obj, "mesh path");
+            const char* meshLibraryPath = json_object_get_string(obj, "mesh library path");
             const char* texPath = json_object_get_string(obj, "texture path");
 
 
@@ -624,14 +634,16 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& fileName)
 
             ret->AddChild(owner);
 
-            ComponentMesh* meshComp = new ComponentMesh(owner, meshPath);
-
-            KbMesh* mesh = LoadMeshCustomFormat(meshPath);
+            ComponentMesh* meshComp = new ComponentMesh(owner, meshLibraryPath);
+            KbMesh* mesh = LoadMeshCustomFormat(meshLibraryPath);
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
+            ResourceManager::GetInstance()->AddResource(mesh);
 
-            ResourceManager::GetInstance()->CreateNewResource(texPath, ResourceType::TEXTURE);
+            //ResourceManager::GetInstance()->CreateNewResource(texPath, ResourceType::TEXTURE);
             Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(texPath);
+            ResourceManager::GetInstance()->AddResource(tex);
+
 
             ComponentMaterial* matComp = new ComponentMaterial(owner);
             if(tex)
