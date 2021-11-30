@@ -258,35 +258,74 @@ void AssetsPanel::DisplayItemPopMenu()
 			std::string path = currentFolder + popUpItem;
 
 			int status;
-			status = remove(path.c_str());
-			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
-			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
-			std::string fileName = popUpItem.substr(0, popUpItem.find_last_of("."));
+			status = remove(path.c_str());
+
+			std::string fileName = popUpItem.substr(0, popUpItem.find_last_of("_"));
+			fileName = fileName.substr(0, fileName.find_last_of("_"));
 			std::string ext = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
 			
 			if (ext == ".kbmodel")
 			{
+				// FBX
 				path = app->fileSystem->FindFilePath(fileName + ".fbx");
 				if (path != "")
-					remove(path.c_str());
+					status += remove(path.c_str());
 
+				fileName = fileName + ".fbx";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
+
+				// OBJ
 				path = "";
 				path = app->fileSystem->FindFilePath(fileName + ".obj");
 				if (path != "")
-					remove(path.c_str());
+					status += remove(path.c_str());
+
+				fileName = fileName + ".obj";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 			}
 			else if (ext == ".kbtexture")
 			{
+				// PNG
 				path = app->fileSystem->FindFilePath(fileName + ".png");
 				if (path != "")
-					remove(path.c_str());
+					status += remove(path.c_str());
 
-				/*peth = "";
-				peth = app->fileSystem->FindFilePath(fileName + ".obj");
-				if (peth != "")
-					remove(peth.c_str());*/
+				fileName = fileName + ".png";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
+
+				// DDS
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".dds");
+				if (path != "")
+					status += remove(path.c_str());
+
+				fileName = fileName + ".dds";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
+
+				// JPG
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".jpg");
+				if (path != "")
+					status += remove(path.c_str());
+
+				fileName = fileName + ".jpg";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 			}
+
+			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
+			else if (status < 3) { LOG_CONSOLE("Error to Delete all archives of %s", popUpItem.c_str()); }
+			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
 			ImGui::CloseCurrentPopup();
 			popUpItem = "";
