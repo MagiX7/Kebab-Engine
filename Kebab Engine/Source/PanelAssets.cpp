@@ -195,7 +195,9 @@ void AssetsPanel::DisplayAssets()
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
 
-		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
+		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
+		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
+		ImGui::Text(nameToShow.c_str());
 
 		ImGui::NextColumn();
 
