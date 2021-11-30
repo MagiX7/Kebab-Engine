@@ -62,7 +62,6 @@ Texture* TextureLoader::LoadTexture(const char* fileName, const TexturePropertie
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 		if (props.mipmap) iluBuildMipmaps();
-		//if (props.anystropy) 
 		if (props.alienify) iluAlienify();
 		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
 		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
@@ -90,7 +89,7 @@ Texture* TextureLoader::LoadTexture(const char* fileName, const TexturePropertie
 	return ret;
 }
 
-Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path)
+Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path, const TextureProperties& props)
 {
 	Texture* ret = nullptr;
 
@@ -101,8 +100,23 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path)
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
+		if (props.mipmap) iluBuildMipmaps();
+		if (props.alienify) iluAlienify();
+		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
+		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
+		if (props.contrast) iluContrast(props.contrastAmount);
+		if (props.equalization) iluEqualize();
+		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
+		if (props.negativity) iluNegative();
+		if (props.noise) iluNoisify(props.noiseAmount);
+		if (props.pixelization) iluPixelize(props.pixelsSize);
+		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
+
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), path);
 		textures.push_back(ret);
+
+		ret->SetLibraryPath(path);
+		ret->SetProperties(props);
 
 		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
 		LOG_CONSOLE("Custom file format texture %s loaded!", path.c_str());

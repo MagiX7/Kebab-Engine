@@ -250,20 +250,22 @@ std::shared_ptr<Resource> ResourceManager::CreateTexture(const char* assetsFile,
 	return ret;
 }
 
-std::shared_ptr<Resource> ResourceManager::LoadTexture(const char* libraryFile)
+std::shared_ptr<Resource> ResourceManager::LoadTexture(const char* libraryFile, int uuid)
 {
 	std::shared_ptr<Resource> ret = nullptr;
 
 	if (ret = IsAlreadyLoaded(std::string(libraryFile)))
 		return ret;
 
+	//LoadTextureMetaData()
+
 	Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libraryFile);
 	tex->uuid = GenerateUUID();
 	tex->SetLibraryPath(libraryFile);
 
-	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+	ret = std::make_shared<Texture>(*tex);
 
-	resources[tex->uuid] = ret;
+	resources[ret.get()->uuid] = ret;
 
 	return ret;
 }
@@ -339,7 +341,67 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 
 }
 
-std::shared_ptr<Resource> ResourceManager::LoadTextureMetaData(const char* assetsFile)
+std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assetsFile)
 {
-	return std::shared_ptr<Resource>();
+	std::shared_ptr<Texture> ret = nullptr;
+	TextureProperties props;
+
+	std::string path = std::string(assetsFile) + ".meta";
+
+	char* buffer;
+	if (app->fileSystem->Load(path.c_str(), &buffer))
+	{
+		JSON_Value* value = json_parse_string(buffer);
+		JSON_Object* obj = json_value_get_object(value);
+
+		props.compression = json_object_get_number(obj, "compression");
+		props.mipmap = json_object_get_boolean(obj, "mipmap");
+		props.gaussianBlur = json_object_get_boolean(obj, "gaussianBlur");
+		if (props.gaussianBlur)
+			props.gaussianBlurIterations = json_object_get_number(obj, "gaussianBlurIterations");
+		props.averageBlur = json_object_get_boolean(obj, "averageBlur");
+		if (props.averageBlur)
+			props.averageBlurIterations = json_object_get_number(obj, "averageBlurIterations");
+
+		props.contrast = json_object_get_boolean(obj, "contrast");
+		if (props.contrast)
+			props.contrastAmount = json_object_get_number(obj, "contrastAmount");
+
+		props.alienify = json_object_get_boolean(obj, "alienify");
+		props.equalization = json_object_get_boolean(obj, "equalization");
+		props.gammaCorrection = json_object_get_boolean(obj, "gammaCorrection");
+		if (props.gammaCorrection)
+			props.gammaCorrectionAmount = json_object_get_number(obj, "gammaCorrectionAmount");
+
+		props.negativity = json_object_get_boolean(obj, "negativity");
+		props.noise = json_object_get_boolean(obj, "noise");
+		if (props.noise)
+			props.noiseAmount = json_object_get_number(obj, "noiseAmount");
+
+		props.pixelization = json_object_get_boolean(obj, "pixelization");
+		if (props.pixelization)
+			props.pixelsSize = json_object_get_number(obj, "pixelsSize");
+
+		props.sharpening = json_object_get_boolean(obj, "sharpening");
+		if (props.sharpening)
+		{
+			props.sharpeningAmount = json_object_get_number(obj, "sharpeningAmount");
+			props.sharpeningIterations = json_object_get_number(obj, "sharpeningIterations");
+		}
+
+		std::string libPath = json_object_get_string(obj, "texture library path");
+		std::string assetsPath = json_object_get_string(obj, "texture assets path");
+		Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libPath, props);
+		tex->uuid = GenerateUUID();
+		tex->SetAssetsPath(assetsPath);
+		tex->SetMetaPath(path);
+
+		ret = std::make_shared<Texture>(*tex);
+
+		resources[ret.get()->uuid] = ret;
+
+	}
+
+
+	return ret;
 }

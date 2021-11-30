@@ -1,5 +1,7 @@
 {
-    "model uuid": -1291707421,
+    "model uuid": -77108647,
+    "texture library path": "Library\/Textures\/Head_Albedo__-160480262.kbtexture",
+    "texture assets path": "Assets\/Resources\/Avril\/Head_Albedo.png",
     "properties": {
         "compression": 1802,
         "mipmap": true,

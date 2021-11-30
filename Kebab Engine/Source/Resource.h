@@ -24,9 +24,11 @@ public:
 	inline void SetUUID(int newUuid) { uuid = newUuid; }
 	inline void SetAssetsPath(const std::string& p) { assetsFile = p; }
 	inline void SetLibraryPath(const std::string& l) { libraryFile= l; }
+	inline void SetMetaPath(const std::string& m) { metaFile = m; }
 
 	inline const std::string& GetAssetsPath() { return assetsFile; }
 	inline const std::string& GetLibraryPath() { return libraryFile; }
+	inline const std::string& GetMetaPath() { return metaFile; }
 
 	inline const bool HasMetaFile() const { return hasMetaFile; }
 

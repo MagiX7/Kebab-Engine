@@ -40,7 +40,7 @@ public:
 	std::shared_ptr<Resource> CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name);
 	std::shared_ptr<Resource> CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props = TextureProperties());
 
-	std::shared_ptr<Resource> LoadTexture(const char* libraryFile);
+	std::shared_ptr<Resource> LoadTexture(const char* libraryFile, int uuid);
 
 	int GenerateUUID();
 
@@ -48,7 +48,7 @@ public:
 	//std::shared_ptr<Resource> LoadMetaDataFile(const char* assetsFile, ResourceType type);
 
 	std::shared_ptr<KbModel> LoadModelMetaData(const char* assetsFile);
-	std::shared_ptr<Resource> LoadTextureMetaData(const char* assetsFile);
+	std::shared_ptr<Texture> LoadTextureMetaData(const char* assetsFile);
 private:
 		
 	ResourceManager();

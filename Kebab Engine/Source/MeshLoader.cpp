@@ -643,9 +643,13 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
             meshComp->SetParent(owner);
             ResourceManager::GetInstance()->AddResource(mesh);
 
+
+            // Maybe with LoadTextureMetaData??
             ComponentMaterial* matComp = (ComponentMaterial*)owner->CreateComponent(ComponentType::MATERIAL);
-            std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->LoadTexture(texLibPath);
-            tex.get()->SetAssetsPath(texAssetsPath);
+            //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->LoadTexture(texLibPath, 848);
+            std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(texAssetsPath);
+            
+            //tex.get()->SetAssetsPath(texAssetsPath);
             matComp->AddTexture((Texture*)tex.get());
 
             owner->AddComponent(meshComp);
