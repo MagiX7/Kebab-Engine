@@ -290,7 +290,7 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			JSON_Object* meshObj = json_array_get_object(arr, i);
 			std::string meshName = json_object_get_string(meshObj, "mesh name");
 			std::string meshLibPath = json_object_get_string(meshObj, "mesh library path");
-			std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
+			//std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
 			if (KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath))
 			{
 				KbModel* model = new KbModel();
@@ -298,15 +298,15 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 				ret = std::make_shared<KbModel>(*model);
 				
 				m->SetName(meshName);
-				m->SetAssetsPath(meshAssetsPath.c_str());
+				//m->SetAssetsPath(meshAssetsPath.c_str());
 				m->SetLibraryPath(meshLibPath);
 				ret.get()->AddMesh(m);
 			}
 			else
 			{
 				// TODO: Could be possible to generate the resource again if the file from library gets deleted?
-				ret = CreateNewResource(meshAssetsPath.c_str(), ResourceType::MODEL);
-				KbModel* model = (KbModel*)ret.get();
+				//ret = CreateNewResource(meshAssetsPath.c_str(), ResourceType::MODEL);
+				//KbModel* model = (KbModel*)ret.get();
 				//MeshLoader::GetInstance()->SaveModelCustomFormat();
 			}
 		}

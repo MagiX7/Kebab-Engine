@@ -44,7 +44,7 @@ public:
 
 	//void Save(JSON_Object* root) override;
 
-	void SerializeScene(const char* path);
+	void SerializeScene(const char* path, const char* extension = ".kbscene");
 	void UnserializeScene(const char* path);
 
 	void OnScenePlay();

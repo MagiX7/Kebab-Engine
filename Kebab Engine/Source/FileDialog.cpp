@@ -26,7 +26,7 @@ std::string FileDialog::OpenFile(const char* filter)
 		return file.lpstrFile;
 	}
 
-	return "Couldn't open file dialog";
+	return std::string();
 }
 
 std::string FileDialog::SaveFile(const char* filter)
@@ -47,5 +47,5 @@ std::string FileDialog::SaveFile(const char* filter)
 		return file.lpstrFile;
 	}
 
-	return "Couldn't save file dialog";
+	return std::string();
 }

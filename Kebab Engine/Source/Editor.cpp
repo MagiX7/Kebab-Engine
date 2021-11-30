@@ -36,7 +36,7 @@
 
 #include "mmgr/mmgr.h"
 
-#define RUNTIME_SCENE_PATH "Library/Temp/Scene.kbscene"
+//#define RUNTIME_SCENE_PATH "Library/Temp/Scene.kbscene"
 
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
@@ -60,6 +60,8 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     sceneState = SceneState::EDIT;
     initialScene = nullptr;
     
+    currentSaveDirectory = "Library/Scenes/";
+
     //lastRuntimeDt = 0;
 }
 
@@ -133,7 +135,7 @@ bool Editor::CleanUp()
     delete(previewScenePanel);
     previewScenePanel = nullptr;
 
-    app->fileSystem->Remove("Library/Temp");
+    app->fileSystem->Remove("Library/Scenes/Temp");
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -278,17 +280,16 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
     return true;
 }
 
-void Editor::SerializeScene(const char* path)
+void Editor::SerializeScene(const char* path, const char* extension)
 {
     OPTICK_EVENT("Serialization");
 
-    //initialScene = app->scene;
-    
-    //JSON_Value* val = json_parse_file("Assets/Scenes/Scene.kbscene");
-    //if (sceneValue)
-    //    return;
+    std::string p = path;
+    if (!p.find_last_of("."))
+    {
+        p += extension;
+    }
 
-    //json_value_free(sceneValue);
     sceneValue = Parser::InitValue();
     JSON_Object* root = Parser::GetObjectByValue(sceneValue);
 
@@ -300,24 +301,27 @@ void Editor::SerializeScene(const char* path)
     for (const auto& go : app->scene->GetGameObjects())
         go->Save(gosArray);
 
-    size_t size = Parser::GetSerializationSize(sceneValue);
-    char* buffer = new char[size];
-    json_serialize_to_buffer(sceneValue, buffer, size);
+    //size_t size = Parser::GetSerializationSize(sceneValue);
+    //char* buffer = new char[size];
+    //json_serialize_to_buffer(sceneValue, buffer, size);
 
-    if (!app->fileSystem->Exists("Library/Temp"))
-    {
-        app->fileSystem->CreateDirectoryA("Library/Temp");
-        if (app->fileSystem->Exists("Library/Temp"));
-            LOG_CONSOLE("Path Library/Temp created successfully");
-    }
+    ///*if (!app->fileSystem->Exists(p.c_str()))
+    //{
+    //    app->fileSystem->CreateDirectoryA(p.c_str());
+    //    if (app->fileSystem->Exists(p.c_str()));
+    //        LOG_CONSOLE("Path %s created successfully", p.c_str());
+    //}*/
 
+    //int start = p.find("Output");
+    //std::string sub = p.substr(start + 7);
+    //const char* fullpath = sub.c_str();
+    //if (app->fileSystem->Save(fullpath, buffer, size) > 0)
+    //    LOG_CONSOLE("Saved successfully");
 
-    if (app->fileSystem->Save(path, buffer, size) > 0)
-        LOG_CONSOLE("Saved successfully");
+    //delete[] buffer;
 
-    delete[] buffer;
-
-    Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
+    //Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
+    Parser::GenerateFile(sceneValue, p.c_str());
     Parser::FreeValue(sceneValue);
 }
 
@@ -372,7 +376,7 @@ void Editor::UnserializeScene(const char* path)
         json_value_free(sceneValue);
         delete[] buffer;
 
-        app->fileSystem->Remove("Library/Temp/Scene.kbscene");
+        app->fileSystem->Remove("Library/Scenes/Temp/Scene.kbscene");
     }
 }
 
@@ -381,7 +385,11 @@ void Editor::OnScenePlay()
     sceneState = SceneState::PLAY;
     app->camera->SetCurrentCamera(CameraType::GAME);
     app->editor->hierarchyPanel->currentGO = nullptr;
-    SerializeScene(RUNTIME_SCENE_PATH);
+    if (!app->fileSystem->Exists("Library/Scenes/Temp/"))
+    {
+        app->fileSystem->CreateDirectoryA("Library/Scenes/Temp/");
+    }
+    SerializeScene("Library/Scenes/Temp/Scene.kbscene");
 }
 
 void Editor::OnSceneStop()
@@ -390,7 +398,11 @@ void Editor::OnSceneStop()
     app->camera->SetCurrentCamera(CameraType::EDITOR);
     app->SetRuntimeDt(0);
     app->SetRuntimeFramesAmount(0);
-    UnserializeScene(RUNTIME_SCENE_PATH);
+    if (app->fileSystem->Exists("Library/Scenes/Temp/"))
+    {
+        app->fileSystem->Remove("Library/Scenes/Temp/");
+    }
+    UnserializeScene("Library/Scenes/Temp/Scene.kbscene");
 }
 
 void Editor::OnScenePause()
@@ -441,8 +453,11 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             if (ImGui::MenuItem("Save Scene As...", "Crtl + S"))
             {
                 std::string path = FileDialog::SaveFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
-                currentSaveDirectory = path;
-                SerializeScene(path.c_str());
+                if (!path.empty())
+                {
+                    currentSaveDirectory = path;
+                    SerializeScene(path.c_str());
+                }
             }
             if (ImGui::MenuItem("Open Scene..."))
             {

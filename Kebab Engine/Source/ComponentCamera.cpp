@@ -140,6 +140,10 @@ JSON_Value* ComponentCamera::Save()
 
 	json_object_set_number(obj, "Type", 4);
 	
+	json_object_set_number(obj, "fovHorizontal", fovHorizontal);
+	json_object_set_number(obj, "currentWinWidth", currentWinWidth);
+	json_object_set_number(obj, "currentWinHeight", currentWinHeight);
+
 	json_object_set_value(obj, "worldmatrix", json_value_init_object());
 	JSON_Object* worldObj = json_object_get_object(obj, "worldmatrix");
 
@@ -173,6 +177,12 @@ void ComponentCamera::Load(JSON_Object* obj, GameObject* parent)
 	frustum.SetUp(u);*/
 
 	//JSON_Object* camObj = json_object_get_object(root, name.c_str());
+
+	fovHorizontal = json_object_get_number(obj, "fovHorizontal");
+	currentWinWidth = json_object_get_number(obj, "currentWinWidth");
+	currentWinHeight = json_object_get_number(obj, "currentWinHeight");
+	CalculateFov(currentWinWidth, currentWinHeight, fovHorizontal);
+
 	JSON_Object* worldObj = json_object_get_object(obj, "worldmatrix");
 
 	float3 pos = { 0,0,0 };

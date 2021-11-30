@@ -122,8 +122,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         model.get()->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, newModel->uuid);
     
-        
-        app->editor->assetsPanel->AddAsset(baseGO);
+        //app->editor->assetsPanel->AddAsset(baseGO);
     }
 
     app->scene->AddGameObject(baseGO);
