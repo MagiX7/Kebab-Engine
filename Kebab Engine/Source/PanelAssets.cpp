@@ -30,6 +30,11 @@ AssetsPanel::AssetsPanel()
     active = true;
     scroll = 0;
 
+	columns = 10;
+	popUpItem = "";
+	popUpMenu = false;
+	rename = false;
+
 	entryFolder = "Library/";
 	currentFolder = entryFolder;
 
@@ -73,14 +78,16 @@ void AssetsPanel::OnRender(float dt)
 			if (scroll <= 0) scroll = 0;
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 
-
-			if (ImGui::IsItemHovered())
-				printf("hey");
+			if (!ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+				popUpMenu = true;
 		}
 
 		DisplayAssets();
 
 		if (popUpItem != "")
+			DisplayItemPopMenu();
+
+		if (popUpMenu)
 			DisplayPopMenu();
 	}
 	ImGui::End();
@@ -120,28 +127,6 @@ void AssetsPanel::LoadAssetsToCustom()
 	}
 }
 
-void AssetsPanel::AddAsset(GameObject* gameObj)
-{
-	/*Asset* aux = new Asset();
-	aux->gameObj = gameObj;
-
-	ComponentMesh* mesh = (ComponentMesh*)gameObj->GetComponent(ComponentType::MESH);
-	if (mesh != nullptr)
-		aux->path = mesh->GetMesh()->GetPath();
-
-	if (gameObj->GetChilds().size() != 0)
-	{
-		std::vector<GameObject*>::iterator it;
-
-		for (it = gameObj->GetChilds().begin(); it != gameObj->GetChilds().end(); it++)
-		{
-			AddAsset((*it));
-		}
-	}
-
-	assets.push_back(aux);*/
-}
-
 void AssetsPanel::DisplayAssets()
 {
 	std::vector<std::string> dirList;
@@ -149,7 +134,12 @@ void AssetsPanel::DisplayAssets()
 
 	app->fileSystem->DiscoverFiles(currentFolder.c_str(), fileList, dirList);
 
-	ImGui::Columns(10, 0, false);
+	if ((ImGui::GetWindowWidth() / 130) < columns - 1)
+		columns--;
+	else if ((ImGui::GetWindowWidth() / 130) > columns + 1)
+		columns++;
+
+	ImGui::Columns(columns, 0, false);
 
 	if (currentFolder != entryFolder)
 	{
@@ -202,11 +192,8 @@ void AssetsPanel::DisplayAssets()
 			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
 			ImGui::EndDragDropSource();
 		}
-		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-		{
-			ImGui::OpenPopup((*it).c_str());
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
-		}
 
 		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
 
@@ -214,67 +201,99 @@ void AssetsPanel::DisplayAssets()
 
 		ImGui::PopID();
 	}
-
 }
 
 void AssetsPanel::DisplayPopMenu()
 {
+	ImGui::OpenPopup("PopMenu");
+
+	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		rename = false;
+		popUpMenu = false;
+	}
+
+	if (ImGui::BeginPopup("PopMenu"))
+	{
+		if (ImGui::Button("Create Folder"))
+		{
+			ImGui::OpenPopup("Folder Name");
+			rename = true;
+		}
+
+		if (rename)
+		{
+			ImGui::BeginPopup("Folder Name");
+
+			static char name[32] = "Default";
+			ImGui::Text("Edit name:");
+			if (ImGui::InputText("##edit", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				std::string folderName = name;
+				folderName = currentFolder + "/" + name;
+				app->fileSystem->CreateDirectoryA(folderName.c_str());
+
+				popUpMenu = false;
+				rename = false;
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void AssetsPanel::DisplayItemPopMenu()
+{
+	ImGui::OpenPopup(popUpItem.c_str());
+
+	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+		popUpItem = "";
+
 	if (ImGui::BeginPopup(popUpItem.c_str()))
 	{
 		if (ImGui::Button("Delete"))
 		{
-			char path[128] = "";
-			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
+			std::string path = currentFolder + popUpItem;
 
 			int status;
-			status = remove(path);
+			status = remove(path.c_str());
 			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
 			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
-			std::string aux = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
-			if (aux == ".fbx" || aux == ".obj")
+			std::string fileName = popUpItem.substr(0, popUpItem.find_last_of("."));
+			std::string ext = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
+			
+			if (ext == ".kbmodel")
 			{
-				aux = popUpItem.substr(popUpItem.length(), popUpItem.find_last_of("."));
+				path = app->fileSystem->FindFilePath(fileName + ".fbx");
+				if (path != "")
+					remove(path.c_str());
 
-				char path[128] = "";
-				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
-
-				status = remove(path);
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".obj");
+				if (path != "")
+					remove(path.c_str());
 			}
-			/*else if (strcmp(aux.c_str(), ".fbx") == 0 || strcmp(aux.c_str(), ".obj") == 0)
+			else if (ext == ".kbtexture")
 			{
-				aux = fileName.substr(fileName.length(), fileName.find_last_of("."));
+				path = app->fileSystem->FindFilePath(fileName + ".png");
+				if (path != "")
+					remove(path.c_str());
 
-				char path[128] = "";
-				sprintf_s(path, 128, "%s%s.kbmesh", currentFolder.c_str(), aux.c_str());
-
-				status = remove(path);
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", fileName.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", fileName.c_str()); }
-			}*/
-
-			//std::vector<Asset*>::iterator it;
-
-			//for (it = assets.begin(); it != assets.end(); ++it)
-			//{
-			//	if (*it == asset)
-			//	{
-			//		assets.erase(it);
-			//		assets.shrink_to_fit();
-
-			//		app->scene->DeleteGameObject(asset->gameObj);
-			//		break;
-			//	}
-			//}
+				/*peth = "";
+				peth = app->fileSystem->FindFilePath(fileName + ".obj");
+				if (peth != "")
+					remove(peth.c_str());*/
+			}
 
 			ImGui::CloseCurrentPopup();
+			popUpItem = "";
 		}
 		if (ImGui::Button("Import to Scene"))
 		{
-			char path[128] = "";
-			sprintf_s(path, 128, "%s%s", currentFolder.c_str(), popUpItem.c_str());
+			std::string path = currentFolder + popUpItem;
 
 			std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
 			
@@ -299,7 +318,7 @@ void AssetsPanel::DisplayPopMenu()
 
 								//std::string a = (target->GetName() + '/' + name + '.' + extension);
 							ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path));
+							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path.c_str()));
 						}
 					}
 					else
@@ -316,6 +335,7 @@ void AssetsPanel::DisplayPopMenu()
 				LOG_CONSOLE("Asset can't be imported");
 
 			ImGui::CloseCurrentPopup();
+			popUpItem = "";
 		}
 
 		ImGui::EndPopup();

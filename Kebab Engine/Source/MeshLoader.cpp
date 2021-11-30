@@ -74,6 +74,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
     if (res)
     {
+//<<<<<<< HEAD
         KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
@@ -97,6 +98,10 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
             baseGO->AddChild(go);
             go->SetParent(baseGO);
         }
+//=======
+//        app->scene->AddGameObject(baseGO);
+//        return baseGO;
+//>>>>>>> main
     }
     else
     {

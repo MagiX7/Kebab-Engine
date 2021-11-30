@@ -24,10 +24,10 @@ public:
 	void OnRender(float dt) override;
 
 	void LoadAssetsToCustom();
-	void AddAsset(GameObject* gameObj);
 
 	void DisplayAssets();
 	void DisplayPopMenu();
+	void DisplayItemPopMenu();
 
 private:
 
@@ -41,4 +41,8 @@ private:
 	Texture* pngTex;
 
 	std::string popUpItem;
+	bool popUpMenu;
+
+	float columns;
+	bool rename;
 };
