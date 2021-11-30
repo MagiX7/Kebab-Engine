@@ -31,6 +31,9 @@ AssetsPanel::AssetsPanel()
     scroll = 0;
 
 	columns = 10;
+	popUpItem = "";
+	popUpMenu = false;
+	rename = false;
 
 	entryFolder = "Library/";
 	currentFolder = entryFolder;
@@ -75,14 +78,16 @@ void AssetsPanel::OnRender(float dt)
 			if (scroll <= 0) scroll = 0;
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 
-
-			/*if (ImGui::IsItemHovered())
-				printf("hey");*/
+			if (!ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+				popUpMenu = true;
 		}
 
 		DisplayAssets();
 
 		if (popUpItem != "")
+			DisplayItemPopMenu();
+
+		if (popUpMenu)
 			DisplayPopMenu();
 	}
 	ImGui::End();
@@ -187,10 +192,8 @@ void AssetsPanel::DisplayAssets()
 			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
 			ImGui::EndDragDropSource();
 		}
-		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-		{
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
-		}
 
 		ImGui::Text((*it).substr(0, (*it).find_last_of(".")).c_str());
 
@@ -198,14 +201,54 @@ void AssetsPanel::DisplayAssets()
 
 		ImGui::PopID();
 	}
-
 }
 
 void AssetsPanel::DisplayPopMenu()
 {
+	ImGui::OpenPopup("PopMenu");
+
+	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		rename = false;
+		popUpMenu = false;
+	}
+
+	if (ImGui::BeginPopup("PopMenu"))
+	{
+		if (ImGui::Button("Create Folder"))
+		{
+			ImGui::OpenPopup("Folder Name");
+			rename = true;
+		}
+
+		if (rename)
+		{
+			ImGui::BeginPopup("Folder Name");
+
+			static char name[32] = "Default";
+			ImGui::Text("Edit name:");
+			if (ImGui::InputText("##edit", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				std::string folderName = name;
+				folderName = currentFolder + "/" + name;
+				app->fileSystem->CreateDirectoryA(folderName.c_str());
+
+				popUpMenu = false;
+				rename = false;
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void AssetsPanel::DisplayItemPopMenu()
+{
 	ImGui::OpenPopup(popUpItem.c_str());
 
-	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT))
+	if (!ImGui::IsAnyItemHovered() && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		popUpItem = "";
 
 	if (ImGui::BeginPopup(popUpItem.c_str()))
