@@ -86,7 +86,6 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
             go->SetParent(baseGO);
         }
 
-        app->scene->AddGameObject(baseGO);
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
@@ -95,7 +94,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
         baseGO = LoadModelCustomFormat(res.get()->GetLibraryPath());
 
-        app->scene->AddGameObject(baseGO);
+        //app->scene->AddGameObject(baseGO);
 
         /*KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
@@ -130,11 +129,9 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         SaveModelCustomFormat(baseGO, newModel->uuid);
     
         //app->editor->assetsPanel->AddAsset(baseGO);
-        app->scene->AddGameObject(baseGO);
     }
 
-    
-    //app->scene->AddGameObject(baseGO);
+    app->scene->AddGameObject(baseGO);
 
     return baseGO;
 }
@@ -538,13 +535,18 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
         json_object_set_string(obj, "mesh library path", gosMeshes[i].second.c_str());
         //json_object_set_string(obj, "mesh assets path", std::get<2>(gosMeshes[i]).c_str());
 
-        ComponentMaterial* mat = (ComponentMaterial*)std::get<0>(gosMeshes[i])->GetComponent(ComponentType::MATERIAL);
-        std::string texPath;
+        ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
+        std::string texLibPath;
+        std::string texAssetsPath;
 
         if (mat->GetCurrentTexture() != nullptr)
-            texPath = mat->GetCurrentTexture()->GetPath();
+        {
+            texLibPath = mat->GetCurrentTexture()->GetLibraryPath();
+            texAssetsPath = mat->GetCurrentTexture()->GetAssetsPath();
+        }
 
-        json_object_set_string(obj, "texture path", texPath.size() > 0 ? texPath.c_str() : "Checkers");
+        json_object_set_string(obj, "texture library path", !texLibPath.empty() ? texLibPath.c_str() : "Checkers");
+        json_object_set_string(obj, "texture assets path", !texAssetsPath.empty() ? texAssetsPath.c_str() : "Checkers");
         
         json_array_append_value(arr, value);
     }
@@ -625,7 +627,8 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
 
             const char* ownerName = json_object_get_string(obj, "owner name");
             const char* meshLibraryPath = json_object_get_string(obj, "mesh library path");
-            const char* texPath = json_object_get_string(obj, "texture path");
+            const char* texLibPath = json_object_get_string(obj, "texture library path");
+            const char* texAssetsPath = json_object_get_string(obj, "texture assets path");
 
 
             GameObject* owner = new GameObject(ownerName, ownerUuid);
@@ -640,18 +643,12 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
             meshComp->SetParent(owner);
             ResourceManager::GetInstance()->AddResource(mesh);
 
-            //ResourceManager::GetInstance()->CreateNewResource(texPath, ResourceType::TEXTURE);
-            Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(texPath);
-            ResourceManager::GetInstance()->AddResource(tex);
-
-
-            ComponentMaterial* matComp = new ComponentMaterial(owner);
-            if(tex)
-                matComp->AddTexture(tex);
-            matComp->SetParent(owner);
+            ComponentMaterial* matComp = (ComponentMaterial*)owner->CreateComponent(ComponentType::MATERIAL);
+            std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->LoadTexture(texLibPath);
+            tex.get()->SetAssetsPath(texAssetsPath);
+            matComp->AddTexture((Texture*)tex.get());
 
             owner->AddComponent(meshComp);
-            owner->AddComponent(matComp);
             //ret->AddChild(owner);
             owner->SetParent(ret);
             ret->SetGlobalAABB(*owner->GetGlobalAABB());

@@ -1,14 +1,14 @@
 {
-    "model uuid": -1945925941,
-    "model path": "Library\/Models\/Avril__-1945925941.kbmodel",
+    "model uuid": 2027416661,
+    "model path": "Library\/Models\/Avril__2027416661.kbmodel",
     "meshes": [
         {
             "mesh name": "Avril Avant",
-            "mesh library path": "Library\/Meshes\/Avril Avant__-1945925941.kbmesh"
+            "mesh library path": "Library\/Meshes\/Avril Avant__2027416661.kbmesh"
         },
         {
             "mesh name": "Body",
-            "mesh library path": "Library\/Meshes\/Body__-1945925941.kbmesh"
+            "mesh library path": "Library\/Meshes\/Body__2027416661.kbmesh"
         }
     ]
 }

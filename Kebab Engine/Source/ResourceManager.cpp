@@ -117,6 +117,21 @@ std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const char* assetsFil
 	return nullptr;
 }
 
+std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const std::string& libraryFile)
+{
+	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.begin();
+
+	for (; it != resources.end(); ++it)
+	{
+		if ((*it).second.get()->GetAssetsPath() == libraryFile)
+		{
+			return (*it).second;
+		}
+	}
+
+	return nullptr;
+}
+
 int ResourceManager::GetReferenceCount(int uuid)
 {
 	std::map<int, std::shared_ptr<Resource>>::iterator it = resources.find(uuid);
@@ -231,6 +246,24 @@ std::shared_ptr<Resource> ResourceManager::CreateTexture(const char* assetsFile,
 
 	resources[ret.get()->uuid] = ret;
 
+
+	return ret;
+}
+
+std::shared_ptr<Resource> ResourceManager::LoadTexture(const char* libraryFile)
+{
+	std::shared_ptr<Resource> ret = nullptr;
+
+	if (ret = IsAlreadyLoaded(std::string(libraryFile)))
+		return ret;
+
+	Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libraryFile);
+	tex->uuid = GenerateUUID();
+	tex->SetLibraryPath(libraryFile);
+
+	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+
+	resources[tex->uuid] = ret;
 
 	return ret;
 }
