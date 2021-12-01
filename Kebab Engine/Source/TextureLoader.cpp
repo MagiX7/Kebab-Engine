@@ -100,17 +100,17 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path, const T
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-		if (props.mipmap) iluBuildMipmaps();
-		if (props.alienify) iluAlienify();
-		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
-		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
-		if (props.contrast) iluContrast(props.contrastAmount);
-		if (props.equalization) iluEqualize();
-		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
-		if (props.negativity) iluNegative();
-		if (props.noise) iluNoisify(props.noiseAmount);
-		if (props.pixelization) iluPixelize(props.pixelsSize);
-		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
+		//if (props.mipmap) iluBuildMipmaps();
+		//if (props.alienify) iluAlienify();
+		//if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
+		//if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
+		//if (props.contrast) iluContrast(props.contrastAmount);
+		//if (props.equalization) iluEqualize();
+		//if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
+		//if (props.negativity) iluNegative();
+		//if (props.noise) iluNoisify(props.noiseAmount);
+		//if (props.pixelization) iluPixelize(props.pixelsSize);
+		//if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
 
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), path);
 		textures.push_back(ret);
@@ -131,21 +131,30 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path, const T
 
 void TextureLoader::SaveTextureCustomFormat(Texture* tex, int uuid)
 {
-	ILuint size;
-	ILubyte* data;
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
-	size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
-	if (size > 0)
+	/*if (!tex->GetLibraryPath().empty())
 	{
-		data = new ILubyte[size]; // Allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+		ilLoadImage(tex->GetLibraryPath().c_str());
+	}*/
+	if (ilLoadImage(tex->GetAssetsPath().c_str()))
+	{
+
+
+		ILuint size;
+		ILubyte* data;
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
+		size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
+		if (size > 0)
 		{
-			std::string n = CUSTOM_DIR + tex->GetName() + "__" + std::to_string(uuid) + CUSTOM_EXTENSION;
-			tex->SetLibraryPath(n);
-			tex->SetPath(n);
-			app->fileSystem->Save(n.c_str(), data, size);
+			data = new ILubyte[size]; // Allocate data buffer
+			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+			{
+				std::string n = CUSTOM_DIR + tex->GetName() + "__" + std::to_string(uuid) + CUSTOM_EXTENSION;
+				tex->SetLibraryPath(n);
+				tex->SetPath(n);
+				app->fileSystem->Save(n.c_str(), data, size);
+			}
+			delete[] data;
 		}
-		delete[] data;
 	}
 }
 
