@@ -1,0 +1,33 @@
+{
+    "base name": "Avril",
+    "parent uuid": -744031550,
+    "uuid": -744031550,
+    "Meshes": [
+        {
+            "parent uuid": -744031550,
+            "owner uuid": 2098128348,
+            "owner name": "Avril Avant",
+            "mesh library path": "Library\/Meshes\/Avril Avant__-722797145.kbmesh",
+            "texture library path": "Library\/Textures\/Head_Albedo__-722797145.kbtexture",
+            "texture assets path": "Assets\/Resources\/Avril\/Head_Albedo.png"
+        },
+        {
+            "parent uuid": -744031550,
+            "owner uuid": 926743430,
+            "owner name": "Body",
+            "mesh library path": "Library\/Meshes\/Body__-722797145.kbmesh",
+            "texture library path": "Library\/Textures\/Body_Albedo__-722797145.kbtexture",
+            "texture assets path": "Assets\/Resources\/Avril\/Body_Albedo.png"
+        }
+    ],
+    "pos x": 0,
+    "pos y": 0,
+    "pos z": 0,
+    "rot x": 0,
+    "rot y": 0,
+    "rot z": 0,
+    "rot w": 1,
+    "scale x": 1,
+    "scale y": 1,
+    "scale z": 1
+}
