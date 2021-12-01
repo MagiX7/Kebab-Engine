@@ -258,10 +258,14 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
-    std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
-    mat->AddTexture((Texture*)tex.get());
-    tex.get()->CreateMetaDataFile(imageName.c_str());
-    TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
+   
+    if (!imageName.empty())
+    {
+        std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        mat->AddTexture(std::static_pointer_cast<Texture>(tex));
+        tex.get()->CreateMetaDataFile(imageName.c_str());
+        TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
+    }
 
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
@@ -646,11 +650,14 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
 
             // Maybe with LoadTextureMetaData??
             ComponentMaterial* matComp = (ComponentMaterial*)owner->CreateComponent(ComponentType::MATERIAL);
-            //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->LoadTexture(texLibPath, 848);
-            std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(texAssetsPath);
+            std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(texAssetsPath));
+            if(!tex)
+            {
+                tex = ResourceManager::GetInstance()->LoadTextureMetaData(texAssetsPath);
+            }
             
             //tex.get()->SetAssetsPath(texAssetsPath);
-            matComp->AddTexture((Texture*)tex.get());
+            matComp->AddTexture(std::static_pointer_cast<Texture>(tex));
 
             owner->AddComponent(meshComp);
             //ret->AddChild(owner);

@@ -14,6 +14,10 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	this->type = ComponentType::MATERIAL;
 	this->active = true;
 
+	texture = nullptr;
+	currentTexture = nullptr;
+	checkersTexture = nullptr;
+
 	SetCheckersTexture();
 }
 
@@ -26,7 +30,7 @@ ComponentMaterial::~ComponentMaterial()
 	}*/
 	textures.clear();
 
-	delete checkersTexture;
+	//delete checkersTexture;
 }
 
 void ComponentMaterial::Bind()
@@ -60,7 +64,7 @@ void ComponentMaterial::DrawOnInspector()
 		else
 			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
 
-		static bool checkers = currentTexture;
+		static bool checkers = currentTexture.get();
 		if (currentTexture == checkersTexture) checkers = true;
 		else checkers = false;
 
@@ -82,13 +86,13 @@ void ComponentMaterial::DrawOnInspector()
 		}
 		if (currentTexture)
 		{
-			std::string s = "References to texture " + std::to_string(ResourceManager::GetInstance()->GetReferenceCount(currentTexture->uuid));
+			std::string s = "References to texture " + std::to_string(ResourceManager::GetInstance()->GetReferenceCount(currentTexture.get()->uuid));
 			ImGui::BulletText(s.c_str());
 		}
 	}
 }
 
-void ComponentMaterial::AddTexture(Texture* tex)
+void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex)
 {
 	//std::vector<Texture*>::iterator it = std::find(textures.begin(), textures.end(), tex);
 	if (std::find(textures.begin(), textures.end(), tex) == textures.end())
@@ -123,7 +127,7 @@ JSON_Value* ComponentMaterial::Save()
 
 void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 {
-	delete texture;
+	//delete texture;
 	currentTexture = nullptr;
 
 	std::string path = json_object_dotget_string(obj, "path");
@@ -136,8 +140,8 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 		//ResourceManager::GetInstance()->CreateNewResource()
 		if (ResourceManager::GetInstance()->IsAlreadyLoaded(uuid))
 		{
-			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->GetResource(uuid);
-			texture = (Texture*)tex.get();
+			texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(uuid));
+			//texture = tex.get();
 			currentTexture = texture;
 		}
 		
@@ -160,7 +164,7 @@ void ComponentMaterial::SetCheckersTexture()
 			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
-	checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Checkers");
-	currentTexture = checkersTexture;
+	//checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Checkers");
+	//currentTexture = checkersTexture;
 	//return checkersTexture;
 }

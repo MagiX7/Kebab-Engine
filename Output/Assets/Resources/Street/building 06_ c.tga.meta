@@ -1,0 +1,19 @@
+{
+    "model uuid": 17686172,
+    "texture library path": "Library\/Textures\/building 06_ c__347944757.kbtexture",
+    "texture assets path": "Assets\/Resources\/Street\/building 06_ c.tga",
+    "properties": {
+        "compression": 1802,
+        "mipmap": true,
+        "gaussianBlur": false,
+        "averageBlur": false,
+        "contrast": false,
+        "alienify": false,
+        "equalization": false,
+        "gammaCorrection": false,
+        "negativity": false,
+        "noise": false,
+        "pixelizations": false,
+        "sharpening": false
+    }
+}

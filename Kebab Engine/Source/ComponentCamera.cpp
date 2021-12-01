@@ -23,21 +23,23 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	frustumCulling = true;
 
 	if (cameraType == CameraType::GAME)
+	{
 		fovHorizontal = math::DegToRad(80);
+		planeFar = 20.f;
+	}
 	else
+	{
 		fovHorizontal = math::DegToRad(50);
+		planeFar = 50.f;
+	}
 
-
+	planeNear = 0.1f;
 
 	currentWinHeight = 0;
 	currentWinWidth = 0;
-	//app->window->GetSize(currentWinWidth, currentWinHeight);
 
 	CalculateFov(1920, 1080, fovHorizontal);
-
-
-	planeFar = 20.f;
-	planeNear = 0.1f;
+		
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 

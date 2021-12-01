@@ -1,0 +1,19 @@
+{
+    "texture uuid": 859066424,
+    "texture library path": "Library\/Textures\/Baker_house__1516094635.kbtexture",
+    "texture assets path": "Assets\/Resources\/Baker House\/Baker_house.png",
+    "properties": {
+        "compression": 1802,
+        "mipmap": true,
+        "gaussianBlur": false,
+        "averageBlur": false,
+        "contrast": false,
+        "alienify": false,
+        "equalization": false,
+        "gammaCorrection": false,
+        "negativity": false,
+        "noise": false,
+        "pixelizations": false,
+        "sharpening": false
+    }
+}

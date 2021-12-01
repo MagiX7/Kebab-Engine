@@ -3,6 +3,7 @@
 #include "Component.h"
 
 #include <vector>
+#include <memory>
 
 class Texture;
 
@@ -21,9 +22,9 @@ public:
 
 	void DrawOnInspector();
 
-	void AddTexture(Texture* tex);
+	void AddTexture(std::shared_ptr<Texture>);
 
-	inline Texture* GetCurrentTexture() { return currentTexture; }
+	inline std::shared_ptr<Texture> GetCurrentTexture() { return currentTexture; }
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
@@ -32,10 +33,12 @@ private:
 	void SetCheckersTexture();
 
 private:
-	std::vector<Texture*> textures;
+	std::vector<std::shared_ptr<Texture>> textures;
 
-	Texture* currentTexture;
-	Texture* texture;
-	Texture* checkersTexture;
+	std::shared_ptr<Texture> texture;
+
+	std::shared_ptr<Texture> currentTexture;
+	//Texture* texture;
+	std::shared_ptr<Texture> checkersTexture;
 
 };

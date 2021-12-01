@@ -80,7 +80,7 @@ void Texture::CreateMetaDataFile(const char* assetsFile)
 	JSON_Value* value = json_value_init_object();
 	JSON_Object* obj = json_value_get_object(value);
 
-	json_object_set_number(obj, "model uuid", uuid);
+	json_object_set_number(obj, "texture uuid", uuid);
 	json_object_set_string(obj, "texture library path", libraryFile.c_str());
 	json_object_set_string(obj, "texture assets path", this->assetsFile.c_str());
 

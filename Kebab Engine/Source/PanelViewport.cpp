@@ -8,6 +8,8 @@
 
 #include "PanelScene.h"
 
+#include "ResourceManager.h"
+
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
@@ -80,7 +82,10 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                             GameObject* parent = target->GetParent();
                             
                             ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-                            mat->AddTexture(TextureLoader::GetInstance()->LoadTextureCustomFormat(dragPath));
+                            std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(dragPath);
+                            mat->AddTexture(std::static_pointer_cast<Texture>(tex));
+
+                            //mat->AddTexture(TextureLoader::GetInstance()->LoadTextureCustomFormat(dragPath));
                         }
                     }
                     else

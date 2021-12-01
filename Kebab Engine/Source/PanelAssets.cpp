@@ -7,6 +7,8 @@
 #include "MainScene.h"
 #include "FileSystem.h"
 
+#include "ResourceManager.h"
+
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
@@ -359,7 +361,8 @@ void AssetsPanel::DisplayItemPopMenu()
 
 								//std::string a = (target->GetName() + '/' + name + '.' + extension);
 							ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-							mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(path.c_str()));
+							std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(path);
+							mat->AddTexture(std::static_pointer_cast<Texture>(tex));
 						}
 					}
 					else

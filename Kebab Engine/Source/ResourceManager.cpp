@@ -223,13 +223,13 @@ std::shared_ptr<Resource> ResourceManager::CreateMesh(const std::vector<Vertex>&
 	return ret;
 }
 
-std::shared_ptr<Resource> ResourceManager::CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props)
+std::shared_ptr<Texture> ResourceManager::CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props)
 {
-	std::shared_ptr<Resource> ret = nullptr;
+	std::shared_ptr<Texture> ret = nullptr;
 
 	Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile, props);
 	tex->uuid = GenerateUUID();
-	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+	ret = std::make_shared<Texture>(*tex);
 
 	ret.get()->SetAssetsPath(assetsFile);
 	std::string tmp = assetsFile;
@@ -392,7 +392,7 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 		std::string libPath = json_object_get_string(obj, "texture library path");
 		std::string assetsPath = json_object_get_string(obj, "texture assets path");
 		Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libPath, props);
-		tex->uuid = GenerateUUID();
+		tex->uuid = json_object_get_number(obj, "texture uuid");
 		tex->SetAssetsPath(assetsPath);
 		tex->SetMetaPath(path);
 
