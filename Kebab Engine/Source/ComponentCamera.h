@@ -61,8 +61,8 @@ private:
 	float fovVertical;
 	float fovHorizontal;
 
-	float currentWinWidth;
-	float currentWinHeight;
+	int currentWinWidth;
+	int currentWinHeight;
 
 	float planeFar;
 	float planeNear;

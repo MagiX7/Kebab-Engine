@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "MainScene.h"
 #include "Renderer3D.h"
+#include "Camera3D.h"
 
 #include "QdTree.h"
 
@@ -178,7 +179,16 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 			optionsPopup = false;
 
 			if (go->GetParent() == app->scene->GetRoot())
+			{
+				ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+				if (auxCam)
+				{
+					if (auxCam == app->camera->gameCam)
+						app->camera->gameCam = nullptr;
+				}
+
 				app->scene->DeleteGameObject(go);
+			}
 			else
 			{
 				ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);

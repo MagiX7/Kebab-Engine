@@ -91,9 +91,9 @@ bool MainScene::Update(float dt)
 
     if (app->editor->GetSceneState() == SceneState::EDIT)
         rootQT->Intersect(&app->camera->editorCam->frustum);
-    else if (app->editor->GetSceneState() == SceneState::PLAY
+    else if ((app->editor->GetSceneState() == SceneState::PLAY
         || app->editor->GetSceneState() == SceneState::PAUSE
-        || app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
+        || app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME) && app->camera->gameCam)
         rootQT->Intersect(&app->camera->gameCam->frustum);
 
     return true;

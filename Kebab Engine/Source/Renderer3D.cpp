@@ -236,13 +236,20 @@ bool Renderer3D::Draw(float dt)
 	app->editor->OnImGuiRender(dt, editorFbo, sceneFbo);
 
 	sceneFbo->Bind();
-	PushCamera(app->camera->gameCam);
+
+	if (app->camera->gameCam)
+		PushCamera(app->camera->gameCam);
+
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	DoRender();
-	glPopMatrix();
-	glPopMatrix();
+	if (app->camera->gameCam)
+	{
+		DoRender();
+		glPopMatrix();
+		glPopMatrix();
+	}
+
 	sceneFbo->Unbind();
 
 
@@ -251,7 +258,8 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	app->camera->gameCam->DrawFrustum();
+	if (app->camera->gameCam)
+		app->camera->gameCam->DrawFrustum();
 
 	DoRender();
 	glPopMatrix();
@@ -518,9 +526,9 @@ void Renderer3D::DoRender()
 
 		if (app->editor->GetSceneState() == SceneState::EDIT)
 			cam = app->camera->editorCam;
-		else if (app->editor->GetSceneState() == SceneState::PLAY 
+		else if ((app->editor->GetSceneState() == SceneState::PLAY 
 			|| app->editor->GetSceneState() == SceneState::PAUSE 
-			|| app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME)
+			|| app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME) && app->camera->gameCam)
 			cam = app->camera->gameCam;
 
 		if (mesh && mat && !cam->frustumCulling)

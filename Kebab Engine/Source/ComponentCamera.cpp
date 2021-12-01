@@ -1,8 +1,11 @@
 #include "Application.h"
+#include "ComponentCamera.h"
+
 #include "Window.h"
 #include "Editor.h"
+#include "Camera3D.h"
+
 #include "PanelScene.h"
-#include "ComponentCamera.h"
 
 #include "GameObject.h"
 
@@ -20,22 +23,21 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	frustumCulling = true;
 
 	if (cameraType == CameraType::GAME)
-	{
-		fovHorizontal = math::DegToRad(80.0f);
-	}
+		fovHorizontal = math::DegToRad(80);
 	else
-	{
 		fovHorizontal = math::DegToRad(50);
-	}
+
+
+
+	currentWinHeight = 0;
+	currentWinWidth = 0;
+	//app->window->GetSize(currentWinWidth, currentWinHeight);
 
 	CalculateFov(1920, 1080, fovHorizontal);
 
 
 	planeFar = 20.f;
 	planeNear = 0.1f;
-
-	currentWinHeight = 0;
-	currentWinWidth = 0;
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
@@ -90,8 +92,8 @@ void ComponentCamera::CalculateFov(float w, float h, int hfov)
 
 void ComponentCamera::CalculateFov()
 {
-	float fovh = math::DegToRad(fovHorizontal);
-	fovVertical = 2 * math::Atan(math::Tan(fovh / 2) * (currentWinWidth / currentWinHeight));
+	app->window->GetSize(currentWinWidth, currentWinHeight);
+	fovVertical = 2 * math::Atan(math::Tan(fovHorizontal / 2) * (currentWinWidth / currentWinHeight));
 	frustum.SetVerticalFovAndAspectRatio(fovVertical, (currentWinWidth / currentWinHeight));
 }
 
@@ -240,8 +242,13 @@ void ComponentCamera::DrawOnInspector()
 		static float hfovdeg = math::RadToDeg(fovHorizontal);
 		if (ImGui::SliderFloat("FOV", &hfovdeg, 1, 179))
 		{
-			fovHorizontal = hfovdeg;
-			CalculateFov();
+			app->window->GetSize(currentWinWidth, currentWinHeight);
+			fovHorizontal = math::DegToRad(hfovdeg);
+			CalculateFov(currentWinWidth, currentWinHeight, fovHorizontal);
+		}
+		if (ImGui::Button("Set as Game Camera"))
+		{
+			app->camera->SetGameCamera(this);
 		}
 	}
 }
