@@ -109,7 +109,7 @@ bool MainScene::CleanUp()
         delete(go);
     }
     root->GetChilds().clear();
-    delete root;
+    delete(root);
 
     return true;
 }

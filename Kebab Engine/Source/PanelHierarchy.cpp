@@ -299,6 +299,13 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				}
 			}
 		}
+		if (ImGui::Button("Unparent"))
+		{
+			go->UnParent();
+			app->scene->AddGameObject(go);
+			app->renderer3D->Submit(go);
+		}
+
 		if (ImGui::Button("Rename"))
 			rename = !rename;
 

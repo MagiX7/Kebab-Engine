@@ -110,8 +110,18 @@ Component* GameObject::GetComponent(ComponentType type)
 
 void GameObject::UnParent()
 {
-	parent = nullptr;
-
+	if (parent)
+	{
+		for (std::vector<GameObject*>::iterator itChilds = parent->childs.begin(); itChilds != parent->childs.end(); itChilds++)
+		{
+			if ((*itChilds) == this)
+			{
+				parent->childs.erase(itChilds);
+				parent->childs.shrink_to_fit();
+				break;
+			}
+		}
+	}
 	/*if(parent)
 	{
 		for (int i = 0; i < parent->GetChilds().size(); ++i)
