@@ -118,7 +118,7 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_string(obj, "path", "Checkers");
 		json_object_set_number(obj, "uuid", -1);
 	}
-	if (currentTexture == texture.get())
+	if (texture && currentTexture == texture.get())
 	{
 		json_object_set_number(obj, "uuid", texture->uuid);
 		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());

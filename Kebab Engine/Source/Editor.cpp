@@ -353,8 +353,25 @@ void Editor::SerializeScene(const char* path, const char* extension)
 
     //delete[] buffer;
 
-    //Parser::GenerateFile(sceneValue, "Assets/Scenes/JSON/Scene.json");
     Parser::GenerateFile(sceneValue, p.c_str());
+
+    if (p.find("Assets") == -1)
+    {
+        int s = p.find_last_of("\\");
+        //int e = p.find_last_of(".");
+        std::string name = p.substr(s + 1);
+        std::string path = "Assets/Scenes/" + name;
+        Parser::GenerateFile(sceneValue, path.c_str());
+    }
+    if (p.find("Library") == -1)
+    {
+        int s = p.find_last_of("\\");
+        //int e = p.find_last_of(".");
+        std::string name = p.substr(s + 1);
+        std::string path = "Library/Scenes/" + name;
+        Parser::GenerateFile(sceneValue, path.c_str());
+    }
+
     Parser::FreeValue(sceneValue);
 }
 

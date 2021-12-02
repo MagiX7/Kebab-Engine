@@ -524,6 +524,10 @@ std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hit
 				ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
 				if (meshComp)
 				{
+					float4x4 m = trans->GetLocalMatrix().Inverted();
+					Ray ray = localLine.ToRay();
+					ray.Transform(m);
+
 					Triangle triangle;
 					for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
 					{
@@ -531,9 +535,6 @@ std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hit
 						triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
 						triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
-						float4x4 m = trans->GetLocalMatrix().Inverted();
-						Ray ray = localLine.ToRay();
-						ray.Transform(m);
 						if (ray.Intersects(triangle, &dist, &hitPoint))
 						{
 							if (curr->GetParent())
