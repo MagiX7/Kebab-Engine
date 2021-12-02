@@ -8,6 +8,7 @@
 #include "Vertex.h"
 
 class ComponentMaterial;
+class KbModel;
 
 class ComponentMesh : public Component
 {
@@ -27,6 +28,7 @@ public:
 
 	void SetMesh(KbMesh* newMesh);
 	inline KbMesh* GetMesh() const { return mesh; }
+	void SetModel(std::shared_ptr<KbModel>);
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
@@ -50,6 +52,7 @@ protected:
 	std::string meshName;*/
 
 	KbMesh* mesh;
+	std::shared_ptr<KbModel> model;
 
 	bool isKbGeometry = false;
 

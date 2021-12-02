@@ -36,7 +36,7 @@ public:
 	KbMesh* LoadMeshCustomFormat(const std::string& fileName);
 
 	void SaveModelCustomFormat(GameObject* go, int modelUuid);
-	GameObject* LoadModelCustomFormat(const std::string& filename);
+	GameObject* LoadModelCustomFormat(const std::string& filename, std::shared_ptr<KbModel> model = nullptr);
 
 	//GameObject* LoadPrimitive(PrimitiveType type);
 

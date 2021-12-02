@@ -69,19 +69,20 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
     GameObject* baseGO;
     
     
-    std::shared_ptr<Resource> res = ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str());
+    std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
     std::string metaPath = path + ".meta";
 
-    if (res)
+    if (model)
     {
         baseGO = new GameObject(name);
 
-        KbModel* model = (KbModel*)res.get();
+        //KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
             GameObject* go = new GameObject(mesh->GetOwnerName());
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
             meshComp->SetMesh(mesh);
+            meshComp->SetModel(model);
             baseGO->AddChild(go);
             go->SetParent(baseGO);
         }
@@ -89,23 +90,8 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
-        //res = ResourceManager::GetInstance()->CreateNewResource(metaPath.c_str(), ResourceType::MODEL);
-        res = ResourceManager::GetInstance()->LoadModelMetaData(metaPath.c_str());
-
-        baseGO = LoadModelCustomFormat(res.get()->GetLibraryPath());
-
-        //app->scene->AddGameObject(baseGO);
-
-        /*KbModel* model = (KbModel*)res.get();
-        for (auto& mesh : model->GetMeshes())
-        {
-            GameObject* go = new GameObject(mesh->GetName());
-            ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-            ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
-            meshComp->SetMesh(mesh);
-            baseGO->AddChild(go);
-            go->SetParent(baseGO);
-        }*/
+        model = ResourceManager::GetInstance()->LoadModelMetaData(metaPath.c_str());
+        baseGO = LoadModelCustomFormat(model->GetLibraryPath(), model);
     }
     else
     {
@@ -127,8 +113,6 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
         model.get()->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, newModel->uuid);
-    
-        //app->editor->assetsPanel->AddAsset(baseGO);
     }
 
     app->scene->AddGameObject(baseGO);
@@ -575,7 +559,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 }
 
 // Send the PATH, not the file name
-GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
+GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shared_ptr<KbModel> model)
 {
     GameObject* ret = nullptr;
 
@@ -645,6 +629,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path)
             KbMesh* mesh = LoadMeshCustomFormat(meshLibraryPath);
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
+            if (model) meshComp->SetModel(model);
             ResourceManager::GetInstance()->AddResource(mesh);
 
 

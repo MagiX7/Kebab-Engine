@@ -7,6 +7,8 @@
 
 #include "ResourceManager.h"
 
+#include "Model.h"
+
 //#include "MeshLoader.h"
 #include "TextureLoader.h"
 
@@ -64,7 +66,8 @@ void ComponentMesh::DrawOnInspector()
 	{
 		ImGui::Text("Vertices: %i", mesh->GetVertices().size());
 		ImGui::Text("Indices: %i", mesh->GetIndices().size());
-		//ImGui::Text("Textures: %i", textures.size());
+		if(model)
+			ImGui::BulletText("Reference count: %i", model.use_count());
 
 		ImGui::Checkbox("Show vertex normals", &drawVertexNormals);
 		if (drawVertexNormals)
@@ -166,6 +169,11 @@ void ComponentMesh::SetMesh(KbMesh* newMesh)
 
 	parent->SetGlobalAABB(aabb);
 
+}
+
+void ComponentMesh::SetModel(std::shared_ptr<KbModel> m)
+{
+	model = m;
 }
 
 JSON_Value* ComponentMesh::Save()
