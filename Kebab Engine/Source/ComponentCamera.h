@@ -65,7 +65,9 @@ private:
 	int currentWinHeight;
 
 	float planeFar;
+	float initialPlaneFar;
 	float planeNear;
+	float initialPlaneNear;
 
 	bool cameraActive;
 };

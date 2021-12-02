@@ -34,6 +34,8 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	}
 
 	planeNear = 0.1f;
+	initialPlaneFar = planeFar;
+	initialPlaneNear = planeNear;
 
 	currentWinHeight = 0;
 	currentWinWidth = 0;
@@ -248,6 +250,29 @@ void ComponentCamera::DrawOnInspector()
 			fovHorizontal = math::DegToRad(hfovdeg);
 			CalculateFov(currentWinWidth, currentWinHeight, fovHorizontal);
 		}
+
+		ImGui::Spacing();
+		//static float farPlaneDist = planeFar;
+		if (ImGui::SliderFloat("Far Plane Distance", &planeFar, 5, 300))
+		{
+			SetFarPlane(planeFar);
+		}
+		if (ImGui::Button("Reset to Default"))
+		{
+			SetFarPlane(initialPlaneFar);
+		}
+		ImGui::Spacing();
+		//static float nearPlaneDist = planeNear;
+		if (ImGui::SliderFloat("Near Plane Distance", &planeNear, 0.1f, 10, "%.3f"))
+		{
+			SetNearPlane(planeNear);
+		}
+		if (ImGui::Button("Reset to Default "))
+		{
+			SetNearPlane(initialPlaneNear);
+		}
+
+		ImGui::Spacing();
 		if (ImGui::Button("Set as Game Camera"))
 		{
 			app->camera->SetGameCamera(this);
