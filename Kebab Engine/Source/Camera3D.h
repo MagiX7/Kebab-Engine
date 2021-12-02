@@ -4,6 +4,7 @@
 #include "Globals.h"
 
 #include "Math/float3.h"
+#include "Geometry/LineSegment.h"
 
 class GameObject;
 class ComponentCamera;
@@ -51,6 +52,9 @@ public:
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
 
+	inline void SetDrawPickingRayValue(bool value) { debugDrawPicking = value; }
+	void DrawPickingRay();
+
 private:
 	GameObject* MousePickGameObject();
 	std::vector<GameObject*> ThrowRay(LineSegment& ray, float3& hitPoint, bool& clearVector, float& dist, GameObject* go = nullptr);
@@ -62,6 +66,9 @@ public:
 	ComponentCamera* gameCam;
 
 private:
+	// Line segment for mousepicking
+	LineSegment picking;
+	bool debugDrawPicking = true;
 
 	ComponentCamera* currentCam;
 	//ComponentCamera* editorCam;

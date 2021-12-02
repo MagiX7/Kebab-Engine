@@ -258,8 +258,10 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (app->camera->gameCam)
-		app->camera->gameCam->DrawFrustum();
+	app->camera->DrawPickingRay();
+
+	if (ComponentCamera* c = app->camera->gameCam)
+		c->DrawFrustum();
 
 	DoRender();
 	glPopMatrix();
@@ -522,14 +524,12 @@ void Renderer3D::DoRender()
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
-		ComponentCamera* cam = app->camera->editorCam;
+		ComponentCamera* cam = app->camera->gameCam;
 
-		if (app->editor->GetSceneState() == SceneState::EDIT)
+		/*if (app->editor->GetSceneState() == SceneState::EDIT)
 			cam = app->camera->editorCam;
-		else if ((app->editor->GetSceneState() == SceneState::PLAY 
-			|| app->editor->GetSceneState() == SceneState::PAUSE 
-			|| app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME) && app->camera->gameCam)
-			cam = app->camera->gameCam;
+		else
+			cam = app->camera->gameCam;*/
 
 		if (mesh && mat && !cam->frustumCulling)
 		{

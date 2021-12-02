@@ -28,7 +28,7 @@ ComponentMaterial::~ComponentMaterial()
 		delete t;
 		t = nullptr;
 	}*/
-	textures.clear();
+	//textures.clear();
 
 	//delete checkersTexture;
 }
@@ -57,21 +57,21 @@ void ComponentMaterial::DrawOnInspector()
 {
 	if (ImGui::CollapsingHeader("Texture"))
 	{
-		if (currentTexture && currentTexture == texture)
+		if (currentTexture && currentTexture == texture.get())
 			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
-		else if (currentTexture == checkersTexture)
+		else if (currentTexture == checkersTexture.get())
 			ImGui::TextColored({ 255,255,0,255 }, "Default checkers texture");
 		else
 			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
 
-		static bool checkers = currentTexture.get();
-		if (currentTexture == checkersTexture) checkers = true;
+		static bool checkers = currentTexture;
+		if (currentTexture == checkersTexture.get()) checkers = true;
 		else checkers = false;
 
 		if (ImGui::Checkbox("Set checkers", &checkers))
 		{
-			if (checkers) currentTexture = checkersTexture;
-			else if (texture) currentTexture = texture;
+			if (checkers) currentTexture = checkersTexture.get();
+			else if (texture) currentTexture = texture.get();
 			else currentTexture = nullptr;
 		}
 
@@ -84,9 +84,9 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::SameLine();
 			ImGui::Text("No texture.");
 		}
-		if (currentTexture)
+		if (currentTexture == texture.get())
 		{
-			std::string s = "References to texture " + std::to_string(ResourceManager::GetInstance()->GetReferenceCount(currentTexture.get()->uuid));
+			std::string s = "References to texture " + std::to_string(texture.use_count() - 1); // -1 because the shared ptr in the resources map
 			ImGui::BulletText(s.c_str());
 		}
 	}
@@ -94,14 +94,16 @@ void ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex)
 {
+	texture = tex;
+	currentTexture = texture.get();
 	//std::vector<Texture*>::iterator it = std::find(textures.begin(), textures.end(), tex);
-	if (std::find(textures.begin(), textures.end(), tex) == textures.end())
-	{
-		textures.push_back(tex);
-		texture = tex;
-		//texture->SetUUID(tex->uuid);
-		currentTexture = tex;
-	}
+	//if (std::find(textures.begin(), textures.end(), tex) == textures.end())
+	//{
+	//	textures.push_back(tex);
+	//	texture = tex;
+	//	//texture->SetUUID(tex->uuid);
+	//	currentTexture = tex;
+	//}
 }
 
 JSON_Value* ComponentMaterial::Save()
@@ -111,12 +113,12 @@ JSON_Value* ComponentMaterial::Save()
 
 	json_object_set_number(obj, "Type", 2);
 
-	if (currentTexture == checkersTexture)
+	if (currentTexture == checkersTexture.get())
 	{
 		json_object_set_string(obj, "path", "Checkers");
 		json_object_set_number(obj, "uuid", -1);
 	}
-	if (currentTexture == texture)
+	if (currentTexture == texture.get())
 	{
 		json_object_set_number(obj, "uuid", texture->uuid);
 		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
@@ -131,7 +133,7 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 	currentTexture = nullptr;
 
 	std::string path = json_object_dotget_string(obj, "path");
-	if (path == "Checkers") currentTexture = checkersTexture;
+	if (path == "Checkers") currentTexture = checkersTexture.get();
 	else
 	{
 		int uuid = json_object_get_number(obj, "uuid");
@@ -142,7 +144,7 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 		{
 			texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(uuid));
 			//texture = tex.get();
-			currentTexture = texture;
+			currentTexture = texture.get();
 		}
 		
 		/*texture->uuid = uuid;

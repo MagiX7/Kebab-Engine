@@ -24,7 +24,7 @@ public:
 
 	void AddTexture(std::shared_ptr<Texture>);
 
-	inline std::shared_ptr<Texture> GetCurrentTexture() { return currentTexture; }
+	inline Texture* GetCurrentTexture() { return currentTexture; }
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
@@ -33,11 +33,11 @@ private:
 	void SetCheckersTexture();
 
 private:
-	std::vector<std::shared_ptr<Texture>> textures;
+	//std::vector<std::shared_ptr<Texture>> textures;
 
 	std::shared_ptr<Texture> texture;
 
-	std::shared_ptr<Texture> currentTexture;
+	Texture* currentTexture;
 	//Texture* texture;
 	std::shared_ptr<Texture> checkersTexture;
 

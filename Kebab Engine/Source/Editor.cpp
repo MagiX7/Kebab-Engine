@@ -290,10 +290,11 @@ void Editor::SerializeScene(const char* path, const char* extension)
     OPTICK_EVENT("Serialization");
 
     std::string p = path;
-    if (!p.find_last_of("."))
+    if (!p.find_last_of(".") == 0)
     {
         p += extension;
     }
+    //p += extension;
 
     sceneValue = Parser::InitValue();
     JSON_Object* root = Parser::GetObjectByValue(sceneValue);
@@ -339,10 +340,12 @@ void Editor::UnserializeScene(const char* path)
     app->renderer3D->EraseAllGameObjects();
     hierarchyPanel->currentGO = nullptr;
     
-    char* buffer;
-    if(app->fileSystem->Load(path, &buffer) > 0)
+    sceneValue = json_parse_file(path);
+    if(sceneValue)
+    //char* buffer;
+    //if(app->fileSystem->Load(path, &buffer) > 0)
     {
-        sceneValue = json_parse_string(buffer);
+        //sceneValue = json_parse_string(buffer);
         JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
 
         JSON_Array* gosArray = json_object_dotget_array(sceneObj, "Scene.GameObjects");
@@ -379,9 +382,9 @@ void Editor::UnserializeScene(const char* path)
         }
 
         json_value_free(sceneValue);
-        delete[] buffer;
+        //delete[] buffer;
 
-        app->fileSystem->Remove("Library/Scenes/Temp/Scene.kbscene");
+        //app->fileSystem->Remove("Library/Scenes/Temp/Scene.kbscene");
     }
 }
 

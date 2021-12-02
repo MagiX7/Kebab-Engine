@@ -1,14 +1,14 @@
 {
-    "model uuid": 1516094635,
-    "model path": "Library\/Models\/Baker House__1516094635.kbmodel",
+    "model uuid": -2118509840,
+    "model path": "Library\/Models\/Baker House__-2118509840.kbmodel",
     "meshes": [
         {
             "mesh name": "Chimney",
-            "mesh library path": "Library\/Meshes\/Chimney__1516094635.kbmesh"
+            "mesh library path": "Library\/Meshes\/Chimney__-2118509840.kbmesh"
         },
         {
             "mesh name": "Baker_house",
-            "mesh library path": "Library\/Meshes\/Baker_house__1516094635.kbmesh"
+            "mesh library path": "Library\/Meshes\/Baker_house__-2118509840.kbmesh"
         }
     ]
 }

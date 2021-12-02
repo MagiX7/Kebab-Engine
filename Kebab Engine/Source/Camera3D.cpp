@@ -440,6 +440,19 @@ void Camera3D::Load(JSON_Object* root)
 	position = pos;
 }
 
+void Camera3D::DrawPickingRay()
+{
+	if (debugDrawPicking)
+	{
+		glColor3f(0, 1, 0);
+
+		glVertex3f(picking.a.x, picking.a.y, picking.a.z);
+		glVertex3f(picking.b.x, picking.b.y, picking.b.z);
+
+		glColor3f(1, 1, 1);
+	}
+}
+
 GameObject* Camera3D::MousePickGameObject()
 {
 	float4 winDimensions = app->editor->viewportPanel->GetDimensions();
@@ -455,7 +468,7 @@ GameObject* Camera3D::MousePickGameObject()
 	float x = Lerp(-1.f, 1.f, mouseWinPos.x / winDimensions.z);
 	float y = Lerp(1.f, -1.f, mouseWinPos.y / winDimensions.w);
 
-	LineSegment picking = editorCam->frustum.UnProjectLineSegment(x, y);
+	picking = editorCam->frustum.UnProjectLineSegment(x, y);
 
 	float3 hitPoint;
 	float distance;
