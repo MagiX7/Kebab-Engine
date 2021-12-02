@@ -91,6 +91,7 @@ private:
 
 	bool showWindows;
 	bool closeApp;
+	bool wantsToQuit;
 
 	bool onPlay;
 	

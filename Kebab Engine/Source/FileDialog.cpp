@@ -1,9 +1,4 @@
-#include "Application.h"
-#include "Window.h"
 #include "FileDialog.h"
-
-#include "GL/glew.h"
-#include "GL/wglew.h"
 
 #include <Windows.h>
 #include <commdlg.h>

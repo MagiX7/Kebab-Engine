@@ -55,6 +55,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     showAboutPanel = false;
     showWindows = true;
     closeApp = false;
+    wantsToQuit = false;
     onPlay = false;
 
     sceneState = SceneState::EDIT;
@@ -264,6 +265,30 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         //    ImGui::PopStyleColor();
     }
 
+    if (wantsToQuit)
+    {
+        ImGui::Begin("Are You Sure?");
+        ImVec2 size = ImGui::GetWindowSize();
+        ImVec2 pos = ImGui::GetWindowPos();
+        //ImGui::SameLine(pos.x);
+        ImGui::SameLine(10);
+
+        ImGui::TextColored({ 1,1,0,1 }, "Are you sure you want to quit? Remember to save!");
+
+        ImGui::NewLine();
+        ImGui::NewLine();
+
+        ImGui::SameLine((size.x * 0.5f) - 110);
+        if (ImGui::Button("Yes", { 75, 30 }))
+            closeApp = true;
+
+        ImGui::SameLine((size.x * 0.5f) + 40);
+        if (ImGui::Button("No", { 75,30 }))
+            wantsToQuit = false;
+
+        ImGui::End();
+    }
+
     ImGui::EndFrame();
 
 
@@ -470,32 +495,40 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             if (ImGui::MenuItem("Open Scene..."))
             {
                 std::string path = FileDialog::OpenFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
-                currentLoadDirectory = path;
-                UnserializeScene(path.c_str());
+                if (!path.empty())
+                {
+                    currentLoadDirectory = path;
+                    UnserializeScene(path.c_str());
+                }
             }
             if (ImGui::MenuItem("Exit"))
             {
-                closeApp = true;
-                ImGui::EndMenu();
+                wantsToQuit = true;
             }
+            
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("GameObject"))
         {
-            if (ImGui::MenuItem("Cube"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+            if (ImGui::BeginMenu("Primitives"))
+            {
+                if (ImGui::MenuItem("Cube"))
+                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
 
-            if (ImGui::MenuItem("Pyramid"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+                if (ImGui::MenuItem("Pyramid"))
+                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
 
-            if (ImGui::MenuItem("Plane"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
+                if (ImGui::MenuItem("Plane"))
+                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
 
-            if (ImGui::MenuItem("Sphere"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+                if (ImGui::MenuItem("Sphere"))
+                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
 
-            if (ImGui::MenuItem("Cylinder"))
-                app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
+                if (ImGui::MenuItem("Cylinder"))
+                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
+                
+                ImGui::EndMenu();
+            }
 
             if (ImGui::MenuItem("Empty GameObject"))
             {
@@ -507,36 +540,41 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
 
         if (ImGui::BeginMenu("View"))
         {
-            if (ImGui::MenuItem("Console window"))
+            if (ImGui::BeginMenu("Panels"))
             {
-                consolePanel->active = !consolePanel->active;
-            }
-            if (ImGui::MenuItem("Configuration window"))
-            {
-                configPanel->active = !configPanel->active;
-            }
-            if (ImGui::MenuItem("Hierarchy window"))
-            {
-                hierarchyPanel->active = !hierarchyPanel->active;
-            }
-            if (ImGui::MenuItem("Inspector window"))
-            {
-                inspectorPanel->active = !inspectorPanel->active;
-            }
-            if (ImGui::MenuItem("Assets window"))
-            {
-                assetsPanel->active = !assetsPanel->active;
-            }
-            if (ImGui::MenuItem("Scene preview"))
-            {
-                previewScenePanel->active = !previewScenePanel;
-            }
-            if (ImGui::MenuItem("Game Debug Info"))
-            {
-                gameDebugInfoPanel->active = !gameDebugInfoPanel->active;
-            }
+                if (ImGui::MenuItem("Console window"))
+                {
+                    consolePanel->active = !consolePanel->active;
+                }
+                if (ImGui::MenuItem("Configuration window"))
+                {
+                    configPanel->active = !configPanel->active;
+                }
+                if (ImGui::MenuItem("Hierarchy window"))
+                {
+                    hierarchyPanel->active = !hierarchyPanel->active;
+                }
+                if (ImGui::MenuItem("Inspector window"))
+                {
+                    inspectorPanel->active = !inspectorPanel->active;
+                }
+                if (ImGui::MenuItem("Assets window"))
+                {
+                    assetsPanel->active = !assetsPanel->active;
+                }
+                if (ImGui::MenuItem("Scene preview"))
+                {
+                    previewScenePanel->active = !previewScenePanel;
+                }
+                if (ImGui::MenuItem("Game Debug Info"))
+                {
+                    gameDebugInfoPanel->active = !gameDebugInfoPanel->active;
+                }
 
+                ImGui::EndMenu();
+            }
             ImGui::Checkbox("Show Editor Windows", &showWindows);
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Help"))

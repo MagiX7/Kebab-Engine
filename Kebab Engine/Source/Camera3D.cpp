@@ -444,12 +444,14 @@ void Camera3D::DrawPickingRay()
 {
 	if (debugDrawPicking)
 	{
+		glBegin(GL_LINES);
 		glColor3f(0, 1, 0);
 
 		glVertex3f(picking.a.x, picking.a.y, picking.a.z);
 		glVertex3f(picking.b.x, picking.b.y, picking.b.z);
 
 		glColor3f(1, 1, 1);
+		glEnd();
 	}
 }
 
