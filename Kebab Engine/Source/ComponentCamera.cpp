@@ -20,8 +20,6 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	this->type = ComponentType::CAMERA;
 	this->cameraType = cameraType;
 
-	frustumCulling = true;
-
 	if (cameraType == CameraType::GAME)
 	{
 		fovHorizontal = math::DegToRad(80);

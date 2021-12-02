@@ -218,8 +218,8 @@ bool Renderer3D::PreUpdate(float dt)
 	}
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 		drawAABB = !drawAABB;
-	if (app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-		app->camera->gameCam->frustumCulling = !app->camera->gameCam->frustumCulling;
+	//if (app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+	//	app->camera->gameCam->frustumCulling = !app->camera->gameCam->frustumCulling;
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
@@ -245,7 +245,7 @@ bool Renderer3D::Draw(float dt)
 
 	if (app->camera->gameCam)
 	{
-		DoRender();
+		DoRender(true);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -263,7 +263,7 @@ bool Renderer3D::Draw(float dt)
 	if (ComponentCamera* c = app->camera->gameCam)
 		c->DrawFrustum();
 
-	DoRender();
+	DoRender(false);
 	glPopMatrix();
 	glPopMatrix();
 	editorFbo->Unbind();
@@ -378,13 +378,16 @@ void Renderer3D::Submit(GameObject* go)
 	std::queue<GameObject*> q;
 	q.push(go);
 
-	app->scene->rootQT->Insert(go);
-	app->scene->rootQT->Recalculate();
-
 	while(!q.empty())
 	{
 		auto& curr = q.front();
 		q.pop();
+
+		if (curr->isStatic)
+		{
+			app->scene->rootQT->Insert(curr);
+			app->scene->rootQT->Recalculate();
+		}
 
 		if (curr->GetComponent(ComponentType::MESH))
 			if (std::find(gameObjects.begin(), gameObjects.end(), curr) == gameObjects.end())
@@ -512,10 +515,12 @@ void Renderer3D::DrawAABB(AABB& aabb)
 	glEnd();
 }
 
-void Renderer3D::DoRender()
+void Renderer3D::DoRender(bool gameScene)
 {
 	DrawGrid();
-	app->scene->rootQT->DrawTree();
+
+	if (app->editor->debugQT)
+		app->scene->rootQT->DrawTree();
 
 	for (const auto& go : gameObjects)
 	{
@@ -524,24 +529,35 @@ void Renderer3D::DoRender()
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
-		ComponentCamera* cam = app->camera->gameCam;
-
-		/*if (app->editor->GetSceneState() == SceneState::EDIT)
-			cam = app->camera->editorCam;
-		else
-			cam = app->camera->gameCam;*/
-
-		if (mesh && mat && !cam->frustumCulling)
+		if (gameScene)
 		{
-			mesh->Draw(mat);
-			if (drawAABB)
-				DrawAABB(*go->GetGlobalAABB());
+			if (mesh && mat && !app->editor->frustumCulling)
+			{
+				mesh->Draw(mat);
+				if (drawAABB)
+					DrawAABB(*go->GetGlobalAABB());
+			}
+			else if (mesh && mat && go->insideFrustum && app->editor->frustumCulling)
+			{
+				mesh->Draw(mat);
+				if (drawAABB)
+					DrawAABB(*go->GetGlobalAABB());
+			}
 		}
-		else if (mesh && mat && (go->insideFrustum || go->GetParent()->insideFrustum) && cam->frustumCulling)
+		else
 		{
-			mesh->Draw(mat);
-			if (drawAABB)
-				DrawAABB(*go->GetGlobalAABB());
+			if (mesh && mat && !app->editor->frustumCulling)
+			{
+				mesh->Draw(mat);
+				if (drawAABB)
+					DrawAABB(*go->GetGlobalAABB());
+			}
+			else if (mesh && mat && go->insideFrustum && app->editor->frustumCulling)
+			{
+				mesh->Draw(mat);
+				if (drawAABB)
+					DrawAABB(*go->GetGlobalAABB());
+			}
 		}
 
 		//mesh->Draw(mat);

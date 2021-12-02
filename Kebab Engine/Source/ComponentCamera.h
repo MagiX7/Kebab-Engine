@@ -54,8 +54,6 @@ public:
 	CameraType cameraType;
 	Frustum frustum;
 
-	bool frustumCulling;
-
 private:
 
 	float fovVertical;
