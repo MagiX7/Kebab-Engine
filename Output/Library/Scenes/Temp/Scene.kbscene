@@ -1,0 +1,452 @@
+{
+    "Scene": {
+        "GameObjects": [
+            {
+                "name": "Main Camera",
+                "uuid": -1758006059,
+                "parent uuid": -1398596466,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": -5,
+                            "y": 5,
+                            "z": 2
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 4,
+                        "fovHorizontal": 1.3962633609771729,
+                        "currentWinWidth": 903,
+                        "currentWinHeight": 578,
+                        "worldmatrix": {
+                            "x0": 1,
+                            "y0": 0,
+                            "z0": 0,
+                            "x1": 0,
+                            "y1": 1,
+                            "z1": 0,
+                            "x2": 0,
+                            "y2": 0,
+                            "z2": 1,
+                            "x3": -5,
+                            "y3": 5,
+                            "z3": 2
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Baker House",
+                "uuid": 955642811,
+                "parent uuid": -1398596466,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Chimney",
+                "uuid": -748635639,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker_house",
+                "uuid": -974136188,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker House",
+                "uuid": 955642811,
+                "parent uuid": -1398596466,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Chimney",
+                "uuid": -748635639,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker_house",
+                "uuid": -974136188,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker House",
+                "uuid": 955642811,
+                "parent uuid": -1398596466,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Chimney",
+                "uuid": -748635639,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker_house",
+                "uuid": -974136188,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker House",
+                "uuid": 955642811,
+                "parent uuid": -1398596466,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Chimney",
+                "uuid": -748635639,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__965111267"
+                    }
+                ]
+            },
+            {
+                "name": "Baker_house",
+                "uuid": -974136188,
+                "parent uuid": 955642811,
+                "Components": [
+                    {
+                        "Type": 0,
+                        "Position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "Rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                        },
+                        "Scale": {
+                            "x": 1,
+                            "y": 1,
+                            "z": 1
+                        }
+                    },
+                    {
+                        "Type": 2,
+                        "uuid": 778033158,
+                        "path": "Library\/Textures\/Baker_house__965111267.kbtexture"
+                    },
+                    {
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__965111267"
+                    }
+                ]
+            }
+        ]
+    }
+}

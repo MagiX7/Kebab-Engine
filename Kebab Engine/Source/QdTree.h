@@ -3,6 +3,8 @@
 #include "Geometry/AABB.h"
 #include "Geometry/Frustum.h"
 
+#include "Geometry/LineSegment.h"
+
 #include <vector>
 
 class GameObject;
@@ -44,6 +46,7 @@ public:
 	void DrawTree();
 
 	void Intersect(Frustum* frustum);
+	void Intersect(std::vector<GameObject*>& gos, LineSegment line);
 
 	QuadNode* GetRoot() { return root; }
 

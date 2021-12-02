@@ -81,10 +81,14 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         {
             GameObject* go = new GameObject(mesh->GetOwnerName());
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
+
             meshComp->SetMesh(mesh);
             meshComp->SetModel(model);
             baseGO->AddChild(go);
             go->SetParent(baseGO);
+
+            // TODO: Get the texture path somehow
+            ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
         }
 
     }

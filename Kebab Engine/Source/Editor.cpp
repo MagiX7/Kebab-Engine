@@ -424,7 +424,7 @@ void Editor::OnScenePlay()
     {
         app->fileSystem->CreateDirectoryA("Library/Scenes/Temp/");
     }
-    SerializeScene("Library/Scenes/Temp/Scene.kbscene");
+    SerializeScene("Library/Scenes/Temp/Scene");
 }
 
 void Editor::OnSceneStop()

@@ -13,6 +13,8 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 
+#include "QdTree.h"
+
 #include "optick.h"
 
 #include <queue>
@@ -493,57 +495,63 @@ GameObject* Camera3D::MousePickGameObject()
 	return nullptr;
 }
 
-std::vector<GameObject*> Camera3D::ThrowRay(LineSegment& line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
+std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
 {
 	std::vector<GameObject*> gos;
 
 	std::queue<GameObject*> q;
 
-	for (auto& go : gameObject->GetChilds())
-		q.push(go);
+	//app->scene->rootQT->Intersect(gos, line);
 
-	while (!q.empty())
+	//if (!gos.empty())
 	{
-		GameObject* curr = q.front();
-		q.pop();
+		for (auto& go : gameObject->GetChilds())
+			q.push(go);
 
-		// AABB
-		LineSegment localLine = line;
-		if (curr->GetGlobalAABB()->Intersects(localLine))
+		while (!q.empty())
 		{
-			// Mesh
-			ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
-			ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
-			if (meshComp)
+			GameObject* curr = q.front();
+			q.pop();
+
+			// AABB
+			LineSegment localLine = line;
+			//app->scene->rootQT->Intersect(gos, localLine);
+
+			if (curr->GetGlobalAABB()->Intersects(localLine))
 			{
-				Triangle triangle;
-				for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+				// Mesh
+				ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
+				ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+				if (meshComp)
 				{
-					triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
-
-					float4x4 m = trans->GetLocalMatrix().Inverted();
-					Ray ray = localLine.ToRay();
-					ray.Transform(m);
-					if (ray.Intersects(triangle, &dist, &hitPoint))
+					Triangle triangle;
+					for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
 					{
-						if (curr->GetParent())
-							gos.push_back(curr->GetParent());
-						gos.push_back(curr);
-						clearVector = false;
+						triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+						triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+						triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
-						break;
+						float4x4 m = trans->GetLocalMatrix().Inverted();
+						Ray ray = localLine.ToRay();
+						ray.Transform(m);
+						if (ray.Intersects(triangle, &dist, &hitPoint))
+						{
+							if (curr->GetParent())
+								gos.push_back(curr->GetParent());
+							gos.push_back(curr);
+							clearVector = false;
+
+							break;
+						}
 					}
 				}
 			}
+
+			if (curr->GetChilds().size() > 0)
+				for (auto& child : curr->GetChilds())
+					q.push(child);
 		}
-
-		if (curr->GetChilds().size() > 0)
-			for (auto& child : curr->GetChilds())
-				q.push(child);
 	}
-
 	if (gos.size() <= 0)
 		clearVector = true;
 

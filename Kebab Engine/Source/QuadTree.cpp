@@ -7,6 +7,7 @@
 #include "Geometry/Plane.h"
 
 #include <queue>
+#include <set>
 
 #include "mmgr/mmgr.h"
 
@@ -345,5 +346,32 @@ void QdTree::Intersect(Frustum* frustum)
 				}
 			}
 		}
+	}
+}
+
+void QdTree::Intersect(std::vector<GameObject*>& gos, LineSegment line)
+{
+	// TODO: Get it working
+
+	std::queue<QuadNode*> q;
+	q.push(root);
+
+	while (!q.empty())
+	{
+		QuadNode* curr = q.front();
+		q.pop();
+
+		if (!curr->leaf)
+		{
+			for (auto& n : curr->underNodes)
+				q.push(n);
+		}
+		else
+		{
+			if (curr->section.Intersects(line) || curr->section.Contains(line))
+			{
+				gos.insert(gos.end(), curr->bucket.begin(), curr->bucket.end());
+			}
+		}		
 	}
 }
