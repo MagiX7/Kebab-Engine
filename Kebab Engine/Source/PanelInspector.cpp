@@ -13,7 +13,10 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 
+#include "QdTree.h"
+
 #include <vector>
+#include <queue>
 
 InspectorPanel::InspectorPanel()
 {
@@ -48,6 +51,54 @@ void InspectorPanel::OnRender(float dt)
 
 		if (app->editor->hierarchyPanel->currentGO)
 		{
+			ImGui::TextColored({ 0.1f, 0.9f, 0.9f, 1.0f }, app->editor->hierarchyPanel->currentGO->GetName().c_str());
+
+			if (ImGui::Checkbox("Static", &app->editor->hierarchyPanel->currentGO->isStatic))
+			{
+				if (app->editor->hierarchyPanel->currentGO->isStatic)
+				{
+					std::queue<GameObject*> que;
+					que.push(app->editor->hierarchyPanel->currentGO);
+
+					while (!que.empty())
+					{
+						GameObject* go = que.front();
+						que.pop();
+
+						go->isStatic = app->editor->hierarchyPanel->currentGO->isStatic;
+						app->scene->rootQT->Insert(go);
+						app->scene->rootQT->Recalculate();
+
+						for (std::vector<GameObject*>::iterator it = go->GetChilds().begin(); it != go->GetChilds().end(); ++it)
+						{
+							que.push((*it));
+						}
+					}
+				}
+				else
+				{
+					std::queue<GameObject*> que;
+					que.push(app->editor->hierarchyPanel->currentGO);
+
+					while (!que.empty())
+					{
+						GameObject* go = que.front();
+						que.pop();
+
+						go->isStatic = app->editor->hierarchyPanel->currentGO->isStatic;
+						app->scene->rootQT->Remove(go);
+						app->scene->rootQT->Recalculate();
+
+						for (std::vector<GameObject*>::iterator it = go->GetChilds().begin(); it != go->GetChilds().end(); ++it)
+						{
+							que.push((*it));
+						}
+					}
+				}
+			}
+
+			ImGui::Separator();
+
 			std::vector<Component*>::const_iterator it = app->editor->hierarchyPanel->currentGO->GetComponents().begin();
 
 			for (; it != app->editor->hierarchyPanel->currentGO->GetComponents().end(); ++it)

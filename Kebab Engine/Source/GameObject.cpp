@@ -10,6 +10,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
+#include "QdTree.h"
+
 #include "optick.h"
 
 #include "mmgr/mmgr.h"
@@ -28,6 +30,7 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 
 	insideFrustum = false;
 	isStatic = false;
+	inQT = false;
 
 	if (uuid == 0)
 	{
@@ -41,8 +44,14 @@ GameObject::~GameObject()
 {
 	//DeleteChilds(this);
 
+	app->scene->rootQT->Remove(this);
+	app->scene->rootQT->Recalculate();
+
 	for (auto& go : childs)
 	{
+		app->scene->rootQT->Remove(go);
+		app->scene->rootQT->Recalculate();
+
 		delete(go);
 		go = nullptr;
 	}
@@ -122,16 +131,6 @@ void GameObject::UnParent()
 			}
 		}
 	}
-	/*if(parent)
-	{
-		for (int i = 0; i < parent->GetChilds().size(); ++i)
-		{
-			if (parent->GetChilds()[i] == this)
-			{
-				parent.
-			}
-		}
-	}*/
 }
 
 void GameObject::EraseChild(GameObject* go)
@@ -165,10 +164,6 @@ void GameObject::AddComponent(Component* comp)
 void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
-	/*ComponentTransform* tr = (ComponentTransform*)child->GetComponent(ComponentType::TRANSFORM);
-	tr->PropagateTransform(child, tr->GetTranslation(), tr->GetRotation(), tr->GetScale());*/
-	//parent->UpdateAABB(tr->GetLocalMatrix());
-	//SetGlobalAABB(this);
 }
 
 void GameObject::AddAABB()
@@ -177,11 +172,6 @@ void GameObject::AddAABB()
 
 	if (mesh)
 	{
-		//if (!localAABB)
-		//{
-		//	localAABB = new AABB();
-		//}
-
 		localAABB.SetNegativeInfinity();
 		for (uint i = 0; i < mesh->GetMesh()->vertices.size(); i++)
 		{
@@ -236,20 +226,20 @@ AABB* GameObject::GetLocalAABB()
 
 AABB* GameObject::GetGlobalAABB()
 {
-	/*ComponentTransform* compTrans = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
-	OBB obb = localAABB.Transform(compTrans->GetLocalMatrix());
-	globalAABB.SetNegativeInfinity();
-	globalAABB.Enclose(obb);*/
 	return &globalAABB;
 }
 
 void GameObject::UpdateAABB(float4x4& newTrans)
 {
-	//OBB obb = localAABB.Transform(newTrans);
 	OBB obb = localAABB.ToOBB();
 	obb.Transform(newTrans);
 	globalAABB.SetNegativeInfinity();
 	globalAABB.Enclose(obb);
+}
+
+void GameObject::HasMoved()
+{
+	app->scene->rootQT->Recalculate();
 }
 
 void GameObject::Save(JSON_Array* array)

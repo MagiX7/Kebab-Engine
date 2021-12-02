@@ -50,8 +50,6 @@ private:
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model);
 	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
-public:
-
 
 private:
 

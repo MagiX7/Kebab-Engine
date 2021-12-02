@@ -48,7 +48,7 @@ public:
 	void DrawAABB(AABB& aabb);
 
 private:
-	void DoRender();
+	void DoRender(bool gameScene);
 	void PushCamera(ComponentCamera* cam);
 
 public:

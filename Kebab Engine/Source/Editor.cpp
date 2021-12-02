@@ -57,6 +57,8 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     closeApp = false;
     wantsToQuit = false;
     onPlay = false;
+    debugQT = false;
+    frustumCulling = false;
 
     sceneState = SceneState::EDIT;
     initialScene = nullptr;
@@ -573,6 +575,10 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
 
                 ImGui::EndMenu();
             }
+
+            ImGui::Checkbox("Debug Quad Tree", &debugQT);
+            ImGui::Checkbox("Visualize Frustum Culling", &frustumCulling);
+
             ImGui::Checkbox("Show Editor Windows", &showWindows);
 
             ImGui::EndMenu();

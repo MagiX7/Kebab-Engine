@@ -187,14 +187,13 @@ bool Camera3D::Update(float dt)
 	}
 
 	// Frustum Culling
-	/*std::vector<GameObject*>::iterator it;
-	for (it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
+	if (gameCam != nullptr)
 	{
-		DrawInFrustumCulling((*it), currentCam);
-
-		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it), currentCam);
-	}*/
+		for (std::vector<GameObject*>::iterator it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); ++it)
+		{
+			PropagateDrawInFrustumCulling((*it), gameCam);
+		}
+	}
 
 	return true;
 }

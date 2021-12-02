@@ -81,6 +81,8 @@ public:
 
 	bool showAboutPanel;
 	bool wireframe;
+	bool debugQT;
+	bool frustumCulling;
 
 private:
 	std::string currentSaveDirectory;
@@ -94,7 +96,7 @@ private:
 	bool wantsToQuit;
 
 	bool onPlay;
-	
+
 	JSON_Value* sceneValue;
 
 	ImGuizmo::OPERATION guizmoOperation;

@@ -47,8 +47,11 @@ public:
 	AABB* GetGlobalAABB();
 	void UpdateAABB(float4x4& newTrans);
 
+	void HasMoved();
+
 	bool insideFrustum;
 	bool isStatic;
+	bool inQT;
 
 	void Save(JSON_Array* array);
 	JSON_Value* Load(JSON_Object* obj);

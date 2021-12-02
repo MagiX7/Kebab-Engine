@@ -39,6 +39,59 @@ void QdTree::Create(AABB& limits)
 	root->section = limits;
 }
 
+void QdTree::CleanUp()
+{
+	std::queue<QuadNode*> que;
+	std::vector<GameObject*> gObjs;
+
+	que.push(root);
+
+	while (!que.empty())
+	{
+		QuadNode* itNode = que.front();
+		que.pop();
+
+		if (itNode->leaf == false)
+		{
+			for (std::vector<QuadNode*>::iterator itUN = itNode->underNodes.begin(); itUN != itNode->underNodes.end(); itUN++)
+			{
+				que.push((*itUN));
+			}
+		}
+		else
+		{
+			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
+			{
+				bool repeated = false;
+
+				for (std::vector<GameObject*>::iterator it = gObjs.begin(); it != gObjs.end(); it++)
+				{
+					if ((*itGO) == (*it))
+					{
+						repeated = true;
+					}
+				}
+
+				if (repeated == false)
+					gObjs.push_back((*itGO));
+			}
+		}
+	}
+
+	for (std::vector<GameObject*>::iterator itGO = gObjs.begin(); itGO != gObjs.end(); itGO++)
+	{
+		Remove((*itGO));
+	}
+
+	for (std::vector<QuadNode*>::iterator itUN = root->underNodes.begin(); itUN != root->underNodes.end(); itUN++)
+	{
+		delete((*itUN));
+	}
+
+	root->underNodes.clear();
+	root->bucket.clear();
+}
+
 void QdTree::Insert(GameObject* go)
 {
 	std::queue<QuadNode*> que;
@@ -98,7 +151,7 @@ void QdTree::Remove(GameObject* go)
 		{
 			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 			{
-				if ((*itGO) = go)
+				if ((*itGO) == go)
 				{
 					itNode->bucket.erase(itGO);
 					break;
@@ -263,7 +316,7 @@ void QdTree::Intersect(Frustum* frustum)
 		{
 			for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 			{
-				(*itGO)->insideFrustum = false;
+				(*itGO)->inQT = false;
 			}
 		}
 	}
@@ -279,10 +332,7 @@ void QdTree::Intersect(Frustum* frustum)
 		{
 			for (std::vector<QuadNode*>::iterator itUN = itNode->underNodes.begin(); itUN != itNode->underNodes.end(); itUN++)
 			{
-				if (frustum->Intersects((*itUN)->section) || (*itUN)->section.Contains(frustum->MinimalEnclosingAABB()))
-				{
-					que.push((*itUN));
-				}
+				que.push((*itUN));
 			}
 		}
 		else if (itNode->leaf)
@@ -291,7 +341,7 @@ void QdTree::Intersect(Frustum* frustum)
 			{
 				for (std::vector<GameObject*>::iterator itGO = itNode->bucket.begin(); itGO != itNode->bucket.end(); itGO++)
 				{
-					(*itGO)->insideFrustum = true;
+					(*itGO)->inQT = true;
 				}
 			}
 		}

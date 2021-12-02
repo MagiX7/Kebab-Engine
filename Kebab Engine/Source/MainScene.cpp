@@ -70,6 +70,8 @@ bool MainScene::Start()
     
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
 
     //GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     //app->renderer3D->Submit(a);
@@ -92,11 +94,8 @@ bool MainScene::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
         rootQT->Recalculate();
 
-    if (app->editor->GetSceneState() == SceneState::EDIT)
-        rootQT->Intersect(&app->camera->editorCam->frustum);
-    else if ((app->editor->GetSceneState() == SceneState::PLAY
-        || app->editor->GetSceneState() == SceneState::PAUSE
-        || app->editor->GetSceneState() == SceneState::STEP_ONE_FRAME) && app->camera->gameCam)
+    rootQT->Intersect(&app->camera->editorCam->frustum);
+    if (app->camera->gameCam != nullptr)
         rootQT->Intersect(&app->camera->gameCam->frustum);
 
     return true;
@@ -127,9 +126,6 @@ void MainScene::AddGameObject(GameObject* go)
 void MainScene::DeleteGameObject(GameObject* go)
 {
     std::vector<GameObject*>::iterator it;
-
-    rootQT->Remove(go);
-    rootQT->Recalculate();
 
     for (it = root->GetChilds().begin(); it != root->GetChilds().end(); ++it)
     {

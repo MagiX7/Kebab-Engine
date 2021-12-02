@@ -32,11 +32,12 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(editor);
-	AddModule(fileSystem);
-	
+
 	// Scenes
 	AddModule(scene);
+
+	AddModule(editor);
+	AddModule(fileSystem);
 
 	AddModule(renderer3D);
 

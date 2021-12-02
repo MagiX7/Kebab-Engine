@@ -44,9 +44,6 @@ void ComponentTransform::DrawOnInspector()
 	float center = (size.x / 2) - (len / 2);
 
 	ImGui::SetNextItemWidth(center);
-	
-	ImGui::TextColored({0.1f, 0.9f, 0.9f, 1.0f}, parent->GetName().c_str());
-	ImGui::Separator();
 
 
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
@@ -60,6 +57,8 @@ void ComponentTransform::DrawOnInspector()
 
 			SetTranslation(guiPos);
 			PropagateTransform(parent, translation, rotation, scale);
+
+			parent->HasMoved();
 		}
 
 		ImGui::Separator();
@@ -73,6 +72,8 @@ void ComponentTransform::DrawOnInspector()
 
 			SetRotation(x * y * z);
 			PropagateTransform(parent, position, rotation, scale);
+
+			parent->HasMoved();
 		}
 
 		ImGui::Separator();
@@ -82,6 +83,8 @@ void ComponentTransform::DrawOnInspector()
 		{
 			SetScale(guiScale);
 			PropagateTransform(parent, position, rotation, scale);
+
+			parent->HasMoved();
 		}
 
 		if (parentCam != nullptr)

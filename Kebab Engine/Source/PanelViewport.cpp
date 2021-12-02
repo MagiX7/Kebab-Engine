@@ -5,6 +5,7 @@
 #include "Renderer3D.h"
 #include "Editor.h"
 #include "FileSystem.h"
+#include "MainScene.h"
 
 #include "PanelScene.h"
 
@@ -62,11 +63,28 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
             std::string dragPath = (const char*)payload->Data;
             std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
             std::string ext = name.substr(name.find_last_of("."), name.size());
-            
+            name = name.substr(0, name.find_last_of("_"));
+            name = name.substr(0, name.find_last_of("_"));
+
             if (ext == ".kbmodel")
             {
-                GameObject* bh = MeshLoader::GetInstance()->LoadModelCustomFormat(dragPath);
-                app->renderer3D->Submit(bh);
+                std::string pathAsset = app->fileSystem->FindFilePath(name + ".fbx");
+
+                if (pathAsset != "")
+                {
+                    GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset);
+                    app->renderer3D->Submit(bh);
+                }
+                else
+                {
+                    pathAsset = app->fileSystem->FindFilePath(name + ".obj");
+
+                    if (pathAsset != "")
+                    {
+                        GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset);
+                        app->renderer3D->Submit(bh);
+                    }
+                }
             }
             else if (ext == ".kbtexture")
             {
@@ -142,6 +160,8 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
             {
                 model.Transpose();
                 tr->SetLocalMatrix(model);
+
+                go->HasMoved();
             }
         }
     }

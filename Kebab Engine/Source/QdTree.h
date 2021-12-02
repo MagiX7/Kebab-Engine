@@ -7,7 +7,7 @@
 
 class GameObject;
 
-#define MAX_BUCKET 5
+#define MAX_BUCKET 10
 
 class QuadNode
 {
@@ -32,6 +32,7 @@ public:
 	~QdTree();
 
 	void Create(AABB& limits);
+	void CleanUp();
 
 	void Insert(GameObject* go);
 	void Remove(GameObject* go);
