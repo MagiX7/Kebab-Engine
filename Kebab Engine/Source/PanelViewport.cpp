@@ -72,7 +72,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
                 if (pathAsset != "")
                 {
-                    GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset);
+                    GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset, true);
                     app->renderer3D->Submit(bh);
                 }
                 else
@@ -81,7 +81,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
 
                     if (pathAsset != "")
                     {
-                        GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset);
+                        GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset, true);
                         app->renderer3D->Submit(bh);
                     }
                 }

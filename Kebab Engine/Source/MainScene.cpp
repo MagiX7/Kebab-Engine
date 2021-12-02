@@ -68,10 +68,10 @@ bool MainScene::Start()
     //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     //app->renderer3D->Submit(avril);
     
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
-    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx"));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
+    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
 
     //GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
     //app->renderer3D->Submit(a);

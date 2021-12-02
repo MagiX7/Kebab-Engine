@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 
 #include "ResourceManager.h"
+#include "Model.h"
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -121,10 +122,12 @@ void AssetsPanel::LoadAssetsToCustom()
 		for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
 		{
 			std::string completePath = currentFolderToLoad + (*it);
-			
-			MeshLoader::GetInstance()->LoadModel(completePath);
+			std::string ext = (*it).substr((*it).find_last_of("."), (*it).length());
 
-			TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+			if (ext == ".fbx" || ext == ".obj")
+				MeshLoader::GetInstance()->LoadModel(completePath);
+			if (ext == ".png" || ext == ".dds" || ext == ".jpg")
+				TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
 		}
 	}
 }

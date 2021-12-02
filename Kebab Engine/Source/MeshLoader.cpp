@@ -119,7 +119,29 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         SaveModelCustomFormat(baseGO, newModel->uuid);
     }
 
-    app->scene->AddGameObject(baseGO);
+    if (loadOnScene)
+    {
+        app->scene->AddGameObject(baseGO);
+
+        int numOfGO = 0;
+
+        for (std::vector<GameObject*>::iterator it = app->scene->GetGameObjects().begin(); it != app->scene->GetGameObjects().end(); it++)
+        {
+            std::string ogName = (*it)->GetName().substr(0, (*it)->GetName().find_last_of("("));
+
+            if (ogName == name)
+                numOfGO++;
+        }
+
+        numOfGO--;
+
+        if (numOfGO > 0)
+        {
+            static char finalName[64] = "";
+            sprintf_s(finalName, 64, "%s(%i)", name.c_str(), numOfGO);
+            baseGO->SetName(finalName);
+        }
+    }
 
     return baseGO;
 }
