@@ -15,9 +15,9 @@ ComponentTransform::ComponentTransform(GameObject* compOwner)
 	localTransformMat = float4x4::identity;
 	globalTransformMat = float4x4::identity;
 
-	guiPos = { 0,0,0 };
-	guiRot = { 0,0,0 };
-	guiScale = { 1,1,1 };
+	position = float3::zero;
+	rotation = Quat::identity;
+	scale = float3::one;
 
 	RecomputeGlobalMat();
 }
@@ -51,40 +51,35 @@ void ComponentTransform::DrawOnInspector()
 		ComponentCamera* parentCam = (ComponentCamera*)parent->GetComponent(ComponentType::CAMERA);
 
 		ImGui::Text("Position");
-		if (ImGui::DragFloat3("position", guiPos.ptr(), 0.05f))
+		float3 newPosition = position;
+		if (ImGui::DragFloat3("position", newPosition.ptr(), 0.05f))
 		{
-			float3 translation = guiPos - position;
-
-			SetTranslation(guiPos);
-			PropagateTransform(parent, translation, rotation, scale);
-
-			parent->HasMoved();
+			SetTranslation(newPosition);
 		}
 
 		ImGui::Separator();
 
 		ImGui::Text("Rotation");
-		if (ImGui::DragFloat3("rotation", guiRot.ptr(), 0.05f))
+		float3 newEulerRotation;
+		newEulerRotation.x = RADTODEG * eulerRotation.x;
+		newEulerRotation.y = RADTODEG * eulerRotation.y;
+		newEulerRotation.z = RADTODEG * eulerRotation.z;
+		if (ImGui::DragFloat3("rotation", newEulerRotation.ptr(), 0.05f))
 		{
-			Quat x = Quat::RotateX(math::DegToRad(guiRot.x));
-			Quat y = Quat::RotateY(math::DegToRad(guiRot.y));
-			Quat z = Quat::RotateZ(math::DegToRad(guiRot.z));
+			newEulerRotation.x = DEGTORAD * newEulerRotation.x;
+			newEulerRotation.y = DEGTORAD * newEulerRotation.y;
+			newEulerRotation.z = DEGTORAD * newEulerRotation.z;
 
-			SetRotation(x * y * z);
-			PropagateTransform(parent, position, rotation, scale);
-
-			parent->HasMoved();
+			SetRotation(newEulerRotation);
 		}
 
 		ImGui::Separator();
 
 		ImGui::Text("Scale");
-		if(ImGui::DragFloat3("scale", guiScale.ptr(), 0.05f))
+		float3 newScale = scale;
+		if(ImGui::DragFloat3("scale", newScale.ptr(), 0.05f))
 		{
-			SetScale(guiScale);
-			PropagateTransform(parent, position, rotation, scale);
-
-			parent->HasMoved();
+			SetScale(newScale);		
 		}
 
 		if (parentCam != nullptr)
@@ -96,32 +91,6 @@ void ComponentTransform::DrawOnInspector()
 			parentCam->frustum.SetWorldMatrix(mat);
 		}
 	}
-}
-
-void ComponentTransform::SetLocalMatrix(const float4x4& transform)
-{
-	float3 prevPos, prevScale;
-	Quat prevRot;
-
-	localTransformMat.Decompose(prevPos, prevRot, prevScale);
-
-	localTransformMat = transform;
-
-	transform.Decompose(position, rotation, scale);
-
-	float3 translation = position - prevPos;
-
-	guiPos = position;
-	//guiRot = rotation.ToEulerXYX();
-	float3 r = { rotation.x, rotation.y, rotation.z };
-	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
-	//guiRot = r.FromScalar(math::RadToDeg(rotation.Angle()));
-
-	//guiRot = math::RadToDeg(guiRot);
-	guiRot = { rotation.x, rotation.y, rotation.z };
-	guiScale = scale;
-
-	PropagateTransform(parent, translation, rotation, scale);
 }
 
 JSON_Value* ComponentTransform::Save()
@@ -166,13 +135,9 @@ void ComponentTransform::Load(JSON_Object* obj, GameObject* parent)
 	RecomputeGlobalMat();
 }
 
-void ComponentTransform::UpdateTransform(float4x4 newTransform)
-{
-}
-
 void ComponentTransform::RecomputeGlobalMat()
 {
-	if (parent->GetParent())
+	if (parent->GetParent() && parent->GetParent()->GetParent() != nullptr)
 	{
 		ComponentTransform* tr = (ComponentTransform*)parent->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		globalTransformMat = tr->globalTransformMat * localTransformMat;
@@ -183,73 +148,71 @@ void ComponentTransform::RecomputeGlobalMat()
 	}
 }
 
-void ComponentTransform::PropagateTransform(GameObject* go, float3& newPos, Quat& newQuat, float3& newScale)
+
+void ComponentTransform::SetLocalMatrix(const float4x4& transform)
 {
+	localTransformMat = transform;
+
+	float3 newPos, newScale;
+	Quat newRot;
+	localTransformMat.Decompose(newPos, newRot, newScale);
+
+	SetTranslation(newPos);
+	SetRotation(newRot);
+	SetScale(scale);
+
 	RecomputeGlobalMat();
-
-	parent->UpdateAABB(localTransformMat);
-
-	std::vector<GameObject*>::iterator it = go->GetChilds().begin();
-	for (; it != go->GetChilds().end(); ++it)
-	{
-		ComponentTransform* childTrans = (ComponentTransform*)(*it)->GetComponent(ComponentType::TRANSFORM);
-		ComponentTransform* parentTrans = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);			
-
-		if ((*it)->GetChilds().size() > 0)
-			PropagateTransform((*it), newPos, newQuat, newScale);
-
-		childTrans->SetTranslation(childTrans->GetTranslation() + newPos);
-		childTrans->SetRotation(newQuat);
-		childTrans->SetScale(newScale);
-		(*it)->UpdateAABB(childTrans->GetLocalMatrix());
-
-		childTrans->SetLocalMatrix(childTrans->localTransformMat);
-	}
-
-	ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
-	ComponentTransform* tr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-	if (cam)
-	{
-		cam->SetPosition(tr->GetTranslation());
-
-		/*float3 r = rotation.ToEulerXYZ();
-		r = math::RadToDeg(r);
-		cam->Look(r);*/
-	}
+	parent->PropagateTransform();
+	parent->UpdateAABB(globalTransformMat);
 }
 
-void ComponentTransform::Translate(const float3& pos)
+void ComponentTransform::TransformParentMoved()
 {
-	position += pos;
-	localTransformMat = float4x4::FromTRS(pos, rotation, scale);
-}
+	float3 newPos, newScale;
+	Quat newRot;
+	localTransformMat.Decompose(newPos, newRot, newScale);
 
-void ComponentTransform::Rotate(const Quat& rot)
-{
-	rotation = rotation * rot;
-	localTransformMat = float4x4::FromTRS(position, rot, scale);
-}
+	SetTranslation(newPos);
+	SetRotation(newRot);
+	SetScale(scale);
 
-void ComponentTransform::Scalate(const float3& scal)
-{
-	scale += scal;
-	localTransformMat = float4x4::FromTRS(position, rotation, scal);
+	RecomputeGlobalMat();
+	parent->UpdateAABB(globalTransformMat);
 }
 
 void ComponentTransform::SetTranslation(const float3& newPos)
 {
 	position = newPos;
 	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+	RecomputeGlobalMat();
+	parent->PropagateTransform();
+	parent->UpdateAABB(globalTransformMat);
+}
+
+void ComponentTransform::SetRotation(const float3& newRot)
+{
+	rotation = Quat::FromEulerXYZ(newRot.x, newRot.y, newRot.z);
+	eulerRotation = newRot;
+	RecomputeGlobalMat();
+	parent->PropagateTransform();
+	parent->UpdateAABB(globalTransformMat);
 }
 
 void ComponentTransform::SetRotation(const Quat& newRot)
 {
 	rotation = newRot;
-	localTransformMat = float4x4::FromTRS(position, newRot, scale);
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+	eulerRotation = rotation.ToEulerXYZ();
+	RecomputeGlobalMat();
+	parent->PropagateTransform();
+	parent->UpdateAABB(globalTransformMat);
 }
 
 void ComponentTransform::SetScale(const float3& newScale)
 {
 	scale = newScale;
-	localTransformMat = float4x4::FromTRS(position, rotation, newScale);
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
+	RecomputeGlobalMat();
+	parent->PropagateTransform();
+	parent->UpdateAABB(globalTransformMat);
 }

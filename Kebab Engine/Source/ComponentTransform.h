@@ -15,11 +15,8 @@ public:
 	void Enable();
 	void Disable();
 
-	void Translate(const float3& pos);
-	void Rotate(const Quat& rot);
-	void Scalate(const float3& scal);
-
 	void SetTranslation(const float3& newPos);
+	void SetRotation(const float3& newRot);
 	void SetRotation(const Quat& newRot);
 	void SetScale(const float3& newScale);
 
@@ -38,11 +35,11 @@ public:
 
 	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
 
+	void TransformParentMoved();
+
 private:
-	void UpdateTransform(float4x4 newTransform);
 
 	void RecomputeGlobalMat();
-
 
 	void DrawOnInspector();
 
@@ -51,12 +48,8 @@ private:
 	float3 position;
 	float3 scale;
 	Quat rotation;
+	float3 eulerRotation;
 
 	float4x4 localTransformMat;
 	float4x4 globalTransformMat;
-
-
-	float3 guiPos;
-	float3 guiRot;
-	float3 guiScale;
 };

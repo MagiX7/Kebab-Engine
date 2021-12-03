@@ -51,7 +51,7 @@ void HierarchyPanel::OnRender(float dt)
 			else if (scroll >= ImGui::GetScrollMaxY()) scroll = ImGui::GetScrollMaxY();
 		}
 
-		if (ImGui::CollapsingHeader("Game Objects", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader(app->scene->GetRoot()->GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			for (int i = 0; i < app->scene->GetGameObjects().size(); ++i)
 			{

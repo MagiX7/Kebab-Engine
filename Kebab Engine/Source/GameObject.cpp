@@ -207,7 +207,7 @@ void GameObject::SetGlobalAABB(const AABB& aabb)
 {
 	localAABB = aabb;
 	ComponentTransform* tr = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
-	localAABB.Transform(tr->GetLocalMatrix());
+	localAABB.Transform(tr->GetGlobalMatrix());
 
 	globalAABB.Enclose(localAABB);
 
@@ -216,7 +216,7 @@ void GameObject::SetGlobalAABB(const AABB& aabb)
 		parent->SetGlobalAABB(globalAABB);
 	}
 	
-	UpdateAABB(tr->GetLocalMatrix());
+	UpdateAABB(tr->GetGlobalMatrix());
 }
 
 AABB* GameObject::GetLocalAABB()
@@ -240,6 +240,15 @@ void GameObject::UpdateAABB(float4x4& newTrans)
 void GameObject::HasMoved()
 {
 	app->scene->rootQT->Recalculate();
+}
+
+void GameObject::PropagateTransform()
+{
+	for (uint i = 0; i < childs.size(); i++)
+	{
+		ComponentTransform* tr = (ComponentTransform*)childs[i]->GetComponent(ComponentType::TRANSFORM);
+		tr->TransformParentMoved();
+	}
 }
 
 void GameObject::Save(JSON_Array* array)

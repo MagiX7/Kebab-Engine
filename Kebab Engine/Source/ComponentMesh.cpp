@@ -229,7 +229,7 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 	ComponentTransform* t = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	if (t)
 	{
-		float4x4 mat = t->GetLocalMatrix();
+		float4x4 mat = t->GetGlobalMatrix();
 		glPushMatrix();
 		glMultMatrixf(mat.Transposed().ptr());
 	}

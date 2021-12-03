@@ -48,6 +48,7 @@ public:
 	void UpdateAABB(float4x4& newTrans);
 
 	void HasMoved();
+	void PropagateTransform();
 
 	bool insideFrustum;
 	bool isStatic;
