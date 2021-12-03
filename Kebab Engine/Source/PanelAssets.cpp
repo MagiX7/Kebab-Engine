@@ -15,6 +15,8 @@
 #include "ComponentMaterial.h"
 
 #include "PanelHierarchy.h"
+#include "PanelImportModel.h"
+#include "PanelImportTexture.h"
 
 #include "TextureLoader.h"
 #include "MeshLoader.h"
@@ -197,11 +199,39 @@ void AssetsPanel::DisplayAssets()
 			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
 			ImGui::EndDragDropSource();
 		}
-		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
-			popUpItem = (*it).c_str();
-
+		
 		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
 		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
+
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+			popUpItem = (*it).c_str();
+		
+		else if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+		{
+			if (aux == ".kbmodel")
+			{
+				std::string assPath = app->fileSystem->FindFilePath(nameToShow + ".fbx");
+				if (assPath.empty())
+					assPath = app->fileSystem->FindFilePath(nameToShow + ".obj");
+
+				app->editor->panelImportModel->SetAssetsPath(assPath);
+				app->editor->panelImportModel->active = true;
+			}
+
+			else if (aux == ".kbtexture")
+			{
+				std::string assPath = app->fileSystem->FindFilePath(nameToShow + ".png");
+				if (assPath.empty())
+					assPath = app->fileSystem->FindFilePath(nameToShow + ".jpg");
+				if (assPath.empty())
+					assPath = app->fileSystem->FindFilePath(nameToShow + ".dds");
+
+				app->editor->panelImportTexture->SetTexturePath(assPath.c_str());
+				app->editor->panelImportTexture->active = true;
+			}
+		}
+
+		
 		ImGui::Text(nameToShow.c_str());
 
 		ImGui::NextColumn();

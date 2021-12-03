@@ -58,6 +58,13 @@ void Texture::SetData(void* data, int width, int height)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+void Texture::UpdateData(void* data)
+{
+	glBindTexture(GL_TEXTURE_2D, rendererID);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Texture::Bind(unsigned int index) const
 {
 	//glActiveTexture(GL_TEXTURE0 + index);

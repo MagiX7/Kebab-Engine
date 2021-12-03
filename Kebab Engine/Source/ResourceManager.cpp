@@ -223,12 +223,16 @@ std::shared_ptr<Resource> ResourceManager::CreateMesh(const std::vector<Vertex>&
 	return ret;
 }
 
-std::shared_ptr<Texture> ResourceManager::CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props)
+std::shared_ptr<Texture> ResourceManager::CreateTexture(const char* assetsFile, int modelUuid, const TextureProperties& props, int texUuid)
 {
 	std::shared_ptr<Texture> ret = nullptr;
 
 	Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile, props);
-	tex->uuid = GenerateUUID();
+	if (texUuid == -1)
+		tex->uuid = GenerateUUID();
+	else
+		tex->uuid = texUuid;
+
 	ret = std::make_shared<Texture>(*tex);
 
 	ret.get()->SetAssetsPath(assetsFile);

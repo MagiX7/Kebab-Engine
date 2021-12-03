@@ -32,7 +32,7 @@ public:
 	void SetTexturePath(const char* assetsFile);
 
 private:
-	//Texture* tex;
+	Texture* texture;
 	std::string assetsPath;
 	TextureProperties props;
 };

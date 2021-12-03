@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "MeshLoader.h"
 
+#include "Model.h"
 
 PanelImportModel::PanelImportModel()
 {
@@ -15,7 +16,7 @@ PanelImportModel::~PanelImportModel()
 
 void PanelImportModel::OnRender(float dt)
 {
-	ImGui::Begin("Model Import Options");
+	ImGui::Begin("Model Import Options", &active);
 
 	//joinIdenticalVertices = false;
 	//triangulate = true;
@@ -73,8 +74,20 @@ void PanelImportModel::OnRender(float dt)
 
 	if (ImGui::Button("Import"))
 	{
+		std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
+
 		//ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL);
-		MeshLoader::GetInstance()->LoadModel(assetsPath.c_str());
+		if (model)
+		{
+			model->SetProperties(props);
+		}
+		else
+		{
+			model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL));
+			//MeshLoader::GetInstance()->LoadModel(assetsPath.c_str());
+		}
+
+		active = false;
 	}
 
 	ImGui::End();
