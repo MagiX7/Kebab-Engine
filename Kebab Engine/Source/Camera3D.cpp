@@ -524,7 +524,7 @@ std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hit
 				ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
 				if (meshComp)
 				{
-					float4x4 m = trans->GetLocalMatrix().Inverted();
+					float4x4 m = trans->GetGlobalMatrix().Inverted();
 					Ray ray = localLine.ToRay();
 					ray.Transform(m);
 

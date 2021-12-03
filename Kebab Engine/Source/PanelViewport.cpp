@@ -147,7 +147,13 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
         {
             ComponentCamera* cam = app->camera->editorCam;
 
-            float4x4 model = tr->GetLocalMatrix();
+            float4x4 model = float4x4::identity;
+
+            if (go->GetParent()->GetParent() != nullptr)
+                model = tr->GetGlobalMatrix();
+            else
+                model = tr->GetLocalMatrix();
+
             model.Transpose();
 
             ImGuizmo::Enable(true);
@@ -160,7 +166,11 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
             if (ImGuizmo::IsUsing())
             {
                 model.Transpose();
-                tr->SetLocalMatrix(model);
+
+                if (go->GetParent()->GetParent() != nullptr)
+                    tr->SetGlobalMatrix(model);
+                else
+                    tr->SetLocalMatrix(model);
 
                 go->HasMoved();
             }
