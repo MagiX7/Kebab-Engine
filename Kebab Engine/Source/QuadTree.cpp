@@ -23,6 +23,7 @@ QuadNode::~QuadNode()
 	{
 		RELEASE(node);
 	}
+	underNodes.clear();
 }
 
 QdTree::QdTree()

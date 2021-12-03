@@ -675,6 +675,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
 
             ComponentMesh* meshComp = new ComponentMesh(owner, meshLibraryPath);
             KbMesh* mesh = LoadMeshCustomFormat(meshLibraryPath);
+            meshComp->SetMesh(mesh);
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
             if(model) meshComp->SetModel(model);
@@ -697,7 +698,9 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
             owner->SetParent(ret);
             ret->SetGlobalAABB(*owner->GetGlobalAABB());
         }
+
     }
+    if (buffer) delete[] buffer;
     //if (ret) app->scene->AddGameObject(ret);
     return ret;
 }

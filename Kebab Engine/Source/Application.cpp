@@ -1,6 +1,5 @@
 #include "Application.h"
 
-#include "TextureLoader.h"
 #include "Window.h"
 #include "Input.h"
 #include "MainScene.h"
@@ -8,7 +7,10 @@
 #include "Camera3D.h"
 #include "Editor.h"
 #include "FileSystem.h"
+
 #include "MeshLoader.h"
+#include "TextureLoader.h"
+#include "ResourceManager.h"
 
 #include "Parser.h"
 
@@ -240,6 +242,7 @@ bool Application::CleanUp()
 
 	MeshLoader::GetInstance()->CleanUp();
 	TextureLoader::GetInstance()->CleanUp();
+	ResourceManager::GetInstance()->CleanUp();
 
 	return ret;
 }

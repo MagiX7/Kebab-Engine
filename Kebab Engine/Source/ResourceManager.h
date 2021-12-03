@@ -21,8 +21,8 @@ public:
 
 	static ResourceManager* GetInstance();
 
-	int Find(const char* fileInAssets) const;
-	int ImportFile(const char* newFileInAssets);
+	void CleanUp();
+
 
 	std::shared_ptr<Resource> GetResource(int uuid) const;
 	void DeleteResource(int uuid);

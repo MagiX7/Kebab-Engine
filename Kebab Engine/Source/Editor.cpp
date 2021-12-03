@@ -140,10 +140,13 @@ bool Editor::CleanUp()
     gameDebugInfoPanel = nullptr;
     delete(panelImportTexture);
     panelImportTexture = nullptr;
+    delete(panelImportModel);
+    panelImportModel = nullptr;
 
     delete playTex;
     delete pauseTex;
     delete stopTex;
+    delete nextFrameTex;
 
     app->fileSystem->Remove("Library/Scenes/Temp");
 

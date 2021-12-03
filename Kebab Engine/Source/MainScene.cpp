@@ -113,7 +113,9 @@ bool MainScene::CleanUp()
         delete(go);
     }
     root->GetChilds().clear();
+
     delete(root);
+    delete rootQT;
 
     return true;
 }

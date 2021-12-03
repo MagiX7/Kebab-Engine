@@ -20,35 +20,14 @@ ResourceManager* ResourceManager::GetInstance()
 	return instance;
 }
 
-int ResourceManager::Find(const char* fileInAssets) const
+void ResourceManager::CleanUp()
 {
-	return 0;
-}
+	for (auto r : resources)
+		r.second.reset();
 
-int ResourceManager::ImportFile(const char* newFileInAssets)
-{
-	int ret = 0;
-	ResourceType type = ResourceType::NONE;
+	resources.clear();
 
-	std::string s = newFileInAssets;
-
-	int start = s.find_last_of('.');
-	if (s.substr(start) == ".fbx" || s.substr(start) == ".obj")
-	{
-		type = ResourceType::MESH;
-	}
-	else if (s.substr(start) == ".png" || s.substr(start) == ".jpg")
-	{
-		type = ResourceType::TEXTURE;
-	}
-
-	std::shared_ptr<Resource> res = CreateNewResource(newFileInAssets, type);
-	
-	char* fileBuffer;
-	app->fileSystem->Load(newFileInAssets, &fileBuffer);
-
-
-	return 0;
+	delete instance;
 }
 
 std::shared_ptr<Resource> ResourceManager::GetResource(int uuid) const
@@ -355,6 +334,7 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 		ret = std::make_shared<KbModel>(*model);
 		resources[ret.get()->uuid] = ret;
 	}
+	if (buffer) delete[] buffer;
 
 	return ret;
 
@@ -424,7 +404,7 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 		resources[ret.get()->uuid] = ret;
 
 	}
-
+	if (buffer) delete[] buffer;
 
 	return ret;
 }
