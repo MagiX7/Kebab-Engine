@@ -73,13 +73,14 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                 if (pathAsset != "")
                 {
                     GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset, true);
+                    bh->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
                     app->renderer3D->Submit(bh);
                 }
                 else
                 {
                     pathAsset = app->fileSystem->FindFilePath(name + ".obj");
 
-                    if (pathAsset != "")
+                    if (!pathAsset.empty())
                     {
                         GameObject* bh = MeshLoader::GetInstance()->LoadModel(pathAsset, true);
                         app->renderer3D->Submit(bh);

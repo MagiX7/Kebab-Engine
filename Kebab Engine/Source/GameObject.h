@@ -33,6 +33,7 @@ public:
 	void AddComponent(Component* comp);
 	void AddChild(GameObject* child);
 
+	inline void SetUUID(const int& newUUID) { uuid = newUUID; }
 
 	inline const std::vector<Component*>& GetComponents() const { return components; }
 	inline std::vector<GameObject*>& GetChilds() { return childs; }

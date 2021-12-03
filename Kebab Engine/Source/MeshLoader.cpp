@@ -81,7 +81,6 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         {
             GameObject* go = new GameObject(mesh->GetOwnerName());
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
-
             meshComp->SetMesh(mesh);
             meshComp->SetModel(model);
             baseGO->AddChild(go);
