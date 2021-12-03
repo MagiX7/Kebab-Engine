@@ -89,8 +89,17 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
             // TODO: Get the texture path somehow
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-        }
 
+            if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str())))
+            {
+                matComp->AddTexture(tex);
+            }
+            //if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(model->uuid)))
+            //{
+            //    // It returns the model. Maybe create a texture map?
+            //    matComp->AddTexture(tex);
+            //}
+        }
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
@@ -268,15 +277,14 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
-   
+    std::shared_ptr<Texture> tex = nullptr;
     if (!imageName.empty())
     {
-        std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
-        mat->AddTexture(std::static_pointer_cast<Texture>(tex));
-        tex.get()->CreateMetaDataFile(imageName.c_str());
-        TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
+        tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        mat->AddTexture(tex);
+        tex->CreateMetaDataFile(imageName.c_str());
+        TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
     }
-
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
@@ -284,6 +292,8 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     //m->SetUUID(model->GetUUID());
     m->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
     m->SetOwnerName(baseGO->GetName());
+    if(tex)
+        m->SetTextureMetaPath(tex->GetMetaPath());
     meshComp->SetMesh(m);
     model->AddMesh(m);
     ResourceManager::GetInstance()->AddResource(m);

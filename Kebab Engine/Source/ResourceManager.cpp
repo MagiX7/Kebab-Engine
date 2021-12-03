@@ -322,6 +322,8 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 				m->SetName(meshName);
 				//m->SetAssetsPath(meshAssetsPath.c_str());
 				m->SetLibraryPath(meshLibPath);
+
+				m->SetTextureMetaPath(json_object_get_string(meshObj, "texture meta path"));
 				model->AddMesh(m);
 			}
 			else
@@ -346,7 +348,11 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 	std::shared_ptr<Texture> ret = nullptr;
 	TextureProperties props;
 
-	std::string path = std::string(assetsFile) + ".meta";
+	std::string path = std::string(assetsFile);
+	if (path.find(".meta") == -1)
+	{
+		path += +".meta";
+	}
 
 	char* buffer;
 	if (app->fileSystem->Load(path.c_str(), &buffer))

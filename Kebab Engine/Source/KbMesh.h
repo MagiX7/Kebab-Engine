@@ -7,6 +7,8 @@
 
 #include <vector>
 
+class Texture;
+
 class KbMesh : public Resource
 {
 public:
@@ -29,10 +31,12 @@ public:
 	inline const std::string& GetPath() const { return path; }
 	inline const std::string& GetName() const { return name; }
 	inline const std::string& GetOwnerName() const { return ownerName; }
+	inline const std::string& GetTextureMetaPath() { return textureMetaPath; }
 
 	void SetPath(const std::string&);
 	void SetName(const std::string&);
 	void SetOwnerName(const std::string&);
+	inline void SetTextureMetaPath(const std::string& path) { textureMetaPath = path; }
 
 protected:
 	void SetUpMesh();
@@ -47,6 +51,7 @@ private:
 
 	/*std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;*/
+	std::string textureMetaPath;
 
 	std::string path;
 	std::string name;
