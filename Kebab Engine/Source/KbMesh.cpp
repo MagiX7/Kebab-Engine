@@ -2,11 +2,13 @@
 
 KbMesh::KbMesh(std::string path) : Resource(ResourceType::MESH)
 {
+	textureMetaPath = "";
 	SetPath(path);
 }
 
 KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) : Resource(ResourceType::MESH)
 {
+	textureMetaPath = "";
 	SetData(vertices, indices);
 }
 

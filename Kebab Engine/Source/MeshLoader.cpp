@@ -58,7 +58,7 @@ void MeshLoader::CleanUp()
     instance = nullptr;
 }
 
-GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
+GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, const ModelProperties& props)
 {
     int start = path.find_last_of('/') + 1;
     if (start == 0) start = path.find_last_of("\\") + 1;
@@ -89,8 +89,17 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
 
             // TODO: Get the texture path somehow
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-        }
 
+            if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str())))
+            {
+                matComp->AddTexture(tex);
+            }
+            //if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(model->uuid)))
+            //{
+            //    // It returns the model. Maybe create a texture map?
+            //    matComp->AddTexture(tex);
+            //}
+        }
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
@@ -99,8 +108,10 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
     }
     else
     {
+        unsigned int flags = GetModelFlags(props);
+
         Assimp::Importer import;
-        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+        const aiScene* scene = import.ReadFile(path, flags);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
@@ -111,12 +122,11 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene)
         
         baseGO = new GameObject(name);
 
-        std::shared_ptr<Resource> model = ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL);
-        KbModel* newModel = (KbModel*)model.get();
-        ProcessNode(scene->mRootNode, scene, baseGO, name, path, newModel);
-
-        model.get()->CreateMetaDataFile(path.c_str());
-        SaveModelCustomFormat(baseGO, newModel->uuid);
+        std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL));
+        ProcessNode(scene->mRootNode, scene, baseGO, name, path, model.get());
+        model->SetProperties(props);
+        model->CreateMetaDataFile(path.c_str());
+        SaveModelCustomFormat(baseGO, model->uuid);
     }
 
     if (loadOnScene)
@@ -268,15 +278,14 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 
     ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
     //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
-   
+    std::shared_ptr<Texture> tex = nullptr;
     if (!imageName.empty())
     {
-        std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
-        mat->AddTexture(std::static_pointer_cast<Texture>(tex));
-        tex.get()->CreateMetaDataFile(imageName.c_str());
-        TextureLoader::GetInstance()->SaveTextureCustomFormat((Texture*)tex.get(), model->uuid);
+        tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        mat->AddTexture(tex);
+        tex->CreateMetaDataFile(imageName.c_str());
+        TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
     }
-
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
     KbMesh* m = new KbMesh(vertices, indices);
@@ -284,6 +293,8 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     //m->SetUUID(model->GetUUID());
     m->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
     m->SetOwnerName(baseGO->GetName());
+    if(tex)
+        m->SetTextureMetaPath(tex->GetMetaPath());
     meshComp->SetMesh(m);
     model->AddMesh(m);
     ResourceManager::GetInstance()->AddResource(m);
@@ -292,6 +303,25 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
 
     return meshComp;
+}
+
+unsigned int MeshLoader::GetModelFlags(const ModelProperties& props)
+{
+    unsigned int ret = 0;
+
+    if (props.joinIdenticalVertices) ret |= aiProcess_JoinIdenticalVertices;
+    if (props.triangulate) ret |= aiProcess_Triangulate;
+    if (props.genNormals) ret |= aiProcess_GenNormals;
+    if (props.genSmoothNormals) ret |= aiProcess_GenSmoothNormals;
+    if (props.removeRedundantMaterials) ret |= aiProcess_RemoveRedundantMaterials;
+    if (props.fixInfacingNormals) ret |= aiProcess_FixInfacingNormals;
+    if (props.genUVCoords) ret |= aiProcess_GenUVCoords;
+    if (props.transformUVCoords) ret |= aiProcess_TransformUVCoords;
+    if (props.findInstances) ret |= aiProcess_FindInstances;
+    if (props.optimizeMeshes) ret |= aiProcess_OptimizeMeshes;
+    if (props.flipUVs) ret |= aiProcess_FlipUVs;
+
+    return ret;
 }
 
 GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)

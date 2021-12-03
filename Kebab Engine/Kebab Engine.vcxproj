@@ -61,6 +61,7 @@
     <ClCompile Include="Source\PanelConsole.cpp" />
     <ClCompile Include="Source\PanelGameDebugInfo.cpp" />
     <ClCompile Include="Source\PanelHierarchy.cpp" />
+    <ClCompile Include="Source\PanelImportModel.cpp" />
     <ClCompile Include="Source\PanelImportTexture.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
     <ClCompile Include="Source\PanelScene.cpp" />
@@ -104,9 +105,11 @@
     <ClInclude Include="Source\KbMesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />
     <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\ModelProperties.h" />
     <ClInclude Include="Source\PanelAssets.h" />
     <ClInclude Include="Source\PanelGameDebugInfo.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
+    <ClInclude Include="Source\PanelImportModel.h" />
     <ClInclude Include="Source\PanelImportTexture.h" />
     <ClInclude Include="Source\PanelInspector.h" />
     <ClInclude Include="Source\PanelScene.h" />
