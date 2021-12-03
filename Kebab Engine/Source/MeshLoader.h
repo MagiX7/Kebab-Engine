@@ -47,8 +47,8 @@ private:
 	MeshLoader();
 	MeshLoader(const MeshLoader&);
 
-	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, const std::string& nameBaseGO, const std::string& path, KbModel* model);
-	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model);
+	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model);
 	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 	unsigned int GetModelFlags(const ModelProperties& props);

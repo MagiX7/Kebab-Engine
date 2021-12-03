@@ -67,8 +67,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
     std::string name = path.substr(start, end - start);
 
     GameObject* baseGO;
-    
-    
+        
     std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
     std::string metaPath = path + ".meta";
 
@@ -86,18 +85,11 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
             baseGO->AddChild(go);
             go->SetParent(baseGO);
 
-            // TODO: Get the texture path somehow
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-
             if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str())))
             {
                 matComp->AddTexture(tex);
             }
-            //if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(model->uuid)))
-            //{
-            //    // It returns the model. Maybe create a texture map?
-            //    matComp->AddTexture(tex);
-            //}
         }
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
@@ -122,7 +114,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         baseGO = new GameObject(name);
 
         std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL));
-        ProcessNode(scene->mRootNode, scene, baseGO, name, path, model.get());
+        ProcessNode(scene->mRootNode, scene, baseGO, name, path, model);
         model->SetProperties(props);
         model->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, model->uuid);
@@ -155,7 +147,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
     return baseGO;
 }
 
-void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model)
+void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
 {
     for (int i = 0; i < node->mNumMeshes; ++i)
     {
@@ -209,7 +201,7 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
 //    return textures;
 //}
 
-ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model)
+ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
 {
     //GameObject* go = new GameObject(mesh->mName.C_Str());
 
@@ -295,6 +287,7 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     if(tex)
         m->SetTextureMetaPath(tex->GetMetaPath());
     meshComp->SetMesh(m);
+    meshComp->SetModel(model);
     model->AddMesh(m);
     ResourceManager::GetInstance()->AddResource(m);
     SaveMeshCustomFormat(m, m->GetName(), model->uuid);
@@ -684,8 +677,8 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
             KbMesh* mesh = LoadMeshCustomFormat(meshLibraryPath);
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
-            if (model) meshComp->SetModel(model);
-            ResourceManager::GetInstance()->AddResource(mesh);
+            if(model) meshComp->SetModel(model);
+            //ResourceManager::GetInstance()->AddResource(mesh);
 
 
             // Maybe with LoadTextureMetaData??

@@ -67,7 +67,7 @@ void ComponentMesh::DrawOnInspector()
 		ImGui::Text("Vertices: %i", mesh->GetVertices().size());
 		ImGui::Text("Indices: %i", mesh->GetIndices().size());
 		if(model)
-			ImGui::BulletText("Reference count: %i", model.use_count());
+			ImGui::BulletText("Reference count: %i", model.use_count() - 1); // -1 because of the model in the resources map
 
 		ImGui::Checkbox("Show vertex normals", &drawVertexNormals);
 		if (drawVertexNormals)
