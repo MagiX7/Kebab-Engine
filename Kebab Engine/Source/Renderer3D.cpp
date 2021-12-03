@@ -170,33 +170,6 @@ bool Renderer3D::PreUpdate(float dt)
 {
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	for (const auto& go : gameObjects)
-	{
-		ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
-		
-		if (auxCam != nullptr)
-		{
-			if (auxCam->CameraToCurrent())
-			{
-				if (camsActive == 0)
-				{
-					//camsActive++;
-					//app->camera->GetCurrentCamera() = auxCam;
-				}
-				else if (camsActive > 0 && auxCam != app->camera->GetCurrentCamera())
-				{
-					//app->camera->GetCurrentCamera()->DisableFromCurent();
-					//currentCam = auxCam;
-				}
-			}
-			/*else if (!app->camera->GetCurrentCamera()->CameraToCurrent() && currentCam == auxCam)
-			{
-				camsActive--;
-				currentCam = app->camera->GetCurrentCamera();
-			}*/
-		}
-	}
 	
 	//glMatrixMode(GL_PROJECTION);
 	////glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
@@ -524,8 +497,6 @@ void Renderer3D::DoRender(bool gameScene)
 
 	for (const auto& go : gameObjects)
 	{
-		go->SetGlobalAABB(go);
-		go->GetGlobalAABB();
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
 		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
 
@@ -558,14 +529,27 @@ void Renderer3D::DoRender(bool gameScene)
 				if (drawAABB)
 					DrawAABB(*go->GetGlobalAABB());
 			}
+
 		}
-
-		//mesh->Draw(mat);
-
-		/*ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
-		if (cam)
-			cam->DrawFrustum();*/
 	}
+
+	// TO DRAW PARENTS AABB WITH NO MESH (IT WORKS STRANGE)
+	/*std::queue<GameObject*> que;
+	que.push(app->scene->GetRoot());
+
+	while (!que.empty())
+	{
+		GameObject* curr = que.front();
+		que.pop();
+
+		curr->SetGlobalAABB(curr);
+
+		if (drawAABB && curr->GetGlobalAABB()->Volume() != 0)
+			DrawAABB(*curr->GetGlobalAABB());
+
+		for (GameObject* child : curr->GetChilds())
+			que.push(child);
+	}*/
 }
 
 void Renderer3D::PushCamera(ComponentCamera* cam)

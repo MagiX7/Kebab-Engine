@@ -29,6 +29,7 @@ public:
 	inline float4x4& GetGlobalMatrix() { return globalTransformMat; }
 
 	void SetLocalMatrix(const float4x4& transform);
+	void SetGlobalMatrix(const float4x4& transform);
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;

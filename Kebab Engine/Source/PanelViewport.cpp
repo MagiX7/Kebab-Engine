@@ -148,7 +148,10 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
 
             float4x4 model = float4x4::identity;
 
-            model = tr->GetGlobalMatrix();
+            if (go->GetParent()->GetParent() != nullptr)
+                model = tr->GetGlobalMatrix();
+            else
+                model = tr->GetLocalMatrix();
 
             model.Transpose();
 
@@ -162,7 +165,11 @@ void ViewportPanel::DrawGuizmo(const ImGuizmo::OPERATION& op, const ImGuizmo::MO
             if (ImGuizmo::IsUsing())
             {
                 model.Transpose();
-                tr->SetLocalMatrix(model);
+
+                if (go->GetParent()->GetParent() != nullptr)
+                    tr->SetGlobalMatrix(model);
+                else
+                    tr->SetLocalMatrix(model);
 
                 go->HasMoved();
             }

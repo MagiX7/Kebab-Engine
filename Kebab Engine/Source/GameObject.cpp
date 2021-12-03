@@ -25,7 +25,6 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 	transform->SetScale({ 1,1,1, });
 
 	//localAABB = nullptr;
-	localAABB = AABB::AABB();
 	active = true;
 
 	insideFrustum = false;
