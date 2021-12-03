@@ -335,6 +335,20 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			}
 		}
 
+		ModelProperties props;
+		props.joinIdenticalVertices = json_object_dotget_boolean(obj, "join verts");
+		props.triangulate = json_object_dotget_boolean(obj, "triangulate");
+		props.genNormals = json_object_dotget_boolean(obj, "gen normals");
+		props.genSmoothNormals = json_object_dotget_boolean(obj, "gen smooth normals");
+		props.removeRedundantMaterials = json_object_dotget_boolean(obj, "rem mats");
+		props.fixInfacingNormals = json_object_dotget_boolean(obj, "infacing normals");
+		props.genUVCoords = json_object_dotget_boolean(obj, "gen uv coords");
+		props.transformUVCoords = json_object_dotget_boolean(obj, "trans uv coords");
+		props.findInstances = json_object_dotget_boolean(obj, "find instances");
+		props.optimizeMeshes = json_object_dotget_boolean(obj, "opt meshes");
+		props.flipUVs = json_object_dotget_boolean(obj, "flip uvs");
+		model->SetProperties(props);
+
 		ret = std::make_shared<KbModel>(*model);
 		resources[ret.get()->uuid] = ret;
 	}

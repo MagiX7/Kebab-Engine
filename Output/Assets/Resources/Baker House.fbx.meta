@@ -1,0 +1,16 @@
+{
+    "model uuid": -502951039,
+    "model path": "Library\/Models\/Baker House__-502951039.kbmodel",
+    "meshes": [
+        {
+            "mesh name": "Chimney",
+            "mesh library path": "Library\/Meshes\/Chimney__-502951039.kbmesh",
+            "texture meta path": "Assets\/Resources\/Baker House\/Baker_house.png.meta"
+        },
+        {
+            "mesh name": "Baker_house",
+            "mesh library path": "Library\/Meshes\/Baker_house__-502951039.kbmesh",
+            "texture meta path": "Assets\/Resources\/Baker House\/Baker_house.png.meta"
+        }
+    ]
+}

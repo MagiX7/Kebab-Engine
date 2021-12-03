@@ -3,8 +3,8 @@
         "GameObjects": [
             {
                 "name": "Main Camera",
-                "uuid": -1111042540,
-                "parent uuid": 1804271391,
+                "uuid": 383327935,
+                "parent uuid": -2079815239,
                 "Components": [
                     {
                         "Type": 0,
@@ -49,13 +49,13 @@
             },
             {
                 "name": "Baker House",
-                "uuid": 1461971860,
-                "parent uuid": 1804271391,
+                "uuid": 1334232355,
+                "parent uuid": -2079815239,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 7.3505678176879883,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -75,13 +75,13 @@
             },
             {
                 "name": "Chimney",
-                "uuid": -628124358,
-                "parent uuid": 1461971860,
+                "uuid": -102840698,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 7.3505678176879883,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -99,26 +99,26 @@
                     },
                     {
                         "Type": 2,
-                        "uuid": -187175111,
-                        "path": "Library\/Textures\/Baker_house__1484250580.kbtexture"
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -908056001,
+                        "mesh uuid": 0,
                         "mesh library path": "",
-                        "mesh name": "Chimney"
+                        "mesh name": "Chimney__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": 335997473,
-                "parent uuid": 1461971860,
+                "uuid": -183781125,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": 7.3505678176879883,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -136,26 +136,26 @@
                     },
                     {
                         "Type": 2,
-                        "uuid": -1442270462,
-                        "path": "Library\/Textures\/Baker_house__1484250580.kbtexture"
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
                         "Type": 1,
-                        "mesh uuid": -1251233679,
+                        "mesh uuid": 0,
                         "mesh library path": "",
-                        "mesh name": "Baker_house"
+                        "mesh name": "Baker_house__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker House(1)",
-                "uuid": -230432938,
-                "parent uuid": 1804271391,
+                "uuid": 1334232355,
+                "parent uuid": -2079815239,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -9.4555759429931641,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -175,13 +175,13 @@
             },
             {
                 "name": "Chimney",
-                "uuid": 1305658816,
-                "parent uuid": -230432938,
+                "uuid": -102840698,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -9.4555759429931641,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -198,27 +198,27 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -908056001,
-                        "mesh library path": "",
-                        "mesh name": "Chimney"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": -1814619339,
-                "parent uuid": -230432938,
+                "uuid": -183781125,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -9.4555759429931641,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -235,27 +235,27 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -1251233679,
-                        "mesh library path": "",
-                        "mesh name": "Baker_house"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker House(2)",
-                "uuid": 13810994,
-                "parent uuid": 1804271391,
+                "uuid": 1334232355,
+                "parent uuid": -2079815239,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -4.2600746154785156,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -275,13 +275,13 @@
             },
             {
                 "name": "Chimney",
-                "uuid": 1278659331,
-                "parent uuid": 13810994,
+                "uuid": -102840698,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -4.2600746154785156,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -298,27 +298,27 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -908056001,
-                        "mesh library path": "",
-                        "mesh name": "Chimney"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": -1411430665,
-                "parent uuid": 13810994,
+                "uuid": -183781125,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
                         "Position": {
-                            "x": -4.2600746154785156,
+                            "x": 0,
                             "y": 0,
                             "z": 0
                         },
@@ -335,22 +335,22 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -1251233679,
-                        "mesh library path": "",
-                        "mesh name": "Baker_house"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker House(3)",
-                "uuid": 1497308725,
-                "parent uuid": 1804271391,
+                "uuid": 1334232355,
+                "parent uuid": -2079815239,
                 "Components": [
                     {
                         "Type": 0,
@@ -375,8 +375,8 @@
             },
             {
                 "name": "Chimney",
-                "uuid": -588679854,
-                "parent uuid": 1497308725,
+                "uuid": -102840698,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
@@ -398,22 +398,22 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -908056001,
-                        "mesh library path": "",
-                        "mesh name": "Chimney"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Chimney__1346346409"
                     }
                 ]
             },
             {
                 "name": "Baker_house",
-                "uuid": -1535529630,
-                "parent uuid": 1497308725,
+                "uuid": -183781125,
+                "parent uuid": 1334232355,
                 "Components": [
                     {
                         "Type": 0,
@@ -435,15 +435,15 @@
                         }
                     },
                     {
-                        "Type": 1,
-                        "mesh uuid": -1251233679,
-                        "mesh library path": "",
-                        "mesh name": "Baker_house"
+                        "Type": 2,
+                        "uuid": 1136041812,
+                        "path": "Library\/Textures\/Baker_house__1346346409.kbtexture"
                     },
                     {
-                        "Type": 2,
-                        "path": "Checkers",
-                        "uuid": -1
+                        "Type": 1,
+                        "mesh uuid": 0,
+                        "mesh library path": "",
+                        "mesh name": "Baker_house__1346346409"
                     }
                 ]
             }

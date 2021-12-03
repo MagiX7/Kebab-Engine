@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ModelProperties.h"
 
 #include <assimp/scene.h>
 
@@ -27,7 +28,7 @@ public:
 
 	virtual ~MeshLoader();
 
-	GameObject* LoadModel(const std::string& path, bool loadOnScene = false);
+	GameObject* LoadModel(const std::string& path, bool loadOnScene = false, const ModelProperties& props = ModelProperties());
 
 	GameObject* LoadKbGeometry(KbGeometryType type);
 
@@ -50,6 +51,7 @@ private:
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, KbModel* model);
 	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
+	unsigned int GetModelFlags(const ModelProperties& props);
 
 private:
 

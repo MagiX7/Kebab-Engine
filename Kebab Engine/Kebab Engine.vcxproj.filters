@@ -178,6 +178,9 @@
     <ClCompile Include="Source\PanelImportTexture.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelImportModel.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -382,6 +385,12 @@
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureProperties.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelImportModel.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModelProperties.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

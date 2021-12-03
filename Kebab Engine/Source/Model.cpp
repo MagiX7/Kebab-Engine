@@ -59,6 +59,19 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 		json_array_append_value(arr, meshVal);
 	}
 
+	json_object_dotset_boolean(obj, "join verts", props.joinIdenticalVertices);
+	json_object_dotset_boolean(obj, "triangulate", props.triangulate);
+	json_object_dotset_boolean(obj, "gen normals", props.genNormals);
+	json_object_dotset_boolean(obj, "gen smooth normals", props.genSmoothNormals);
+	json_object_dotset_boolean(obj, "rem mats", props.removeRedundantMaterials);
+	json_object_dotset_boolean(obj, "infacing normals", props.fixInfacingNormals);
+	json_object_dotset_boolean(obj, "gen uv coords", props.genUVCoords);
+	json_object_dotset_boolean(obj, "trans uv coords", props.transformUVCoords);
+	json_object_dotset_boolean(obj, "find instances", props.findInstances);
+	json_object_dotset_boolean(obj, "opt meshes", props.optimizeMeshes);
+	json_object_dotset_boolean(obj, "flip uvs", props.flipUVs);
+
+
 	json_serialize_to_file_pretty(value, p.c_str());
 	json_value_free(value);
 }
