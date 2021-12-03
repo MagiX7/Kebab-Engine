@@ -1,0 +1,33 @@
+{
+    "base name": "Baker House",
+    "parent uuid": -1567264650,
+    "uuid": -1567264650,
+    "Meshes": [
+        {
+            "parent uuid": -1567264650,
+            "owner uuid": -1521105927,
+            "owner name": "Chimney",
+            "mesh library path": "Library\/Meshes\/Chimney__-1561764591.kbmesh",
+            "texture library path": "Library\/Textures\/Baker_house__-1561764591.kbtexture",
+            "texture assets path": "Assets\/Resources\/Baker House\/Baker_house.png"
+        },
+        {
+            "parent uuid": -1567264650,
+            "owner uuid": -131856456,
+            "owner name": "Baker_house",
+            "mesh library path": "Library\/Meshes\/Baker_house__-1561764591.kbmesh",
+            "texture library path": "Library\/Textures\/Baker_house__-1561764591.kbtexture",
+            "texture assets path": "Assets\/Resources\/Baker House\/Baker_house.png"
+        }
+    ],
+    "pos x": 0,
+    "pos y": 0,
+    "pos z": 0,
+    "rot x": 0,
+    "rot y": 0,
+    "rot z": 0,
+    "rot w": 1,
+    "scale x": 1,
+    "scale y": 1,
+    "scale z": 1
+}

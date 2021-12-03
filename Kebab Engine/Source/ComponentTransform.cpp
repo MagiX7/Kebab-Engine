@@ -192,6 +192,7 @@ void ComponentTransform::SetTranslation(const float3& newPos)
 void ComponentTransform::SetRotation(const float3& newRot)
 {
 	rotation = Quat::FromEulerXYZ(newRot.x, newRot.y, newRot.z);
+	localTransformMat = float4x4::FromTRS(position, rotation, scale);
 	eulerRotation = newRot;
 	RecomputeGlobalMat();
 	parent->PropagateTransform();

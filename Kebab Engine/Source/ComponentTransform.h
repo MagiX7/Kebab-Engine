@@ -33,8 +33,6 @@ public:
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
-	void PropagateTransform(GameObject* go, float3& newPos, Quat& quat, float3& scale);
-
 	void TransformParentMoved();
 
 private:
