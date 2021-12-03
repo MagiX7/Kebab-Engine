@@ -186,7 +186,7 @@ JSON_Value* ComponentMesh::Save()
 	/*Parser::DotSetObjectNumber(obj, "vertices", mesh->GetVertices().size());
 	Parser::DotSetObjectNumber(obj, "indices", mesh->GetIndices().size());*/
 	Parser::DotSetObjectNumber(obj, "mesh uuid", mesh->uuid);
-	Parser::DotSetObjectString(obj, "mesh library path", mesh->GetLibraryPath().c_str());
+	Parser::DotSetObjectString(obj, "mesh library path", mesh->GetPath().c_str());
 	Parser::DotSetObjectString(obj, "mesh name", mesh->GetName().c_str());
 
 
@@ -195,10 +195,6 @@ JSON_Value* ComponentMesh::Save()
 
 void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 {
-	/*std::vector<Vertex> vertices;
-	vertices.resize(json_object_get_number(obj, "vertices"));
-	std::vector<uint32_t> indices;
-	indices.resize(json_object_get_number(obj, "indices"));*/
 	int uuid = json_object_get_number(obj, "mesh uuid");
 	std::string path = json_object_get_string(obj, "mesh library path");
 	std::string meshName = json_object_get_string(obj, "mesh name");

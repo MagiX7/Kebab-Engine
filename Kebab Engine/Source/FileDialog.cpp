@@ -14,6 +14,7 @@ std::string FileDialog::OpenFile(const char* filter)
 	file.lpstrFile = size;
 	file.nMaxFile = sizeof(file);
 	file.lpstrFilter = filter;
+	file.nFileExtension = (WORD)".kbscene";
 	file.nFilterIndex = 1;
 	file.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 	if (GetOpenFileName(&file))
@@ -35,6 +36,7 @@ std::string FileDialog::SaveFile(const char* filter)
 	file.lpstrFile = size;
 	file.nMaxFile = sizeof(file);
 	file.lpstrFilter = filter;
+	file.nFileExtension = (WORD)".kbscene";
 	file.nFilterIndex = 1;
 	file.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 	if (GetSaveFileName(&file))

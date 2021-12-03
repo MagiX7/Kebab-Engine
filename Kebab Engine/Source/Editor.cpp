@@ -389,10 +389,7 @@ void Editor::UnserializeScene(const char* path)
     
     sceneValue = json_parse_file(path);
     if(sceneValue)
-    //char* buffer;
-    //if(app->fileSystem->Load(path, &buffer) > 0)
     {
-        //sceneValue = json_parse_string(buffer);
         JSON_Object* sceneObj = Parser::GetObjectByValue(sceneValue);
 
         JSON_Array* gosArray = json_object_dotget_array(sceneObj, "Scene.GameObjects");
@@ -406,18 +403,10 @@ void Editor::UnserializeScene(const char* path)
             GameObject* go = new GameObject(name, uuid);
 
             go->Load(obj);
-            ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
-            if (cam)
+
+            if (ComponentCamera* cam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA))
             {
                 app->scene->camera = cam;
-
-                /*float3 f = cam->frustum.Front().Normalized();
-                float3 u = cam->frustum.Up().Normalized();
-
-                float3::Orthonormalize(f, u);
-                cam->frustum.SetFront(f);
-                cam->frustum.SetFront(u);*/
-
                 app->camera->SetGameCamera(cam);
             }
 
@@ -429,9 +418,6 @@ void Editor::UnserializeScene(const char* path)
         }
 
         json_value_free(sceneValue);
-        //delete[] buffer;
-
-        //app->fileSystem->Remove("Library/Scenes/Temp/Scene.kbscene");
     }
 }
 

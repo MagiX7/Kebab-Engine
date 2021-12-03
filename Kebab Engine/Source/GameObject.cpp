@@ -274,8 +274,7 @@ JSON_Value* GameObject::Load(JSON_Object* obj)
 	int parentUuid = json_object_get_number(obj, "parent uuid");
 	if (parentUuid)
 	{
-		GameObject* p = app->scene->GetGameObjectByUuid(parentUuid);
-		if (p)
+		if (GameObject* p = app->scene->GetGameObjectByUuid(parentUuid))
 		{
 			p->childs.push_back(this);
 			parent = p;

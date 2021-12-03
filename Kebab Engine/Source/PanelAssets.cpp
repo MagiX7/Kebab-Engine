@@ -206,7 +206,7 @@ void AssetsPanel::DisplayAssets()
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
 		
-		else if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+		else if (ImGui::IsItemClicked(ImGuiMouseButton_Middle))
 		{
 			if (aux == ".kbmodel")
 			{
