@@ -39,6 +39,8 @@ public:
 	void SaveModelCustomFormat(GameObject* go, int modelUuid);
 	GameObject* LoadModelCustomFormat(const std::string& filename, std::shared_ptr<KbModel> model = nullptr);
 
+	void ReProcessNode(const char* path, const ModelProperties& props);
+
 	//GameObject* LoadPrimitive(PrimitiveType type);
 
 	void CleanUp();

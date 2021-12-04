@@ -185,21 +185,16 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
     }
 }
 
-//std::vector<Tex> MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
-//{
-//    std::vector<Tex> textures;
-//    /*for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-//    {
-//        aiString str;
-//        mat->GetTexture(type, i, &str);
-//        Texture texture;
-//        texture.id = TextureFromFile(str.C_Str(), directory);
-//        texture.type = typeName;
-//        texture.path = str.C_Str();
-//        textures.push_back(texture);
-//    }*/
-//    return textures;
-//}
+void MeshLoader::ReProcessNode(const char* path, const ModelProperties& props)
+{
+    unsigned int flags = GetModelFlags(props);
+
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(path, flags);
+
+
+
+}
 
 ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
 {

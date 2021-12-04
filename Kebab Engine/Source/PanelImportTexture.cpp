@@ -18,10 +18,21 @@ void ImportTexturePanel::OnRender(float dt)
 {
 	ImGui::Begin("Texture Import Settings", &active);
 
-	static int compression = ImageCompression::DXTC_FORMAT;
-	if (ImGui::Combo("Compression", &compression, "IL_DXTC_FORMAT\0IL_DXT1\0IL_DXT2\0IL_DXT3\0IL_DXT4\0IL_DXT5\0IL_DXT_NO_COMP\0", 5))
+	const char* options[] = { "IL_DXT1\0IL_DXT2\0IL_DXT3\0IL_DXT4\0IL_DXT5\0IL_DXT_NO_COMP\0" };
+	static int index = 4;
+	if (ImGui::Combo("Compression", &index, "IL_DXT1\0IL_DXT2\0IL_DXT3\0IL_DXT4\0IL_DXT5\0IL_DXT_NO_COMP\0", 6))
 	{
 		// TODO: Update current compression
+		for (int i = 0; i < IM_ARRAYSIZE(options); ++i)
+		{
+			const bool is_selected = (index == i);
+			if (ImGui::Selectable(options[i], is_selected))
+				index = i;
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		//ImGui::EndCombo();
 	}
 
 	ImGui::Separator();
@@ -61,7 +72,7 @@ void ImportTexturePanel::OnRender(float dt)
 
 			ImGui::TableNextColumn(); ImGui::Checkbox("Contrast", &props.contrast);
 			if (props.contrast)
-				if (ImGui::SliderFloat("Amount", &props.contrastAmount, -5.0f, 1.7f))
+				if (ImGui::SliderFloat("Amount", &props.contrastAmount, -1.0f, 2.f))
 					change = true;
 
 			ImGui::TableNextColumn();
@@ -103,7 +114,7 @@ void ImportTexturePanel::OnRender(float dt)
 
 			if (change)
 			{
-				texture->Reimport(props);
+				texture->ReLoad(props);
 				change = false;
 			}
 		}
@@ -113,8 +124,22 @@ void ImportTexturePanel::OnRender(float dt)
 
 	if (ImGui::Button("Import", { 60,25 }))
 	{
-		texture->Reimport(props);
+		props.compression = GetCompressionFromType(index);
+		texture->ReLoad(props, true);
 		active = false;
+	}
+	ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 70);
+	if (ImGui::Button("Restart", { 60,25 }))
+	{
+		props = initialProps;
+		texture->ReLoad(initialProps);
+	}
+	ImGui::Dummy({ ImGui::GetWindowContentRegionMax().x - 117,25 });
+	ImGui::SameLine();
+	if (ImGui::Button("Set Default"))
+	{
+		props = TextureProperties();
+		texture->ReLoad(props);
 	}
 
 	if (texture) ImGui::Image((void*)texture->GetID(), { 200,200 });
@@ -128,4 +153,18 @@ void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 	texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsFile));
 
 	//texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
+}
+
+ILint ImportTexturePanel::GetCompressionFromType(int compression)
+{
+	switch (compression)
+	{
+		case 0: return IL_DXT1;
+		case 1: return IL_DXT2;
+		case 2: return IL_DXT3;
+		case 3: return IL_DXT4;
+		case 4: return IL_DXT5;
+		case 5: return IL_DXT_NO_COMP;
+		default: return -1;
+	}
 }

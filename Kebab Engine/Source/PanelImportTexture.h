@@ -12,8 +12,7 @@ namespace ImageCompression
 {
 	enum Type
 	{
-		DXTC_FORMAT = 0,
-		DXT1,
+		DXT1 = 0,
 		DXT2,
 		DXT3,
 		DXT4,
@@ -32,8 +31,11 @@ public:
 
 	void SetTexturePath(const char* assetsFile);
 
+	ILint GetCompressionFromType(int compression);
+
 private:
 	std::shared_ptr<Texture> texture;
 	std::string assetsPath;
 	TextureProperties props;
+	TextureProperties initialProps = props;
 };

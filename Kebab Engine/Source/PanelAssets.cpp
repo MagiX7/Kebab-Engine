@@ -215,7 +215,7 @@ void AssetsPanel::DisplayAssets()
 					assPath = app->fileSystem->FindFilePath(nameToShow + ".obj");
 
 				app->editor->panelImportModel->SetAssetsPath(assPath);
-				app->editor->panelImportModel->active = true;
+				app->editor->panelImportModel->active = !app->editor->panelImportModel->active;
 			}
 
 			else if (aux == ".kbtexture")
@@ -227,7 +227,7 @@ void AssetsPanel::DisplayAssets()
 					assPath = app->fileSystem->FindFilePath(nameToShow + ".dds");
 
 				app->editor->panelImportTexture->SetTexturePath(assPath.c_str());
-				app->editor->panelImportTexture->active = true;
+				app->editor->panelImportTexture->active = !app->editor->panelImportTexture->active;
 			}
 		}
 

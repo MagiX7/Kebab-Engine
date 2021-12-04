@@ -1,7 +1,8 @@
 #include "Application.h"
-#include "Texture.h"
+#include "FileSystem.h"
 
 #include "TextureLoader.h"
+#include "Texture.h"
 
 #include "Globals.h"
 
@@ -76,7 +77,7 @@ void Texture::Clear()
 	height = 0;
 }
 
-void Texture::Reimport(const TextureProperties& props)
+void Texture::ReLoad(const TextureProperties& props, bool save)
 {
 	if (rendererID)
 		glDeleteTextures(1, &rendererID);
@@ -109,6 +110,13 @@ void Texture::Reimport(const TextureProperties& props)
 		SetData(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
 
 		ilBindImage(0);
+	}
+
+	if (save)
+	{
+		std::string p = assetsFile + ".meta";
+		app->fileSystem->Remove(p.c_str());
+		CreateMetaDataFile(assetsFile.c_str());
 	}
 
 	ilDeleteImage(tmp);

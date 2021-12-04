@@ -47,7 +47,7 @@ public:
 	void UpdateData(void* data);
 	//void UpdateData(const TextureProperties& props);
 	void Clear();
-	void Reimport(const TextureProperties& props);
+	void ReLoad(const TextureProperties& props, bool save = false);
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;
@@ -62,9 +62,9 @@ public:
 	inline const TextureType& GetType() const { return type; }
 
 	inline void SetProperties(const TextureProperties& p) { props = p; }
+	inline const TextureProperties& GetProperties() { return props; }
 	
 	void CreateMetaDataFile(const char* assetsFile);
-
 
 private:
 	unsigned int rendererID;
