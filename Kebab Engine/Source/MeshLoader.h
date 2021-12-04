@@ -39,9 +39,7 @@ public:
 	void SaveModelCustomFormat(GameObject* go, int modelUuid);
 	GameObject* LoadModelCustomFormat(const std::string& filename, std::shared_ptr<KbModel> model = nullptr);
 
-	void ReProcessNode(const char* path, const ModelProperties& props);
-
-	//GameObject* LoadPrimitive(PrimitiveType type);
+	void ReLoadModel(const char* path, const ModelProperties& props);
 
 	void CleanUp();
 
@@ -53,11 +51,17 @@ private:
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model);
 	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
+	void ReProcessNode(aiNode* node, const aiScene* scene, std::shared_ptr<KbModel> model);
+	void ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<KbModel> model);
+
 	unsigned int GetModelFlags(const ModelProperties& props);
 
 private:
 
 	static MeshLoader* instance;
+
+	// Only for reimporting
+	std::vector<std::string> texturesMetaPath;
 
 	std::vector<KbMesh> meshes;
 	std::string directory;

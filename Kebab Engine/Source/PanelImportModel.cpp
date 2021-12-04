@@ -74,18 +74,20 @@ void PanelImportModel::OnRender(float dt)
 
 	if (ImGui::Button("Import"))
 	{
-		std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
+		MeshLoader::GetInstance()->ReLoadModel(assetsPath.c_str(), props);
 
-		//ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL);
-		if (model)
-		{
-			model->SetProperties(props);
-		}
-		else
-		{
-			model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL));
-			//MeshLoader::GetInstance()->LoadModel(assetsPath.c_str());
-		}
+		//std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
+
+		////ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL);
+		//if (model)
+		//{
+		//	model->SetProperties(props);
+		//}
+		//else
+		//{
+		//	model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL));
+		//	//MeshLoader::GetInstance()->LoadModel(assetsPath.c_str());
+		//}
 
 		active = false;
 	}

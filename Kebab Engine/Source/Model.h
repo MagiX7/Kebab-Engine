@@ -15,6 +15,7 @@ public:
 
 	void AddMesh(KbMesh* mesh);
 	inline const std::vector<KbMesh*>& GetMeshes() { return meshes; }
+	void DeleteMeshes();
 
 	inline void SetProperties(const ModelProperties& props) { this->props = props; }
 

@@ -113,10 +113,11 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         
         baseGO = new GameObject(name);
 
-        std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(path.c_str(), ResourceType::MODEL));
+        std::shared_ptr<KbModel> model = ResourceManager::GetInstance()->CreateModel(path.c_str());
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, model);
         model->SetProperties(props);
         model->CreateMetaDataFile(path.c_str());
+        model->SetLibraryPath("Library/Models/" + baseGO->GetName() + "__" + std::to_string(model->uuid) + ".kbmodel");
         SaveModelCustomFormat(baseGO, model->uuid);
     }
 
@@ -185,15 +186,95 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
     }
 }
 
-void MeshLoader::ReProcessNode(const char* path, const ModelProperties& props)
+void MeshLoader::ReLoadModel(const char* path, const ModelProperties& props)
 {
-    unsigned int flags = GetModelFlags(props);
+    std::shared_ptr<KbModel> model = nullptr;
+    if (model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path)));
+    {
+        unsigned int flags = GetModelFlags(props);
+        Assimp::Importer importer;
+        const aiScene* scene = importer.ReadFile(path, flags);
+        aiNode* node = scene->mRootNode;
 
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, flags);
+        ReProcessNode(node, scene, model);
 
+        std::string p = path + std::string(".meta");
+        app->fileSystem->Remove(p.c_str());
+        model->CreateMetaDataFile(path);
 
+    }
+}
 
+void MeshLoader::ReProcessNode(aiNode* node, const aiScene* scene, std::shared_ptr<KbModel> model)
+{
+    for (int i = 0; i < node->mNumMeshes; ++i)
+    {
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        ReProcessMesh(mesh, scene, model);
+    }
+
+    for (int i = 0; i < node->mNumChildren; ++i)
+    {
+        //if (node->mChildren[i]->mNumMeshes > 0)
+        {
+            ReProcessNode(node->mChildren[i], scene, model);
+        }
+    }
+}
+
+void MeshLoader::ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<KbModel> model)
+{
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+
+    for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+    {
+        Vertex vertex;
+        vertex.position.x = mesh->mVertices[i].x;
+        vertex.position.y = mesh->mVertices[i].y;
+        vertex.position.z = mesh->mVertices[i].z;
+
+        if (mesh->HasNormals())
+        {
+            vertex.normal.x = mesh->mNormals[i].x;
+            vertex.normal.y = mesh->mNormals[i].y;
+            vertex.normal.z = mesh->mNormals[i].z;
+        }
+
+        if (mesh->mTextureCoords[0])
+        {
+            vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
+            vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
+        }
+
+        vertices.push_back(vertex);
+    }
+
+    // Process indices
+    for (int i = 0; i < mesh->mNumFaces; ++i)
+    {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; ++j)
+            indices.push_back(face.mIndices[j]);
+    }
+
+    // TODO: Maybe dont need to delete the meshes, just "update" the data
+   /* for (int i = 0; i < model->GetMeshes().size(); ++i)
+    {
+        KbMesh* m = model->GetMeshes()[i];
+        std::string mp = m->GetTextureMetaPath();
+        if (!mp.empty())
+        {
+            texturesMetaPath.push_back(mp.c_str());
+        }
+    }
+
+    model->DeleteMeshes();*/
+
+    static int it = 0;
+    if (it <= model->GetMeshes().size() - 1)
+        model->GetMeshes()[it++]->SetData(vertices, indices);
+    else it = 0;
 }
 
 ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
@@ -589,6 +670,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
 
 
     std::string path = "Library/Models/" + go->GetName() + "__" + std::to_string(modelUuid) + ".kbmodel";
+
     json_serialize_to_file_pretty(modelValue, path.c_str());
     //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 

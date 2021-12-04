@@ -36,7 +36,7 @@ public:
 
 	int GetReferenceCount(int uuid);
 
-	std::shared_ptr<Resource> CreateNewResource(const char* assetsFile, ResourceType type, int uuid = 0);
+	std::shared_ptr<KbModel> CreateModel(const char* assetsFile);
 	std::shared_ptr<Resource> CreateMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::string& name);
 	std::shared_ptr<Texture> CreateTexture(const char* assetsFile, int modelUuid = 0, const TextureProperties& props = TextureProperties(), int texUuid = -1);
 

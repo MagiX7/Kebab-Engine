@@ -25,6 +25,15 @@ void KbModel::AddMesh(KbMesh* mesh)
 	meshes.push_back(mesh);
 }
 
+void KbModel::DeleteMeshes()
+{
+	for (auto& m : meshes)
+	{
+		delete m; m = nullptr;
+	}
+	meshes.clear();
+}
+
 void KbModel::CreateMetaDataFile(const char* assetsFile)
 {
 	hasMetaFile = true;
@@ -39,7 +48,8 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 	JSON_Object* obj = json_value_get_object(value);
 
 	json_object_set_number(obj, "model uuid", uuid);
-	json_object_set_string(obj, "model path", libraryFile.c_str());
+	json_object_set_string(obj, "model library path", libraryFile.c_str());
+	json_object_set_string(obj, "model assets path", assetsFile);
 
 
 	JSON_Value* arrVal = json_value_init_array();

@@ -80,18 +80,11 @@ std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const char* assetsFil
 
 	for (; it != resources.end(); ++it)
 	{
-		/*if ((*it).second.get()->HasMetaFile())
-		{
-			return FindMetaData(assetsFile);
-		}*/
-
-		if ((*it).second.get()->GetAssetsPath() == assetsFile)
+		if ((*it).second->GetAssetsPath() == assetsFile)
 		{
 			return (*it).second;
 		}
 	}
-
-	//return FindMetaData(assetsFile);
 
 	return nullptr;
 }
@@ -130,59 +123,30 @@ ResourceManager::~ResourceManager()
 {
 }
 
-std::shared_ptr<Resource> ResourceManager::CreateNewResource(const char* assetsFile, ResourceType type, int uuid)
+std::shared_ptr<KbModel> ResourceManager::CreateModel(const char* assetsFile)
 {
-	std::shared_ptr<Resource> ret = nullptr;
+	std::shared_ptr<KbModel> ret = nullptr;
 
-	switch(type)
-	{
-		case ResourceType::TEXTURE:
-		{
-			//if(strcmp(assetsFile, "Checkers") != 0)
-			//{
-			//	Texture* tex = TextureLoader::GetInstance()->LoadTexture(assetsFile);
-			//	tex->uuid = GenerateUUID();
-			//	ret = (std::shared_ptr<Resource>)std::make_shared<Texture>(*tex);
+	KbModel* model = new KbModel();
 
-			//	ret.get()->SetAssetsPath(assetsFile);
-			//	std::string tmp = assetsFile;
-			//	int start = tmp.find_last_of("/");
-			//	int end = tmp.find(".");
-			//	std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
-			//		"__" + std::to_string(uuid) + ".kbtexture";
-			//	ret.get()->SetLibraryPath(lib);
+	model->uuid = GenerateUUID();
+	ret = std::make_shared<KbModel>(*model);
 
-			//	/*delete tex;
-			//	tex = nullptr;*/
-			//	
-			//	resources[ret.get()->uuid] = ret;
-			//}
+	ret->SetAssetsPath(assetsFile);
+	std::string tmp = assetsFile;
+	int start = tmp.find_last_of("/");
+	int end = tmp.find(".");
+	std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(model->uuid) + ".kbmodel";
+	ret->SetLibraryPath(lib);
 
-			break;
-		}
+	//ret.get()->CreateMetaDataFile(assetsFile);
 
-		case ResourceType::MODEL:
-		{
-			KbModel* model = new KbModel();
+	//delete model;
+	//model = nullptr;
 
-			model->uuid = GenerateUUID();
-			ret = (std::shared_ptr<Resource>)std::make_shared<KbModel>(*model);
-
-			ret.get()->SetAssetsPath(assetsFile);
-			std::string tmp = assetsFile;
-			int start = tmp.find_last_of("/");
-			int end = tmp.find(".");
-			std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(model->uuid) + ".kbmodel";
-			ret.get()->SetLibraryPath(lib);
-
-			//ret.get()->CreateMetaDataFile(assetsFile);
-
-			delete model;
-			model = nullptr;
-
-			resources[ret.get()->uuid] = ret;
-		}
-	}
+	resources[ret->uuid] = ret;
+	
+	
 	return ret;
 }
 
@@ -291,7 +255,8 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 
 		KbModel* model = new KbModel();
 		model->uuid = json_object_get_number(obj, "model uuid");
-		model->SetLibraryPath(json_object_get_string(obj, "model path"));
+		model->SetLibraryPath(json_object_get_string(obj, "model library path"));
+		model->SetAssetsPath(json_object_get_string(obj, "model assets path"));
 
 		int size = json_array_get_count(arr);
 		for (int i = 0; i < size; ++i)
@@ -334,9 +299,10 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 		model->SetProperties(props);
 
 		ret = std::make_shared<KbModel>(*model);
-		resources[ret.get()->uuid] = ret;
+		resources[ret->uuid] = ret;
+
+		delete[] buffer;
 	}
-	if (buffer) delete[] buffer;
 
 	return ret;
 

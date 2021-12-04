@@ -31,7 +31,7 @@ public:
 	inline const std::string& GetPath() const { return path; }
 	inline const std::string& GetName() const { return name; }
 	inline const std::string& GetOwnerName() const { return ownerName; }
-	inline const std::string& GetTextureMetaPath() { return textureMetaPath; }
+	inline const std::string& GetTextureMetaPath() const { return textureMetaPath; }
 
 	void SetPath(const std::string&);
 	void SetName(const std::string&);
