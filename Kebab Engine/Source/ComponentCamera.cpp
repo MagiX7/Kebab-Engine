@@ -20,6 +20,9 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	this->type = ComponentType::CAMERA;
 	this->cameraType = cameraType;
 
+	currentWinHeight = 0;
+	currentWinWidth = 0;
+
 	if (cameraType == CameraType::GAME)
 	{
 		fovHorizontal = math::DegToRad(80);
@@ -35,11 +38,7 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	initialPlaneFar = planeFar;
 	initialPlaneNear = planeNear;
 
-	currentWinHeight = 0;
-	currentWinWidth = 0;
-
 	CalculateFov(1920, 1080, fovHorizontal);
-		
 
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
@@ -48,6 +47,8 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	frustum.SetViewPlaneDistances(planeNear, planeFar);
 
 	frustum.SetKind(math::FrustumProjectiveSpace::FrustumSpaceGL, math::FrustumHandedness::FrustumRightHanded);
+
+	CalculateFov(1920, 1080, fovHorizontal);
 }
 
 ComponentCamera::~ComponentCamera()
