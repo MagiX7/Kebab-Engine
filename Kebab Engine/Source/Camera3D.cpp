@@ -179,11 +179,12 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing()
 			&& !orbiting && !focusing)
 		{
 			GameObject* picked = MousePickGameObject();
 			app->editor->hierarchyPanel->SetCurrent(picked);
+			
 			//app->editor->hierarchyPanel->currentGO = picked;
 		}
 	}
@@ -476,26 +477,13 @@ GameObject* Camera3D::MousePickGameObject()
 	float3 hitPoint;
 	float distance;
 	static bool clearVec = false;
-	if (pickedGos.size() <= 0)
-	{
-		// TODO: Check somehow if the user clicked outside the mesh and clear the list, otherwise keep iterating
-		pickedGos = ThrowRay(picking, hitPoint, clearVec, distance, app->scene->GetRoot());
-		pickedGosIt = 0;
-	}
 	
-	if (clearVec)
-		pickedGos.clear();
+	GameObject* ret = ThrowRay(picking, hitPoint, clearVec, distance, app->scene->GetRoot());
 
-	else if (pickedGos.size() > 0 &&  pickedGosIt <= pickedGos.size() - 1)
-		return pickedGos[pickedGosIt++];
-	
-	else if(pickedGos.size() == pickedGosIt)
-		pickedGos.clear();
-
-	return nullptr;
+	return ret;
 }
 
-std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
+GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
 {
 	std::vector<GameObject*> gos;
 
@@ -515,15 +503,18 @@ std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hit
 
 			// AABB
 			LineSegment localLine = line;
-			//app->scene->rootQT->Intersect(gos, localLine);
+			LineSegment prevLine = line;
 
-			if (curr->GetGlobalAABB()->Intersects(localLine))
+			//app->scene->rootQT->Intersect(gos, localLine);
+			
+			if(localLine.Intersects(*curr->GetGlobalAABB()))
+			//if (curr->GetGlobalAABB()->Intersects(localLine))
 			{
 				// Mesh
-				ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH);
-				ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
-				if (meshComp)
+				if (ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH))
 				{
+					ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+					
 					float4x4 m = trans->GetGlobalMatrix().Inverted();
 					Ray ray = localLine.ToRay();
 					ray.Transform(m);
@@ -537,25 +528,18 @@ std::vector<GameObject*> Camera3D::ThrowRay(const LineSegment& line, float3& hit
 
 						if (ray.Intersects(triangle, &dist, &hitPoint))
 						{
-							if (curr->GetParent())
-								gos.push_back(curr->GetParent());
-							gos.push_back(curr);
-							clearVector = false;
-
-							break;
+							return curr;
 						}
 					}
 				}
 			}
-
+		
 			if (curr->GetChilds().size() > 0)
 				for (auto& child : curr->GetChilds())
 					q.push(child);
 		}
 	}
-	if (gos.size() <= 0)
-		clearVector = true;
 
-	return gos;
 
+	return nullptr;
 }

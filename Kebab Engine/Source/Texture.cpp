@@ -65,6 +65,15 @@ void Texture::UpdateData(void* data)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Texture::Clear()
+{
+	if (rendererID)
+		glDeleteTextures(1, &rendererID);
+
+	width = 0;
+	height = 0;
+}
+
 void Texture::Bind(unsigned int index) const
 {
 	//glActiveTexture(GL_TEXTURE0 + index);

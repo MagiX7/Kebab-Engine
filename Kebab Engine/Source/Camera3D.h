@@ -57,7 +57,7 @@ public:
 
 private:
 	GameObject* MousePickGameObject();
-	std::vector<GameObject*> ThrowRay(const LineSegment& ray, float3& hitPoint, bool& clearVector, float& dist, GameObject* go = nullptr);
+	GameObject* ThrowRay(LineSegment ray, float3& hitPoint, bool& clearVector, float& dist, GameObject* go = nullptr);
 
 public:
 

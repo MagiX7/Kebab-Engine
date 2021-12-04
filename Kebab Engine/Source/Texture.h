@@ -45,7 +45,8 @@ public:
 
 	void SetData(void* data, int width, int height);
 	void UpdateData(void* data);
-	void UpdateData(const TextureProperties& props);
+	//void UpdateData(const TextureProperties& props);
+	void Clear();
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;
