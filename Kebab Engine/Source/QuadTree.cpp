@@ -362,6 +362,7 @@ void QdTree::Intersect(std::vector<GameObject*>& gos, LineSegment line)
 		QuadNode* curr = q.front();
 		q.pop();
 
+		//curr->underNodes.empty();
 		if (!curr->leaf)
 		{
 			for (auto& n : curr->underNodes)
@@ -369,9 +370,17 @@ void QdTree::Intersect(std::vector<GameObject*>& gos, LineSegment line)
 		}
 		else
 		{
-			if (curr->section.Intersects(line) || curr->section.Contains(line))
+			if(line.Intersects(curr->section))
+			//if (curr->section.Intersects(line) || curr->section.Contains(line))
 			{
-				gos.insert(gos.end(), curr->bucket.begin(), curr->bucket.end());
+				for (const auto& go : curr->bucket)
+				{
+					if (line.Intersects(*go->GetGlobalAABB()))
+					{
+						gos.push_back(go);
+					}
+				}
+				//gos.insert(gos.end(), curr->bucket.begin(), curr->bucket.end());
 			}
 		}		
 	}

@@ -128,7 +128,7 @@ void AssetsPanel::LoadAssetsToCustom()
 
 			if (ext == ".fbx" || ext == ".obj")
 				MeshLoader::GetInstance()->LoadModel(completePath);
-			if (ext == ".png" || ext == ".dds" || ext == ".jpg")
+			else if (ext == ".png" || ext == ".dds" || ext == ".jpg")
 				TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
 		}
 	}

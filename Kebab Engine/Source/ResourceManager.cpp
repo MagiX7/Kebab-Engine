@@ -305,7 +305,9 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 				m->SetName(meshName);
 				//m->SetAssetsPath(meshAssetsPath.c_str());
 				m->SetLibraryPath(meshLibPath);
-				m->SetTextureMetaPath(json_object_get_string(meshObj, "texture meta path"));
+				const char* metaPath = json_object_get_string(meshObj, "texture meta path");
+				if (metaPath)
+					m->SetTextureMetaPath(metaPath);
 				model->AddMesh(m);
 			}
 			else
@@ -402,9 +404,8 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 		ret = std::make_shared<Texture>(*tex);
 
 		resources[ret.get()->uuid] = ret;
-
+		delete[] buffer;
 	}
-	if (buffer) delete[] buffer;
 
 	return ret;
 }

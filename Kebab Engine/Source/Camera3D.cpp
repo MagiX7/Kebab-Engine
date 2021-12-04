@@ -179,7 +179,7 @@ bool Camera3D::Update(float dt)
 		}
 
 		// Mouse Picking
-		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing()
+		if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()
 			&& !orbiting && !focusing)
 		{
 			GameObject* picked = MousePickGameObject();
@@ -489,11 +489,11 @@ GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVe
 
 	std::queue<GameObject*> q;
 
-	//app->scene->rootQT->Intersect(gos, line);
+	app->scene->rootQT->Intersect(gos, line);
 
-	//if (!gos.empty())
+	if (!gos.empty())
 	{
-		for (auto& go : gameObject->GetChilds())
+		for (auto& go : gos)
 			q.push(go);
 
 		while (!q.empty())
@@ -501,45 +501,32 @@ GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVe
 			GameObject* curr = q.front();
 			q.pop();
 
-			// AABB
 			LineSegment localLine = line;
-			LineSegment prevLine = line;
-
-			//app->scene->rootQT->Intersect(gos, localLine);
 			
-			if(localLine.Intersects(*curr->GetGlobalAABB()))
-			//if (curr->GetGlobalAABB()->Intersects(localLine))
+			// Mesh
+			if (ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH))
 			{
-				// Mesh
-				if (ComponentMesh* meshComp = (ComponentMesh*)curr->GetComponent(ComponentType::MESH))
+				ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
+				
+				float4x4 m = trans->GetGlobalMatrix().Inverted();
+				Ray ray = localLine.ToRay();
+				ray.Transform(m);
+
+				Triangle triangle;
+				for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
 				{
-					ComponentTransform* trans = (ComponentTransform*)curr->GetComponent(ComponentType::TRANSFORM);
-					
-					float4x4 m = trans->GetGlobalMatrix().Inverted();
-					Ray ray = localLine.ToRay();
-					ray.Transform(m);
+					triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
+					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
+					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
-					Triangle triangle;
-					for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
+					if (ray.Intersects(triangle, &dist, &hitPoint))
 					{
-						triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
-						triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
-						triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
-
-						if (ray.Intersects(triangle, &dist, &hitPoint))
-						{
-							return curr;
-						}
+						return curr;
 					}
 				}
 			}
-		
-			if (curr->GetChilds().size() > 0)
-				for (auto& child : curr->GetChilds())
-					q.push(child);
 		}
 	}
-
 
 	return nullptr;
 }
