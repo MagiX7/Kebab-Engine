@@ -110,61 +110,66 @@ void InspectorPanel::OnRender(float dt)
 
 			if (ImGui::Button("Add Component")) ImGui::OpenPopup("Add Component");;
 
-			if (ImGui::BeginPopup("Add Component"))
-			{
-				if (ImGui::Button("Mesh"))
-				{
-					if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MESH) == nullptr)
-					{
-						ComponentMesh* newComp = new ComponentMesh(app->editor->hierarchyPanel->currentGO);
-
-						app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
-					}
-					else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
-					
-					ImGui::CloseCurrentPopup();
-				}
-				else if (ImGui::Button("Material"))
-				{
-					if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL) == nullptr)
-					{
-						ComponentMaterial* newComp = new ComponentMaterial(app->editor->hierarchyPanel->currentGO);
-
-						app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
-					}
-					else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
-					
-					ImGui::CloseCurrentPopup();
-				}
-				else if (ImGui::Button("Transform"))
-				{
-					if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::TRANSFORM) == nullptr)
-					{
-						ComponentTransform* newComp = new ComponentTransform(app->editor->hierarchyPanel->currentGO);
-
-						app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
-					}
-					else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
-					
-					ImGui::CloseCurrentPopup();
-				}
-				else if (ImGui::Button("Camera"))
-				{
-					if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::CAMERA) == nullptr)
-					{
-						ComponentCamera* newComp = new ComponentCamera(app->editor->hierarchyPanel->currentGO, CameraType::GAME);
-
-						app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
-					}
-					else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
-					
-					ImGui::CloseCurrentPopup();
-				}
-
-				ImGui::EndPopup();
-			}
+			AddComponent();
 		}
 
 		ImGui::End();
+	}
+}
+
+void InspectorPanel::AddComponent()
+{
+	if (ImGui::BeginPopup("Add Component"))
+	{
+		if (ImGui::Button("Mesh"))
+		{
+			if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MESH) == nullptr)
+			{
+				ComponentMesh* newComp = new ComponentMesh(app->editor->hierarchyPanel->currentGO);
+
+				app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
+			}
+			else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
+
+			ImGui::CloseCurrentPopup();
+		}
+		else if (ImGui::Button("Material"))
+		{
+			if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL) == nullptr)
+			{
+				ComponentMaterial* newComp = new ComponentMaterial(app->editor->hierarchyPanel->currentGO);
+
+				app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
+			}
+			else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
+
+			ImGui::CloseCurrentPopup();
+		}
+		else if (ImGui::Button("Transform"))
+		{
+			if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::TRANSFORM) == nullptr)
+			{
+				ComponentTransform* newComp = new ComponentTransform(app->editor->hierarchyPanel->currentGO);
+
+				app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
+			}
+			else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
+
+			ImGui::CloseCurrentPopup();
+		}
+		else if (ImGui::Button("Camera"))
+		{
+			if (app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::CAMERA) == nullptr)
+			{
+				ComponentCamera* newComp = new ComponentCamera(app->editor->hierarchyPanel->currentGO, CameraType::GAME);
+
+				app->editor->hierarchyPanel->currentGO->AddComponent(newComp);
+			}
+			else LOG_CONSOLE("Already Exist a this Component on %s", app->editor->hierarchyPanel->currentGO->GetName().c_str());
+
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
 	}
 }

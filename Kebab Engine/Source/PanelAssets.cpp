@@ -60,6 +60,13 @@ AssetsPanel::~AssetsPanel()
 	delete folderTex;
 	delete modelTex;
 	delete pngTex;
+
+	for (std::vector<Texture*>::const_iterator it = textures.begin(); it != textures.end(); it++)
+	{
+		delete((*it));
+	}
+
+	textures.clear();
 }
 
 void AssetsPanel::OnRender(float dt)
@@ -128,8 +135,15 @@ void AssetsPanel::LoadAssetsToCustom()
 
 			if (ext == ".fbx" || ext == ".obj")
 				MeshLoader::GetInstance()->LoadModel(completePath);
-			else if (ext == ".png" || ext == ".dds" || ext == ".jpg")
-				TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+			if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
+			{
+				if (currentFolderToLoad != "Assets/Resources/Icons/")
+				{
+					textures.push_back(TextureLoader::GetInstance()->LoadTexture(completePath.c_str()));
+				}
+				else
+					TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+			}
 		}
 	}
 }
@@ -141,9 +155,9 @@ void AssetsPanel::DisplayAssets()
 
 	app->fileSystem->DiscoverFiles(currentFolder.c_str(), fileList, dirList);
 
-	if ((ImGui::GetWindowWidth() / 130) < columns - 1)
+	if ((ImGui::GetWindowWidth() / 140) < columns - 1)
 		columns--;
-	else if ((ImGui::GetWindowWidth() / 130) > columns + 1)
+	else if ((ImGui::GetWindowWidth() / 140) > columns + 1)
 		columns++;
 
 	ImGui::Columns(columns, 0, false);
@@ -190,7 +204,23 @@ void AssetsPanel::DisplayAssets()
 		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
 		else if (aux == ".dds" || aux == ".png" || aux == ".jpg" || aux == ".kbtexture")
-			ImGui::ImageButton((ImTextureID)pngTex->GetID(), { 100,100 });
+		{
+			ImTextureID id = (ImTextureID)pngTex->GetID();
+
+			for (std::vector<Texture*>::const_iterator itTex = textures.begin(); itTex != textures.end(); itTex++)
+			{
+				std::string showName = (*it).substr(0, (*it).find_last_of("_"));
+				showName = showName.substr(0, showName.find_last_of("_"));
+
+				if ((*itTex)->GetName() == showName)
+				{
+					id = (ImTextureID)(*itTex)->GetID();
+					break;
+				}
+			}
+
+			ImGui::ImageButton(id, { 100,100 });
+		}
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
 
@@ -358,6 +388,17 @@ void AssetsPanel::DisplayItemPopMenu()
 				path = app->fileSystem->FindFilePath(fileName + ".meta");
 				if (path != "")
 					status += remove(path.c_str());
+
+				// TGA
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".tga");
+				if (path != "")
+					status += remove(path.c_str());
+
+				fileName = fileName + ".tga";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 			}
 
 			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
@@ -367,53 +408,53 @@ void AssetsPanel::DisplayItemPopMenu()
 			ImGui::CloseCurrentPopup();
 			popUpItem = "";
 		}
-		if (ImGui::Button("Import to Scene"))
-		{
-			std::string path = currentFolder + popUpItem;
+		//if (ImGui::Button("Import to Scene"))
+		//{
+		//	std::string path = currentFolder + popUpItem;
 
-			std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
-			
-			if (extension == ".fbx" || extension == ".obj")
-			{
-				app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path, true));
-				LOG_CONSOLE("Asset Imported Succesfully");
-			}
-			else if (extension == ".dds" || extension == ".png" || extension == ".jpg")
-			{
-				GameObject* target = app->editor->hierarchyPanel->currentGO;
-				if (target)
-				{
-					if (target->GetComponent(ComponentType::MESH))
-					{
-						for (int i = 0; i < target->GetComponents().size(); ++i)
-						{
-							ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
-							GameObject* parent = target->GetParent();
-							/*while (parent && target != parent)
-								target = target->GetParent();*/
+		//	std::string extension = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
+		//	
+		//	if (extension == ".fbx" || extension == ".obj")
+		//	{
+		//		app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path, true));
+		//		LOG_CONSOLE("Asset Imported Succesfully");
+		//	}
+		//	else if (extension == ".dds" || extension == ".png" || extension == ".jpg")
+		//	{
+		//		GameObject* target = app->editor->hierarchyPanel->currentGO;
+		//		if (target)
+		//		{
+		//			if (target->GetComponent(ComponentType::MESH))
+		//			{
+		//				for (int i = 0; i < target->GetComponents().size(); ++i)
+		//				{
+		//					ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
+		//					GameObject* parent = target->GetParent();
+		//					/*while (parent && target != parent)
+		//						target = target->GetParent();*/
 
-								//std::string a = (target->GetName() + '/' + name + '.' + extension);
-							ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-							std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(path);
-							mat->AddTexture(std::static_pointer_cast<Texture>(tex));
-						}
-					}
-					else
-					{
-						std::string message = "Couldn't apply texture, selected game object "
-							+ target->GetName()
-							+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
-						LOG_CONSOLE(message.c_str());
-					}
-				}
-				else LOG_CONSOLE("Please select a Game Object with mesh to apply the texture %s", popUpItem);
-			}
-			else
-				LOG_CONSOLE("Asset can't be imported");
+		//						//std::string a = (target->GetName() + '/' + name + '.' + extension);
+		//					ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
+		//					std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(path);
+		//					mat->AddTexture(std::static_pointer_cast<Texture>(tex));
+		//				}
+		//			}
+		//			else
+		//			{
+		//				std::string message = "Couldn't apply texture, selected game object "
+		//					+ target->GetName()
+		//					+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
+		//				LOG_CONSOLE(message.c_str());
+		//			}
+		//		}
+		//		else LOG_CONSOLE("Please select a Game Object with mesh to apply the texture %s", popUpItem);
+		//	}
+		//	else
+		//		LOG_CONSOLE("Asset can't be imported");
 
-			ImGui::CloseCurrentPopup();
-			popUpItem = "";
-		}
+		//	ImGui::CloseCurrentPopup();
+		//	popUpItem = "";
+		//}
 
 		ImGui::EndPopup();
 	}

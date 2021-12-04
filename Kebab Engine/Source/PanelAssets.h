@@ -8,13 +8,6 @@
 class GameObject;
 class Texture;
 
-struct Asset
-{
-	std::string path;
-
-	GameObject* gameObj;
-};
-
 class AssetsPanel : public Panel
 {
 public:
@@ -29,9 +22,8 @@ public:
 	void DisplayPopMenu();
 	void DisplayItemPopMenu();
 
+	std::vector<Texture*> textures;
 private:
-
-	std::vector<Asset*> assets;
 
 	std::string currentFolder;
 	std::string entryFolder;

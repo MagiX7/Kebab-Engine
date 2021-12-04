@@ -180,7 +180,7 @@ bool Input::PreUpdate(float dt)
 
 				if(extension == "fbx" || extension == "obj")
 					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir, true));
-				else if (extension == "dds" || extension == "png" || extension == "jpg")
+				else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga")
 				{
 					app->editor->panelImportTexture->active = true;
 					app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());

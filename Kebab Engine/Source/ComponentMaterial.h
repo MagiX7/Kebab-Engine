@@ -22,6 +22,8 @@ public:
 
 	void DrawOnInspector();
 
+	void ShowTexturesMenu();
+
 	void AddTexture(std::shared_ptr<Texture>);
 
 	inline Texture* GetCurrentTexture() { return currentTexture; }
@@ -41,4 +43,6 @@ private:
 	//Texture* texture;
 	std::shared_ptr<Texture> checkersTexture;
 
+	bool menuSelectTex;
+	std::vector<Texture*> textures;
 };

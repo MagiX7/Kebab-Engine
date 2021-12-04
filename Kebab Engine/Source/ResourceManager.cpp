@@ -95,7 +95,7 @@ std::shared_ptr<Resource> ResourceManager::IsAlreadyLoaded(const std::string& li
 
 	for (; it != resources.end(); ++it)
 	{
-		if ((*it).second.get()->GetAssetsPath() == libraryFile)
+		if ((*it).second.get()->GetLibraryPath() == libraryFile)
 		{
 			return (*it).second;
 		}

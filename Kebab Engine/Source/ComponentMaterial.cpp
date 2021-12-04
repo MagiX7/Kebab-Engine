@@ -1,9 +1,14 @@
+#include "Application.h"
 #include "ComponentMaterial.h"
 
-#include "TextureLoader.h"
 #include "ResourceManager.h"
+#include "Editor.h"
+
+#include "PanelAssets.h"
 
 #include "imgui/imgui.h"
+
+#include "mmgr/mmgr.h"
 
 #define CHECKERS_HEIGHT 40
 #define CHECKERS_WIDTH 40
@@ -18,19 +23,14 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	currentTexture = nullptr;
 	checkersTexture = nullptr;
 
+	menuSelectTex = false;
+
 	SetCheckersTexture();
 }
 
 ComponentMaterial::~ComponentMaterial()
 {
-	/*for (auto& t : textures)
-	{
-		delete t;
-		t = nullptr;
-	}*/
-	//textures.clear();
-
-	//delete checkersTexture;
+	textures.clear();
 }
 
 void ComponentMaterial::Bind()
@@ -75,6 +75,22 @@ void ComponentMaterial::DrawOnInspector()
 			else currentTexture = nullptr;
 		}
 
+		
+
+		if (ImGui::Button("Change Texture"))
+		{
+			menuSelectTex = !menuSelectTex;
+
+			if (menuSelectTex)
+			{
+				textures = app->editor->assetsPanel->textures;
+			}
+		}
+
+		if (menuSelectTex)
+			ShowTexturesMenu();
+
+
 		ImGui::NewLine();
 		ImGui::BulletText("Current Texture: ");
 		if (texture)
@@ -90,6 +106,37 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::BulletText(s.c_str());
 		}
 	}
+}
+
+void ComponentMaterial::ShowTexturesMenu()
+{
+	ImGui::Begin("Select Texture", &menuSelectTex);
+	
+	ImGui::Columns(2, 0, false);
+
+	for (std::vector<Texture*>::const_iterator it = textures.begin(); it != textures.end(); it++)
+	{
+		std::string name = (*it)->GetName();
+
+		std::string nameShow = name.substr(0, name.find_last_of("_"));
+		nameShow = nameShow.substr(0, nameShow.find_last_of("_"));
+
+		ImGui::ImageButton((ImTextureID)(*it)->GetID(), { 100,100 });
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{ // TODO: need to change with resource manager
+			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded((*it)->GetPath().c_str());
+			AddTexture(std::static_pointer_cast<Texture>(tex));
+		}
+
+		ImGui::Text(nameShow.c_str());
+
+		ImGui::NextColumn();
+	}
+
+	if (!ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left || ImGuiMouseButton_Right))
+		menuSelectTex = false;
+
+	ImGui::End();
 }
 
 void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex)
