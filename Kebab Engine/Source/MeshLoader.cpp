@@ -78,7 +78,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         //KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
-            GameObject* go = new GameObject(mesh->GetOwnerName());
+            GameObject* go = new GameObject(mesh->GetName());
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
             meshComp->SetMesh(mesh);
             meshComp->SetModel(model);
@@ -195,13 +195,13 @@ void MeshLoader::ReLoadModel(const char* path, const ModelProperties& props)
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, flags);
         aiNode* node = scene->mRootNode;
-
+    
         ReProcessNode(node, scene, model);
-
+    
         std::string p = path + std::string(".meta");
         app->fileSystem->Remove(p.c_str());
         model->CreateMetaDataFile(path);
-
+    
     }
 }
 
@@ -272,9 +272,11 @@ void MeshLoader::ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_p
     model->DeleteMeshes();*/
 
     static int it = 0;
-    if (it <= model->GetMeshes().size() - 1)
-        model->GetMeshes()[it++]->SetData(vertices, indices);
-    else it = 0;
+    if (it >= model->GetMeshes().size())
+        it = 0;
+    model->GetMeshes()[it]->SetData(vertices, indices);
+    model->GetMeshes()[it]->SetName(mesh->mName.C_Str());
+    ++it;
 }
 
 ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
