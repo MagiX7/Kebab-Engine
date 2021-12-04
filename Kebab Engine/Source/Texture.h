@@ -47,6 +47,7 @@ public:
 	void UpdateData(void* data);
 	//void UpdateData(const TextureProperties& props);
 	void Clear();
+	void Reimport(const TextureProperties& props);
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;

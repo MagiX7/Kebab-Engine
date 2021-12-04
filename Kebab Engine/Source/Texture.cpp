@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Texture.h"
 
+#include "TextureLoader.h"
+
 #include "Globals.h"
 
 #define CHECKERS_HEIGHT 50
@@ -55,7 +57,7 @@ void Texture::SetData(void* data, int width, int height)
 		0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glGenerateMipmap(GL_TEXTURE_2D);
+	//glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void Texture::UpdateData(void* data)
@@ -72,6 +74,44 @@ void Texture::Clear()
 
 	width = 0;
 	height = 0;
+}
+
+void Texture::Reimport(const TextureProperties& props)
+{
+	if (rendererID)
+		glDeleteTextures(1, &rendererID);
+
+	width = 0;
+	height = 0;
+
+	ILuint tmp;
+	tmp = ilGenImage();
+	ilBindImage(tmp);
+
+	if (ilLoadImage(path.c_str()))
+	{
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		if (props.mipmap) iluBuildMipmaps();
+		if (props.alienify) iluAlienify();
+		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
+		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
+		if (props.contrast) iluContrast(props.contrastAmount);
+		if (props.equalization) iluEqualize();
+		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
+		if (props.negativity) iluNegative();
+		if (props.noise) iluNoisify(props.noiseAmount);
+		if (props.pixelization) iluPixelize(props.pixelsSize);
+		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);
+
+		this->props = props;
+
+		SetData(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
+
+		ilBindImage(0);
+	}
+
+	ilDeleteImage(tmp);
 }
 
 void Texture::Bind(unsigned int index) const

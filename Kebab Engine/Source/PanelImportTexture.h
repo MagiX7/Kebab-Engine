@@ -4,6 +4,7 @@
 #include "TextureProperties.h"
 
 #include <string>
+#include <memory>
 
 class Texture;
 
@@ -32,7 +33,7 @@ public:
 	void SetTexturePath(const char* assetsFile);
 
 private:
-	Texture* texture;
+	std::shared_ptr<Texture> texture;
 	std::string assetsPath;
 	TextureProperties props;
 };

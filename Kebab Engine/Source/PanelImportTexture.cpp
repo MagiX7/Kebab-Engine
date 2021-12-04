@@ -101,14 +101,9 @@ void ImportTexturePanel::OnRender(float dt)
 
 			ImGui::EndTable();
 
-			// TODO: Think a better way of doing this.
-			// Maybe changing data dynamicly?
 			if (change)
 			{
-				//TextureLoader::GetInstance()->UpdateTexture(texture, props);
-				//texture->UpdateData(props);
-				//delete texture;
-				//texture = TextureLoader::GetInstance()->LoadTexture(assetsPath.c_str(), props);
+				texture->Reimport(props);
 				change = false;
 			}
 		}
@@ -118,27 +113,11 @@ void ImportTexturePanel::OnRender(float dt)
 
 	if (ImGui::Button("Import", { 60,25 }))
 	{
-		// TODO: Import/Load image
-
-		int uuid = 0;
-		std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
-		if (tex)
-		{
-			uuid = tex->uuid;
-			tex.reset();
-		}
-		
-		tex = ResourceManager::GetInstance()->CreateTexture(assetsPath.c_str(), 0, props, uuid);
-		TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), uuid);
-
-		delete texture;
-
+		texture->Reimport(props);
 		active = false;
 	}
 
-
-	if(texture)
-		ImGui::Image((void*)texture->GetID(), { 200,200 });
+	if (texture) ImGui::Image((void*)texture->GetID(), { 200,200 });
 
 	ImGui::End();
 }
@@ -146,5 +125,7 @@ void ImportTexturePanel::OnRender(float dt)
 void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 {
 	assetsPath = assetsFile;
-	texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
+	texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsFile));
+
+	//texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
 }

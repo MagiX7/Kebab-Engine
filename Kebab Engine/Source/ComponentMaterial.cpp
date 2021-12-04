@@ -35,12 +35,12 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::Bind()
 {
-	if(currentTexture) currentTexture->Bind();
+	if(texture) texture->Bind();
 }
 
 void ComponentMaterial::Unbind()
 {
-	if (currentTexture) currentTexture->Unbind();
+	if (texture) texture->Unbind();
 }
 
 void ComponentMaterial::Enable()
@@ -77,8 +77,8 @@ void ComponentMaterial::DrawOnInspector()
 
 		ImGui::NewLine();
 		ImGui::BulletText("Current Texture: ");
-		if (currentTexture)
-			ImGui::Image((void*)currentTexture->GetID(), { 150,150 });
+		if (texture)
+			ImGui::Image((void*)texture->GetID(), { 150,150 });
 		else
 		{
 			ImGui::SameLine();
