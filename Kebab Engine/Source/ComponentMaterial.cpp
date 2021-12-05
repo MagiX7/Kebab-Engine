@@ -1,5 +1,8 @@
 #include "Application.h"
 #include "ComponentMaterial.h"
+#include "ComponentMesh.h"
+#include "GameObject.h"
+#include "Model.h"
 
 #include "ResourceManager.h"
 #include "Editor.h"
@@ -58,7 +61,7 @@ void ComponentMaterial::DrawOnInspector()
 	if (ImGui::CollapsingHeader("Texture"))
 	{
 		if (currentTexture && currentTexture == texture.get())
-			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetPath().c_str());
+			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetLibraryPath().c_str());
 		else if (currentTexture == checkersTexture.get())
 			ImGui::TextColored({ 255,255,0,255 }, "Default checkers texture");
 		else
@@ -123,7 +126,7 @@ void ComponentMaterial::ShowTexturesMenu()
 		ImGui::ImageButton((ImTextureID)(*it)->GetID(), { 100,100 });
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{ // TODO: need to change with resource manager
-			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded((*it)->GetPath().c_str());
+			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded((*it)->GetLibraryPath());
 			AddTexture(std::static_pointer_cast<Texture>(tex), 0);
 		}
 
@@ -142,17 +145,31 @@ void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 {
 	texture = tex;
 	currentTexture = texture.get();
-	if (texture && modelUuid != 0)
-	{
-		std::string initialPath = texture->GetLibraryPath();
-		int s = initialPath.find("__");
-		std::string p = initialPath.substr(0, s);
+	//if (texture && modelUuid != 0)
+	//{
+	//	std::string initialPath = texture->GetLibraryPath();
+	//	int s = initialPath.find("__");
+	//	std::string p = initialPath.substr(0, s);
 
-		p += "__" + std::to_string(modelUuid) + ".kbtexture";
-		texture->SetLibraryPath(p);
-	
-		texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
-	}
+	//	p += /*"__" + std::to_string(modelUuid) + */".kbtexture";
+	//	texture->SetLibraryPath(p);
+	//
+	//	texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
+	//}
+	//else if(texture && modelUuid == 0)
+	//{
+	//	ComponentMesh* meshComp = (ComponentMesh*)parent->GetComponent(ComponentType::MESH);
+	//	int uuid = meshComp->GetModel()->uuid;
+	//	std::string initialPath = texture->GetLibraryPath();
+	//	int s = initialPath.find("__");
+	//	std::string p = initialPath.substr(0, s);
+
+	//	p += /*"__" + std::to_string(uuid) +*/ ".kbtexture";
+	//	texture->SetLibraryPath(p);
+
+	//	texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
+
+	//}
 }
 
 JSON_Value* ComponentMaterial::Save()
@@ -170,7 +187,7 @@ JSON_Value* ComponentMaterial::Save()
 	if (texture && currentTexture == texture.get())
 	{
 		json_object_set_number(obj, "uuid", texture->uuid);
-		json_object_set_string(obj, "path", texture->GetPath().c_str());
+		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
 	}
 
 	return value;
@@ -178,7 +195,6 @@ JSON_Value* ComponentMaterial::Save()
 
 void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 {
-	//delete texture;
 	currentTexture = nullptr;
 
 	std::string path = json_object_dotget_string(obj, "path");
@@ -186,21 +202,13 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 	else
 	{
 		int uuid = json_object_get_number(obj, "uuid");
-		//texName += "__" + std::to_string(uuid);
-		//texture = TextureLoader::GetInstance()->LoadTextureCustomFormat(path);
-		//ResourceManager::GetInstance()->CreateNewResource()
-		if (ResourceManager::GetInstance()->IsAlreadyLoaded(uuid))
+
+		if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(path)))
 		{
-			texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->GetResource(uuid));
-			//texture = tex.get();
+			texture = tex;
 			currentTexture = texture.get();
 		}
-		
-		/*texture->uuid = uuid;
-		currentTexture = texture;*/
 	}
-
-	//this->parent = parent;
 }
 
 void ComponentMaterial::SetCheckersTexture()

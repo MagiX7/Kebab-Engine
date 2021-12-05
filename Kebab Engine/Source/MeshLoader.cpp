@@ -264,12 +264,13 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
         if (!tex)
         {
             tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+            std::string libPath = "Library/Textures/" + tex->GetName() /*+ "__" + std::to_string(model->uuid)*/ + ".kbtexture";
+            TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
+            app->editor->assetsPanel->textures.push_back(tex.get());
+            tex->SetLibraryPath(libPath);
         }
 
         mat->AddTexture(tex, model->uuid);
-        TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
-        std::string libPath = "Library/Textures" + tex->GetName() + "__" + std::to_string(model->uuid) + ".kbtexture";
-        tex->SetLibraryPath(libPath);
         tex->CreateMetaDataFile(imageName.c_str());
     }
 

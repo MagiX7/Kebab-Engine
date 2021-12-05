@@ -153,7 +153,7 @@ void AssetsPanel::LoadAssetsToCustom()
 						tex->SetAssetsPath(completePath);
 						TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
 					}
-					textures.push_back(tex.get());
+						textures.push_back(tex.get());
 				}
 				else
 				{
@@ -216,6 +216,8 @@ void AssetsPanel::DisplayAssets()
 		std::string dragpath = currentFolder + (*it);
 		ImGui::PushID(dragpath.c_str());
 
+		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
+		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
 
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
 		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
@@ -227,10 +229,11 @@ void AssetsPanel::DisplayAssets()
 
 			for (std::vector<Texture*>::const_iterator itTex = textures.begin(); itTex != textures.end(); itTex++)
 			{
-				std::string showName = (*it).substr(0, (*it).find_last_of("_"));
-				showName = showName.substr(0, showName.find_last_of("_"));
-
-				if ((*itTex)->GetName() == showName)
+				//std::string showName = (*it).substr(0, (*it).find_last_of("_"));
+				//showName = showName.substr(0, showName.find_last_of("_"));
+				std::string n = (*it).substr(0, (*it).find_last_of("."));
+				nameToShow = n;
+				if ((*itTex)->GetName() == n)
 				{
 					id = (ImTextureID)(*itTex)->GetID();
 					break;
@@ -247,9 +250,6 @@ void AssetsPanel::DisplayAssets()
 			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
 			ImGui::EndDragDropSource();
 		}
-
-		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
-		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
 
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
