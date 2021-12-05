@@ -585,8 +585,11 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
                 ImGui::EndMenu();
             }
 
-            ImGui::Checkbox("Debug Quad Tree", &debugQT);
             ImGui::Checkbox("Visualize Frustum Culling", &frustumCulling);
+            ImGui::Checkbox("Debug Draw Quad Tree", &debugQT);
+            ImGui::Checkbox("Debug Draw AABB", &app->renderer3D->drawAABB);
+            ImGui::Checkbox("Draw Grid", &app->renderer3D->drawGrid);
+
 
             ImGui::Checkbox("Show Editor Windows", &showWindows);
 

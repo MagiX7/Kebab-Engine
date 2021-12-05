@@ -35,7 +35,6 @@ public:
 	void SetColorMaterial();
 	void SetTexture2D();
 	void SetWireframe();
-	void SetDrawAABB();
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
@@ -64,7 +63,9 @@ public:
 	bool colorMaterial;
 	bool texture2D;
 	bool wireframe;
+
 	bool drawAABB;
+	bool drawGrid;
 
 private:
 	std::vector<ComponentMesh*> meshes;
