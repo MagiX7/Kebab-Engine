@@ -190,8 +190,11 @@ JSON_Value* ComponentMesh::Save()
 
 	/*Parser::DotSetObjectNumber(obj, "vertices", mesh->GetVertices().size());
 	Parser::DotSetObjectNumber(obj, "indices", mesh->GetIndices().size());*/
+
+	Parser::DotSetObjectString(obj, "model library path", model->GetLibraryPath().c_str());
+	Parser::DotSetObjectNumber(obj, "model uuid", model->uuid);
 	Parser::DotSetObjectNumber(obj, "mesh uuid", mesh->uuid);
-	Parser::DotSetObjectString(obj, "mesh library path", mesh->GetPath().c_str());
+	Parser::DotSetObjectString(obj, "mesh library path", mesh->GetLibraryPath().c_str());
 	Parser::DotSetObjectString(obj, "mesh name", mesh->GetName().c_str());
 
 
@@ -200,18 +203,21 @@ JSON_Value* ComponentMesh::Save()
 
 void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 {
+	std::string modelPath = json_object_get_string(obj, "model library path");
+
 	int uuid = json_object_get_number(obj, "mesh uuid");
 	std::string path = json_object_get_string(obj, "mesh library path");
 	std::string meshName = json_object_get_string(obj, "mesh name");
 	meshName += "__" + std::to_string(uuid);
-	if (ResourceManager::GetInstance()->IsAlreadyLoaded(uuid))
+	if (model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(modelPath)))
 	{
-		std::shared_ptr<Resource> m = ResourceManager::GetInstance()->GetResource(uuid);
-		mesh = (KbMesh*)m.get();
+		static int it = 0;
+		if (it >= model->GetMeshes().size())
+			it = 0;
+		mesh = model->GetMeshes()[it++];
+		mesh->uuid = uuid;
 	}
 
-	/*mesh = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshName.c_str());
-	mesh->uuid = uuid;*/
 
 	AABB aabb;
 
