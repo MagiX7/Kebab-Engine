@@ -37,7 +37,7 @@ Camera3D::Camera3D(bool startEnabled) : Module(startEnabled)
 	editorCam->SetPosition(position);
 	editorCam->Look(reference);
 
-	editorCam->SetFarPlane(100);
+	editorCam->SetFarPlane(200);
 }
 
 Camera3D::~Camera3D()

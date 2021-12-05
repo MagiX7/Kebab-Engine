@@ -22,6 +22,8 @@ public:
 	void DisplayPopMenu();
 	void DisplayItemPopMenu();
 
+	void RefreshAssets(float dt);
+
 	std::vector<Texture*> textures;
 private:
 
@@ -37,4 +39,6 @@ private:
 
 	float columns;
 	bool rename;
+
+	float timer;
 };

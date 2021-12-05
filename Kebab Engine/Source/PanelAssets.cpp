@@ -40,6 +40,8 @@ AssetsPanel::AssetsPanel()
 	popUpMenu = false;
 	rename = false;
 
+	timer = 0;
+
 	entryFolder = "Library/";
 	currentFolder = entryFolder;
 
@@ -94,6 +96,8 @@ void AssetsPanel::OnRender(float dt)
 				popUpMenu = true;
 		}
 
+		RefreshAssets(dt);
+
 		DisplayAssets();
 
 		if (popUpItem != "")
@@ -143,6 +147,7 @@ void AssetsPanel::LoadAssetsToCustom()
 				if (currentFolderToLoad != "Assets/Resources/Icons/")
 				{
 					std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+					TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
 					textures.push_back(tex.get());
 				}
 				else
@@ -206,11 +211,13 @@ void AssetsPanel::DisplayAssets()
 		std::string dragpath = currentFolder + (*it);
 		ImGui::PushID(dragpath.c_str());
 
+
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
 		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
 		else if (aux == ".dds" || aux == ".png" || aux == ".jpg" || aux == ".kbtexture")
 		{
+
 			ImTextureID id = (ImTextureID)pngTex->GetID();
 
 			for (std::vector<Texture*>::const_iterator itTex = textures.begin(); itTex != textures.end(); itTex++)
@@ -235,13 +242,13 @@ void AssetsPanel::DisplayAssets()
 			ImGui::SetDragDropPayload("ASSET_ITEM", dragpath.c_str(), dragpath.size() + 1);
 			ImGui::EndDragDropSource();
 		}
-		
+
 		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
 		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
 
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 			popUpItem = (*it).c_str();
-		
+
 		else if (ImGui::IsItemClicked(ImGuiMouseButton_Middle))
 		{
 			if (aux == ".kbmodel")
@@ -267,12 +274,77 @@ void AssetsPanel::DisplayAssets()
 			}
 		}
 
-		
+
 		ImGui::Text(nameToShow.c_str());
 
 		ImGui::NextColumn();
 
+
 		ImGui::PopID();
+	}
+}
+
+
+void AssetsPanel::RefreshAssets(float dt)
+{
+	timer += dt;
+
+	if (timer >= 100)
+	{
+		timer = 0;
+
+		std::queue<std::string> que;
+
+		std::string entry = "Assets/";
+		que.push(entry);
+
+		while (!que.empty())
+		{
+			std::string currentFolderToLoad = que.front();
+			que.pop();
+
+			std::vector<std::string> dirList;
+			std::vector<std::string> fileList;
+
+			app->fileSystem->DiscoverFiles(currentFolderToLoad.c_str(), fileList, dirList);
+
+			for (std::vector<std::string>::const_iterator it = dirList.begin(); it != dirList.end(); it++)
+			{
+				std::string folderPath = currentFolderToLoad + (*it) + "/";
+				que.push(folderPath);
+			}
+
+			for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
+			{
+				std::string completePath = currentFolderToLoad + (*it);
+				std::string ext = (*it).substr((*it).find_last_of("."), (*it).length());
+
+				if (ext == ".fbx" || ext == ".obj")
+				{
+					if (!ResourceManager::GetInstance()->IsAlreadyLoaded(completePath.c_str()))
+					{
+						// Resource managed inside this function
+						MeshLoader::GetInstance()->LoadModel(completePath);
+					}
+				}
+				else if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
+				{
+					if (!ResourceManager::GetInstance()->IsAlreadyLoaded(completePath.c_str()))
+					{
+						if (currentFolderToLoad != "Assets/Resources/Icons/")
+						{
+							std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+							TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
+							textures.push_back(tex.get());
+						}
+						else
+						{
+							ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
