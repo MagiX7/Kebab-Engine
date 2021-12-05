@@ -66,7 +66,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
 
     std::string name = path.substr(start, end - start);
 
-    GameObject* baseGO;
+    GameObject* baseGO = nullptr;
         
     std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
     std::string metaPath = path + ".meta";
@@ -186,6 +186,102 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
     }
 }
 
+ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
+{
+    //GameObject* go = new GameObject(mesh->mName.C_Str());
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
+    //std::vector<float2> texCoords;
+
+    for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+    {
+        Vertex vertex;
+        vertex.position.x = mesh->mVertices[i].x;
+        vertex.position.y = mesh->mVertices[i].y;
+        vertex.position.z = mesh->mVertices[i].z;
+
+        if (mesh->HasNormals())
+        {
+            vertex.normal.x = mesh->mNormals[i].x;
+            vertex.normal.y = mesh->mNormals[i].y;
+            vertex.normal.z = mesh->mNormals[i].z;
+        }
+
+        if (mesh->mTextureCoords[0])
+        {
+            vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
+            vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
+        }
+
+        vertices.push_back(vertex);
+    }
+
+    // Process indices
+    for (int i = 0; i < mesh->mNumFaces; ++i)
+    {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; ++j)
+            indices.push_back(face.mIndices[j]);
+    }
+
+    std::string imageName;
+    if (scene->mNumMaterials > 0)
+    {
+        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+
+        aiString n;
+        mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
+        //if(n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a diffuse texture", mesh->mName.C_Str());
+        //mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
+        //if (n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a base color texture\n", mesh->mName.C_Str());
+
+        std::string name;
+        name = n.C_Str();
+
+        if (name.size() > 0)
+        {
+            int start = name.find_last_of('\\');
+            if (start == 0)
+                start = name.find_last_of('/');
+
+            imageName = ASSETS_DIR + nameBaseGO + "/";
+            imageName += name.substr(start + 1);
+        }
+        else LOG_CONSOLE("\nMesh doesn't have a material with DIFFUSE texture. If you have it, drag and drop it.");
+    }
+
+    ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
+    //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
+    std::shared_ptr<Texture> tex = nullptr;
+    if (!imageName.empty())
+    {
+        tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        mat->AddTexture(tex);
+        tex->CreateMetaDataFile(imageName.c_str());
+        TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
+    }
+
+    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
+    KbMesh* m = new KbMesh(vertices, indices);
+    m->SetName(mesh->mName.C_Str());
+    //m->SetUUID(model->GetUUID());
+    m->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
+    m->SetOwnerName(baseGO->GetName());
+    if (tex)
+        m->SetTextureMetaPath(tex->GetMetaPath());
+    meshComp->SetMesh(m);
+    meshComp->SetModel(model);
+    model->AddMesh(m);
+    ResourceManager::GetInstance()->AddResource(m);
+    SaveMeshCustomFormat(m, m->GetName(), model->uuid);
+
+    LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
+
+    return meshComp;
+}
+
 void MeshLoader::ReLoadModel(const char* path, const ModelProperties& props)
 {
     std::shared_ptr<KbModel> model = nullptr;
@@ -201,7 +297,6 @@ void MeshLoader::ReLoadModel(const char* path, const ModelProperties& props)
         std::string p = path + std::string(".meta");
         app->fileSystem->Remove(p.c_str());
         model->CreateMetaDataFile(path);
-    
     }
 }
 
@@ -277,102 +372,6 @@ void MeshLoader::ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_p
     model->GetMeshes()[it]->SetData(vertices, indices);
     model->GetMeshes()[it]->SetName(mesh->mName.C_Str());
     ++it;
-}
-
-ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model)
-{
-    //GameObject* go = new GameObject(mesh->mName.C_Str());
-
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
-    //std::vector<float2> texCoords;
-
-    for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
-    {
-        Vertex vertex;
-        vertex.position.x = mesh->mVertices[i].x;
-        vertex.position.y = mesh->mVertices[i].y;
-        vertex.position.z = mesh->mVertices[i].z;
-
-        if (mesh->HasNormals())
-        {
-            vertex.normal.x = mesh->mNormals[i].x;
-            vertex.normal.y = mesh->mNormals[i].y;
-            vertex.normal.z = mesh->mNormals[i].z;
-        }
-        
-        if (mesh->mTextureCoords[0])
-        {
-            vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
-            vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
-        }
-
-        vertices.push_back(vertex);
-    }
-
-    // Process indices
-    for (int i = 0; i < mesh->mNumFaces; ++i)
-    {
-        aiFace face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; ++j)
-            indices.push_back(face.mIndices[j]);
-    }
-    
-    std::string imageName;
-    if (scene->mNumMaterials > 0)
-    {
-        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
-
-        aiString n;
-        mat->GetTexture(aiTextureType_DIFFUSE, 0, &n);
-        //if(n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a diffuse texture", mesh->mName.C_Str());
-        //mat->GetTexture(aiTextureType_BASE_COLOR, 0, &n);
-        //if (n.length <= 0) LOG_CONSOLE("\nCurrent mesh %s doesn't have a base color texture\n", mesh->mName.C_Str());
-
-        std::string name;
-        name = n.C_Str();
-
-        if (name.size() > 0)
-        {
-            int start = name.find_last_of('\\');
-            if (start == 0)
-                start = name.find_last_of('/');
-
-            imageName = ASSETS_DIR + nameBaseGO + "/";
-            imageName += name.substr(start + 1);
-        }
-        else LOG_CONSOLE("\nMesh doesn't have a material with DIFFUSE texture. If you have it, drag and drop it.");
-    }
-
-    ComponentMaterial* mat = (ComponentMaterial*)baseGO->CreateComponent(ComponentType::MATERIAL);
-    //std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->CreateNewResource(imageName.c_str(), ResourceType::TEXTURE, model->uuid);
-    std::shared_ptr<Texture> tex = nullptr;
-    if (!imageName.empty())
-    {
-        tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
-        mat->AddTexture(tex);
-        tex->CreateMetaDataFile(imageName.c_str());
-        TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
-    }
-
-    ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
-    KbMesh* m = new KbMesh(vertices, indices);
-    m->SetName(mesh->mName.C_Str());
-    //m->SetUUID(model->GetUUID());
-    m->SetUUID(ResourceManager::GetInstance()->GenerateUUID());
-    m->SetOwnerName(baseGO->GetName());
-    if(tex)
-        m->SetTextureMetaPath(tex->GetMetaPath());
-    meshComp->SetMesh(m);
-    meshComp->SetModel(model);
-    model->AddMesh(m);
-    ResourceManager::GetInstance()->AddResource(m);
-    SaveMeshCustomFormat(m, m->GetName(), model->uuid);
-
-    LOG_CONSOLE("\nSuccesfully loaded mesh %s from %s: %i vertices, %i indices", baseGO->GetName().c_str(), nameBaseGO.c_str(), vertices.size(), indices.size());
-
-    return meshComp;
 }
 
 unsigned int MeshLoader::GetModelFlags(const ModelProperties& props)

@@ -66,8 +66,13 @@ void ComponentMesh::DrawOnInspector()
 	{
 		ImGui::Text("Vertices: %i", mesh->GetVertices().size());
 		ImGui::Text("Indices: %i", mesh->GetIndices().size());
-		if(model)
-			ImGui::BulletText("Reference count: %i", model.use_count() - 1); // -1 because of the model in the resources map
+		if (model)
+		{
+			// Need to do this because the meshes are not shared ptr, and i need to find how many meshes there are in the mode
+			// and their usage by this way. I took care that the meshes are nut duplicated in the same model.
+			int refCount = model.use_count() / (model->GetMeshes().size()) - 1; // -1 because of the model in the resources map
+			ImGui::BulletText("Reference count: %i", refCount); 
+		}
 
 		ImGui::Checkbox("Show vertex normals", &drawVertexNormals);
 		if (drawVertexNormals)

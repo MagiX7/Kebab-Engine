@@ -134,7 +134,10 @@ void AssetsPanel::LoadAssetsToCustom()
 			std::string ext = (*it).substr((*it).find_last_of("."), (*it).length());
 
 			if (ext == ".fbx" || ext == ".obj")
+			{
+				//ResourceManager::GetInstance()->CreateModel(completePath.c_str());
 				MeshLoader::GetInstance()->LoadModel(completePath);
+			}
 			if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
 			{
 				if (currentFolderToLoad != "Assets/Resources/Icons/")
@@ -142,7 +145,10 @@ void AssetsPanel::LoadAssetsToCustom()
 					textures.push_back(TextureLoader::GetInstance()->LoadTexture(completePath.c_str()));
 				}
 				else
-					TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+				{
+					ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+					//TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
+				}
 			}
 		}
 	}

@@ -14,10 +14,10 @@ KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>&
 
 KbMesh::~KbMesh()
 {
-	delete vertexBuffer;
+	//delete vertexBuffer;
 	vertexBuffer = nullptr;
 
-	delete indexBuffer;
+	//delete indexBuffer;
 	indexBuffer = nullptr;
 
 	vertices.clear();

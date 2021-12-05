@@ -111,11 +111,16 @@ void ImportTexturePanel::OnRender(float dt)
 			}
 
 			ImGui::EndTable();
-
-			if (change)
+			static float reloadDelay = 0.75f;
+			if (reloadDelay <= 0.75f)
+			{
+				reloadDelay += dt;
+			}
+			else if (change && reloadDelay > 0.75f)
 			{
 				texture->ReLoad(props);
 				change = false;
+				reloadDelay = 0.0f;
 			}
 		}
 	}
@@ -129,7 +134,7 @@ void ImportTexturePanel::OnRender(float dt)
 		active = false;
 	}
 	ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 70);
-	if (ImGui::Button("Restart", { 60,25 }))
+	if (ImGui::Button("Reset", { 60,25 }))
 	{
 		props = initialProps;
 		texture->ReLoad(initialProps);

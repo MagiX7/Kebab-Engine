@@ -14,9 +14,6 @@ KbModel::KbModel() : Resource(ResourceType::MODEL)
 
 KbModel::~KbModel()
 {
-	for (auto& m : meshes)
-		delete m;
-
 	meshes.clear();
 }
 
@@ -27,10 +24,6 @@ void KbModel::AddMesh(KbMesh* mesh)
 
 void KbModel::DeleteMeshes()
 {
-	for (auto& m : meshes)
-	{
-		delete m; m = nullptr;
-	}
 	meshes.clear();
 }
 

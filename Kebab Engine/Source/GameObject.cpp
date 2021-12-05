@@ -64,7 +64,6 @@ GameObject::~GameObject()
 	components.clear();
 
 	childs.clear();
-	components.clear();
 
 	//RELEASE(localAABB);
 }
