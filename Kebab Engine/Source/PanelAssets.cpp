@@ -9,7 +9,6 @@
 
 #include "ResourceManager.h"
 #include "Model.h"
-#include "Texture.h"
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -147,8 +146,13 @@ void AssetsPanel::LoadAssetsToCustom()
 			{
 				if (currentFolderToLoad != "Assets/Resources/Icons/")
 				{
-					std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
-					TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
+					std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(completePath.c_str()));
+					if (!tex)
+					{
+						tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+						tex->SetAssetsPath(completePath);
+						TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
+					}
 					textures.push_back(tex.get());
 				}
 				else
@@ -335,6 +339,7 @@ void AssetsPanel::RefreshAssets(float dt)
 						if (currentFolderToLoad != "Assets/Resources/Icons/")
 						{
 							std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+							tex->SetAssetsPath(completePath);
 							TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
 							textures.push_back(tex.get());
 						}
@@ -403,53 +408,36 @@ void AssetsPanel::DisplayItemPopMenu()
 		{
 			std::string path = currentFolder + popUpItem;
 
-			int status = 0;
+			int status;
+
+			status = remove(path.c_str());
 
 			std::string fileName = popUpItem.substr(0, popUpItem.find_last_of("_"));
 			fileName = fileName.substr(0, fileName.find_last_of("_"));
 			std::string ext = popUpItem.substr(popUpItem.find_last_of("."), popUpItem.length());
-
+			
 			if (ext == ".kbmodel")
 			{
-				std::shared_ptr<KbModel> mod = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path));
-				std::vector<KbMesh*> meshes = mod->GetMeshes();
+				// FBX
+				path = app->fileSystem->FindFilePath(fileName + ".fbx");
+				if (path != "")
+					status += remove(path.c_str());
 
-				status += remove(mod->GetLibraryPath().c_str());
-				status += remove(mod->GetAssetsPath().c_str());
-				status += remove(mod->GetMetaPath().c_str());
+				fileName = fileName + ".fbx";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 
-				for (std::vector<KbMesh*>::iterator it = meshes.begin(); it != meshes.end(); it++)
-				{
-					status += remove((*it)->GetLibraryPath().c_str());
-					status += remove((*it)->GetAssetsPath().c_str());
-					status += remove((*it)->GetMetaPath().c_str());
-				}
+				// OBJ
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".obj");
+				if (path != "")
+					status += remove(path.c_str());
 
-				meshes.clear();
-
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
-
-				//// FBX
-				//path = app->fileSystem->FindFilePath(fileName + ".fbx");
-				//if (path != "")
-				//	status += remove(path.c_str());
-
-				//fileName = fileName + ".fbx";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
-
-				//// OBJ
-				//path = "";
-				//path = app->fileSystem->FindFilePath(fileName + ".obj");
-				//if (path != "")
-				//	status += remove(path.c_str());
-
-				//fileName = fileName + ".obj";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				fileName = fileName + ".obj";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 			}
 			else if (ext == ".kbtexture")
 			{
@@ -464,61 +452,53 @@ void AssetsPanel::DisplayItemPopMenu()
 					}
 				}
 
-				std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(path));
-				status += remove(tex->GetLibraryPath().c_str());
-				status += remove(tex->GetAssetsPath().c_str());
-				status += remove((tex->GetAssetsPath() + ".meta").c_str());
+				// PNG
+				path = app->fileSystem->FindFilePath(fileName + ".png");
+				if (path != "")
+					status += remove(path.c_str());
 
-				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
-				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
+				fileName = fileName + ".png";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//// PNG
-				//path = app->fileSystem->FindFilePath(fileName + ".png");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				// DDS
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".dds");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//fileName = fileName + ".png";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				fileName = fileName + ".dds";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//// DDS
-				//path = "";
-				//path = app->fileSystem->FindFilePath(fileName + ".dds");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				// JPG
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".jpg");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//fileName = fileName + ".dds";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				fileName = fileName + ".jpg";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//// JPG
-				//path = "";
-				//path = app->fileSystem->FindFilePath(fileName + ".jpg");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				// TGA
+				path = "";
+				path = app->fileSystem->FindFilePath(fileName + ".tga");
+				if (path != "")
+					status += remove(path.c_str());
 
-				//fileName = fileName + ".jpg";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
-
-				//// TGA
-				//path = "";
-				//path = app->fileSystem->FindFilePath(fileName + ".tga");
-				//if (path != "")
-				//	status += remove(path.c_str());
-
-				//fileName = fileName + ".tga";
-				//path = app->fileSystem->FindFilePath(fileName + ".meta");
-				//if (path != "")
-				//	status += remove(path.c_str());
+				fileName = fileName + ".tga";
+				path = app->fileSystem->FindFilePath(fileName + ".meta");
+				if (path != "")
+					status += remove(path.c_str());
 			}
-			else
-			{
-				LOG_CONSOLE("Error to Delete %s", popUpItem.c_str());
-			}
+
+			if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
+			else if (status < 3) { LOG_CONSOLE("Error to Delete all archives of %s", popUpItem.c_str()); }
+			else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }
 
 			ImGui::CloseCurrentPopup();
 			popUpItem = "";

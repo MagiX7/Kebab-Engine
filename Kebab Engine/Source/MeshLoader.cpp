@@ -260,7 +260,12 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     std::shared_ptr<Texture> tex = nullptr;
     if (!imageName.empty())
     {
-        tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(imageName.c_str()));
+        if (!tex)
+        {
+            tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
+        }
+
         mat->AddTexture(tex, model->uuid);
         TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
         std::string libPath = "Library/Textures" + tex->GetName() + "__" + std::to_string(model->uuid) + ".kbtexture";

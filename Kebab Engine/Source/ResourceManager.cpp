@@ -178,20 +178,20 @@ std::shared_ptr<Texture> ResourceManager::CreateTexture(const char* assetsFile, 
 
 	ret = std::make_shared<Texture>(*tex);
 
-	ret.get()->SetAssetsPath(assetsFile);
+	ret->SetAssetsPath(assetsFile);
 	std::string tmp = assetsFile;
 	int start = tmp.find_last_of("/");
 	int end = tmp.find(".");
 	std::string lib = "Library/Textures/" + tmp.substr(start + 1, end - start - 1) +
 		"__" + std::to_string(modelUuid) + ".kbtexture";
-	ret.get()->SetLibraryPath(lib);
+	ret->SetLibraryPath(lib);
 
-	ret.get()->CreateMetaDataFile(assetsFile);
+	ret->CreateMetaDataFile(assetsFile);
 
 	/*delete tex;
 	tex = nullptr;*/
 
-	resources[ret.get()->uuid] = ret;
+	resources[ret->uuid] = ret;
 
 
 	return ret;
