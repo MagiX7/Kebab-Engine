@@ -4,6 +4,9 @@
 #include "ModelProperties.h"
 
 #include <string>
+#include <memory>
+
+class KbModel;
 
 class PanelImportModel : public Panel
 {
@@ -15,12 +18,14 @@ public:
 
 	void HelpMarker(const char* text);
 
-	inline void SetAssetsPath(const std::string& path) { assetsPath = path; }
+	void SetAssetsPath(const std::string& path);
 	inline const std::string& GetAssetsPath() { return assetsPath; }
 
 private:
 	ModelProperties props;
+	std::shared_ptr<KbModel> model;
 
 	std::string assetsPath;
+	std::string extension;
 
 };

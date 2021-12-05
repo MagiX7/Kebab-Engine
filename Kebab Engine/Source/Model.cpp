@@ -36,9 +36,11 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 {
 	hasMetaFile = true;
 
+
 	std::string p = assetsFile;
-	//int end = p.find(".");
-	//std::string path = p.substr(0, end);
+	if (p.find("Assets/") == -1)
+		return;
+
 	p += ".meta";
 	metaFile = p;
 

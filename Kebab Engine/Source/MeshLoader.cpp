@@ -60,6 +60,9 @@ void MeshLoader::CleanUp()
 
 GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, const ModelProperties& props)
 {
+    /*if (!app->fileSystem->Exists(path.c_str()))
+        return nullptr;*/
+
     int start = path.find_last_of('/') + 1;
     if (start == 0) start = path.find_last_of("\\") + 1;
     int end = path.find('.');
@@ -355,25 +358,15 @@ void MeshLoader::ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_p
             indices.push_back(face.mIndices[j]);
     }
 
-    // TODO: Maybe dont need to delete the meshes, just "update" the data
-   /* for (int i = 0; i < model->GetMeshes().size(); ++i)
-    {
-        KbMesh* m = model->GetMeshes()[i];
-        std::string mp = m->GetTextureMetaPath();
-        if (!mp.empty())
-        {
-            texturesMetaPath.push_back(mp.c_str());
-        }
-    }
-
-    model->DeleteMeshes();*/
-
     static int it = 0;
-    if (it >= model->GetMeshes().size())
-        it = 0;
-    model->GetMeshes()[it]->SetData(vertices, indices);
-    model->GetMeshes()[it]->SetName(mesh->mName.C_Str());
-    ++it;
+    if (!model->GetMeshes().empty())
+    {
+        if (it >= model->GetMeshes().size())
+            it = 0;
+        model->GetMeshes()[it]->SetData(vertices, indices);
+        model->GetMeshes()[it]->SetName(mesh->mName.C_Str());
+        ++it;
+    }
 }
 
 unsigned int MeshLoader::GetModelFlags(const ModelProperties& props)

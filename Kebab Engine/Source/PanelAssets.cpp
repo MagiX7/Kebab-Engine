@@ -289,7 +289,7 @@ void AssetsPanel::RefreshAssets(float dt)
 {
 	timer += dt;
 
-	if (timer >= 100)
+	if (timer >= 10)
 	{
 		timer = 0;
 

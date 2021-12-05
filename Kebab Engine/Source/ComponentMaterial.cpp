@@ -148,8 +148,6 @@ void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 		int s = initialPath.find("__");
 		std::string p = initialPath.substr(0, s);
 
-		// Need to recreate meta file?
-
 		p += "__" + std::to_string(modelUuid) + ".kbtexture";
 		texture->SetLibraryPath(p);
 	

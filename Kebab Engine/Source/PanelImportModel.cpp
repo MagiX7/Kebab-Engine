@@ -1,3 +1,7 @@
+#include "Application.h"
+#include "Renderer3D.h"
+#include "FileSystem.h"
+
 #include "PanelImportModel.h"
 
 #include "ResourceManager.h"
@@ -74,7 +78,33 @@ void PanelImportModel::OnRender(float dt)
 
 	if (ImGui::Button("Import"))
 	{
-		MeshLoader::GetInstance()->ReLoadModel(assetsPath.c_str(), props);
+		if (ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()))
+		{
+			MeshLoader::GetInstance()->ReLoadModel(assetsPath.c_str(), props);
+		}
+		else
+		{
+			app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(assetsPath, true));
+			model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
+			model->SetAssetsPath(assetsPath);
+
+			if (assetsPath.find("Assets/"))
+			{
+				std::string metaPath = assetsPath + ".meta";
+				app->fileSystem->Remove(metaPath.c_str());
+
+				int s = assetsPath.find_last_of("/");
+				if(s == -1)
+					s = assetsPath.find_last_of("\\");
+
+				int e = assetsPath.find_last_of(".");
+				std::string n = assetsPath.substr(s + 1, e - s - 1);
+				std::string newMetaPath = "Assets/Resources/" + n + extension;
+
+				model->CreateMetaDataFile(newMetaPath.c_str());
+			}
+
+		}
 
 		//std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
 
@@ -104,5 +134,26 @@ void PanelImportModel::HelpMarker(const char* text)
 		ImGui::TextUnformatted(text);
 		ImGui::PopTextWrapPos();
 		ImGui::EndTooltip();
+	}
+}
+
+void PanelImportModel::SetAssetsPath(const std::string& path)
+{
+	if (!path.empty())
+	{
+		assetsPath = path;
+		
+		extension = path.substr(path.find("."));
+
+
+		//model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
+		//if(!model)
+		//{
+		//	//model = ResourceManager::GetInstance()->CreateModel(path.c_str());
+		//	app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path, true));
+
+		//	model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
+		//	model->SetAssetsPath(path);
+		//}
 	}
 }
