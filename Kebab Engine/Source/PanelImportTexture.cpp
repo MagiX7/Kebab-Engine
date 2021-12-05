@@ -160,11 +160,22 @@ void ImportTexturePanel::OnRender(float dt)
 
 void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 {
-	assetsPath = assetsFile;
-	texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsFile));
-	if (!texture)
-		texture = ResourceManager::GetInstance()->CreateTexture(assetsFile);
-	
+	std::string path = assetsFile;
+	if (!path.empty())
+	{
+		assetsPath = assetsFile;
+
+		texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsFile));
+		if (!texture)
+			texture = ResourceManager::GetInstance()->CreateTexture(assetsFile);
+
+		texture->SetAssetsPath(assetsFile);
+	}
+	/*else
+	{
+		assetsPath = texture->GetAssetsPath();
+	}*/
+
 	//texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
 }
 

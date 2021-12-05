@@ -85,6 +85,8 @@ public:
 	bool wireframe;
 	bool debugQT;
 	bool frustumCulling;
+	
+	bool wantsToQuit;
 
 private:
 	std::string currentSaveDirectory;
@@ -95,7 +97,6 @@ private:
 
 	bool showWindows;
 	bool closeApp;
-	bool wantsToQuit;
 
 	bool onPlay;
 
