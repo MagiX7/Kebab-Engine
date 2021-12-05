@@ -693,7 +693,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
 
     //std::string path = "Library/Models/" + fileName;
 
-    char* buffer;
+    char* buffer = nullptr;
     if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
     {
         modelValue = json_parse_string(buffer);

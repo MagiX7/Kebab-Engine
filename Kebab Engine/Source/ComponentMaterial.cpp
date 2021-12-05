@@ -142,7 +142,7 @@ void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 {
 	texture = tex;
 	currentTexture = texture.get();
-	if (texture)
+	if (texture && modelUuid != 0)
 	{
 		std::string initialPath = texture->GetLibraryPath();
 		int s = initialPath.find("__");
@@ -172,7 +172,7 @@ JSON_Value* ComponentMaterial::Save()
 	if (texture && currentTexture == texture.get())
 	{
 		json_object_set_number(obj, "uuid", texture->uuid);
-		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
+		json_object_set_string(obj, "path", texture->GetPath().c_str());
 	}
 
 	return value;
