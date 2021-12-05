@@ -38,8 +38,6 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 	initialPlaneFar = planeFar;
 	initialPlaneNear = planeNear;
 
-	CalculateFov(1920, 1080, fovHorizontal);
-
 	frustum.SetPerspective(fovHorizontal, fovVertical);
 
 	frustum.SetFrame(vec(0, 0, 0), vec(1, 0, 0), vec(0, 1, 0));

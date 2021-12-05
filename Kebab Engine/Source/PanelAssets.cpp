@@ -61,10 +61,10 @@ AssetsPanel::~AssetsPanel()
 	delete modelTex;
 	delete pngTex;
 
-	for (std::vector<Texture*>::const_iterator it = textures.begin(); it != textures.end(); it++)
+	/*for (std::vector<Texture*>::const_iterator it = textures.begin(); it != textures.end(); it++)
 	{
 		delete((*it));
-	}
+	}*/
 
 	textures.clear();
 }
@@ -135,19 +135,19 @@ void AssetsPanel::LoadAssetsToCustom()
 
 			if (ext == ".fbx" || ext == ".obj")
 			{
-				//ResourceManager::GetInstance()->CreateModel(completePath.c_str());
+				// Resource managed inside this function
 				MeshLoader::GetInstance()->LoadModel(completePath);
 			}
-			if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
+			else if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
 			{
 				if (currentFolderToLoad != "Assets/Resources/Icons/")
 				{
-					textures.push_back(TextureLoader::GetInstance()->LoadTexture(completePath.c_str()));
+					std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
+					textures.push_back(tex.get());
 				}
 				else
 				{
 					ResourceManager::GetInstance()->CreateTexture(completePath.c_str());
-					//TextureLoader::GetInstance()->LoadTexture(completePath.c_str());
 				}
 			}
 		}
@@ -363,6 +363,17 @@ void AssetsPanel::DisplayItemPopMenu()
 			}
 			else if (ext == ".kbtexture")
 			{
+				// Delete the texture
+				std::vector<Texture*>::iterator it = textures.begin();
+				for (; it != textures.end(); ++it)
+				{
+					if ((*it)->GetPath() == path)
+					{
+						textures.erase(it);
+						break;
+					}
+				}
+
 				// PNG
 				path = app->fileSystem->FindFilePath(fileName + ".png");
 				if (path != "")

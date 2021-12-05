@@ -7,6 +7,7 @@
 
 #include "PanelHierarchy.h"
 #include "PanelImportTexture.h"
+#include "PanelImportModel.h"
 
 #include "ResourceManager.h"
 //#include "MeshLoader.h"
@@ -178,43 +179,47 @@ bool Input::PreUpdate(float dt)
 					c = ::tolower(c);
 				});
 
-				if(extension == "fbx" || extension == "obj")
-					app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir, true));
+				if (extension == "fbx" || extension == "obj")
+				{
+					app->editor->panelImportModel->active = true;
+					app->editor->panelImportModel->SetAssetsPath(droppedFileDir.c_str());
+					//app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(droppedFileDir, true));
+				}
 				else if (extension == "dds" || extension == "png" || extension == "jpg" || extension == "tga")
 				{
 					app->editor->panelImportTexture->active = true;
 					app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());
 
 
-					GameObject* target = app->editor->hierarchyPanel->currentGO;
-					if (target)
-					{
-						if (target->GetComponent(ComponentType::MESH))
-						{
-							for (int i = 0; i < target->GetComponents().size(); ++i)
-							{
-								ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
-								GameObject* parent = target->GetParent();
-								/*while (parent && target != parent)
-									target = target->GetParent();*/
+					//GameObject* target = app->editor->hierarchyPanel->currentGO;
+					//if (target)
+					//{
+					//	if (target->GetComponent(ComponentType::MESH))
+					//	{
+					//		for (int i = 0; i < target->GetComponents().size(); ++i)
+					//		{
+					//			ComponentMesh* mesh = (ComponentMesh*)target->GetComponent(ComponentType::MESH);
+					//			GameObject* parent = target->GetParent();
+					//			/*while (parent && target != parent)
+					//				target = target->GetParent();*/
 
-									//std::string a = (target->GetName() + '/' + name + '.' + extension);
-								ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
-								app->editor->panelImportTexture->active = true;
-								app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());
+					//				//std::string a = (target->GetName() + '/' + name + '.' + extension);
+					//			ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
+					//			app->editor->panelImportTexture->active = true;
+					//			app->editor->panelImportTexture->SetTexturePath(droppedFileDir.c_str());
 
-								//mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
-							}
-						}
-						else
-						{
-							std::string message = "Couldn't apply texture, selected game object "
-								+ target->GetName()
-								+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
-							LOG_CONSOLE(message.c_str());
-						}
-					}
-					else LOG_CONSOLE("Please select a Game Object with mesh to apply the texture %s", name.c_str());
+					//			//mat->AddTexture(TextureLoader::GetInstance()->LoadTexture(droppedFileDir.c_str()));
+					//		}
+					//	}
+					//	else
+					//	{
+					//		std::string message = "Couldn't apply texture, selected game object "
+					//			+ target->GetName()
+					//			+ " doesn't have a mesh. Try with a child game object that has a mesh instead.";
+					//		LOG_CONSOLE(message.c_str());
+					//	}
+					//}
+					//else LOG_CONSOLE("Please select a Game Object with mesh to apply the texture %s", name.c_str());
 				}
 
 				droppedFileDir.clear();

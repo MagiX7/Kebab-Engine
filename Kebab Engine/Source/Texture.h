@@ -47,7 +47,7 @@ public:
 	void UpdateData(void* data);
 	//void UpdateData(const TextureProperties& props);
 	void Clear();
-	void ReLoad(const TextureProperties& props, bool save = false);
+	void ReLoad(const TextureProperties& props, bool save = false, bool generateLibFile = false);
 
 	void Bind(unsigned int index = 0) const;
 	void Unbind() const;

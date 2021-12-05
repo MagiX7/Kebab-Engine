@@ -272,7 +272,10 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 				m->SetLibraryPath(meshLibPath);
 				const char* metaPath = json_object_get_string(meshObj, "texture meta path");
 				if (metaPath)
+				{
+					LoadTextureMetaData(metaPath);
 					m->SetTextureMetaPath(metaPath);
+				}
 				model->AddMesh(m);
 			}
 			else
@@ -314,10 +317,20 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 	TextureProperties props;
 
 	std::string path = std::string(assetsFile);
+	std::string assetsPath = assetsFile;
 	if (path.find(".meta") == -1)
 	{
-		path += +".meta";
+		path += ".meta";
 	}
+	else if (assetsPath.find(".meta") != -1)
+	{
+		int s = assetsPath.find(".meta");
+		assetsPath = assetsPath.substr(0, s);
+	}
+
+	if (ret = std::static_pointer_cast<Texture>(IsAlreadyLoaded(assetsPath.c_str())))
+		return ret;
+	
 
 	char* buffer;
 	if (app->fileSystem->Load(path.c_str(), &buffer))
@@ -367,15 +380,18 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 		if (!ret)
 		{
 			Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libPath, props);
-			tex->uuid = json_object_get_number(obj, "texture uuid");
-			tex->SetAssetsPath(assetsPath);
-			tex->SetMetaPath(path);
+			if (tex)
+			{
+				tex->uuid = json_object_get_number(obj, "texture uuid");
+				tex->SetAssetsPath(assetsPath);
+				tex->SetMetaPath(path);
 
-			ret = std::make_shared<Texture>(*tex);
+				ret = std::make_shared<Texture>(*tex);
 
-			resources[ret->uuid] = ret;
+				resources[ret->uuid] = ret;
+				ret->SetProperties(props);
+			}
 		}
-		ret->SetProperties(props);
 
 		delete[] buffer;
 	}

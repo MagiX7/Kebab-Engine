@@ -77,7 +77,7 @@ void Texture::Clear()
 	height = 0;
 }
 
-void Texture::ReLoad(const TextureProperties& props, bool save)
+void Texture::ReLoad(const TextureProperties& props, bool save, bool generateLibFile)
 {
 	if (rendererID)
 		glDeleteTextures(1, &rendererID);
@@ -117,6 +117,10 @@ void Texture::ReLoad(const TextureProperties& props, bool save)
 		std::string p = assetsFile + ".meta";
 		app->fileSystem->Remove(p.c_str());
 		CreateMetaDataFile(assetsFile.c_str());
+	}
+	if (generateLibFile)
+	{
+		TextureLoader::GetInstance()->SaveTextureCustomFormat(this, 0);
 	}
 
 	ilDeleteImage(tmp);

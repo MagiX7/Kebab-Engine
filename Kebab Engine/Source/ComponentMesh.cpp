@@ -42,8 +42,8 @@ ComponentMesh::ComponentMesh(GameObject* compOwner, const std::string& meshPath)
 
 ComponentMesh::~ComponentMesh()
 {
-	delete mesh;
-	mesh = nullptr;
+	/*delete mesh;
+	mesh = nullptr;*/
 }
 
 void ComponentMesh::Enable()

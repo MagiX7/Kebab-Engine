@@ -22,6 +22,11 @@ void KbModel::AddMesh(KbMesh* mesh)
 	meshes.push_back(mesh);
 }
 
+void KbModel::AddTexture(Texture* tex)
+{
+	textures.push_back(tex);
+}
+
 void KbModel::DeleteMeshes()
 {
 	meshes.clear();

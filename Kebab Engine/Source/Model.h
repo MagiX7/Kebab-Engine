@@ -14,7 +14,9 @@ public:
 	virtual ~KbModel();
 
 	void AddMesh(KbMesh* mesh);
+	void AddTexture(Texture* tex);
 	inline const std::vector<KbMesh*>& GetMeshes() { return meshes; }
+	inline const std::vector<Texture*>& GeTextures() { return textures; }
 	void DeleteMeshes();
 
 	inline void SetProperties(const ModelProperties& props) { this->props = props; }
@@ -24,6 +26,7 @@ public:
 
 private:
 	std::vector<KbMesh*> meshes;
+	std::vector<Texture*> textures;
 
 	ModelProperties props;
 };

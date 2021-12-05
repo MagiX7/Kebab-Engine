@@ -1,3 +1,7 @@
+#include "Application.h"
+#include "Editor.h"
+#include "PanelAssets.h"
+
 #include "PanelImportTexture.h"
 #include "TextureLoader.h"
 #include "Texture.h"
@@ -130,7 +134,8 @@ void ImportTexturePanel::OnRender(float dt)
 	if (ImGui::Button("Import", { 60,25 }))
 	{
 		props.compression = GetCompressionFromType(index);
-		texture->ReLoad(props, true);
+		texture->ReLoad(props, true, true);
+		app->editor->assetsPanel->textures.push_back(texture.get());
 		active = false;
 	}
 	ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 70);
@@ -147,7 +152,8 @@ void ImportTexturePanel::OnRender(float dt)
 		texture->ReLoad(props);
 	}
 
-	if (texture) ImGui::Image((void*)texture->GetID(), { 200,200 });
+	if (texture)
+		ImGui::Image((void*)texture->GetID(), { 200,200 });
 
 	ImGui::End();
 }
@@ -156,7 +162,9 @@ void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 {
 	assetsPath = assetsFile;
 	texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsFile));
-
+	if (!texture)
+		texture = ResourceManager::GetInstance()->CreateTexture(assetsFile);
+	
 	//texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
 }
 
