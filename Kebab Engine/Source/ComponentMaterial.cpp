@@ -38,12 +38,12 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::Bind()
 {
-	if(texture) texture->Bind();
+	if(texture && currentTexture == texture.get()) texture->Bind();
 }
 
 void ComponentMaterial::Unbind()
 {
-	if (texture) texture->Unbind();
+	if (texture && currentTexture == texture.get()) texture->Unbind();
 }
 
 void ComponentMaterial::Enable()
@@ -62,24 +62,18 @@ void ComponentMaterial::DrawOnInspector()
 	{
 		if (currentTexture && currentTexture == texture.get())
 			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetLibraryPath().c_str());
-		else if (currentTexture == checkersTexture.get())
-			ImGui::TextColored({ 255,255,0,255 }, "Default checkers texture");
 		else
 			ImGui::TextColored({ 255,255,0,255 }, "Path: This mesh does not have a texture");
 
-		static bool checkers = currentTexture;
-		if (currentTexture == checkersTexture.get()) checkers = true;
-		else checkers = false;
-
-		if (ImGui::Checkbox("Set checkers", &checkers))
+		if (ImGui::Checkbox("Unselect texture", &unselect))
 		{
-			if (checkers) currentTexture = checkersTexture.get();
-			else if (texture) currentTexture = texture.get();
-			else currentTexture = nullptr;
+			if (unselect)
+				currentTexture = nullptr;
+			else
+				currentTexture = texture.get();
 		}
 
 		
-
 		if (ImGui::Button("Change Texture"))
 		{
 			menuSelectTex = !menuSelectTex;

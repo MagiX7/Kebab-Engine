@@ -136,6 +136,7 @@ void ImportTexturePanel::OnRender(float dt)
 		props.compression = GetCompressionFromType(index);
 		texture->ReLoad(props, true, true);
 		app->editor->assetsPanel->textures.push_back(texture.get());
+		texture.reset();
 		active = false;
 	}
 	ImGui::SameLine(ImGui::GetWindowContentRegionMax().x - 70);

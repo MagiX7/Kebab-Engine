@@ -38,6 +38,7 @@ private:
 	//std::vector<std::shared_ptr<Texture>> textures;
 
 	std::shared_ptr<Texture> texture;
+	bool unselect = false;
 
 	Texture* currentTexture;
 	//Texture* texture;
