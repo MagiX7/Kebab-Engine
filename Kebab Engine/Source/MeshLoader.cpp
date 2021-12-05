@@ -88,7 +88,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
             if (std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str()))
             {
-                matComp->AddTexture(tex);
+                matComp->AddTexture(tex, model->uuid);
             }
         }
     }
@@ -116,8 +116,8 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         std::shared_ptr<KbModel> model = ResourceManager::GetInstance()->CreateModel(path.c_str());
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, model);
         model->SetProperties(props);
-        model->CreateMetaDataFile(path.c_str());
         model->SetLibraryPath("Library/Models/" + baseGO->GetName() + "__" + std::to_string(model->uuid) + ".kbmodel");
+        model->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, model->uuid);
     }
 
@@ -258,9 +258,11 @@ ComponentMesh* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
     if (!imageName.empty())
     {
         tex = ResourceManager::GetInstance()->CreateTexture(imageName.c_str(), model->uuid);
-        mat->AddTexture(tex);
-        tex->CreateMetaDataFile(imageName.c_str());
+        mat->AddTexture(tex, model->uuid);
         TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), model->uuid);
+        std::string libPath = "Library/Textures" + tex->GetName() + "__" + std::to_string(model->uuid) + ".kbtexture";
+        tex->SetLibraryPath(libPath);
+        tex->CreateMetaDataFile(imageName.c_str());
     }
 
     ComponentMesh* meshComp = (ComponentMesh*)baseGO->CreateComponent(ComponentType::MESH);
@@ -757,22 +759,17 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
             meshComp->SetData(mesh->vertices, mesh->indices);
             meshComp->SetParent(owner);
             if(model) meshComp->SetModel(model);
-            //ResourceManager::GetInstance()->AddResource(mesh);
 
-
-            // Maybe with LoadTextureMetaData??
             ComponentMaterial* matComp = (ComponentMaterial*)owner->CreateComponent(ComponentType::MATERIAL);
             std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded(texAssetsPath));
             if(!tex)
             {
                 tex = ResourceManager::GetInstance()->LoadTextureMetaData(texAssetsPath);
+                matComp->AddTexture(tex, model->uuid);
             }
-            
-            //tex.get()->SetAssetsPath(texAssetsPath);
-            matComp->AddTexture(tex);
+
 
             owner->AddComponent(meshComp);
-            //ret->AddChild(owner);
             owner->SetParent(ret);
             ret->SetGlobalAABB(*owner->GetGlobalAABB());
         }

@@ -124,7 +124,7 @@ void ComponentMaterial::ShowTexturesMenu()
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{ // TODO: need to change with resource manager
 			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded((*it)->GetPath().c_str());
-			AddTexture(std::static_pointer_cast<Texture>(tex));
+			AddTexture(std::static_pointer_cast<Texture>(tex), 0);
 		}
 
 		ImGui::Text(nameShow.c_str());
@@ -138,18 +138,23 @@ void ComponentMaterial::ShowTexturesMenu()
 	ImGui::End();
 }
 
-void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex)
+void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 {
 	texture = tex;
 	currentTexture = texture.get();
-	//std::vector<Texture*>::iterator it = std::find(textures.begin(), textures.end(), tex);
-	//if (std::find(textures.begin(), textures.end(), tex) == textures.end())
-	//{
-	//	textures.push_back(tex);
-	//	texture = tex;
-	//	//texture->SetUUID(tex->uuid);
-	//	currentTexture = tex;
-	//}
+	if (texture)
+	{
+		std::string initialPath = texture->GetLibraryPath();
+		int s = initialPath.find("__");
+		std::string p = initialPath.substr(0, s);
+
+		// Need to recreate meta file?
+
+		p += "__" + std::to_string(modelUuid) + ".kbtexture";
+		texture->SetLibraryPath(p);
+	
+		texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
+	}
 }
 
 JSON_Value* ComponentMaterial::Save()

@@ -29,6 +29,7 @@ public:
 	void SetMesh(KbMesh* newMesh);
 	inline KbMesh* GetMesh() const { return mesh; }
 	void SetModel(std::shared_ptr<KbModel>);
+	inline std::shared_ptr<KbModel> GetModel() { return model; }
 
 	JSON_Value* Save() override;
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;

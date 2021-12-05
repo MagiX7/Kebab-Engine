@@ -10,6 +10,7 @@
 #include "PanelScene.h"
 
 #include "ResourceManager.h"
+#include "Model.h"
 
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
@@ -102,7 +103,7 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                             
                             ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
                             std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(dragPath);
-                            mat->AddTexture(std::static_pointer_cast<Texture>(tex));
+                            mat->AddTexture(std::static_pointer_cast<Texture>(tex), mesh->GetModel()->uuid);
 
                             //mat->AddTexture(TextureLoader::GetInstance()->LoadTextureCustomFormat(dragPath));
                         }

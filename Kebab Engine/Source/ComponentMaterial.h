@@ -24,7 +24,7 @@ public:
 
 	void ShowTexturesMenu();
 
-	void AddTexture(std::shared_ptr<Texture>);
+	void AddTexture(std::shared_ptr<Texture>tex, int modelUuid);
 
 	inline Texture* GetCurrentTexture() { return currentTexture; }
 
