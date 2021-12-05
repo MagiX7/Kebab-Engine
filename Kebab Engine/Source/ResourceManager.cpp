@@ -362,14 +362,21 @@ std::shared_ptr<Texture> ResourceManager::LoadTextureMetaData(const char* assets
 
 		std::string libPath = json_object_get_string(obj, "texture library path");
 		std::string assetsPath = json_object_get_string(obj, "texture assets path");
-		Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libPath, props);
-		tex->uuid = json_object_get_number(obj, "texture uuid");
-		tex->SetAssetsPath(assetsPath);
-		tex->SetMetaPath(path);
 
-		ret = std::make_shared<Texture>(*tex);
+		ret = std::static_pointer_cast<Texture>(IsAlreadyLoaded(assetsPath.c_str()));
+		if (!ret)
+		{
+			Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libPath, props);
+			tex->uuid = json_object_get_number(obj, "texture uuid");
+			tex->SetAssetsPath(assetsPath);
+			tex->SetMetaPath(path);
 
-		resources[ret.get()->uuid] = ret;
+			ret = std::make_shared<Texture>(*tex);
+
+			resources[ret->uuid] = ret;
+		}
+		ret->SetProperties(props);
+
 		delete[] buffer;
 	}
 

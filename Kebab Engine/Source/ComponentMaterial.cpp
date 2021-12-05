@@ -102,8 +102,7 @@ void ComponentMaterial::DrawOnInspector()
 		}
 		if (currentTexture == texture.get())
 		{
-			std::string s = "References to texture " + std::to_string(texture.use_count() - 1); // -1 because the shared ptr in the resources map
-			ImGui::BulletText(s.c_str());
+			ImGui::BulletText("References to texture %i", texture.use_count() - 1); // -1 because of the resources map
 		}
 	}
 }

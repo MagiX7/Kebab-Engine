@@ -86,7 +86,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
             go->SetParent(baseGO);
 
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-            if (std::shared_ptr<Texture> tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str())))
+            if (std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str()))
             {
                 matComp->AddTexture(tex);
             }
@@ -769,7 +769,7 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
             }
             
             //tex.get()->SetAssetsPath(texAssetsPath);
-            matComp->AddTexture(std::static_pointer_cast<Texture>(tex));
+            matComp->AddTexture(tex);
 
             owner->AddComponent(meshComp);
             //ret->AddChild(owner);
