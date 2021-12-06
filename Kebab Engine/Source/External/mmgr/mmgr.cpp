@@ -290,43 +290,43 @@ static	void	log(const char *format, ...)
 
 static	void	doCleanupLogOnFirstRun()
 {
-	if (cleanupLogOnFirstRun)
-	{
-		_unlink(memoryLogFile);
-		cleanupLogOnFirstRun = false;
+	//if (cleanupLogOnFirstRun)
+	//{
+	//	_unlink(memoryLogFile);
+	//	cleanupLogOnFirstRun = false;
 
-		// Print a header for the log
+	//	// Print a header for the log
 
-		time_t	t = time(NULL);
-		log("--------------------------------------------------------------------------------");
-		log("");
-		log("      %s - Memory logging file created on %s", memoryLogFile, asctime(localtime(&t)));
-		log("--------------------------------------------------------------------------------");
-		log("");
-		log("This file contains a log of all memory operations performed during the last run.");
-		log("");
-		log("Interrogate this file to track errors or to help track down memory-related");
-		log("issues. You can do this by tracing the allocations performed by a specific owner");
-		log("or by tracking a specific address through a series of allocations and");
-		log("reallocations.");
-		log("");
-		log("There is a lot of useful information here which, when used creatively, can be");
-		log("extremely helpful.");
-		log("");
-		log("Note that the following guides are used throughout this file:");
-		log("");
-		log("   [!] - Error");
-		log("   [+] - Allocation");
-		log("   [~] - Reallocation");
-		log("   [-] - Deallocation");
-		log("   [I] - Generic information");
-		log("   [F] - Failure induced for the purpose of stress-testing your application");
-		log("   [D] - Information used for debugging this memory manager");
-		log("");
-		log("...so, to find all errors in the file, search for \"[!]\"");
-		log("");
-		log("--------------------------------------------------------------------------------");
-	}
+	//	time_t	t = time(NULL);
+	//	log("--------------------------------------------------------------------------------");
+	//	log("");
+	//	log("      %s - Memory logging file created on %s", memoryLogFile, asctime(localtime(&t)));
+	//	log("--------------------------------------------------------------------------------");
+	//	log("");
+	//	log("This file contains a log of all memory operations performed during the last run.");
+	//	log("");
+	//	log("Interrogate this file to track errors or to help track down memory-related");
+	//	log("issues. You can do this by tracing the allocations performed by a specific owner");
+	//	log("or by tracking a specific address through a series of allocations and");
+	//	log("reallocations.");
+	//	log("");
+	//	log("There is a lot of useful information here which, when used creatively, can be");
+	//	log("extremely helpful.");
+	//	log("");
+	//	log("Note that the following guides are used throughout this file:");
+	//	log("");
+	//	log("   [!] - Error");
+	//	log("   [+] - Allocation");
+	//	log("   [~] - Reallocation");
+	//	log("   [-] - Deallocation");
+	//	log("   [I] - Generic information");
+	//	log("   [F] - Failure induced for the purpose of stress-testing your application");
+	//	log("   [D] - Information used for debugging this memory manager");
+	//	log("");
+	//	log("...so, to find all errors in the file, search for \"[!]\"");
+	//	log("");
+	//	log("--------------------------------------------------------------------------------");
+	//}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -532,59 +532,59 @@ static	void	dumpAllocations(FILE *fp)
 // ---------------------------------------------------------------------------------------------------------------------------------
 static	void	dumpLeakReport()
 {
-	// Open the report file
-
-	FILE	*fp = fopen(memoryLeakLogFile, "w+b");
-
-	// If you hit this assert, then the memory report generator is unable to log information to a file (can't open the file for
-	// some reason.)
-#ifndef NDEBUG
-	m_assert(fp);
-	if (!fp) return;
-#endif
-	// Any leaks?
-
-	// Header
-
-	static  char    timeString[25];
-	memset(timeString, 0, sizeof(timeString));
-	time_t  t = time(NULL);
-	struct  tm *tme = localtime(&t);
-	fprintf(fp, " ---------------------------------------------------------------------------------------------------------------------------------- \r\n");
-	fprintf(fp, "|                                          Memory leak report for:  %02d/%02d/%04d %02d:%02d:%02d                                            |\r\n", tme->tm_mon + 1, tme->tm_mday, tme->tm_year + 1900, tme->tm_hour, tme->tm_min, tme->tm_sec);
-	fprintf(fp, " ---------------------------------------------------------------------------------------------------------------------------------- \r\n");
-	fprintf(fp, "\r\n");
-	fprintf(fp, "\r\n");
-	if (stats.totalAllocUnitCount)
-	{
-		fprintf(fp, "%d memory leak%s found:\r\n", stats.totalAllocUnitCount, stats.totalAllocUnitCount == 1 ? "":"s");
-	}
-	else
-	{
-		fprintf(fp, "Congratulations! No memory leaks found!\r\n");
-
-		// We can finally free up our own memory allocations
-
-		if (reservoirBuffer)
-		{
-			for (unsigned int i = 0; i < reservoirBufferSize; i++)
-			{
-				free(reservoirBuffer[i]);
-			}
-			free(reservoirBuffer);
-			reservoirBuffer = 0;
-			reservoirBufferSize = 0;
-			reservoir = NULL;
-		}
-	}
-	fprintf(fp, "\r\n");
-
-	if (stats.totalAllocUnitCount)
-	{
-		dumpAllocations(fp);
-	}
-
-	fclose(fp);
+//	// Open the report file
+//
+//	FILE	*fp = fopen(memoryLeakLogFile, "w+b");
+//
+//	// If you hit this assert, then the memory report generator is unable to log information to a file (can't open the file for
+//	// some reason.)
+//#ifndef NDEBUG
+//	m_assert(fp);
+//	if (!fp) return;
+//#endif
+//	// Any leaks?
+//
+//	// Header
+//
+//	static  char    timeString[25];
+//	memset(timeString, 0, sizeof(timeString));
+//	time_t  t = time(NULL);
+//	struct  tm *tme = localtime(&t);
+//	fprintf(fp, " ---------------------------------------------------------------------------------------------------------------------------------- \r\n");
+//	fprintf(fp, "|                                          Memory leak report for:  %02d/%02d/%04d %02d:%02d:%02d                                            |\r\n", tme->tm_mon + 1, tme->tm_mday, tme->tm_year + 1900, tme->tm_hour, tme->tm_min, tme->tm_sec);
+//	fprintf(fp, " ---------------------------------------------------------------------------------------------------------------------------------- \r\n");
+//	fprintf(fp, "\r\n");
+//	fprintf(fp, "\r\n");
+//	if (stats.totalAllocUnitCount)
+//	{
+//		fprintf(fp, "%d memory leak%s found:\r\n", stats.totalAllocUnitCount, stats.totalAllocUnitCount == 1 ? "":"s");
+//	}
+//	else
+//	{
+//		fprintf(fp, "Congratulations! No memory leaks found!\r\n");
+//
+//		// We can finally free up our own memory allocations
+//
+//		if (reservoirBuffer)
+//		{
+//			for (unsigned int i = 0; i < reservoirBufferSize; i++)
+//			{
+//				free(reservoirBuffer[i]);
+//			}
+//			free(reservoirBuffer);
+//			reservoirBuffer = 0;
+//			reservoirBufferSize = 0;
+//			reservoir = NULL;
+//		}
+//	}
+//	fprintf(fp, "\r\n");
+//
+//	if (stats.totalAllocUnitCount)
+//	{
+//		dumpAllocations(fp);
+//	}
+//
+//	fclose(fp);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------

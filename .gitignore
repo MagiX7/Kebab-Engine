@@ -73,6 +73,7 @@ Thumbs.db
 [Bb]uild
 [Bb]in
 [Dd]ebug/
+Library/
 !Kebab Engine/Source/External/MathGeoLib/lib/[Dd]ebug/
 !Kebab Engine/Source/External/MathGeoLib/src/
 !Kebab Engine/Source/External/MathGeoLib/test/

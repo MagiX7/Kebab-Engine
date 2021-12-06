@@ -36,11 +36,11 @@ ComponentMesh::ComponentMesh(GameObject* compOwner, const std::string& meshPath)
 
 ComponentMesh::~ComponentMesh()
 {
-	if (mesh)
+	/*if (mesh)
 	{
 		delete mesh;
 		mesh = nullptr;
-	}
+	}*/
 }
 
 void ComponentMesh::Enable()
@@ -196,8 +196,8 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 
 	int uuid = json_object_get_number(obj, "mesh uuid");
 	std::string path = json_object_get_string(obj, "mesh library path");
-	std::string meshName = json_object_get_string(obj, "mesh name");
-	meshName += "__" + std::to_string(uuid);
+	/*std::string meshName = json_object_get_string(obj, "mesh name");
+	meshName += "__" + std::to_string(uuid);*/
 	if (model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(modelPath)))
 	{
 		static int it = 0;
