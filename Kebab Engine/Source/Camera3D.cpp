@@ -486,10 +486,13 @@ GameObject* Camera3D::MousePickGameObject()
 GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVector, float& dist, GameObject* gameObject)
 {
 	std::vector<GameObject*> gos;
+	std::vector<std::pair<GameObject*, float>> distances;
 
 	std::queue<GameObject*> q;
 
 	app->scene->rootQT->Intersect(gos, line);
+	if (gos.empty())
+		gos.insert(gos.begin(), gameObject->GetChilds().begin(), gameObject->GetChilds().end());
 
 	if (!gos.empty())
 	{
@@ -513,19 +516,40 @@ GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVe
 				ray.Transform(m);
 
 				Triangle triangle;
+				float distance = 0;
 				for (int i = 0; i < meshComp->GetMesh()->indices.size(); i += 3)
 				{
 					triangle.a = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i]].position;
 					triangle.b = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 1]].position;
 					triangle.c = meshComp->GetMesh()->vertices[meshComp->GetMesh()->indices[i + 2]].position;
 
-					if (ray.Intersects(triangle, &dist, &hitPoint))
+					if (ray.Intersects(triangle, &distance, &hitPoint))
 					{
-						return curr;
+						std::pair<GameObject*, float> pair;
+						pair.first = curr;
+						pair.second = distance;
+						distances.push_back(pair);
+
+						//return curr;
 					}
 				}
 			}
+
+			for (const auto& child : curr->GetChilds())
+				q.push(child);
 		}
+
+		float min = 65553;
+		GameObject* ret = 0;
+		for (int i = 0; i < distances.size(); ++i)
+		{
+			if (distances[i].second < min)
+			{
+				ret = distances[i].first;
+				min = distances[i].second;
+			}
+		}
+		return ret;
 	}
 
 	return nullptr;
