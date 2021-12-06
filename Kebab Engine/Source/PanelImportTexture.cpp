@@ -8,6 +8,8 @@
 
 #include "ResourceManager.h"
 
+#include "mmgr/mmgr.h"
+
 ImportTexturePanel::ImportTexturePanel()
 {
 	active = false;

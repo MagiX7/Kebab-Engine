@@ -61,7 +61,6 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     frustumCulling = false;
 
     sceneState = SceneState::EDIT;
-    initialScene = nullptr;
     
     currentSaveDirectory = "Library/Scenes/";
 }

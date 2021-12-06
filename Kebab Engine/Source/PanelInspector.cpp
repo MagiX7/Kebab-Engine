@@ -18,6 +18,8 @@
 #include <vector>
 #include <queue>
 
+#include "mmgr/mmgr.h"
+
 InspectorPanel::InspectorPanel()
 {
 	this->active = true;

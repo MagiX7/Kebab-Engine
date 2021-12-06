@@ -21,10 +21,11 @@
 #include "TextureLoader.h"
 #include "MeshLoader.h"
 
-#include "mmgr/mmgr.h"
-
 #include <vector>
 #include <queue>
+
+#include "mmgr/mmgr.h"
+
 
 AssetsPanel::AssetsPanel()
 {

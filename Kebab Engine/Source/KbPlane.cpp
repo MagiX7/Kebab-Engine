@@ -1,5 +1,7 @@
 #include "KbPlane.h"
 
+#include "mmgr/mmgr.h"
+
 KbPlane::KbPlane(float3 position, float2 size)
 {
 	Vertex vertex;

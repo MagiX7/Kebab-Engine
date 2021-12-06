@@ -21,6 +21,8 @@
 
 #include "TextureLoader.h"
 
+#include "mmgr/mmgr.h"
+
 ViewportPanel::ViewportPanel()
 {
     viewportDimensions = { 0,0,0,0 };

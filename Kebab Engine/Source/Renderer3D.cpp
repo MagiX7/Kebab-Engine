@@ -212,6 +212,8 @@ bool Renderer3D::CleanUp()
 {
 	LOG_CONSOLE("Destroying 3D Renderer");
 
+	gameObjects.clear();
+
 	meshes.clear();
 
 	delete(editorFbo);

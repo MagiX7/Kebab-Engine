@@ -9,6 +9,8 @@
 
 #include "Model.h"
 
+#include "mmgr/mmgr.h"
+
 PanelImportModel::PanelImportModel()
 {
 	active = false;

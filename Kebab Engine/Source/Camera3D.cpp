@@ -72,6 +72,7 @@ bool Camera3D::CleanUp()
 	delete editorCam;
 	editorCam = nullptr;
 	gameCam = nullptr;
+	currentCam = nullptr;
 
 	return true;
 }

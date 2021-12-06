@@ -68,7 +68,4 @@ private:
 
 	bool focusing;
 	bool orbiting;
-
-	std::vector<GameObject*> pickedGos;
-	int pickedGosIt;
 };

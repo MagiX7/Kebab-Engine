@@ -1,5 +1,7 @@
 #include "KbCylinder.h"
 
+#include "mmgr/mmgr.h"
+
 KbCylinder::KbCylinder(math::float3 pos, float baseRadius, float height, float sectors)
 {
     this->height = height;

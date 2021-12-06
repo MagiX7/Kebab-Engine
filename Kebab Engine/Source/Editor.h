@@ -108,5 +108,4 @@ private:
 	Texture* nextFrameTex;
 
 	SceneState sceneState;
-	MainScene* initialScene;
 };

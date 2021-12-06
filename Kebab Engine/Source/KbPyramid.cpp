@@ -1,5 +1,7 @@
 #include "KbPyramid.h"
 
+#include "mmgr/mmgr.h"
+
 KbPyramid::KbPyramid(float3 pos, float height, float baseWidth)
 {
 	float ap = sqrt(pow(height, 2) + pow(baseWidth / 2, 2));

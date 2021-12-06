@@ -52,6 +52,7 @@ ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)
 
 ComponentCamera::~ComponentCamera()
 {
+	parent = nullptr;
 }
 
 void ComponentCamera::Look(const vec& lookPoint)

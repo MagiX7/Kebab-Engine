@@ -1,5 +1,7 @@
 #include "KbSphere.h"
 
+#include "mmgr/mmgr.h"
+
 // Slices for the X, stacks for the Y
 KbSphere::KbSphere(float3 pos, float radius, float stacks, float slices)
 {

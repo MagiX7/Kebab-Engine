@@ -24,6 +24,8 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 	transform->SetRotation({ 0,0,0,1 });
 	transform->SetScale({ 1,1,1, });
 
+	//components.push_back(transform);
+
 	active = true;
 
 	insideFrustum = false;
@@ -40,6 +42,8 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 
 GameObject::~GameObject()
 {
+	parent = nullptr;
+
 	app->scene->rootQT->Remove(this);
 	app->scene->rootQT->Recalculate();
 

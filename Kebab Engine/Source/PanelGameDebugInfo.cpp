@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "PanelGameDebugInfo.h"
 
+#include "mmgr/mmgr.h"
+
 GameDebugInfoPanel::GameDebugInfoPanel()
 {
 

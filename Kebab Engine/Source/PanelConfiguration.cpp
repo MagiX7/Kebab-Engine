@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <string>
 
+#include "mmgr/mmgr.h"
+
 ConfigPanel::ConfigPanel()
 {
     active = true;

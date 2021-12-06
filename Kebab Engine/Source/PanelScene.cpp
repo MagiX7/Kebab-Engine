@@ -8,6 +8,8 @@
 
 #include "Buffer.h"
 
+#include "mmgr/mmgr.h"
+
 ScenePanel::ScenePanel()
 {
     dimensions = { 0,0,0,0 };

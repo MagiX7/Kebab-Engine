@@ -11,6 +11,8 @@
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 
+#include "mmgr/mmgr.h"
+
 HierarchyPanel::HierarchyPanel()
 {
 	active = true;
