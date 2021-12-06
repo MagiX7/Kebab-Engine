@@ -80,6 +80,14 @@ bool Editor::Start()
 
     assetsPanel = new AssetsPanel();
 
+    app->fileSystem->CreateDirectoryA("Library/");
+    app->fileSystem->CreateDirectoryA("Library/Models/");
+    app->fileSystem->CreateDirectoryA("Library/Textures/");
+    app->fileSystem->CreateDirectoryA("Library/Meshes/");
+    app->fileSystem->CreateDirectoryA("Library/Scenes/");
+    app->fileSystem->CreateDirectoryA("Library/Scenes/Temp");
+
+
     playTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/play_icon.kbtexture");
     pauseTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/pause_icon.kbtexture");
     stopTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/stop_icon.kbtexture");
@@ -442,11 +450,9 @@ void Editor::OnSceneStop()
     app->camera->SetCurrentCamera(CameraType::EDITOR);
     app->SetRuntimeDt(0);
     app->SetRuntimeFramesAmount(0);
-    if (app->fileSystem->Exists("Library/Scenes/Temp/"))
-    {
-        app->fileSystem->Remove("Library/Scenes/Temp/");
-    }
     UnserializeScene("Library/Scenes/Temp/Scene.kbscene");
+    app->fileSystem->Remove("Library/Scenes/Temp/Scene.kbscene");
+    app->fileSystem->Remove("Library/Scenes/Temp/");
 }
 
 void Editor::OnScenePause()
