@@ -6,6 +6,8 @@
 
 #include "Globals.h"
 
+#include "mmgr/mmgr.h"
+
 #define CHECKERS_HEIGHT 50
 #define CHECKERS_WIDTH 50
 

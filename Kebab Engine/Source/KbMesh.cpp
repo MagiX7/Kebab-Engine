@@ -1,5 +1,7 @@
 #include "KbMesh.h"
 
+#include "mmgr/mmgr.h"
+
 KbMesh::KbMesh(std::string path) : Resource(ResourceType::MESH)
 {
 	textureMetaPath = "";
@@ -14,10 +16,10 @@ KbMesh::KbMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>&
 
 KbMesh::~KbMesh()
 {
-	//delete vertexBuffer;
+	delete vertexBuffer;
 	vertexBuffer = nullptr;
 
-	//delete indexBuffer;
+	delete indexBuffer;
 	indexBuffer = nullptr;
 
 	vertices.clear();
@@ -140,6 +142,17 @@ void KbMesh::SetOwnerName(const std::string& n)
 
 void KbMesh::SetUpMesh()
 {
+	if (vertexBuffer)
+	{
+		delete vertexBuffer;
+		vertexBuffer = nullptr;
+	}
+	if (indexBuffer)
+	{
+		delete indexBuffer;
+		indexBuffer = nullptr;
+	}
+
 	vertexBuffer = new VertexBuffer();
 	vertexBuffer->SetData(vertices);
 

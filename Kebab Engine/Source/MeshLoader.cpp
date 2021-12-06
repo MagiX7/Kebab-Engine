@@ -177,7 +177,7 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* bas
 
 
             go->SetParent(baseGO);
-            if (baseGO) baseGO->AddChild(go);
+            /*if (baseGO) */baseGO->AddChild(go);
 
             ProcessNode(node->mChildren[i], scene, go, nameBaseGO, path, model);
             //app->scene->AddGameObject(go);

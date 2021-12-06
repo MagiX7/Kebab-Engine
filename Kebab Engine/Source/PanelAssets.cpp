@@ -153,7 +153,7 @@ void AssetsPanel::LoadAssetsToCustom()
 						tex->SetAssetsPath(completePath);
 						TextureLoader::GetInstance()->SaveTextureCustomFormat(tex.get(), 0);
 					}
-						textures.push_back(tex.get());
+					textures.push_back(tex.get());
 				}
 				else
 				{

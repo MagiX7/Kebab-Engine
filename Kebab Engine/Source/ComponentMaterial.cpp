@@ -33,6 +33,13 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 ComponentMaterial::~ComponentMaterial()
 {
+	texture.reset();
+	checkersTexture.reset();
+	currentTexture = nullptr;
+
+	for (auto& tex : textures)
+		delete tex;
+
 	textures.clear();
 }
 

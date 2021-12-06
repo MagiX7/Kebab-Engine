@@ -46,6 +46,13 @@ GameObject::~GameObject()
 	app->scene->rootQT->Remove(this);
 	app->scene->rootQT->Recalculate();
 
+	for (auto& c : components)
+	{
+		delete(c);
+		c = nullptr;
+	}
+	components.clear();
+
 	for (auto& go : childs)
 	{
 		app->scene->rootQT->Remove(go);
@@ -55,16 +62,8 @@ GameObject::~GameObject()
 		go = nullptr;
 	}
 	childs.clear();
-
-	for (auto& c: components)
-	{
-		delete(c);
-		c = nullptr;
-	}
-	components.clear();
-
-	childs.clear();
-
+	
+	
 	//RELEASE(localAABB);
 }
 

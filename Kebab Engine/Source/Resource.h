@@ -17,7 +17,12 @@ public:
 	Resource(/*int uuid, */ResourceType type) : /*uuid(uuid), */resourceType(type) {}
 	Resource(int uuid, ResourceType type) : uuid(uuid), resourceType(type) {}
 	Resource(const std::string& assets, const std::string& library) : assetsFile(assets), libraryFile(library) {}
-	virtual ~Resource() {};
+	virtual ~Resource()
+	{
+		assetsFile.clear();
+		libraryFile.clear();
+		metaFile.clear();
+	};
 
 	inline const ResourceType& GetResourceType() { return resourceType; }
 	inline const int& GetUUID() { return uuid; }

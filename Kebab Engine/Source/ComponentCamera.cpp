@@ -11,6 +11,7 @@
 
 #include "GL/glew.h"
 #include "imgui/imgui.h"
+
 #include "mmgr/mmgr.h"
 
 ComponentCamera::ComponentCamera(GameObject* compOwner, CameraType cameraType)

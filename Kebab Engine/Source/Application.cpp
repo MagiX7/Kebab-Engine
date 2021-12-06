@@ -240,9 +240,9 @@ bool Application::CleanUp()
 		it++;
 	}
 
+	ResourceManager::GetInstance()->CleanUp();
 	MeshLoader::GetInstance()->CleanUp();
 	TextureLoader::GetInstance()->CleanUp();
-	ResourceManager::GetInstance()->CleanUp();
 
 	return ret;
 }

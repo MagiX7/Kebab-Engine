@@ -8,12 +8,18 @@
 
 #include "parson.h"
 
+#include "mmgr/mmgr.h"
+
+
 KbModel::KbModel() : Resource(ResourceType::MODEL)
 {
 }
 
 KbModel::~KbModel()
 {
+	/*for (auto& mesh : meshes)
+		delete mesh;*/
+
 	meshes.clear();
 }
 

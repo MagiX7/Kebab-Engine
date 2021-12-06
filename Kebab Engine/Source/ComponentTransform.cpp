@@ -3,8 +3,9 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 
-
 #include "imgui/imgui.h"
+
+#include "mmgr/mmgr.h"
 
 ComponentTransform::ComponentTransform(GameObject* compOwner)
 {

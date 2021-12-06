@@ -11,6 +11,7 @@
 
 #include <Algorithm/Random/LCG.cpp>
 
+#include "mmgr/mmgr.h"
 
 ResourceManager* ResourceManager::instance = nullptr;
 

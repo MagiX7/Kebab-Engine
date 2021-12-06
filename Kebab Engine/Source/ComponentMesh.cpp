@@ -13,6 +13,7 @@
 #include "TextureLoader.h"
 
 #include "imgui/imgui.h"
+
 #include "mmgr/mmgr.h"
 
 #define CHECKERS_HEIGHT 80
@@ -42,8 +43,11 @@ ComponentMesh::ComponentMesh(GameObject* compOwner, const std::string& meshPath)
 
 ComponentMesh::~ComponentMesh()
 {
-	/*delete mesh;
-	mesh = nullptr;*/
+	if (mesh)
+	{
+		delete mesh;
+		mesh = nullptr;
+	}
 }
 
 void ComponentMesh::Enable()
