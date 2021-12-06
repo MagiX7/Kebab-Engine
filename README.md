@@ -38,7 +38,7 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
   * If the gameobject has a texture component you can show the default checkers texture instead of the original texture.
 - Right click on the gameobject on the hierarchy panel and you can delete the gameobject and it's childs (if it has), create a new empty child and move up/down on the hierarchy if there're other gameobjects.
 
-#### Camera controls
+#### Controls
 
 - Right click + Move the mouse - Camera rotation.
 - Right click + WASDQE - Camera movement.
@@ -48,12 +48,25 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
   * D - Right.
   * E - Up.
   * Q - Down.
-- Mouse Wheel - Zoom in/out.
+- Mouse Wheel - Zoom in/out camera.
 - Gameobject clicked + F - Center gameobject on the camera.
-- Gameobject clicked + Alt + Left Click - Orbit around the gameobject.
+- Gameobject clicked + Alt + Left Click - Orbit camera around the gameobject.
 - P - Save.
 - L - Load.
 - M - Show/Hide Wireframe.
+- F2 - Recalculate Quadtree.
+
+#### Panel Controls
+
+- Hierarchy:
+  * Right Click - Menu.
+  * Hold Left Click on GameObject and drag - Reparent.
+  * Left Click - Select GameObject.
+
+- Assets:
+  * Right Click on asset - Menu.
+  * Right Click on panel - Menu.
+  * Middle Click on asset - Reimport Menu.
 
 ## Additional Features
 
@@ -63,3 +76,17 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - Show texture preview on inspector panel.
 - Calculated bounding box AABB for each gameobject.
 - Camera as a component.
+- Drag and drop of external files to the engine.
+- Drag and drop from assets (models or textures) to scene.
+- Translate, rotate and scale by guizmos.
+- Textures changeables.
+- All meshes using AABB.
+- Frustum culling.
+- Mousepicking.
+- Scene serialization.
+- Space partition by quadtree.
+- Start/Stop/Pause of simulation.
+- Custom files for models/meshes/textures/scenes.
+- 2 frame buffers to show game and editor with their respective cameras on imgui windows and can visualize both at the same time.
+- Game camera changeable.
+- Resource management to optimize and show assets properly.
