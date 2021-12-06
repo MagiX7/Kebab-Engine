@@ -10,7 +10,6 @@ class Texture;
 class ComponentMaterial : public Component
 {
 public:
-	// Loads checkers texture by default
 	ComponentMaterial(GameObject* compOwner);
 	~ComponentMaterial();
 
@@ -35,13 +34,11 @@ private:
 	void SetCheckersTexture();
 
 private:
-	//std::vector<std::shared_ptr<Texture>> textures;
 
 	std::shared_ptr<Texture> texture;
 	bool unselect = false;
 
 	Texture* currentTexture;
-	//Texture* texture;
 	std::shared_ptr<Texture> checkersTexture;
 
 	bool menuSelectTex;

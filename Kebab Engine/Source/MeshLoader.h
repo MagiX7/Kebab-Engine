@@ -49,7 +49,6 @@ private:
 
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model);
 	ComponentMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* baseGO, const std::string& nameBaseGO, const std::string& path, std::shared_ptr<KbModel> model);
-	//std::vector<Tex> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 	void ReProcessNode(aiNode* node, const aiScene* scene, std::shared_ptr<KbModel> model);
 	void ReProcessMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<KbModel> model);

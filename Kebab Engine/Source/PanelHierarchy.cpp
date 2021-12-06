@@ -122,12 +122,6 @@ void HierarchyPanel::DisplayHierarchy(GameObject* go)
 	////////////////// Drag and drop //////////////////
 	if (ImGui::BeginDragDropSource())
 	{
-		// TODO: Something weird happens when u drag and drop the last child
-		/*if (goDragging != go->GetParent())
-		{
-			goDragging = go;
-		}*/
-
 		if (goDragging && goDragging != go && goDragging->GetParent() == go->GetParent())
 			goDragging = go->GetChilds()[go->GetChilds().size()];
 		if(!goDragging)

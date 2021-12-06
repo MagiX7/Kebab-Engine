@@ -45,7 +45,4 @@ private:
 
 	float2 size;
 	float4 dimensions;
-
-
-	//friend float4 ViewportPanel::GetDimensions();
 };

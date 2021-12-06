@@ -38,8 +38,6 @@ private:
 
 	Timer msTimer;
 	Timer runtimeTimer;
-	//Timer startupTime;
-	//Timer frameTime;
 	Timer lastSecFrameTime;
 	uint32 lastSecFrameCount = 0;
 	uint32 prevLastSecFrameCount = 0;

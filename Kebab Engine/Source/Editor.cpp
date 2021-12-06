@@ -37,8 +37,6 @@
 
 #include "mmgr/mmgr.h"
 
-//#define RUNTIME_SCENE_PATH "Library/Temp/Scene.kbscene"
-
 Editor::Editor(bool startEnabled) : Module(startEnabled)
 {
     name = "editor";
@@ -66,8 +64,6 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     initialScene = nullptr;
     
     currentSaveDirectory = "Library/Scenes/";
-
-    //lastRuntimeDt = 0;
 }
 
 Editor::~Editor()
@@ -111,17 +107,7 @@ bool Editor::Update(float dt)
 
 bool Editor::Draw(float dt)
 {
-    //OnImGuiRender(dt);
 
-    //frameBuffer->Bind();
-
-    //glClearColor(0.1f, 0.1f, 0.1f, 1);
-    ////glClearDepth(1.0f);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
-    //app->renderer3D->DoDraw();
-
-    //frameBuffer->Unbind();
 
 	return true;
 }
@@ -261,10 +247,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
     }
 
     if (showWindows)
-    {
-        //if (sceneState != SceneState::EDIT)
-        //    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.f, 0.1f, 0.1f, 1.0f));
-        
+    {        
         if (showAboutPanel) ShowAboutPanel();
 
         if (consolePanel->active) consolePanel->OnRender(dt);
@@ -276,9 +259,6 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
         if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         if (panelImportModel->active) panelImportModel->OnRender(dt);
-        
-        //if (sceneState != SceneState::EDIT)
-        //    ImGui::PopStyleColor();
     }
 
     if (wantsToQuit)
@@ -286,7 +266,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         ImGui::Begin("Are You Sure?");
         ImVec2 size = ImGui::GetWindowSize();
         ImVec2 pos = ImGui::GetWindowPos();
-        //ImGui::SameLine(pos.x);
+
         ImGui::SameLine(10);
 
         ImGui::TextColored({ 1,1,0,1 }, "Are you sure you want to quit? Remember to save!");
@@ -321,8 +301,6 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         SDL_GL_MakeCurrent(backupCurrentWindow, backupCurrentContext);
     }
 
-    //frameBuffer->Unbind();
-
     return true;
 }
 
@@ -335,7 +313,6 @@ void Editor::SerializeScene(const char* path, const char* extension)
     {
         p += extension;
     }
-    //p += extension;
 
     sceneValue = Parser::InitValue();
     JSON_Object* root = Parser::GetObjectByValue(sceneValue);
@@ -348,31 +325,11 @@ void Editor::SerializeScene(const char* path, const char* extension)
     for (const auto& go : app->scene->GetGameObjects())
         go->Save(gosArray);
 
-    //size_t size = Parser::GetSerializationSize(sceneValue);
-    //char* buffer = new char[size];
-    //json_serialize_to_buffer(sceneValue, buffer, size);
-
-    ///*if (!app->fileSystem->Exists(p.c_str()))
-    //{
-    //    app->fileSystem->CreateDirectoryA(p.c_str());
-    //    if (app->fileSystem->Exists(p.c_str()));
-    //        LOG_CONSOLE("Path %s created successfully", p.c_str());
-    //}*/
-
-    //int start = p.find("Output");
-    //std::string sub = p.substr(start + 7);
-    //const char* fullpath = sub.c_str();
-    //if (app->fileSystem->Save(fullpath, buffer, size) > 0)
-    //    LOG_CONSOLE("Saved successfully");
-
-    //delete[] buffer;
-
     Parser::GenerateFile(sceneValue, p.c_str());
 
     if (p.find("Assets") == -1)
     {
         int s = p.find_last_of("\\");
-        //int e = p.find_last_of(".");
         std::string name = p.substr(s + 1);
         std::string path = "Assets/Scenes/" + name;
         Parser::GenerateFile(sceneValue, path.c_str());
@@ -380,7 +337,6 @@ void Editor::SerializeScene(const char* path, const char* extension)
     if (p.find("Library") == -1)
     {
         int s = p.find_last_of("\\");
-        //int e = p.find_last_of(".");
         std::string name = p.substr(s + 1);
         std::string path = "Library/Scenes/" + name;
         Parser::GenerateFile(sceneValue, path.c_str());
@@ -391,7 +347,6 @@ void Editor::SerializeScene(const char* path, const char* extension)
 
 void Editor::UnserializeScene(const char* path)
 {
-    //app->scene = initialScene;
     OPTICK_EVENT("Unserialization");
 
     app->scene->DeleteAllGameObjects();
@@ -471,7 +426,6 @@ void Editor::OnScenePause()
 
 void Editor::OnSceneResume()
 {
-    //app->SetRuntimeDt(lastRuntimeDt);
 }
 
 void Editor::OnSceneStepFrame()
@@ -496,8 +450,6 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
         {
             if (ImGui::MenuItem("Save Scene", "Crtl + S"))
             {
-                //std::string path = FileDialog::SaveFile("Kebab Scene (*.kbscene)\0*.kbscene\0");
-
                 SerializeScene(currentSaveDirectory.c_str());
             }
             if (ImGui::MenuItem("Save Scene As...", "Crtl + S"))
@@ -595,8 +547,6 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             ImGui::Checkbox("Debug Draw Quad Tree", &debugQT);
             ImGui::Checkbox("Debug Draw AABB", &app->renderer3D->drawAABB);
             ImGui::Checkbox("Draw Grid", &app->renderer3D->drawGrid);
-
-
             ImGui::Checkbox("Show Editor Windows", &showWindows);
 
             ImGui::EndMenu();
@@ -760,7 +710,6 @@ void Editor::SetImGuiStyle()
     style->ScrollbarRounding = 9.0f;
 
     style->TabRounding = style->FrameRounding;
-    //style->ChildRounding = 4.0f;
     style->PopupRounding = 3.0f;
     style->TabBorderSize = 0.1f;
 

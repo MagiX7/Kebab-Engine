@@ -43,8 +43,6 @@ public:
 
 	bool OnImGuiRender(float dt, FrameBuffer* frameBuffer, FrameBuffer* sceneFbo);
 
-	//void Save(JSON_Object* root) override;
-
 	void SerializeScene(const char* path, const char* extension = ".kbscene");
 	void UnserializeScene(const char* path);
 
@@ -92,7 +90,6 @@ private:
 	std::string currentSaveDirectory;
 	std::string currentLoadDirectory;
 
-	//float lastRuntimeDt;
 	float scroll;
 
 	bool showWindows;

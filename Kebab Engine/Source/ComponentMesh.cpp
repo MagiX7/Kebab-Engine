@@ -33,12 +33,6 @@ ComponentMesh::ComponentMesh(GameObject* compOwner, const std::string& meshPath)
 	normalsTriangleColor = { 0,0.5f,1.0 };
 
 	mesh = new KbMesh(meshPath);
-	/*int start = meshPath.find_last_of('\\');
-	if (start == 0)
-		start = meshPath.find_last_of('/');
-
-	mesh->SetName(meshPath.substr(start + 1));
-	mesh->SetPath(meshPath);*/
 }
 
 ComponentMesh::~ComponentMesh()
@@ -129,7 +123,6 @@ void ComponentMesh::Draw(ComponentMaterial* mat)
 
 	// This goes here just to be able to change the normals color while texture is assigned
 	mat->Unbind();
-	//if (currentTexture) currentTexture->Unbind();
 
 	if (drawVertexNormals)
 		mesh->DrawVertexNormals(normalsVertexSize, normalsVertexColor);
@@ -139,7 +132,7 @@ void ComponentMesh::Draw(ComponentMaterial* mat)
 	EndDraw(mat);
 }
 
-void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex/*std::vector<Texture> textures*/)
+void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex)
 {
 	mesh->SetData(vertices, indices);
 
@@ -147,15 +140,11 @@ void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> 
 
 	aabb.SetNegativeInfinity();
 	int size = vertices.size();
-	//aabb.Enclose(&vertices.data()->position, size);
+
 	for (int i = 0; i < size; ++i)
 		aabb.Enclose(vertices[i].position);
 
 	parent->SetGlobalAABB(aabb);
-
-	////// Now done in SetGlobalAABB //////
-	/*ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
-	parent->UpdateAABB(tr->GetLocalMatrix());*/
 }
 
 void ComponentMesh::SetMeshPath(const std::string& path)
@@ -172,7 +161,7 @@ void ComponentMesh::SetMesh(KbMesh* newMesh)
 
 	aabb.SetNegativeInfinity();
 	int size = mesh->vertices.size();
-	//aabb.Enclose(&vertices.data()->position, size);
+
 	for (int i = 0; i < size; ++i)
 		aabb.Enclose(mesh->vertices[i].position);
 
@@ -191,9 +180,6 @@ JSON_Value* ComponentMesh::Save()
 	JSON_Object* obj = Parser::GetObjectByValue(value);
 
 	json_object_set_number(obj, "Type", 1);
-
-	/*Parser::DotSetObjectNumber(obj, "vertices", mesh->GetVertices().size());
-	Parser::DotSetObjectNumber(obj, "indices", mesh->GetIndices().size());*/
 
 	Parser::DotSetObjectString(obj, "model library path", model->GetLibraryPath().c_str());
 	Parser::DotSetObjectNumber(obj, "model uuid", model->uuid);
@@ -227,12 +213,11 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 
 	aabb.SetNegativeInfinity();
 	int size = mesh->vertices.size();
-	//aabb.Enclose(&vertices.data()->position, size);
+
 	for (int i = 0; i < size; ++i)
 		aabb.Enclose(mesh->vertices[i].position);
 
 	parent->SetGlobalAABB(aabb);
-	//this->parent = parent;
 }
 
 void ComponentMesh::BeginDraw(ComponentMaterial* mat)
@@ -253,7 +238,6 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 	mat->Bind();
 
 	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
-	//glNormalPointer(GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 }

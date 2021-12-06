@@ -46,18 +46,7 @@ bool Window::Init(JSON_Object* root)
 	else
 	{
 		Load(root);
-		/*JSON_Object* winObj = json_object_get_object(root, name.c_str());
-		width = json_object_get_number(winObj, "width");
-		height = json_object_get_number(winObj, "height");
-		brightness = json_object_get_number(winObj, "brightness");
-		fullscreen = json_object_get_boolean(winObj, "fullscreen");
-		fulldesktop = json_object_get_boolean(winObj, "fulldesktop");
-		resizable = json_object_get_boolean(winObj, "resizable");
-		borderless = json_object_get_boolean(winObj, "bordered");*/
 
-		//Create window
-		/*width = SCREEN_WIDTH * SCREEN_SIZE;
-		height = SCREEN_HEIGHT * SCREEN_SIZE;*/
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1

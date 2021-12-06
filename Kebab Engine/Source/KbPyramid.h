@@ -9,6 +9,4 @@ public:
 	KbPyramid(float3 pos, float height, float baseWidth);
 
 	virtual ~KbPyramid();
-
-	//void Draw() override;
 };

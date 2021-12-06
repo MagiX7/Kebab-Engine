@@ -23,7 +23,7 @@ public:
 	void Update();
 	void Draw(ComponentMaterial* mat);
 
-	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr/*, std::vector<Texture> textures*/);
+	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr);
 	void SetMeshPath(const std::string& path);
 
 	void SetMesh(KbMesh* newMesh);
@@ -40,17 +40,7 @@ private:
 	void BeginDraw(ComponentMaterial* mat);
 	void EndDraw(ComponentMaterial* mat);
 
-public:
-	/*std::vector<Vertex>   vertices;
-	std::vector<uint32_t> indices;
-	std::vector<Texture>  textures;*/
-
 protected:
-	/*VertexBuffer* vertexBuffer;
-	IndexBuffer* indexBuffer;
-
-	std::string meshPath;
-	std::string meshName;*/
 
 	KbMesh* mesh;
 	std::shared_ptr<KbModel> model;

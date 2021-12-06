@@ -60,9 +60,6 @@ void MeshLoader::CleanUp()
 
 GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, const ModelProperties& props)
 {
-    /*if (!app->fileSystem->Exists(path.c_str()))
-        return nullptr;*/
-
     int start = path.find_last_of('/') + 1;
     if (start == 0) start = path.find_last_of("\\") + 1;
     int end = path.find('.');
@@ -78,7 +75,6 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
     {
         baseGO = new GameObject(name);
 
-        //KbModel* model = (KbModel*)res.get();
         for (auto& mesh : model->GetMeshes())
         {
             GameObject* go = new GameObject(mesh->GetName());
@@ -321,10 +317,7 @@ void MeshLoader::ReProcessNode(aiNode* node, const aiScene* scene, std::shared_p
 
     for (int i = 0; i < node->mNumChildren; ++i)
     {
-        //if (node->mChildren[i]->mNumMeshes > 0)
-        {
-            ReProcessNode(node->mChildren[i], scene, model);
-        }
+        ReProcessNode(node->mChildren[i], scene, model);
     }
 }
 
@@ -411,10 +404,8 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
                 name += " " + std::to_string(numCube);
             numCube++;
 
-            mesh = new KbCube(/*go->GetUuid(), */ { -0.5, -0.5, -0.5 }, {1,1,1});
+            mesh = new KbCube({ -0.5, -0.5, -0.5 }, {1,1,1});
 
-            /*go = new GameObject(name.c_str());
-            comp = new KbCube({ 0,0,0 }, { 1,1,1 }, go);*/
             break;
         }
 
@@ -427,8 +418,6 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
             mesh = new KbPyramid({ 0,0,0 }, 2, 1);
 
-            /*go = new GameObject(name.c_str());
-            comp = new KbPyramid({ 0,0,0 }, 5, 3, go);*/
             break;
         }
 
@@ -441,8 +430,6 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
             
             mesh = new KbPlane({ -0.5f,0.0f, -0.5f }, { 1,1 });
 
-            /*go = new GameObject(name.c_str());
-            comp = new KbPlane({ -1,0,0 }, { 2,1 }, go);*/
             break;
         }
         
@@ -455,8 +442,6 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
             mesh = new KbSphere({ -0.5f,-0.5f,-0.5f }, 1, 15, 15);
 
-            /*go = new GameObject(name.c_str());
-            comp = new KbSphere({ 0,0,0 }, 1, 20, 20, go);*/
             break;
         }
 
@@ -469,8 +454,6 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
             mesh = new KbCylinder({ -0.5f,-0.5f ,-0.5f }, 1, 1, 15);
 
-            /*go = new GameObject(name.c_str());
-            comp = new KbCylinder({ 0,0,0 }, 2, 5, 10, go);*/
             break;
         }
     }
@@ -483,7 +466,7 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
         
         meshComp->SetMesh(mesh);
 
-        /*ComponentMaterial* mat = (ComponentMaterial*)*/go->CreateComponent(ComponentType::MATERIAL);    
+        go->CreateComponent(ComponentType::MATERIAL);    
 
         app->scene->AddGameObject(go);
     }
@@ -515,7 +498,6 @@ void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name, int
     cursor += bytes;
 
     std::string n = CUSTOM_DIR + name + "__" + std::to_string(uuid) + CUSTOM_EXTENSION;
-    //mesh->SetMeshPath(n);
     mesh->SetLibraryPath(n);
 
     app->fileSystem->Save(n.c_str(), fileBuffer, size);
@@ -553,8 +535,6 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
     memcpy(ranges, cursor, bytes);
     cursor += bytes;
 
-    //mesh->indices.resize(ranges[0]);
-    //mesh->vertices.resize(ranges[1]);
     std::vector<Vertex> vertices;
     vertices.resize(ranges[0]);
 
@@ -585,7 +565,6 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     std::queue<GameObject*> q;          // Meshes Library path
     std::vector<std::pair<GameObject*, std::string>> gosMeshes;
 
-    //q.push(go);
     for (auto& child : go->GetChilds())
         q.push(child);
 
@@ -595,14 +574,10 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
         q.pop();
         
 
-        //std::pair<GameObject*, std::string> pair;
         if (ComponentMesh* m = (ComponentMesh*)curr->GetComponent(ComponentType::MESH))
         {
             // When the code goes onto the next iteration, pair is resetted and the values on the vector too
             
-            //pair.first = curr;
-            //pair.second = m->GetMesh()->GetLibraryPath();
-            //std::get<2>(tuple) = m->GetMesh()->GetAssetsPath();
             gosMeshes.push_back(std::pair<GameObject*, std::string>(curr, m->GetMesh()->GetLibraryPath()));
         }
 
@@ -647,7 +622,6 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
         json_object_set_number(obj, "owner uuid", gosMeshes[i].first->GetUuid());
         json_object_set_string(obj, "owner name", gosMeshes[i].first->GetName().c_str());
         json_object_set_string(obj, "mesh library path", gosMeshes[i].second.c_str());
-        //json_object_set_string(obj, "mesh assets path", std::get<2>(gosMeshes[i]).c_str());
 
         ComponentMaterial* mat = (ComponentMaterial*)gosMeshes[i].first->GetComponent(ComponentType::MATERIAL);
         std::string texLibPath;
@@ -664,7 +638,6 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
         
         json_array_append_value(arr, value);
     }
-    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 
     int size = json_serialization_size_pretty(modelValue);
     char* buffer = new char[size];
@@ -674,23 +647,14 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     std::string path = "Library/Models/" + go->GetName() + "__" + std::to_string(modelUuid) + ".kbmodel";
 
     json_serialize_to_file_pretty(modelValue, path.c_str());
-    //json_serialize_to_file_pretty(modelValue, "Library/Models/model.json");
 
-    //if (app->fileSystem->Save(path.c_str(), &buffer, size) > 0)
-    //    LOG_CONSOLE("SALUDOS");
-
-    delete[] buffer;
-
-    //json_value_free(modelValue);
-    
+    delete[] buffer;    
 }
 
 // Send the PATH, not the file name
 GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shared_ptr<KbModel> model)
 {
     GameObject* ret = nullptr;
-
-    //std::string path = "Library/Models/" + fileName;
 
     char* buffer = nullptr;
     if(app->fileSystem->Load(path.c_str(), &buffer) > 0)
@@ -705,7 +669,6 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
         int baseUuid = json_object_get_number(modelObj, "uuid");
 
         ret = new GameObject(n, baseUuid);
-        //app->scene->AddGameObject(ret);
 
         float3 p = { 0,0,0 };
         p.x = json_object_get_number(modelObj, "pos x");
@@ -724,9 +687,6 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
         sc.z = json_object_get_number(modelObj, "scale z");
 
         ComponentTransform* parentTr = (ComponentTransform*)ret->GetComponent(ComponentType::TRANSFORM);
-        /*tr->SetTranslation(p);
-        tr->SetRotation(r);
-        tr->SetScale(sc);*/
         parentTr->SetLocalMatrix(float4x4::FromTRS(p, r, sc));
 
 
@@ -775,6 +735,5 @@ GameObject* MeshLoader::LoadModelCustomFormat(const std::string& path, std::shar
 
     }
     if (buffer) delete[] buffer;
-    //if (ret) app->scene->AddGameObject(ret);
     return ret;
 }

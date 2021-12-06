@@ -12,7 +12,7 @@
 #define CHECKERS_WIDTH 50
 
 
-Texture::Texture(void* data, int width, int height, std::string path/*, const TextureProperties& props*/)
+Texture::Texture(void* data, int width, int height, std::string path)
 	: Resource(ResourceType::TEXTURE)
 {
 	this->width = width;

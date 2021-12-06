@@ -146,8 +146,6 @@ private:
 	GLuint vbo;
 	uint32_t count;
 	BufferLayout layout;
-
-	//std::vector<float3> vertices;
 };
 
 class IndexBuffer
@@ -168,7 +166,6 @@ public:
 private:
 	GLuint ibo;
 	uint32_t count;
-	//std::vector<uint32_t> indices;
 };
 
 

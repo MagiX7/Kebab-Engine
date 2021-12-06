@@ -83,20 +83,12 @@ std::vector<Vertex> KbCylinder::GetUnitCircleVertices()
         vertex.position.z = 0;
 
         unitCircleVertices.push_back(vertex);
-
-        /*unitCircleVertices.push_back(cos(sectorAngle)); // x
-        unitCircleVertices.push_back(sin(sectorAngle)); // y
-        unitCircleVertices.push_back(0);*/                // z
     }
     return unitCircleVertices;
 }
 
 void KbCylinder::BuildVerticesSmooth()
 {
-    /*std::vector<float>().swap(vertices);
-    std::vector<float>().swap(normals);
-    std::vector<float>().swap(texCoords);*/
-
     // get unit circle vectors on XY-plane
     std::vector<Vertex> unitVertices = GetUnitCircleVertices();
 
@@ -114,22 +106,14 @@ void KbCylinder::BuildVerticesSmooth()
             float uy = unitVertices[k].position.y;
             float uz = unitVertices[k].position.z;
 
+            // position vector
             vertex.position = { ux * radius,uy * radius,h };
 
-            // position vector
-            
-            //vertices.push_back(ux * radius);             // vx
-            //vertices.push_back(uy * radius);             // vy
-            //vertices.push_back(h);                       // vz
             // normal vector
             vertex.normal = { ux,uy,uz };
-            //normals.push_back(ux);                       // nx
-            //normals.push_back(uy);                       // ny
-            //normals.push_back(uz);                       // nz
+
             // texture coordinate
             vertex.texCoords = { (float)j / sectors , t };
-            //texCoords.push_back((float)j / sectors); // s
-            //texCoords.push_back(t);                      // t
         
             vertices.push_back(vertex);
         }
@@ -155,10 +139,6 @@ void KbCylinder::BuildVerticesSmooth()
 
         vertices.push_back(vertex);
 
-        /*vertices.push_back(0);     vertices.push_back(0);     vertices.push_back(h);
-        normals.push_back(0);      normals.push_back(0);      normals.push_back(nz);
-        texCoords.push_back(0.5f); texCoords.push_back(0.5f);*/
-
         for (int j = 0, k = 0; j < sectors; ++j, ++k)
         {
             Vertex vertex;
@@ -171,18 +151,6 @@ void KbCylinder::BuildVerticesSmooth()
             vertex.texCoords = { -ux * 0.5f + 0.5f, -uy * 0.5f + 0.5f };
             
             vertices.push_back(vertex);
-
-            // position vector
-            //vertices.push_back(ux * radius);             // vx
-            //vertices.push_back(uy * radius);             // vy
-            //vertices.push_back(h);                       // vz
-            // normal vector
-            //normals.push_back(0);                        // nx
-            //normals.push_back(0);                        // ny
-            //normals.push_back(nz);                       // nz
-            // texture coordinate
-            //texCoords.push_back(-ux * 0.5f + 0.5f);      // s
-            //texCoords.push_back(-uy * 0.5f + 0.5f);      // t
         }
     }
 }

@@ -174,14 +174,6 @@ JSON_Value* ComponentCamera::Save()
 
 void ComponentCamera::Load(JSON_Object* obj, GameObject* parent)
 {
-	/*float3 f = frustum.Front().Normalized();
-	float3 u = frustum.Up().Normalized();
-	float3::Orthonormalize(f, u);
-	frustum.SetFront(f);
-	frustum.SetUp(u);*/
-
-	//JSON_Object* camObj = json_object_get_object(root, name.c_str());
-
 	fovHorizontal = json_object_get_number(obj, "fovHorizontal");
 	currentWinWidth = json_object_get_number(obj, "currentWinWidth");
 	currentWinHeight = json_object_get_number(obj, "currentWinHeight");
@@ -219,12 +211,6 @@ void ComponentCamera::Load(JSON_Object* obj, GameObject* parent)
 	frustum.SetWorldMatrix(worldMat);
 
 	frustum.SetPos(pos);
-
-	//float3 u = frustum.Up();
-	//float3 f = frustum.Front();
-	//float3::Orthonormalize(u, f);
-	//frustum.SetFront(f);
-	//frustum.SetUp(u);
 }
 
 float ComponentCamera::GetFarPlane() const
@@ -250,31 +236,22 @@ void ComponentCamera::DrawOnInspector()
 		}
 
 		ImGui::Spacing();
-		//static float farPlaneDist = planeFar;
 		if (ImGui::SliderFloat("Far Plane Distance", &planeFar, 5, 300))
-		{
 			SetFarPlane(planeFar);
-		}
+
 		if (ImGui::Button("Reset to Default"))
-		{
 			SetFarPlane(initialPlaneFar);
-		}
+
 		ImGui::Spacing();
-		//static float nearPlaneDist = planeNear;
 		if (ImGui::SliderFloat("Near Plane Distance", &planeNear, 0.1f, 10, "%.3f"))
-		{
 			SetNearPlane(planeNear);
-		}
+
 		if (ImGui::Button("Reset to Default "))
-		{
 			SetNearPlane(initialPlaneNear);
-		}
 
 		ImGui::Spacing();
 		if (ImGui::Button("Set as Game Camera"))
-		{
 			app->camera->SetGameCamera(this);
-		}
 	}
 }
 

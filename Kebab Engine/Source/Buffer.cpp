@@ -12,14 +12,11 @@
 
 VertexBuffer::VertexBuffer() : count(0)
 {
-	//layout = { {ShaderDataType::VEC3F, "position"} };
 	glGenBuffers(1, &vbo);
 }
 
 VertexBuffer::VertexBuffer(const float3* vertices, uint32_t size) : count(0)
 {
-	//layout = { {ShaderDataType::VEC3F, "position"} };
-
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
@@ -35,10 +32,6 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::SetData(const float3* vertices, uint32_t size)
 {
-	/*this->vertices.resize(count + (size / sizeof(uint32_t)));
-	this->vertices.insert(this->vertices.begin() + this->vertices.size(), vertices, vertices + count);
-	*/
-
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -98,16 +91,10 @@ IndexBuffer::~IndexBuffer()
 
 void IndexBuffer::SetData(const uint32_t* indices, uint32_t count)
 {
-	/*this->indices.resize(this->count + count);
-	this->indices.insert(this->indices.begin() + this->indices.size(), indices, indices + this->count);
-	*/
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
-	//glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, count, count * sizeof(uint32_t), indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	this->count += count;
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }
 
 void IndexBuffer::Bind() const
@@ -172,24 +159,6 @@ void FrameBuffer::Create()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, properties.width, properties.height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthAttachment);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-
-	//glGenTextures(1, &depthAttachment);
-	//glBindTexture(GL_TEXTURE_2D, depthAttachment);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, properties.width, properties.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, 0);
-	////glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, properties.width, properties.height);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachment, 0);
-
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	/*GLenum err = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (err != GL_FRAMEBUFFER_COMPLETE)
-	{
-		LOG_CONSOLE("Framebuffer is Incomplete. Error %s", glGetString(err));
-	}
-	else LOG_CONSOLE("Framebuffer is Complete");*/
 
 	glBindFramebuffer(GL_TEXTURE_2D, 0);
 }

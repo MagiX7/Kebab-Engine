@@ -71,6 +71,7 @@ bool Camera3D::CleanUp()
 
 	delete editorCam;
 	editorCam = nullptr;
+	gameCam = nullptr;
 
 	return true;
 }
@@ -184,8 +185,6 @@ bool Camera3D::Update(float dt)
 		{
 			GameObject* picked = MousePickGameObject();
 			app->editor->hierarchyPanel->SetCurrent(picked);
-			
-			//app->editor->hierarchyPanel->currentGO = picked;
 		}
 	}
 
@@ -336,16 +335,6 @@ void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* ca
 		for (auto& child : curr->GetChilds())
 			q.push(child);
 	}
-
-
-	/*std::vector<GameObject*>::iterator it;
-	for (it = go->GetChilds().begin(); it != go->GetChilds().end(); it++)
-	{
-		DrawInFrustumCulling((*it), camera);
-
-		if ((*it)->GetChilds().size() != 0)
-			PropagateDrawInFrustumCulling((*it), camera);
-	}*/
 }
 
 bool Camera3D::IntersectsAABB(const AABB* aabb, ComponentCamera* camera)
@@ -529,8 +518,6 @@ GameObject* Camera3D::ThrowRay(LineSegment line, float3& hitPoint, bool& clearVe
 						pair.first = curr;
 						pair.second = distance;
 						distances.push_back(pair);
-
-						//return curr;
 					}
 				}
 			}

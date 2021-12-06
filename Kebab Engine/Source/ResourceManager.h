@@ -45,7 +45,6 @@ public:
 	int GenerateUUID();
 
 	std::shared_ptr<Resource> FindMetaData(const char* assetsFile);
-	//std::shared_ptr<Resource> LoadMetaDataFile(const char* assetsFile, ResourceType type);
 
 	std::shared_ptr<KbModel> LoadModelMetaData(const char* assetsFile);
 	std::shared_ptr<Texture> LoadTextureMetaData(const char* assetsFile);

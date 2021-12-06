@@ -3,19 +3,6 @@
 #include "Renderer3D.h"
 #include "MainScene.h"
 
-/* #include "GameObject.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
-
-#include "MeshLoader.h"
-
-#include "Buffer.h"
-
-#include "SDL_opengl.h"
-
-#include <gl/GL.h>
-#include <gl/GLU.h> */
-
 #include "Window.h"
 #include "Camera3D.h"
 #include "Input.h"
@@ -40,8 +27,6 @@
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
-
-	//currentCam = nullptr;
 }
 
 // Destructor
@@ -62,8 +47,6 @@ bool Renderer3D::Init(JSON_Object* root)
 		LOG_CONSOLE("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-	
-	//currentCam = app->camera->GetCurrentCamera();
 
 	if(ret == true)
 	{
@@ -81,7 +64,6 @@ bool Renderer3D::Init(JSON_Object* root)
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
@@ -93,7 +75,6 @@ bool Renderer3D::Init(JSON_Object* root)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -108,7 +89,6 @@ bool Renderer3D::Init(JSON_Object* root)
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			//LOG_CONSOLE("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -155,10 +135,6 @@ bool Renderer3D::Init(JSON_Object* root)
 	app->window->GetSize(w, h);
 	OnResize(w, h);
 
-	/*vertexArray = new VertexArray();
-	indexBuffer = new IndexBuffer();
-	vertexBuffer = new VertexBuffer();*/
-
 	FrameBufferProperties props;
 	props.width = w;
 	props.height = h;
@@ -174,28 +150,11 @@ bool Renderer3D::PreUpdate(float dt)
 	glClearColor(0.05f, 0.05f, 0.05f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	//glMatrixMode(GL_PROJECTION);
-	////glLoadMatrixf(currentCam->frustum.ProjectionMatrix().Transposed().ptr());
-	//ComponentCamera* c = app->camera->GetCurrentCamera();
-
-	//glLoadMatrixf(c->frustum.ProjectionMatrix().Transposed().ptr());
-
-	//glMatrixMode(GL_MODELVIEW);
-	////float4x4 mat = currentCam->frustum.ViewMatrix();
-	////glLoadMatrixf(mat.Transposed().ptr());
-	//float4x4 mat = c->frustum.ViewMatrix();
-	//glLoadMatrixf(mat.Transposed().ptr());
-	
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		wireframe = !wireframe;
 		SetWireframe();
-		//wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		drawAABB = !drawAABB;
-	//if (app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
-	//	app->camera->gameCam->frustumCulling = !app->camera->gameCam->frustumCulling;
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
@@ -339,7 +298,6 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
-	//drawVertexNormals = json_object_get_boolean(renObj, "showNormals");
 }
 
 void Renderer3D::Submit(GameObject* go)
@@ -365,13 +323,6 @@ void Renderer3D::Submit(GameObject* go)
 		for (auto& child : curr->GetChilds())
 			q.push(child);
 	}
-
-	/*if (go->GetChilds().size() > 0)
-		for (const auto& child : go->GetChilds())
-			Submit(child);
-
-	if(go->GetComponent(ComponentType::MESH))
-		gameObjects.push_back(go);*/
 }
 
 void Renderer3D::EraseGameObject(GameObject* go)
@@ -401,13 +352,7 @@ void Renderer3D::EraseGameObject(GameObject* go)
 }
 
 void Renderer3D::EraseAllGameObjects()
-{
-	//std::vector<GameObject*>::iterator it;
-	//for (; it != gameObjects.end(); ++it)
-	//{
-	//	gameObjects.erase(it);
-	//}
-	
+{	
 	gameObjects.clear();
 }
 

@@ -171,16 +171,6 @@ void ComponentTransform::SetGlobalMatrix(const float4x4& transform)
 {
 	globalTransformMat = transform;
 
-	/*float3 newPos, newScale;
-	Quat newRot;
-	localTransformMat.Decompose(newPos, newRot, newScale);
-
-	SetTranslation(newPos);
-	SetRotation(newRot);
-	SetScale(newScale);
-
-	RecomputeGlobalMat();*/
-
 	if (parent->GetParent() && parent->GetParent()->GetParent() != nullptr)
 	{
 		ComponentTransform* tr = (ComponentTransform*)parent->GetParent()->GetComponent(ComponentType::TRANSFORM);

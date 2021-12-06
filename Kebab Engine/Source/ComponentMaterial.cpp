@@ -37,8 +37,8 @@ ComponentMaterial::~ComponentMaterial()
 	checkersTexture.reset();
 	currentTexture = nullptr;
 
-	for (auto& tex : textures)
-		delete tex;
+	/*for (auto& tex : textures)
+		delete tex;*/
 
 	textures.clear();
 }
@@ -126,7 +126,7 @@ void ComponentMaterial::ShowTexturesMenu()
 
 		ImGui::ImageButton((ImTextureID)(*it)->GetID(), { 100,100 });
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-		{ // TODO: need to change with resource manager
+		{
 			std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded((*it)->GetLibraryPath());
 			AddTexture(std::static_pointer_cast<Texture>(tex), 0);
 		}
@@ -146,31 +146,6 @@ void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 {
 	texture = tex;
 	currentTexture = texture.get();
-	//if (texture && modelUuid != 0)
-	//{
-	//	std::string initialPath = texture->GetLibraryPath();
-	//	int s = initialPath.find("__");
-	//	std::string p = initialPath.substr(0, s);
-
-	//	p += /*"__" + std::to_string(modelUuid) + */".kbtexture";
-	//	texture->SetLibraryPath(p);
-	//
-	//	texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
-	//}
-	//else if(texture && modelUuid == 0)
-	//{
-	//	ComponentMesh* meshComp = (ComponentMesh*)parent->GetComponent(ComponentType::MESH);
-	//	int uuid = meshComp->GetModel()->uuid;
-	//	std::string initialPath = texture->GetLibraryPath();
-	//	int s = initialPath.find("__");
-	//	std::string p = initialPath.substr(0, s);
-
-	//	p += /*"__" + std::to_string(uuid) +*/ ".kbtexture";
-	//	texture->SetLibraryPath(p);
-
-	//	texture->CreateMetaDataFile(texture->GetAssetsPath().c_str());
-
-	//}
 }
 
 JSON_Value* ComponentMaterial::Save()
@@ -224,7 +199,4 @@ void ComponentMaterial::SetCheckersTexture()
 			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
-	//checkersTexture = new Texture(checkerImage, CHECKERS_WIDTH, CHECKERS_HEIGHT, "Checkers");
-	//currentTexture = checkersTexture;
-	//return checkersTexture;
 }

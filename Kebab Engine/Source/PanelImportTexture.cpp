@@ -36,7 +36,6 @@ void ImportTexturePanel::OnRender(float dt)
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
 		}
-		//ImGui::EndCombo();
 	}
 
 	ImGui::Separator();
@@ -47,8 +46,6 @@ void ImportTexturePanel::OnRender(float dt)
 		// TODO: Implement mip mapping !!
 
 		ImGui::TableNextColumn(); ImGui::Checkbox("Mip-Map", &props.mipmap);
-		//if(props.mipmap)
-		//	ImGui::TableNextColumn(); ImGui::Checkbox("Anystropy", &props.anystropy);
 	}
 
 	ImGui::Separator();
@@ -172,12 +169,6 @@ void ImportTexturePanel::SetTexturePath(const char* assetsFile)
 
 		texture->SetAssetsPath(assetsFile);
 	}
-	/*else
-	{
-		assetsPath = texture->GetAssetsPath();
-	}*/
-
-	//texture = TextureLoader::GetInstance()->LoadTexture(assetsFile);
 }
 
 ILint ImportTexturePanel::GetCompressionFromType(int compression)

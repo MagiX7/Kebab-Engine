@@ -14,8 +14,6 @@ public:
 	Texture* LoadTexture(const char* fileName, const TextureProperties& props = TextureProperties());
 	Texture* LoadTextureCustomFormat(const std::string& path, const TextureProperties& props = TextureProperties());
 
-	//void ReimportTexture(const char* libPath, const TextureProperties& props, void* data);
-
 	void SaveTextureCustomFormat(Texture* tex, int uuid);
 
 	void CleanUp();

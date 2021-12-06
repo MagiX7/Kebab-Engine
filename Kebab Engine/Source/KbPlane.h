@@ -9,6 +9,4 @@ public:
 	KbPlane(float3 position, float2 size);
 
 	~KbPlane();
-
-	//void Draw(bool drawVertexNormals, bool drawTriangleNormals) override;
 };

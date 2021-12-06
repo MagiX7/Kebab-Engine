@@ -34,13 +34,10 @@ ViewportPanel::~ViewportPanel()
 
 void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION& op, const ImGuizmo::MODE& mode)
 {
-    ImGui::Begin("Viewport");
+    ImGui::Begin("Editor");
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
     hovered = ImGui::IsWindowHovered();
-
-    /*if (ImGui::IsItemActive() && app->camera->GetCurrentCamera() != app->camera->editorCam)
-        app->camera->SetCurrentCamera(app->camera->editorCam);*/
 
     if (viewportSize.x != viewportPanelSize.x || viewportSize.y != viewportPanelSize.y)
     {
@@ -104,8 +101,6 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
                             ComponentMaterial* mat = (ComponentMaterial*)target->GetComponent(ComponentType::MATERIAL);
                             std::shared_ptr<Resource> tex = ResourceManager::GetInstance()->IsAlreadyLoaded(dragPath);
                             mat->AddTexture(std::static_pointer_cast<Texture>(tex), mesh->GetModel()->uuid);
-
-                            //mat->AddTexture(TextureLoader::GetInstance()->LoadTextureCustomFormat(dragPath));
                         }
                     }
                     else

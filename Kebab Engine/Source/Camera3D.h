@@ -10,12 +10,6 @@ class GameObject;
 class ComponentCamera;
 class GameObject;
 
-//enum class CameraType
-//{
-//	EDITOR,
-//	GAME
-//};
-
 enum class CameraType;
 
 class Camera3D : public Module
@@ -71,7 +65,6 @@ private:
 	bool debugDrawPicking = true;
 
 	ComponentCamera* currentCam;
-	//ComponentCamera* editorCam;
 
 	bool focusing;
 	bool orbiting;

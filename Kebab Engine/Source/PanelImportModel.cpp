@@ -22,16 +22,6 @@ void PanelImportModel::OnRender(float dt)
 {
 	ImGui::Begin("Model Import Options", &active);
 
-	//joinIdenticalVertices = false;
-	//triangulate = true;
-	//genNormals = false;
-	//genSmoothNormals = false;
-	//removeRedundantMaterials = false;
-	//genUVCoords = true;
-	//transformUVCoords = false;
-	//findInstances = true;
-	//optimizeMesh = true;
-
 	ImGui::TableNextColumn();
 	ImGui::Checkbox("Join Identical Vertices", &props.joinIdenticalVertices);	
 	HelpMarker("Joins the identical vertices into one (Recommended activation).");
@@ -106,19 +96,6 @@ void PanelImportModel::OnRender(float dt)
 
 		}
 
-		//std::shared_ptr<KbModel> model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(assetsPath.c_str()));
-
-		////ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL);
-		//if (model)
-		//{
-		//	model->SetProperties(props);
-		//}
-		//else
-		//{
-		//	model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->CreateNewResource(assetsPath.c_str(), ResourceType::MODEL));
-		//	//MeshLoader::GetInstance()->LoadModel(assetsPath.c_str());
-		//}
-
 		active = false;
 	}
 
@@ -144,16 +121,5 @@ void PanelImportModel::SetAssetsPath(const std::string& path)
 		assetsPath = path;
 		
 		extension = path.substr(path.find("."));
-
-
-		//model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
-		//if(!model)
-		//{
-		//	//model = ResourceManager::GetInstance()->CreateModel(path.c_str());
-		//	app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel(path, true));
-
-		//	model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path.c_str()));
-		//	model->SetAssetsPath(path);
-		//}
 	}
 }

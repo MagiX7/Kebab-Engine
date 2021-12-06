@@ -39,6 +39,5 @@ public:
 	ComponentCamera* camera;
 
 private:
-	//std::vector<GameObject*> gameObjects;
 	GameObject* root;
 };

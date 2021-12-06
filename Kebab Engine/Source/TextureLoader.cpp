@@ -32,14 +32,6 @@ TextureLoader::TextureLoader()
 
 TextureLoader::~TextureLoader()
 {
-	/*for (int i = 0; i < textures.size(); ++i)
-	{
-		delete(textures[i]);
-		textures[i] = nullptr;
-	}
-
-	delete(instance);
-	instance = nullptr;*/
 }
 
 Texture* TextureLoader::LoadTexture(const char* fileName, const TextureProperties& props)
@@ -49,9 +41,6 @@ Texture* TextureLoader::LoadTexture(const char* fileName, const TexturePropertie
 	ILuint tmp;
 	tmp = ilGenImage();
 	ilBindImage(tmp);
-
-	/*std::string dir = ASSETS_DIR;
-	dir.append(fileName);*/
 
 	if (!ilLoadImage(fileName))
 	{
@@ -76,9 +65,6 @@ Texture* TextureLoader::LoadTexture(const char* fileName, const TexturePropertie
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), fileName);
 		ret->SetProperties(props);
 
-		//SaveTextureCustomFormat(ret); <-- Done in ResourceManager
-		//ret = LoadTextureCustomFormat(ret->GetName());
-
 		ilDeleteImage(tmp);
 
 		LOG_CONSOLE("\nLoaded image from %s", fileName);
@@ -100,25 +86,12 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path, const T
 	{
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-		/*if (props.mipmap) iluBuildMipmaps();
-		if (props.alienify) iluAlienify();
-		if (props.gaussianBlur) iluBlurGaussian(props.gaussianBlurIterations);
-		if (props.averageBlur) iluBlurAvg(props.averageBlurIterations);
-		if (props.contrast) iluContrast(props.contrastAmount);
-		if (props.equalization) iluEqualize();
-		if (props.gammaCorrection) iluGammaCorrect(props.gammaCorrectionAmount);
-		if (props.negativity) iluNegative();
-		if (props.noise) iluNoisify(props.noiseAmount);
-		if (props.pixelization) iluPixelize(props.pixelsSize);
-		if (props.sharpening) iluSharpen(props.sharpeningAmount, props.sharpeningIterations);*/
-
 		ret = new Texture(ilGetData(), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), path);
 		textures.push_back(ret);
 
 		ret->SetLibraryPath(path);
 		ret->SetProperties(props);
 
-		//ret = new Texture(buffer, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), name);
 		LOG_CONSOLE("Custom file format texture %s loaded!", path.c_str());
 		
 		delete[] buffer;
@@ -128,11 +101,6 @@ Texture* TextureLoader::LoadTextureCustomFormat(const std::string& path, const T
 	
 	return ret;
 }
-
-//void TextureLoader::ReimportTexture(const char* libPath, const TextureProperties& props, void* data)
-//{
-//	
-//}
 
 void TextureLoader::SaveTextureCustomFormat(Texture* tex, int uuid)
 {
@@ -147,7 +115,7 @@ void TextureLoader::SaveTextureCustomFormat(Texture* tex, int uuid)
 			data = new ILubyte[size]; // Allocate data buffer
 			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
 			{
-				std::string n = CUSTOM_DIR + tex->GetName() /*+ "__" + std::to_string(uuid)*/ + CUSTOM_EXTENSION;
+				std::string n = CUSTOM_DIR + tex->GetName() + CUSTOM_EXTENSION;
 				tex->SetLibraryPath(n);
 				tex->SetPath(n);
 				app->fileSystem->Save(n.c_str(), data, size);
@@ -159,12 +127,6 @@ void TextureLoader::SaveTextureCustomFormat(Texture* tex, int uuid)
 
 void TextureLoader::CleanUp()
 {
-	/*for (int i = 0; i < textures.size(); ++i)
-	{
-		delete(textures[i]);
-		textures[i] = nullptr;
-	}*/
-
 	ilShutDown();
 
 	delete(instance);

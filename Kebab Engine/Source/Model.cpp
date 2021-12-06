@@ -75,7 +75,6 @@ void KbModel::CreateMetaDataFile(const char* assetsFile)
 			json_object_set_string(meshObj, "texture meta path", meshes[i]->GetTextureMetaPath().c_str());
 		}
 
-		//json_object_set_string(meshObj, "mesh assets path", meshes[i]->GetAssetsPath().c_str());
 		json_array_append_value(arr, meshVal);
 	}
 

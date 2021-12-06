@@ -65,7 +65,6 @@ bool Application::Init()
 	std::list<Module*>::iterator it = modules.begin();
 	
 	value = Parser::ParseFile("Settings/config.json");
-	//value = json_parse_file("config.json");
 	if (!value)
 	{
 		LOG_CONSOLE("Could not load or there is no file to load config.json");
@@ -74,9 +73,7 @@ bool Application::Init()
 	else
 	{
 		JSON_Object* root = Parser::GetObjectByValue(value);
-		//JSON_Object* root = json_value_get_object(value);
 		JSON_Object* appObj = Parser::GetObjectByName(root, "App");
-		//JSON_Object* appObj = json_object_get_object(root, "App");
 		appDt = Parser::GetNumberByObject(appObj, "dt");
 		cappedMs = 1000.0f / Parser::GetNumberByObject(appObj, "max fps");
 
@@ -140,8 +137,6 @@ void Application::FinishUpdate()
 		lastSecFrameCount = 0;
 	}
 
-	//float averageFps = float(frameCount) / (startupTime.Read() / 1000.0f);
-	//float secondsSinceStartup = startupTime.Read() / 1000.0f;
 	uint32 lastFrameMs = msTimer.Read();
 	uint32 framesOnLastUpdate = prevLastSecFrameCount;
 
@@ -155,7 +150,6 @@ void Application::Load()
 {
 	loadReq = false;
 
-	//JSON_Object* root = json_value_get_object(value);
 	JSON_Object* root = Parser::GetObjectByValue(value);
 
 	std::list<Module*>::iterator it = modules.begin();
@@ -173,11 +167,8 @@ void Application::Save()
 	value = Parser::InitValue();
 	JSON_Object* root = Parser::GetObjectByValue(value);
 	Parser::SetObjectValue(root, "App");
-	//json_object_set_value(root, "App", json_value_init_object());
 	JSON_Object* appObj = Parser::GetObjectByName(root, "App");
-	//json_object_set_number(appObj, "dt", dt);
 	Parser::SetObjectNumber(appObj, "dt", appDt);
-	//json_object_set_number(appObj, "max fps", GetMaxFPS());
 	Parser::SetObjectNumber(appObj, "max fps", GetMaxFPS());
 
 	std::list<Module*>::iterator it = modules.begin();
@@ -188,10 +179,8 @@ void Application::Save()
 	}
 
 	Parser::GenerateFile(value, "Settings/config.json");
-	//json_serialize_to_file_pretty(value, "config.json");
 
 	Parser::FreeValue(value);
-	//json_value_free(value);
 }
 
 // Call PreUpdate, Update and Draw on all modules

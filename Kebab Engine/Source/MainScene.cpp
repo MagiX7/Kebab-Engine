@@ -43,19 +43,16 @@ bool MainScene::Start()
     camera = new ComponentCamera(goCam, CameraType::GAME);
     ComponentTransform* trans = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
     trans->SetTranslation(float3(-5, 5, 2));
-    //camera->SetCameraPosition({ -5,5,2 });
     camera->Look({ 0,0,0 });
 
     ComponentTransform* tr = (ComponentTransform*)goCam->GetComponent(ComponentType::TRANSFORM);
     tr->SetTranslation({ -5,5,2 });
 
-    //tr->SetTranslation(camera->GetCameraPosition());
     goCam->AddComponent(camera);
 
     AddGameObject(goCam);
     app->camera->SetGameCamera(camera);
     app->editor->hierarchyPanel->SetCurrent(goCam); // Avoid weird behaviours of the cam. Ideal would be setting again to nullptr
-    //app->editor->hierarchyPanel->SetCurrent(nullptr);
 
     rootQT = new QdTree();
     vec min = vec(-50, -10, -50);
@@ -64,26 +61,12 @@ bool MainScene::Start()
     aabbAux.minPoint = min;
     aabbAux.maxPoint = max;
     rootQT->Create(aabbAux);
-
-    //avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    //app->renderer3D->Submit(avril);
     
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Street.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
-
-    //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Street.fbx", 1));
-
-    //GameObject* a = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    //app->renderer3D->Submit(a);
-    /*avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    app->renderer3D->Submit(avril);
-    avril = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx");
-    app->renderer3D->Submit(avril);*/
-    //GameObject* bh = MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx");
-    //app->renderer3D->Submit(bh);
 
 	return ret;
 }
@@ -125,7 +108,6 @@ void MainScene::AddGameObject(GameObject* go)
 {
     root->AddChild(go);
     go->SetParent(root);
-    //gameObjects.push_back(go);
 }
 
 void MainScene::DeleteGameObject(GameObject* go)

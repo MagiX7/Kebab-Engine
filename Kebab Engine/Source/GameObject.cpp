@@ -24,7 +24,6 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 	transform->SetRotation({ 0,0,0,1 });
 	transform->SetScale({ 1,1,1, });
 
-	//localAABB = nullptr;
 	active = true;
 
 	insideFrustum = false;
@@ -41,8 +40,6 @@ GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
 
 GameObject::~GameObject()
 {
-	//DeleteChilds(this);
-
 	app->scene->rootQT->Remove(this);
 	app->scene->rootQT->Recalculate();
 
@@ -62,17 +59,13 @@ GameObject::~GameObject()
 		go = nullptr;
 	}
 	childs.clear();
-	
-	
-	//RELEASE(localAABB);
 }
 
 void GameObject::Update(float dt)
 {
-	//SetGlobalAABB(this);
+	
 }
 
-// TODO: Should check if the component already exists
 Component* GameObject::CreateComponent(ComponentType type, std::string meshPath)
 {
 	Component* ret = nullptr;
@@ -154,7 +147,6 @@ void GameObject::AddComponent(Component* comp)
 {
 	components.push_back(comp);
 
-	//if(comp->GetComponentType() == ComponentType::MESH)
 	AddAABB();
 }
 
@@ -299,7 +291,6 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 
 	for (int j = 0; j < json_array_get_count(compsArray); ++j)
 	{
-		//Component* comp = nullptr;
 		JSON_Object* compObj = json_array_get_object(compsArray, j);
 		int type = json_object_get_number(compObj, "Type");
 		

@@ -26,13 +26,6 @@ ConfigPanel::ConfigPanel()
     borderless = false;
     fulldesktop = false;
 
-    /*depth = true;
-    cullFace = true;
-    lighting = true;
-    colorMaterial = true;
-    texture2D = true;
-    showNormals = false;*/
-
     titleName = "";
     orgName = "";
 
@@ -127,19 +120,15 @@ void ConfigPanel::OnRender(float dt)
             }
             else
             {
-                //fpsLog[i] = ImGui::GetIO().Framerate;
                 fpsLog[i] = app->GetDeltaTime();
                 ImGuiIO& io = ImGui::GetIO();
-                //msLog[i] = 1000.0f / ImGui::GetIO().Framerate;
                 msLog[i] = app->GetFPS();
                 memCost[i] = SDL_GetSystemRAM();
                 i++;
             }
             char title[25];
-            //sprintf_s(title, 25, "Framerate: %.1f", ImGui::GetIO().Framerate);
             sprintf_s(title, 25, "Framerate: %i", app->GetFPS());
             ImGui::PlotHistogram("##framerate", fpsLog, IM_ARRAYSIZE(fpsLog), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-            //sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f / ImGui::GetIO().Framerate);
             sprintf_s(title, 25, "Milliseconds: %.3f", 1000.0f * app->GetDeltaTime());
             ImGui::PlotHistogram("##milliseconds", msLog, IM_ARRAYSIZE(msLog), 0, title, 0.0f, 50.0f, ImVec2(310, 100));
             sprintf_s(title, 25, "Memory Consumption");
@@ -172,7 +161,6 @@ void ConfigPanel::OnRender(float dt)
                 app->window->SetWindowSize(width, height);
 
             ImGui::Text("Refresh rate: %.0f", ImGui::GetIO().Framerate);
-            //ImGui::Text("Refresh rate: %.0f", app->GetFPS());
 
             if (ImGui::BeginTable("Window Config Table", 2))
             {
@@ -222,7 +210,6 @@ void ConfigPanel::OnRender(float dt)
         {
             if (ImGui::BeginTable("Render Config Table", 2))
             {
-                //ImGui::TableNextColumn();
                 if (ImGui::Checkbox("Depth", &app->renderer3D->depth))
                     app->renderer3D->SetDepth();
 
@@ -248,17 +235,10 @@ void ConfigPanel::OnRender(float dt)
                 
                 ImGui::TableNextColumn();
 
-                //if (ImGui::Checkbox("Draw normals", &app->renderer3D->drawVertexNormals))
-
-                //ImGui::TableNextColumn();
-
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();
 
                 ImGui::TableNextColumn();
-
-                /*if (ImGui::Checkbox("Frustum Culling", &app->renderer3D->wireframe))
-                    app->renderer3D->SetWireframe();*/
 
                 ImGui::EndTable();
             }

@@ -14,7 +14,7 @@ enum class ResourceType
 class Resource
 {
 public:
-	Resource(/*int uuid, */ResourceType type) : /*uuid(uuid), */resourceType(type) {}
+	Resource(ResourceType type) : resourceType(type) {}
 	Resource(int uuid, ResourceType type) : uuid(uuid), resourceType(type) {}
 	Resource(const std::string& assets, const std::string& library) : assetsFile(assets), libraryFile(library) {}
 	virtual ~Resource()

@@ -76,5 +76,4 @@ private:
 	int mouseZ;
 	int mouseXMotion;
 	int mouseYMotion;
-	//int mouse_z_motion;
 };

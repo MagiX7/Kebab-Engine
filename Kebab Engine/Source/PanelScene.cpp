@@ -20,30 +20,22 @@ ScenePanel::~ScenePanel()
 
 void ScenePanel::OnRender(FrameBuffer* frameBuffer)
 {
-    ImGui::Begin("Scene");
+    ImGui::Begin("Game");
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
-    //hovered = ImGui::IsWindowHovered();
-
-   /* if(ImGui::IsItemActive() && app->camera->GetCurrentCamera() != app->scene->GetCamera())
-        app->camera->SetCurrentCamera(app->scene->GetCamera());*/
-
-    //if (app->camera->GetCurrentCamera()->cameraType == CameraType::GAME)
+    if (size.x != viewportPanelSize.x || size.y != viewportPanelSize.y)
     {
-        if (size.x != viewportPanelSize.x || size.y != viewportPanelSize.y)
-        {
-            frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
-            size = { viewportPanelSize.x, viewportPanelSize.y };
-            app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
-            if (app->camera->gameCam)
-                app->camera->gameCam->CalculateFov(viewportPanelSize.x, viewportPanelSize.y);
-        }
-
-        dimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };
-
-        uint32_t image = frameBuffer->GetColorAttachment();
-        ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
+        frameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
+        size = { viewportPanelSize.x, viewportPanelSize.y };
+        app->renderer3D->OnResize(viewportPanelSize.x, viewportPanelSize.y);
+        if (app->camera->gameCam)
+            app->camera->gameCam->CalculateFov(viewportPanelSize.x, viewportPanelSize.y);
     }
+
+    dimensions = { ImGui::GetWindowPos().x,ImGui::GetWindowPos().y,ImGui::GetWindowWidth(),ImGui::GetWindowHeight() };
+
+    uint32_t image = frameBuffer->GetColorAttachment();
+    ImGui::Image((void*)image, { viewportPanelSize.x, viewportPanelSize.y }, { 0,1 }, { 1,0 });
 
     ImGui::End();
 }

@@ -6,8 +6,6 @@ VertexArray::VertexArray()
 {
     // We do not bind it here because if we later create a vertex array and its bound, they are linked together and that may be dangerous.
 	glGenVertexArrays(1, &vao);
-
-    //indexBuffer = new IndexBuffer();
 }
 
 VertexArray::~VertexArray()
@@ -39,14 +37,6 @@ void VertexArray::AddVertexBuffer(VertexBuffer& vertexBuf)
         for (const auto& element : layout.GetElements())
         {
             glVertexPointer(element.GetComponentCount(), GetOpenGLRawTypeFromShaderDataType(element.type), layout.GetStride(), 0);
-            //glEnableVertexAttribArray(index);
-            /*glVertexAttribPointer(index,
-                element.GetComponentCount(),
-                GetOpenGLRawTypeFromShaderDataType(element.type),
-                element.normalized ? GL_TRUE : GL_FALSE,
-                layout.GetStride(),
-                (const void*)element.offset);*/
-            //index++;
         }
         vertexBuffers.push_back(&vertexBuf);
     }

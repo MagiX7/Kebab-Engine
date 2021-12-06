@@ -46,16 +46,11 @@ std::shared_ptr<Resource> ResourceManager::GetResource(int uuid) const
 
 void ResourceManager::DeleteResource(int uuid)
 {
-	//std::map<int, std::shared_ptr<Resource*>>::iterator it = resources.find(uuid);
-	//if (it != resources.end() && std::shared_ptr<Resource*>::unique)
-	//{
 
-	//}
 }
 
 void ResourceManager::AddResource(KbMesh* res)
 {
-	//KbMesh* m = (KbMesh*)res;
 	std::shared_ptr<Resource> resource = std::make_shared<KbMesh>(*res);
 	resources[res->uuid] = resource;
 }
@@ -140,13 +135,7 @@ std::shared_ptr<KbModel> ResourceManager::CreateModel(const char* assetsFile)
 	std::string lib = "Library/Models/" + tmp.substr(start + 1, end - start - 1) + "__" + std::to_string(model->uuid) + ".kbmodel";
 	ret->SetLibraryPath(lib);
 
-	//ret.get()->CreateMetaDataFile(assetsFile);
-
-	//delete model;
-	//model = nullptr;
-
 	resources[ret->uuid] = ret;
-	
 	
 	return ret;
 }
@@ -155,14 +144,7 @@ std::shared_ptr<Resource> ResourceManager::CreateMesh(const std::vector<Vertex>&
 {
 	std::shared_ptr<Resource> ret = nullptr;
 
-	//KbMesh* mesh = new KbMesh(vertices, indices);
-	//mesh->uuid = GenerateUUID();
-	//
-	//ret = (std::shared_ptr<Resource>)std::make_shared<KbMesh>(*mesh);
-	//
-	//MeshLoader::GetInstance()->SaveMeshCustomFormat((KbMesh*)ret.get(), name);
-	//
-	//resources[ret.get()->uuid] = ret;
+
 
 	return ret;
 }
@@ -189,9 +171,6 @@ std::shared_ptr<Texture> ResourceManager::CreateTexture(const char* assetsFile, 
 
 	ret->CreateMetaDataFile(assetsFile);
 
-	/*delete tex;
-	tex = nullptr;*/
-
 	resources[ret->uuid] = ret;
 
 
@@ -204,8 +183,6 @@ std::shared_ptr<Resource> ResourceManager::LoadTexture(const char* libraryFile, 
 
 	if (ret = IsAlreadyLoaded(std::string(libraryFile)))
 		return ret;
-
-	//LoadTextureMetaData()
 
 	Texture* tex = TextureLoader::GetInstance()->LoadTextureCustomFormat(libraryFile);
 	tex->uuid = GenerateUUID();
@@ -232,7 +209,6 @@ std::shared_ptr<Resource> ResourceManager::FindMetaData(const char* assetsFile)
 	{
 		if ((*it).second.get()->HasMetaFile())
 		{
-			//(*it).second.get().LoadMetaFile();
 			(*it).second.get()->LoadMetaDataFile();
 
 			return (*it).second;
@@ -265,11 +241,9 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			JSON_Object* meshObj = json_array_get_object(arr, i);
 			std::string meshName = json_object_get_string(meshObj, "mesh name");
 			std::string meshLibPath = json_object_get_string(meshObj, "mesh library path");
-			//std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
 			if (KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath))
 			{
 				m->SetName(meshName);
-				//m->SetAssetsPath(meshAssetsPath.c_str());
 				m->SetLibraryPath(meshLibPath);
 				const char* metaPath = json_object_get_string(meshObj, "texture meta path");
 				if (metaPath)

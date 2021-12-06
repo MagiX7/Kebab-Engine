@@ -7,9 +7,6 @@
 
 #include "Globals.h"
 #include "Light.h"
-/* class FrameBuffer;
-class GameObject;
-class ComponentMesh; */
 
 #define MAX_LIGHTS 8
 
@@ -55,8 +52,6 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 
-	//ComponentCamera* currentCam;
-
 	bool depth;
 	bool cullFace;
 	bool lighting;
@@ -71,16 +66,8 @@ private:
 	std::vector<ComponentMesh*> meshes;
 	std::vector<GameObject*> gameObjects;
 	
-	/*VertexArray* vertexArray;
-	VertexBuffer* vertexBuffer;
-	IndexBuffer* indexBuffer;*/
 	FrameBuffer* editorFbo;
 	FrameBuffer* sceneFbo;
-
-	/*std::vector<float3> vertices;
-	std::vector<uint32_t> indices;
-	uint32_t numIndices;
-	uint32_t numVertices;*/
 
 	float camsActive;
 };
