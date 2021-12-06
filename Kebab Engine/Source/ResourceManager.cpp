@@ -265,6 +265,26 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			std::string meshName = json_object_get_string(meshObj, "mesh name");
 			std::string meshLibPath = json_object_get_string(meshObj, "mesh library path");
 			//std::string meshAssetsPath = json_object_get_string(meshObj, "mesh assets path");
+
+			if (app->fileSystem->Exists(meshLibPath.c_str()))
+			{
+				KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath);
+				m->SetName(meshName);
+				//m->SetAssetsPath(meshAssetsPath.c_str());
+				m->SetLibraryPath(meshLibPath);
+				const char* metaPath = json_object_get_string(meshObj, "texture meta path");
+				if (metaPath)
+				{
+					LoadTextureMetaData(metaPath);
+					m->SetTextureMetaPath(metaPath);
+				}
+				model->AddMesh(m);
+			}
+			else
+			{
+				//MeshLoader::GetInstance()->SaveMeshCustomFormat(,)
+			}
+
 			if (KbMesh* m = MeshLoader::GetInstance()->LoadMeshCustomFormat(meshLibPath))
 			{
 				m->SetName(meshName);
@@ -280,6 +300,7 @@ std::shared_ptr<KbModel> ResourceManager::LoadModelMetaData(const char* assetsFi
 			}
 			else
 			{
+				m = new KbMesh(meshLibPath.c_str());
 				// TODO: Could be possible to generate the resource again if the file from library gets deleted?
 				//ret = CreateNewResource(meshAssetsPath.c_str(), ResourceType::MODEL);
 				//KbModel* model = (KbModel*)ret.get();

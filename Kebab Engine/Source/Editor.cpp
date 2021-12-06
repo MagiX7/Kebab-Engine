@@ -35,6 +35,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_internal.h"
 
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 //#define RUNTIME_SCENE_PATH "Library/Temp/Scene.kbscene"
@@ -79,6 +81,13 @@ bool Editor::Start()
     InitImGui();
 
     assetsPanel = new AssetsPanel();
+
+    app->fileSystem->CreateDirectoryA("Library/");
+    app->fileSystem->CreateDirectoryA("Library/Textures/");
+    app->fileSystem->CreateDirectoryA("Library/Models/");
+    app->fileSystem->CreateDirectoryA("Library/Meshes/");
+    app->fileSystem->CreateDirectoryA("Library/Scenes/");
+
 
     playTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/play_icon.kbtexture");
     pauseTex = TextureLoader::GetInstance()->LoadTexture("Library/Textures/pause_icon.kbtexture");
@@ -148,11 +157,48 @@ bool Editor::CleanUp()
     delete stopTex;
     delete nextFrameTex;
 
-    app->fileSystem->Remove("Library/Scenes/Temp");
+    std::queue<std::string> q;
+    std::string entry = "Library/";
+    q.push(entry);
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
+    while (!q.empty())
+    {
+        std::string currentFolderToLoad = q.front();
+        q.pop();
+
+        std::vector<std::string> dirList;
+        std::vector<std::string> fileList;
+
+        app->fileSystem->DiscoverFiles(currentFolderToLoad.c_str(), fileList, dirList);
+
+        for (std::vector<std::string>::const_iterator it = dirList.begin(); it != dirList.end(); it++)
+        {
+            std::string folderPath = currentFolderToLoad + (*it) + "/";
+            q.push(folderPath);
+        }
+        
+        for (std::vector<std::string>::const_iterator it = fileList.begin(); it != fileList.end(); it++)
+        {
+            std::string completePath = currentFolderToLoad + (*it);
+            //std::string ext = (*it).substr((*it).find_last_of("."), (*it).length());
+
+            app->fileSystem->Remove(completePath.c_str());
+            
+        }
+
+
+    }
+
+        app->fileSystem->Remove("Library/Scenes/Temp");
+        app->fileSystem->Remove("Library/Scenes/");
+        app->fileSystem->Remove("Library/Meshes/");
+        app->fileSystem->Remove("Library/Textures/");
+        app->fileSystem->Remove("Library/Models/");
+        app->fileSystem->Remove("Library/");
+
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplSDL2_Shutdown();
+        ImGui::DestroyContext();
 
 	return true;
 }
