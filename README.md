@@ -16,6 +16,8 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - [MathGeoLib](https://github.com/juj/MathGeoLib)
 - [Parson](https://github.com/kgabis/parson)
 - [PhysFS](https://github.com/icculus/physfs)
+- [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
+- [Optick](https://github.com/bombomby/optick)
 
 ## Team Members
 
