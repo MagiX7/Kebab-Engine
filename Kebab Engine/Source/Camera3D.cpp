@@ -15,8 +15,6 @@
 
 #include "QdTree.h"
 
-#include "optick.h"
-
 #include <queue>
 
 #include "mmgr/mmgr.h"
@@ -308,8 +306,6 @@ void Camera3D::OrbitGO(AABB* boundBox, float& dx, float& dy)
 
 void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
-	OPTICK_EVENT("Draw in frustum culling");
-
 	if (go->GetGlobalAABB()->IsFinite())
 	{
 		if (IntersectsAABB(go->GetGlobalAABB(), camera))
@@ -321,8 +317,6 @@ void Camera3D::DrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 
 void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* camera)
 {
-	OPTICK_EVENT("Propagate Frustum Culling");
-
 	std::queue<GameObject*> q;
 	q.push(go);
 
@@ -340,8 +334,6 @@ void Camera3D::PropagateDrawInFrustumCulling(GameObject* go, ComponentCamera* ca
 
 bool Camera3D::IntersectsAABB(const AABB* aabb, ComponentCamera* camera)
 {
-	OPTICK_EVENT("Intestects AABB");
-
 	float3 corners[8];
 	aabb->GetCornerPoints(corners);
 

@@ -305,8 +305,6 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
 void Editor::SerializeScene(const char* path, const char* extension)
 {
-    OPTICK_EVENT("Serialization");
-
     std::string p = path;
     if (!p.find_last_of(".") == 0)
     {
@@ -346,8 +344,6 @@ void Editor::SerializeScene(const char* path, const char* extension)
 
 void Editor::UnserializeScene(const char* path)
 {
-    OPTICK_EVENT("Unserialization");
-
     app->scene->DeleteAllGameObjects();
     app->renderer3D->EraseAllGameObjects();
     hierarchyPanel->currentGO = nullptr;

@@ -12,8 +12,6 @@
 
 #include "QdTree.h"
 
-#include "optick.h"
-
 #include "mmgr/mmgr.h"
 
 GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
@@ -291,8 +289,6 @@ JSON_Value* GameObject::Load(JSON_Object* obj)
 
 void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 {
-	OPTICK_EVENT("Load Components");
-
 	for (int j = 0; j < json_array_get_count(compsArray); ++j)
 	{
 		JSON_Object* compObj = json_array_get_object(compsArray, j);

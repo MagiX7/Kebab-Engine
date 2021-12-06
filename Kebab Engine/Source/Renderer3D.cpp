@@ -18,8 +18,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#include "optick.h"
-
 #include <queue>
 
 #include "mmgr/mmgr.h"
@@ -498,7 +496,6 @@ void Renderer3D::DoRender(bool gameScene)
 
 void Renderer3D::PushCamera(ComponentCamera* cam)
 {
-	OPTICK_EVENT("Push Camera");
 	glPushMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(cam->frustum.ProjectionMatrix().Transposed().ptr());

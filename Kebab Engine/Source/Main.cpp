@@ -54,7 +54,6 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
-			OPTICK_FRAME("Main Loop");
 			bool updateReturn = app->Update();
 
 			if (updateReturn == false)
