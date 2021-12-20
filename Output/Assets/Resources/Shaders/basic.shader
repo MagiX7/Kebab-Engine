@@ -9,18 +9,25 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+out vec3 vPosition;
+out vec3 vNormal;
+
 void main()
 {
+	vPosition = position;
+
 	gl_Position = projection * view * model * vec4(position, 1);
 }
 
+// ========================================================================================
 
 #type fragment
 #version 410 core
 
-layout(location = 0) out vec4 color;
+in vec3 vPosition;
+in vec3 vNormal;
 
 void main()
 {
-	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	gl_FragColor = vec4(0.5, 0.5, 0.8, 1.0);
 }

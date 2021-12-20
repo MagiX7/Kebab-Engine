@@ -117,13 +117,14 @@ void ComponentMesh::DrawOnInspector()
 void ComponentMesh::Draw(ComponentMaterial* mat)
 {
 	//BeginDraw(mat);
-
+	mat->Bind();
 	mesh->GetVertexArray()->Bind();
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
 	// This goes here just to be able to change the normals color while texture is assigned
 	/*if(mat)
 		mat->Unbind();*/
+	mat->Unbind();
 	mesh->GetVertexArray()->Unbind();
 
 	if (drawVertexNormals)

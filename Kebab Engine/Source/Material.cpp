@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Editor.h"
 #include "Camera3D.h"
 #include "ComponentCamera.h"
 
@@ -23,11 +24,32 @@ void Material::Bind(const float4x4& transform)
 	if (!shader)
 		return;
 
+	ComponentCamera* cam = 0;
+	switch (app->editor->GetSceneState())
+	{
+		case SceneState::EDIT:
+		{
+			cam = app->camera->editorCam;
+			break;
+		}
+		case SceneState::PAUSE:
+		case SceneState::PLAY:
+		case SceneState::STEP_ONE_FRAME:
+		{
+			cam = app->camera->gameCam;
+			break;
+		}
+	}
+	
+	
 	shader->Bind();
 	shader->SetUniformMatrix4f("model", transform.Transposed());
-	float4x4 view = app->camera->gameCam->frustum.ViewMatrix();
+	float4x4 view = cam->frustum.ViewMatrix();
 	shader->SetUniformMatrix4f("view", view.Transposed());
-	shader->SetUniformMatrix4f("projection", app->camera->gameCam->frustum.ProjectionMatrix());
+	shader->SetUniformMatrix4f("projection", cam->frustum.ProjectionMatrix().Transposed());
+	float4x4 normalMat = view;
+	normalMat.Inverse();
+	shader->SetUniformMatrix4f("normalMatrix", normalMat.Transposed().Float3x3Part());
 
 }
 
