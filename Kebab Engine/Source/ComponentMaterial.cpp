@@ -9,6 +9,10 @@
 
 #include "PanelAssets.h"
 
+#include "ComponentTransform.h"
+#include "Material.h"
+#include "Shader.h"
+
 #include "imgui/imgui.h"
 
 #include "mmgr/mmgr.h"
@@ -29,6 +33,8 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	menuSelectTex = false;
 
 	SetCheckersTexture();
+
+	material = new Material();
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -46,11 +52,15 @@ ComponentMaterial::~ComponentMaterial()
 void ComponentMaterial::Bind()
 {
 	if(texture && currentTexture == texture.get()) texture->Bind();
+	ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+	float4x4 mat = trans->GetGlobalMatrix();	
+	material->Bind(mat);
 }
 
 void ComponentMaterial::Unbind()
 {
 	if (texture && currentTexture == texture.get()) texture->Unbind();
+	if(material) material->Unbind();
 }
 
 void ComponentMaterial::Enable()
@@ -65,7 +75,7 @@ void ComponentMaterial::Disable()
 
 void ComponentMaterial::DrawOnInspector()
 {
-	if (ImGui::CollapsingHeader("Texture"))
+	if (ImGui::CollapsingHeader("Material"))
 	{
 		if (currentTexture && currentTexture == texture.get())
 			ImGui::TextColored({ 255,255,0,255 }, "Path: %s", texture->GetLibraryPath().c_str());
@@ -108,6 +118,13 @@ void ComponentMaterial::DrawOnInspector()
 		{
 			ImGui::BulletText("References to texture %i", texture.use_count() - 1); // -1 because of the resources map
 		}
+
+		ImGui::Separator();
+		ImGui::Separator();
+
+		ImGui::Text("Material: %s", material->GetName().c_str());
+		ImGui::BulletText("Shader: %s", material->GetShader()->GetName().c_str());
+		
 	}
 }
 

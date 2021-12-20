@@ -6,6 +6,7 @@
 #include <memory>
 
 class Texture;
+class Material;
 
 class ComponentMaterial : public Component
 {
@@ -34,6 +35,7 @@ private:
 	void SetCheckersTexture();
 
 private:
+	Material* material;
 
 	std::shared_ptr<Texture> texture;
 	bool unselect = false;

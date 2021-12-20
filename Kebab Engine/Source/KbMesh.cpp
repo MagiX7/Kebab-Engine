@@ -39,14 +39,16 @@ void KbMesh::SetData(const std::vector<Vertex>& vertices, const std::vector<uint
 
 void KbMesh::BeginDraw()
 {
-	vertexBuffer->Bind();
-	indexBuffer->Bind();
+	vertexArray->Bind();
+	//vertexBuffer->Bind();
+	//indexBuffer->Bind();
 }
 
 void KbMesh::EndDraw()
 {
-	vertexBuffer->Unbind();
-	indexBuffer->Unbind();
+	vertexArray->Unbind();
+	//vertexBuffer->Unbind();
+	//indexBuffer->Unbind();
 }
 
 void KbMesh::DrawVertexNormals(const float& size, const float3& color)
@@ -153,8 +155,19 @@ void KbMesh::SetUpMesh()
 		indexBuffer = nullptr;
 	}
 
+	vertexArray = new VertexArray();
+
 	vertexBuffer = new VertexBuffer();
 	vertexBuffer->SetData(vertices);
 
+	vertexBuffer->SetLayout({
+		{ShaderDataType::VEC3F, "position"},
+		{ShaderDataType::VEC3F, "normal"},
+		{ShaderDataType::VEC2F, "texCoords"}
+		});
+	vertexArray->AddVertexBuffer(*vertexBuffer);
+
 	indexBuffer = new IndexBuffer(indices.data(), indices.size());
+	vertexArray->SetIndexBuffer(*indexBuffer);
+
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "Math/float4x4.h"
 
 #include <unordered_map>
 
@@ -12,9 +13,7 @@ enum class ShaderType
 	GEOMETRY
 };
 
-struct GLenum;
-
-class Shader : public Resource
+class Shader
 {
 public:
 	Shader(const std::string& path);
@@ -23,17 +22,25 @@ public:
 	void Bind();
 	void Unbind();
 
-	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	inline const std::string& GetName() { return name; }
 
+	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	void SetUniformMatrix4f(const std::string& name, const float4x4& mat);
 
 private:
 	//void CreateProgram();
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
 	bool Compile();
-	char* ReadFile();
+	std::string ReadFile();
 	std::unordered_map<unsigned int, std::string> SplitShaders(const std::string& source);
 
+	int GetUniform(const std::string& name);
+
 private:
+	std::string name;
 	unsigned int rendererID;
 	std::string source;
+	std::string path;
+
+	std::unordered_map<std::string, int> uniformsLocation;
 };

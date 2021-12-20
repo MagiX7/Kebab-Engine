@@ -2,7 +2,8 @@
 
 #include "Resource.h"
 
-#include "Buffer.h"
+//#include "Buffer.h"
+#include "VertexArray.h"
 #include "Vertex.h"
 
 #include <vector>
@@ -28,6 +29,7 @@ public:
 	inline const std::vector<Vertex>& GetVertices() const { return vertices; }
 	inline const std::vector<uint32_t>& GetIndices() const { return indices; }
 	inline const IndexBuffer* GetIndexBuffer() const { return indexBuffer; }
+	inline const VertexArray* GetVertexArray() const { return vertexArray; }
 	inline const std::string& GetPath() const { return path; }
 	inline const std::string& GetName() const { return name; }
 	inline const std::string& GetOwnerName() const { return ownerName; }
@@ -46,6 +48,7 @@ public:
 	std::vector<uint32_t> indices;
 
 private:
+	VertexArray* vertexArray;
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 

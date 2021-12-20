@@ -116,19 +116,22 @@ void ComponentMesh::DrawOnInspector()
 
 void ComponentMesh::Draw(ComponentMaterial* mat)
 {
-	BeginDraw(mat);
+	//BeginDraw(mat);
 
+	mesh->GetVertexArray()->Bind();
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
 	// This goes here just to be able to change the normals color while texture is assigned
-	mat->Unbind();
+	/*if(mat)
+		mat->Unbind();*/
+	mesh->GetVertexArray()->Unbind();
 
 	if (drawVertexNormals)
 		mesh->DrawVertexNormals(normalsVertexSize, normalsVertexColor);
 	if (drawTriangleNormals)
 		mesh->DrawTriangleNormals(normalsTriangleSize, normalsTriangleColor);
 
-	EndDraw(mat);
+	//EndDraw(mat);
 }
 
 void ComponentMesh::SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex)
@@ -221,23 +224,24 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 
 void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 {
-	ComponentTransform* t = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+	/*ComponentTransform* t = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	if (t)
 	{
 		float4x4 mat = t->GetGlobalMatrix();
 		glPushMatrix();
 		glMultMatrixf(mat.Transposed().ptr());
-	}
+	}*/
 	
+	mat->Bind();
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	mesh->BeginDraw();
-	mat->Bind();
+	//mat->Bind();
 
-	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
-	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+	//glVertexPointer(3, GL_FLOAT, sizeof(Vertex), 0);
+	//glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 }
 
