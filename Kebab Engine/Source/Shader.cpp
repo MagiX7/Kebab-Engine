@@ -50,8 +50,55 @@ void Shader::Unbind()
 	glUseProgram(0);
 }
 
-void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+void Shader::SetUniformBool(const std::string& name, bool b)
 {
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform1f(location, b);
+}
+
+void Shader::SetUniform1i(const std::string& name, int i)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform1i(location, i);
+}
+
+void Shader::SetUniform1f(const std::string& name, float f)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform1f(location, f);
+}
+
+void Shader::SetUnifromVec2f(const std::string& name, float v0, float v1)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform2f(location, v0, v1);
+}
+
+void Shader::SetUnifromVec2f(const std::string& name, float2 v)
+{
+	SetUnifromVec2f(name, v.x, v.y);
+}
+
+void Shader::SetUniformVec3f(const std::string& name, float v0, float v1, float v2)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform3f(location, v0, v1, v2);
+}
+
+void Shader::SetUniformVec3f(const std::string& name, float3 v)
+{
+	SetUniformVec3f(name, v.x, v.y, v.z);
+}
+
+void Shader::SetUniformVec4f(const std::string& name, float v0, float v1, float v2, float v3)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniform4f(location, v0, v1, v2, v3);
+}
+
+void Shader::SetUniformVec4f(const std::string& name, float4 v)
+{
+	SetUniformVec4f(name, v.x, v.y, v.z, v.w);
 }
 
 void Shader::SetUniformMatrix4f(const std::string& name, const float4x4& mat)

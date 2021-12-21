@@ -121,16 +121,14 @@ void ComponentMesh::Draw(ComponentMaterial* mat)
 	mesh->GetVertexArray()->Bind();
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
-	// This goes here just to be able to change the normals color while texture is assigned
-	/*if(mat)
-		mat->Unbind();*/
 	mat->Unbind();
-	mesh->GetVertexArray()->Unbind();
 
 	if (drawVertexNormals)
 		mesh->DrawVertexNormals(normalsVertexSize, normalsVertexColor);
 	if (drawTriangleNormals)
 		mesh->DrawTriangleNormals(normalsTriangleSize, normalsTriangleColor);
+	
+	mesh->GetVertexArray()->Unbind();
 
 	//EndDraw(mat);
 }
@@ -235,8 +233,8 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 	
 	mat->Bind();
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	mesh->BeginDraw();
 	//mat->Bind();
@@ -248,10 +246,11 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 
 void ComponentMesh::EndDraw(ComponentMaterial* mat)
 {
-	glPopMatrix();
+	//glPopMatrix();
+	//mat->Unbind();
 
 	mesh->EndDraw();
 
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }

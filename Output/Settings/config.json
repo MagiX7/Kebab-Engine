@@ -33,10 +33,11 @@
     "renderer": {
         "depth": true,
         "cullface": true,
-        "lighting": false,
+        "lighting": true,
         "color material": true,
         "texture2D": true,
         "wireframe": false,
+        "blend": true,
         "drawaabb": true
     }
 }

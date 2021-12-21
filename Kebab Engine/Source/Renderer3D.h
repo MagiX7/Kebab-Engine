@@ -32,6 +32,7 @@ public:
 	void SetColorMaterial();
 	void SetTexture2D();
 	void SetWireframe();
+	void SetBlending();
 
 	void Save(JSON_Object* root) override;
 	void Load(JSON_Object* root) override;
@@ -58,6 +59,7 @@ public:
 	bool colorMaterial;
 	bool texture2D;
 	bool wireframe;
+	bool blend;
 
 	bool drawAABB;
 	bool drawGrid;

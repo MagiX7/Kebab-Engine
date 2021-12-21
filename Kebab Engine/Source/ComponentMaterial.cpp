@@ -60,7 +60,7 @@ void ComponentMaterial::Bind()
 void ComponentMaterial::Unbind()
 {
 	if (texture && currentTexture == texture.get()) texture->Unbind();
-	if(material) material->Unbind();
+	if (material) material->Unbind();
 }
 
 void ComponentMaterial::Enable()
@@ -125,6 +125,12 @@ void ComponentMaterial::DrawOnInspector()
 		ImGui::Text("Material: %s", material->GetName().c_str());
 		ImGui::BulletText("Shader: %s", material->GetShader()->GetName().c_str());
 		
+		static float3 col = material->ambientColor;
+		if (ImGui::ColorEdit3("Material Color", col.ptr()))
+		{
+			material->ambientColor = col;
+		}
+
 	}
 }
 

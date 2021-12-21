@@ -274,6 +274,12 @@ void Renderer3D::SetWireframe()
 	LOG_CONSOLE("-- WIREFRAME -- set to %d", wireframe);
 }
 
+void Renderer3D::SetBlending()
+{
+	blend ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+	LOG_CONSOLE("-- BLEND -- set to %d", blend);
+}
+
 void Renderer3D::Save(JSON_Object* root)
 {
 	json_object_set_value(root, name.c_str(), json_value_init_object());
@@ -298,6 +304,7 @@ void Renderer3D::Load(JSON_Object* root)
 	colorMaterial = json_object_get_boolean(renObj, "color material");
 	texture2D = json_object_get_boolean(renObj, "texture2D");
 	wireframe = json_object_get_boolean(renObj, "wireframe");
+	blend = json_object_get_boolean(renObj, "blend");
 }
 
 void Renderer3D::Submit(GameObject* go)

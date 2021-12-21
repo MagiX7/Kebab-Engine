@@ -23,9 +23,18 @@ public:
 
 	inline Shader* GetShader() { return shader; }
 
+public:
+	float shininess;
+	float3 ambientColor;
+
 private:
 	std::string name;
 
 	//Texture* texture;
 	Shader* shader;
+
+	
+
+
+
 };

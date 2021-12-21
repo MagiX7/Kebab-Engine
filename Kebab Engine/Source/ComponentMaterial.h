@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Math/float4.h"
 
 #include <vector>
 #include <memory>
@@ -36,6 +37,8 @@ private:
 
 private:
 	Material* material;
+	float3 ambientColor;
+
 
 	std::shared_ptr<Texture> texture;
 	bool unselect = false;
