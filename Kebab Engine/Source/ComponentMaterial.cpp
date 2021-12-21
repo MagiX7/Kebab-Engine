@@ -131,6 +131,11 @@ void ComponentMaterial::DrawOnInspector()
 			material->ambientColor = col;
 		}
 
+		if (ImGui::Button("Change Shader"))
+		{
+			ChangeShaderWindow();
+		}
+
 	}
 }
 
@@ -222,4 +227,13 @@ void ComponentMaterial::SetCheckersTexture()
 			checkerImage[i][j][3] = (GLubyte)225;
 		}
 	}
+}
+
+void ComponentMaterial::ChangeShaderWindow()
+{
+	ImGui::Begin("Select New Shader");
+
+	// TODO: Display all the shaders
+
+	ImGui::End();
 }

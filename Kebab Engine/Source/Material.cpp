@@ -14,7 +14,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	name = "New Material";
 	shader = new Shader("Assets/Resources/Shaders/default.shader");
 
-	ambientColor = { 0.8,0.8,0 };
+	ambientColor = { 0.4,0.4,0.4 };
 }
 
 Material::~Material()

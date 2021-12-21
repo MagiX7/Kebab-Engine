@@ -34,6 +34,7 @@ public:
 
 private:
 	void SetCheckersTexture();
+	void ChangeShaderWindow();
 
 private:
 	Material* material;
