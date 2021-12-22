@@ -15,9 +15,11 @@ uniform vec3 ambientColor;
 out vec3 vPosition;
 out vec3 vNormal;
 out vec3 vAmbientColor;
+out vec2 vTexCoords;
 
 void main()
 {
+	vTexCoords = texCoords;
 	vPosition = vec3(model * vec4(position, 1));
 	//vNormal = normalMatrix * normal;
 	vNormal = normalize((model * vec4(normal, 0.0)).xyz);
@@ -34,11 +36,16 @@ void main()
 in vec3 vPosition;
 in vec3 vNormal;
 in vec3 vAmbientColor;
+in vec2 vTexCoords;
+
+out vec4 fragColor;
+
+uniform sampler2D tex;
 
 void main()
 {
 	vec3 norm = normalize(vNormal);
-	vec3 lightPos = vec3(10, 15, 0);
+	vec3 lightPos = vec3(0, 10, 5);
 	vec3 lightDir = normalize(lightPos - vPosition);
 
 	float diff = max(dot(norm, lightDir), 0.0);
@@ -48,5 +55,5 @@ void main()
 	vec3 ambient = vec3(0.2, 0.2, 0.2);
 	vec3 result = (ambient + diffuse) * vAmbientColor;
 
-	gl_FragColor = vec4(result, 1.0);
+	fragColor = texture(tex, vTexCoords) * vec4(result, 1.0);
 }

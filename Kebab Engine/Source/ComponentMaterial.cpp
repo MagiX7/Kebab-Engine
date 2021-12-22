@@ -51,7 +51,8 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::Bind()
 {
-	if(texture && currentTexture == texture.get()) texture->Bind();
+	if(texture && currentTexture == texture.get())
+		texture->Bind();
 	ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	float4x4 mat = trans->GetGlobalMatrix();	
 	material->Bind(mat);

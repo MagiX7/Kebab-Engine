@@ -130,7 +130,7 @@ void Texture::ReLoad(const TextureProperties& props, bool save, bool generateLib
 
 void Texture::Bind(unsigned int index) const
 {
-	//glActiveTexture(GL_TEXTURE0 + index);
+	glActiveTexture(GL_TEXTURE0 + index);
 	glBindTexture(GL_TEXTURE_2D, rendererID);
 }
 
