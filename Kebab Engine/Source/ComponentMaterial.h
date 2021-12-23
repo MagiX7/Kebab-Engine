@@ -15,6 +15,8 @@ public:
 	ComponentMaterial(GameObject* compOwner);
 	~ComponentMaterial();
 
+	void Update(float dt) override;
+
 	void Bind();
 	void Unbind();
 
@@ -49,4 +51,7 @@ private:
 
 	bool menuSelectTex;
 	std::vector<Texture*> textures;
+
+	float updateShaderTimer;
+	char lastTimeShaderModified[26];
 };

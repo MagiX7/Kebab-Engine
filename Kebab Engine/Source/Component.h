@@ -21,7 +21,7 @@ public:
 	virtual void Enable() {};
 	virtual void Disable() {};
 
-	virtual void Update() {};
+	virtual void Update(float dt) {};
 
 	virtual void DrawOnInspector() {};
 

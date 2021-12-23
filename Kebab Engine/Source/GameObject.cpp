@@ -12,6 +12,8 @@
 
 #include "QdTree.h"
 
+#include <queue>
+
 #include "mmgr/mmgr.h"
 
 GameObject::GameObject(std::string name, int uuid) : parent(nullptr), name(name)
@@ -65,7 +67,26 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
+	std::queue<GameObject*> q;
+	q.push(this);
 	
+	for (auto& go : childs)
+		q.push(go);
+
+	while (!q.empty())
+	{
+		GameObject* curr = q.front();
+		q.pop();
+
+		for (auto& comp : curr->components)
+		{
+			comp->Update(dt);
+		}
+
+		for (auto& child : curr->GetChilds())
+			q.push(child);
+
+	}
 }
 
 Component* GameObject::CreateComponent(ComponentType type, std::string meshPath)

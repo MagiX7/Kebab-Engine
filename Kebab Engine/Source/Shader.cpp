@@ -7,6 +7,11 @@
 
 #include <assert.h>
 #include <fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+
+
 
 
 GLenum GetShaderTypeFromString(const std::string& type)
@@ -52,6 +57,35 @@ void Shader::Unbind()
 
 void Shader::ReCompile()
 {
+	source = ReadFile();
+
+	auto shaderSources = SplitShaders(source);
+
+	//CreateShader(shaderSources[GL_VERTEX_SHADER], shaderSources[GL_FRAGMENT_SHADER]);
+	CreateShader(shaderSources[GL_VERTEX_SHADER], shaderSources[GL_FRAGMENT_SHADER]);
+}
+
+bool Shader::Refresh(char* lastModified)
+{
+	struct _stat nowStat;
+	if (_stat(path.c_str(), &nowStat) == 0)
+	{
+		if (lastStat.st_mtime != nowStat.st_mtime)
+		{
+			ctime_s(timeBuf, 26, &lastStat.st_mtime);
+			printf("Time modified : %s", timeBuf);
+			
+
+			ReCompile();
+			
+			lastModified = timeBuf;
+			lastStat = nowStat;
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 void Shader::SetUniformBool(const std::string& name, bool b)

@@ -22,6 +22,8 @@
 #define CHECKERS_HEIGHT 40
 #define CHECKERS_WIDTH 40
 
+#define MAX_TIME_TO_REFRESH_SHADER 10 // Seconds
+
 ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 {
 	this->parent = compOwner;
@@ -36,15 +38,9 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 	SetCheckersTexture();
 
-	/*texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded("Assets/Resources/white.png"));
-	if (!texture)
-	{
-		texture = ResourceManager::GetInstance()->CreateTexture("Assets/Resources/white.png");
-	}
-	
-	currentTexture = texture.get();*/
-
 	material = new Material();
+
+	updateShaderTimer = 0.0f;
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -53,10 +49,20 @@ ComponentMaterial::~ComponentMaterial()
 	checkersTexture.reset();
 	currentTexture = nullptr;
 
-	/*for (auto& tex : textures)
-		delete tex;*/
-
 	textures.clear();
+}
+
+void ComponentMaterial::Update(float dt)
+{
+	if (updateShaderTimer <= MAX_TIME_TO_REFRESH_SHADER)
+	{
+		updateShaderTimer += dt;
+	}
+	else
+	{
+		updateShaderTimer = 0.0f;
+		material->GetShader()->Refresh(lastTimeShaderModified);
+	}
 }
 
 void ComponentMaterial::Bind()
@@ -72,7 +78,7 @@ void ComponentMaterial::Unbind()
 {
 	if (texture && currentTexture == texture.get())
 		texture->Unbind();
-	material->Unbind();
+	material->Unbind();	
 }
 
 void ComponentMaterial::Enable()
@@ -147,6 +153,8 @@ void ComponentMaterial::DrawOnInspector()
 		{
 			ChangeShaderWindow();
 		}
+
+		ImGui::BulletText("Last time modified: %s", lastTimeShaderModified);
 
 	}
 }

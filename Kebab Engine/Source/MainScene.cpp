@@ -84,6 +84,11 @@ bool MainScene::Update(float dt)
     if (app->camera->gameCam != nullptr)
         rootQT->Intersect(&app->camera->gameCam->frustum);
 
+
+    for (auto& go : root->GetChilds())
+        go->Update(dt);
+
+
     return true;
 }
 
