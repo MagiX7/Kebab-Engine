@@ -176,11 +176,18 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (drawGrid)
+		DrawGrid();
+
+	if (app->editor->debugQT)
+		app->scene->rootQT->DrawTree();
+
+	glPopMatrix();
+	glPopMatrix();
+
 	if (app->camera->gameCam)
 	{
 		DoRender(true);
-		glPopMatrix();
-		glPopMatrix();
 	}
 
 	sceneFbo->Unbind();
@@ -191,14 +198,22 @@ bool Renderer3D::Draw(float dt)
 	glClearColor(0.1f, 0.1f, 0.1f, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (drawGrid)
+		DrawGrid();
+
+	if (app->editor->debugQT)
+		app->scene->rootQT->DrawTree();
+
 	app->camera->DrawPickingRay();
 
 	if (ComponentCamera* c = app->camera->gameCam)
 		c->DrawFrustum();
 
+	glPopMatrix();
+	glPopMatrix();
+
+	
 	DoRender(false);
-	glPopMatrix();
-	glPopMatrix();
 	editorFbo->Unbind();
 
 	SDL_GL_SwapWindow(app->window->window);
@@ -438,12 +453,6 @@ void Renderer3D::DrawAABB(AABB& aabb)
 
 void Renderer3D::DoRender(bool gameScene)
 {
-	if (drawGrid)
-		DrawGrid();
-
-	if (app->editor->debugQT)
-		app->scene->rootQT->DrawTree();
-
 	for (const auto& go : gameObjects)
 	{
 		ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);

@@ -28,6 +28,12 @@ GLenum GetShaderTypeFromString(const std::string& type)
 
 Shader::Shader(const std::string& path) : path(path), rendererID(0)
 {
+	struct _stat nowStat;
+	if (_stat(path.c_str(), &nowStat) == 0)
+	{
+		lastStat = nowStat;
+	}
+
 	source = ReadFile();
 
 	auto shaderSources = SplitShaders(source);
@@ -65,7 +71,7 @@ void Shader::ReCompile()
 	CreateShader(shaderSources[GL_VERTEX_SHADER], shaderSources[GL_FRAGMENT_SHADER]);
 }
 
-bool Shader::Refresh(char* lastModified)
+bool Shader::Refresh()
 {
 	struct _stat nowStat;
 	if (_stat(path.c_str(), &nowStat) == 0)
@@ -75,17 +81,21 @@ bool Shader::Refresh(char* lastModified)
 			ctime_s(timeBuf, 26, &lastStat.st_mtime);
 			printf("Time modified : %s", timeBuf);
 			
-
 			ReCompile();
 			
-			lastModified = timeBuf;
 			lastStat = nowStat;
+			
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
+}
+
+char* Shader::GetLastModifiedDate()
+{
+	ctime_s(timeBuf, 26, &lastStat.st_mtime);
+	return timeBuf;
 }
 
 void Shader::SetUniformBool(const std::string& name, bool b)

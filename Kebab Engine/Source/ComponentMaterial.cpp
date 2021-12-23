@@ -41,6 +41,7 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	material = new Material();
 
 	updateShaderTimer = 0.0f;
+	
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -48,7 +49,7 @@ ComponentMaterial::~ComponentMaterial()
 	texture.reset();
 	checkersTexture.reset();
 	currentTexture = nullptr;
-
+	
 	textures.clear();
 }
 
@@ -61,7 +62,7 @@ void ComponentMaterial::Update(float dt)
 	else
 	{
 		updateShaderTimer = 0.0f;
-		material->GetShader()->Refresh(lastTimeShaderModified);
+		material->GetShader()->Refresh();
 	}
 }
 
@@ -154,7 +155,7 @@ void ComponentMaterial::DrawOnInspector()
 			ChangeShaderWindow();
 		}
 
-		ImGui::BulletText("Last time modified: %s", lastTimeShaderModified);
+		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 
 	}
 }

@@ -53,5 +53,5 @@ private:
 	std::vector<Texture*> textures;
 
 	float updateShaderTimer;
-	char lastTimeShaderModified[26];
+	char* lastTimeShaderModified;
 };

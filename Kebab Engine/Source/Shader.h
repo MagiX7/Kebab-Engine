@@ -26,9 +26,10 @@ public:
 
 	void ReCompile();
 
-	bool Refresh(char* lastModified);
+	bool Refresh();
 
 	inline const std::string& GetName() { return name; }
+	char* GetLastModifiedDate();
 
 	void SetUniformBool(const std::string& name, bool b);
 
@@ -64,5 +65,5 @@ private:
 	std::unordered_map<std::string, int> uniformsLocation;
 
 	struct _stat lastStat;
-	char timeBuf[16];
+	char timeBuf[26];
 };
