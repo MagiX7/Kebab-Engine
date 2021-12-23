@@ -50,6 +50,10 @@ void Shader::Unbind()
 	glUseProgram(0);
 }
 
+void Shader::ReCompile()
+{
+}
+
 void Shader::SetUniformBool(const std::string& name, bool b)
 {
 	GLint location = glGetUniformLocation(rendererID, name.c_str());
@@ -99,6 +103,12 @@ void Shader::SetUniformVec4f(const std::string& name, float v0, float v1, float 
 void Shader::SetUniformVec4f(const std::string& name, float4 v)
 {
 	SetUniformVec4f(name, v.x, v.y, v.z, v.w);
+}
+
+void Shader::SetUniformMatrix3f(const std::string& name, const float3x3& mat)
+{
+	GLint location = glGetUniformLocation(rendererID, name.c_str());
+	glUniformMatrix3fv(location, 1, GL_FALSE, mat.ptr());
 }
 
 void Shader::SetUniformMatrix4f(const std::string& name, const float4x4& mat)

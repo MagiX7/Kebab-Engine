@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include "Math/float4x4.h"
+#include "Math/float3x3.h"
 #include "Math/float2.h"
 
 #include <unordered_map>
@@ -23,6 +24,8 @@ public:
 	void Bind();
 	void Unbind();
 
+	void ReCompile();
+
 	inline const std::string& GetName() { return name; }
 
 	void SetUniformBool(const std::string& name, bool b);
@@ -39,6 +42,7 @@ public:
 	void SetUniformVec4f(const std::string& name, float v0, float v1, float v2, float v3);
 	void SetUniformVec4f(const std::string& name, float4 v);
 
+	void SetUniformMatrix3f(const std::string& name, const float3x3& mat);
 	void SetUniformMatrix4f(const std::string& name, const float4x4& mat);
 
 private:

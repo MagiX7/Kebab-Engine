@@ -51,7 +51,7 @@ void Material::Bind(const float4x4& transform)
 	shader->SetUniformMatrix4f("projection", cam->frustum.ProjectionMatrix().Transposed());
 	float4x4 normalMat = view;
 	normalMat.Inverse();
-	shader->SetUniformMatrix4f("normalMatrix", normalMat.Float3x3Part().Transposed());
+	shader->SetUniformMatrix3f("normalMatrix", normalMat.Float3x3Part().Transposed());
 
 	shader->SetUniformVec3f("lightPos", { 10,20,0 });
 

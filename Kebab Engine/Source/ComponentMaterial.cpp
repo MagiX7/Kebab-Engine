@@ -15,6 +15,8 @@
 
 #include "imgui/imgui.h"
 
+#include <statehelpers.h>
+
 #include "mmgr/mmgr.h"
 
 #define CHECKERS_HEIGHT 40
@@ -33,6 +35,9 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	menuSelectTex = false;
 
 	SetCheckersTexture();
+
+	texture = ResourceManager::GetInstance()->CreateTexture("Assets/Resources/white.png");
+	currentTexture = texture.get();
 
 	material = new Material();
 }
@@ -60,8 +65,9 @@ void ComponentMaterial::Bind()
 
 void ComponentMaterial::Unbind()
 {
-	if (texture && currentTexture == texture.get()) texture->Unbind();
-	if (material) material->Unbind();
+	if (texture && currentTexture == texture.get())
+		texture->Unbind();
+	material->Unbind();
 }
 
 void ComponentMaterial::Enable()

@@ -52,7 +52,7 @@ void main()
 	vec3 lightColor = vec3(0.8, 0.5, 0.5);
 	vec3 diffuse = diff * lightColor;
 
-	vec3 ambient = vec3(0.2, 0.2, 0.2);
+	vec3 ambient = vec3(0.8, 0.2, 0.2) ;
 	vec3 result = (ambient + diffuse) * vAmbientColor;
 
 	fragColor = texture(tex, vTexCoords) * vec4(result, 1.0);
