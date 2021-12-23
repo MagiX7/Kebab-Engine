@@ -85,10 +85,22 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
             go->SetParent(baseGO);
 
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-            if (std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str()))
+            
+            std::shared_ptr<Texture> tex = 0;
+
+            if (!mesh->GetTextureMetaPath().empty())
             {
-                matComp->AddTexture(tex, model->uuid);
+                tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str());
             }
+            else
+            {
+                tex = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded("Assets/Resources/white.png"));
+            }
+
+            //if (std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str()))
+            //{
+                matComp->AddTexture(tex, model->uuid);
+            //}
         }
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))

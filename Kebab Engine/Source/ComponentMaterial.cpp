@@ -36,8 +36,13 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 	SetCheckersTexture();
 
-	texture = ResourceManager::GetInstance()->CreateTexture("Assets/Resources/white.png");
-	currentTexture = texture.get();
+	/*texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded("Assets/Resources/white.png"));
+	if (!texture)
+	{
+		texture = ResourceManager::GetInstance()->CreateTexture("Assets/Resources/white.png");
+	}
+	
+	currentTexture = texture.get();*/
 
 	material = new Material();
 }
@@ -179,6 +184,13 @@ void ComponentMaterial::ShowTexturesMenu()
 
 void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
 {
+	/*if (tex && tex->GetResourceType() != ResourceType::TEXTURE) return;
+
+	if (!tex)
+	{
+		texture = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->IsAlreadyLoaded("Assets/Resources/white.png"));
+	}*/
+
 	texture = tex;
 	currentTexture = texture.get();
 }
