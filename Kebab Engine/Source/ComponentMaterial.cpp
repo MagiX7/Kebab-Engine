@@ -293,6 +293,7 @@ void ComponentMaterial::ChangeShaderWindow()
 		if (ImGui::Button(name.c_str(), { 100,100 }))
 		{
 			material->SetShader((*it));
+			// Maybe need to change the path
 		}
 
 		ImGui::Text(nameShow.c_str());

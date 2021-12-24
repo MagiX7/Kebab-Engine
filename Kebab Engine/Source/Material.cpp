@@ -14,8 +14,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 {
 	name = "New Material";
 
-	//shader = app->renderer3D->GetDefaultShader();
-	shader = 0;
+	shader = app->renderer3D->GetDefaultShader();
 
 	uuid = ResourceManager::GetInstance()->GenerateUUID();
 
@@ -71,12 +70,6 @@ void Material::Unbind()
 
 void Material::SetShader(Shader* s)
 {
-	if (shader)
-	{
-		delete shader;
-		shader = 0;
-	}
-
 	shader = s;
 	shader->Refresh();
 }

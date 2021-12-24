@@ -1,13 +1,10 @@
 #include "Application.h"
 #include "FileSystem.h"
 
-#include "TextureLoader.h"
-#include "Material.h"
-#include "Shader.h"
-
 #include "Globals.h"
+#include "TextureLoader.h"
 
-#include "physfs.h"
+#include "PhysFS/include/physfs.h"
 
 #include <queue>
 
@@ -462,55 +459,6 @@ const char * FileSystem::GetReadPaths() const
 	}
 
 	return paths;
-}
-
-void FileSystem::SaveMaterialCustomFormat(Material* material)
-{
-	JSON_Value* value = json_value_init_object();
-	JSON_Object* obj = json_value_get_object(value);
-
-	json_object_set_string(obj, "name", material->GetName().c_str());
-	json_object_set_string(obj, "shader path", material->GetShader()->GetPath().c_str());
-	json_object_set_string(obj, "shader name", material->GetShader()->GetName().c_str());
-	json_object_set_number(obj, "shininess", material->shininess);
-	json_object_dotset_number(obj, "ambientColor.x", material->ambientColor.x);
-	json_object_dotset_number(obj, "ambientColor.y", material->ambientColor.y);
-	json_object_dotset_number(obj, "ambientColor.z", material->ambientColor.z);
-
-	std::string p = "Library/Materials/" + material->GetName() + ".kbmat";
-	json_serialize_to_file_pretty(value, p.c_str());
-	
-	json_value_free(value);
-}
-
-Material* FileSystem::LoadMaterialCustomFormat(const std::string& path)
-{
-	Material* ret = nullptr;
-
-	char* buffer = 0;
-	if (Load(path.c_str(), &buffer) > 0)
-	{
-		JSON_Value* value = json_parse_string(buffer);
-		JSON_Object* obj = json_value_get_object(value);
-
-		const char* n = json_object_get_string(obj, "name");
-		ret->SetName(n);
-		
-		const char* sp = json_object_get_string(obj, "shader path");
-		const char* sn = json_object_get_string(obj, "shader name");
-
-		Shader* sh = new Shader(sp);
-		sh->SetName(sn);
-		ret->SetShader(sh);
-
-		ret->shininess = json_object_get_number(obj, "shininess");
-		ret->ambientColor.x = json_object_dotget_number(obj, "ambientColor.x");
-		ret->ambientColor.y = json_object_dotget_number(obj, "ambientColor.y");
-		ret->ambientColor.z = json_object_dotget_number(obj, "ambientColor.z");
-
-	}
-
-	return ret;
 }
 
 // -----------------------------------------------------

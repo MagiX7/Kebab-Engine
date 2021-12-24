@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 
-class Material;
-
 struct SDL_RWops;
 int close_sdl_rwops(SDL_RWops *rw);
 
@@ -60,8 +58,6 @@ public:
 	const char* GetWritePath() const;
 	const char* GetReadPaths() const;
 
-	void SaveMaterialCustomFormat(Material* material);
-	Material* LoadMaterialCustomFormat(const std::string& path);
 
 private:
 

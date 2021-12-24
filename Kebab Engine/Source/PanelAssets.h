@@ -35,7 +35,6 @@ private:
 	Texture* folderTex;
 	Texture* modelTex;
 	Texture* pngTex;
-	Texture* matTex;
 
 	std::string popUpItem;
 	bool popUpMenu;

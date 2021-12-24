@@ -46,17 +46,13 @@ AssetsPanel::AssetsPanel()
 	folderTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/folder_icon.kbtexture");
 	modelTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/model_icon.kbtexture");
 	pngTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/texture_icon.kbtexture");
-	matTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/material_icon_2.kbtexture");
 
-	if (!folderTex)
+	if (folderTex == nullptr)
 		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/folder_icon.png");
-	if (!modelTex)
+	if (modelTex == nullptr)
 		modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/model_icon.png");
-	if (!pngTex)
+	if (pngTex == nullptr)
 		pngTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/texture_icon.png");
-	if(!matTex)
-		matTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/material_icon_2.png");
-
 }
 
 AssetsPanel::~AssetsPanel()
@@ -230,13 +226,8 @@ void AssetsPanel::DisplayAssets()
 		std::string nameToShow = (*it).substr(0, (*it).find_last_of("."));
 
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
-
-		if (aux == ".kbmat" || aux == "")
-			ImGui::ImageButton((ImTextureID)matTex->GetID(), { 100,100 });
-
-		else if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
+		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")
 			ImGui::ImageButton((ImTextureID)modelTex->GetID(), { 100,100 });
-
 		else if (aux == ".dds" || aux == ".png" || aux == ".jpg" || aux == ".kbtexture")
 		{
 
