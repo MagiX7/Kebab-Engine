@@ -2,6 +2,7 @@
 
 #include "Renderer3D.h"
 #include "MainScene.h"
+#include "FileSystem.h"
 
 #include "Window.h"
 #include "Camera3D.h"
@@ -499,6 +500,9 @@ void Renderer3D::AddMaterial(Material* material)
 {
 	if (material)
 	{
+		if (std::find(materials.begin(), materials.end(), material) != materials.end())
+			return;
+
 		for (auto& go : gameObjects)
 		{
 			ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
@@ -506,6 +510,8 @@ void Renderer3D::AddMaterial(Material* material)
 				mat->SetMaterial(material);
 		}
 	}
+
+	app->fileSystem->SaveMaterialCustomFormat(material);
 
 	materials.push_back(material);
 }
