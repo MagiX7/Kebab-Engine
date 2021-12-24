@@ -13,6 +13,9 @@
 class ComponentMesh;
 class ComponentCamera;
 
+class Material;
+class Shader;
+
 class Renderer3D : public Module
 {
 public:
@@ -44,6 +47,10 @@ public:
 	void DrawGrid();
 	void DrawAABB(AABB& aabb);
 
+
+	Material* GetDefaultMaterial();
+	Shader* GetDefaultShader();
+
 private:
 	void DoRender(bool gameScene);
 	void PushCamera(ComponentCamera* cam);
@@ -70,6 +77,9 @@ private:
 	
 	FrameBuffer* editorFbo;
 	FrameBuffer* sceneFbo;
+
+	Material* defaultMaterial;
+	std::vector<Shader*> shaders;
 
 	float camsActive;
 };

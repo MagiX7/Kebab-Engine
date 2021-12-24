@@ -77,6 +77,7 @@ bool Editor::Start()
 
     app->fileSystem->CreateDirectoryA("Library/");
     app->fileSystem->CreateDirectoryA("Library/Models/");
+    app->fileSystem->CreateDirectoryA("Library/Materials/");
     app->fileSystem->CreateDirectoryA("Library/Textures/");
     app->fileSystem->CreateDirectoryA("Library/Meshes/");
     app->fileSystem->CreateDirectoryA("Library/Scenes/");
@@ -602,7 +603,7 @@ void Editor::ShowAboutPanel()
 
     ImGui::Text("Kebab Engine v0.1");
     ImGui::NewLine();
-    ImGui::Text("This is an 3D Game Engine made for the subject Game Engines at CITM - UPC Terrassa (2021)");
+    ImGui::Text("This is a 3D Game Engine made for the subject Game Engines at CITM - UPC Terrassa (2021)");
     ImGui::Text("The objective is to create a useful 3D Engine that fits all the basic aspects to create a 3D game");
     ImGui::Text("and to learn how to do and works an Engine.");
     ImGui::NewLine();

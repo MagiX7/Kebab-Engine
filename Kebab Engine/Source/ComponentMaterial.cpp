@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Renderer3D.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
@@ -38,7 +39,7 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 	SetCheckersTexture();
 
-	material = new Material();
+	material = app->renderer3D->GetDefaultMaterial();
 
 	updateShaderTimer = 0.0f;
 	
@@ -144,10 +145,14 @@ void ComponentMaterial::DrawOnInspector()
 		ImGui::Text("Material: %s", material->GetName().c_str());
 		ImGui::BulletText("Shader: %s", material->GetShader()->GetName().c_str());
 		
-		static float3 col = material->ambientColor;
-		if (ImGui::ColorEdit3("Material Color", col.ptr()))
+		//static float3 col = material->ambientColor;
+		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
 		{
-			material->ambientColor = col;
+			//material->ambientColor = col;
+		}
+		if (ImGui::DragFloat("Sininess", &material->shininess))
+		{
+
 		}
 
 		if (ImGui::Button("Change Shader"))

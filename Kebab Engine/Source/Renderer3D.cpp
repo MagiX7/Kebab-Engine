@@ -11,10 +11,16 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
+#include "ResourceManager.h"
+
+#include "Material.h"
+#include "Shader.h"
+
 #include "QdTree.h"
 
 #include "Math/float4x4.h"
 #include "SDL_opengl.h"
+
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -139,6 +145,14 @@ bool Renderer3D::Init(JSON_Object* root)
 	editorFbo = new FrameBuffer(props);
 	sceneFbo = new FrameBuffer(props);
 
+
+	Shader* defaultShader = new Shader("Assets/Resources/Shaders/default.shader");
+	shaders.push_back(defaultShader);
+	
+	defaultMaterial = new Material();
+	defaultMaterial->SetShader(defaultShader);
+	
+
 	return ret;
 }
 
@@ -231,6 +245,13 @@ bool Renderer3D::CleanUp()
 
 	delete(editorFbo);
 	delete(sceneFbo);
+
+	for (auto& s : shaders)
+	{
+		delete s;
+		s = 0;
+	}
+	shaders.clear();
 
 	SDL_GL_DeleteContext(context);
 
@@ -449,6 +470,15 @@ void Renderer3D::DrawAABB(AABB& aabb)
 	glVertex3d(min[0], max[1], min[2]);
 	glVertex3d(min[0], max[1], max[2]);
 	glEnd();
+}
+Material* Renderer3D::GetDefaultMaterial()
+{
+	return defaultMaterial;
+}
+
+Shader* Renderer3D::GetDefaultShader()
+{
+	return shaders[0];
 }
 
 void Renderer3D::DoRender(bool gameScene)

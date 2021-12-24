@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Renderer3D.h"
 #include "Editor.h"
 #include "Camera3D.h"
 #include "ComponentCamera.h"
@@ -12,7 +13,10 @@
 Material::Material() : Resource(ResourceType::MATERIAL)
 {
 	name = "New Material";
-	shader = new Shader("Assets/Resources/Shaders/default.shader");
+
+	shader = app->renderer3D->GetDefaultShader();
+
+	uuid = ResourceManager::GetInstance()->GenerateUUID();
 
 	ambientColor = { 0.4,0.4,0.4 };
 }
@@ -42,8 +46,7 @@ void Material::Bind(const float4x4& transform)
 			break;
 		}
 	}
-	
-	
+		
 	shader->Bind();
 	shader->SetUniformMatrix4f("model", transform.Transposed());
 	float4x4 view = cam->frustum.ViewMatrix();
@@ -63,8 +66,4 @@ void Material::Bind(const float4x4& transform)
 void Material::Unbind()
 {
 	shader->Unbind();
-}
-
-void Material::SetTexture(Texture* tex)
-{
 }

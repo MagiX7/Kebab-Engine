@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Resource.h"
 #include "Math/float4x4.h"
 #include "Math/float3x3.h"
 #include "Math/float2.h"
 
 #include <unordered_map>
-
+#include <string>
 
 enum class ShaderType
 {
@@ -23,8 +22,6 @@ public:
 
 	void Bind();
 	void Unbind();
-
-	void ReCompile();
 
 	bool Refresh();
 
@@ -48,11 +45,18 @@ public:
 	void SetUniformMatrix3f(const std::string& name, const float3x3& mat);
 	void SetUniformMatrix4f(const std::string& name, const float4x4& mat);
 
+	inline const std::string& GetPath() { return path; }
+	//inline const std::string& GetName() { return name; }
+
+
 private:
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
 	bool Compile();
 	std::string ReadFile();
 	std::unordered_map<unsigned int, std::string> SplitShaders(const std::string& source);
+
+	void ReCompile();
+
 
 	int GetUniform(const std::string& name);
 
