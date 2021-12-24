@@ -40,7 +40,7 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 
 	SetCheckersTexture();
 
-	material = app->renderer3D->GetDefaultMaterial();
+	material = new Material(*app->renderer3D->GetDefaultMaterial());
 
 	updateShaderTimer = 0.0f;
 	
@@ -52,6 +52,8 @@ ComponentMaterial::~ComponentMaterial()
 	checkersTexture.reset();
 	currentTexture = nullptr;
 	
+	delete material;
+
 	textures.clear();
 }
 
@@ -151,7 +153,7 @@ void ComponentMaterial::DrawOnInspector()
 		{
 			//material->ambientColor = col;
 		}
-		if (ImGui::DragFloat("Sininess", &material->shininess))
+		if (ImGui::DragFloat("Shininess", &material->shininess))
 		{
 
 		}

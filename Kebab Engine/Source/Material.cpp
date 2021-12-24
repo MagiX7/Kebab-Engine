@@ -23,6 +23,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 
 Material::~Material()
 {
+	// Shader is deleted in renderer
 }
 
 void Material::Bind(const float4x4& transform)
