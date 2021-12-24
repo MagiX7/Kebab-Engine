@@ -67,3 +67,9 @@ void Material::Unbind()
 {
 	shader->Unbind();
 }
+
+void Material::SetShader(Shader* s)
+{
+	shader = s;
+	shader->Refresh();
+}

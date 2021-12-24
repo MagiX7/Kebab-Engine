@@ -9,6 +9,7 @@
 
 #include "ResourceManager.h"
 #include "Model.h"
+#include "Material.h"
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -129,7 +130,19 @@ void AssetsPanel::LoadAssetsToCustom()
 			std::string completePath = currentFolderToLoad + (*it);
 			std::string ext = (*it).substr((*it).find_last_of("."), (*it).length());
 
-			if (ext == ".fbx" || ext == ".obj")
+			if (ext == ".shader")
+			{
+				if (completePath.find("default") == -1)
+				{
+					Shader* sh = app->renderer3D->AddShader(completePath);
+
+					Material* material = new Material();
+					material->SetShader(sh);
+					app->renderer3D->AddMaterial(material);
+				}
+
+			}
+			else if (ext == ".fbx" || ext == ".obj")
 			{
 				// Resource managed inside this function
 				MeshLoader::GetInstance()->LoadModel(completePath);

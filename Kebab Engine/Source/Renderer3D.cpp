@@ -10,6 +10,7 @@
 
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
+#include "ComponentMaterial.h"
 
 #include "ResourceManager.h"
 
@@ -145,13 +146,11 @@ bool Renderer3D::Init(JSON_Object* root)
 	editorFbo = new FrameBuffer(props);
 	sceneFbo = new FrameBuffer(props);
 
-
-	Shader* defaultShader = new Shader("Assets/Resources/Shaders/default.shader");
+	defaultShader = new Shader("Assets/Resources/Shaders/default.shader");
 	shaders.push_back(defaultShader);
-	
+
 	defaultMaterial = new Material();
 	defaultMaterial->SetShader(defaultShader);
-	
 
 	return ret;
 }
@@ -245,6 +244,8 @@ bool Renderer3D::CleanUp()
 
 	delete(editorFbo);
 	delete(sceneFbo);
+	delete(defaultMaterial);
+	//delete(defaultShader);
 
 	for (auto& s : shaders)
 	{
@@ -478,7 +479,35 @@ Material* Renderer3D::GetDefaultMaterial()
 
 Shader* Renderer3D::GetDefaultShader()
 {
-	return shaders[0];
+	return defaultShader;
+}
+
+Shader* Renderer3D::AddShader(const std::string& path)
+{
+	Shader* shader = new Shader(path);
+	shaders.push_back(shader);
+
+	if (path.find("default"))
+	{
+		defaultShader = shader;
+	}
+
+	return shader;
+}
+
+void Renderer3D::AddMaterial(Material* material)
+{
+	if (material)
+	{
+		for (auto& go : gameObjects)
+		{
+			ComponentMaterial* mat = (ComponentMaterial*)go->GetComponent(ComponentType::MATERIAL);
+			if(!mat->GetMaterial())
+				mat->SetMaterial(material);
+		}
+	}
+
+	materials.push_back(material);
 }
 
 void Renderer3D::DoRender(bool gameScene)

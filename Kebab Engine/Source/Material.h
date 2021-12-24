@@ -19,7 +19,7 @@ public:
 	inline const std::string& GetName() const { return name; }
 
 	inline Shader* GetShader() { return shader; }
-	inline void SetShader(Shader* s) { shader = s; }
+	void SetShader(Shader* s);
 
 public:
 	float shininess;

@@ -36,6 +36,7 @@ ComponentMaterial::ComponentMaterial(GameObject* compOwner)
 	checkersTexture = nullptr;
 
 	menuSelectTex = false;
+	closeShaderWindow = false;
 
 	SetCheckersTexture();
 
@@ -157,8 +158,10 @@ void ComponentMaterial::DrawOnInspector()
 
 		if (ImGui::Button("Change Shader"))
 		{
-			ChangeShaderWindow();
+			closeShaderWindow = !closeShaderWindow;
 		}
+		if(closeShaderWindow)
+			ChangeShaderWindow();
 
 		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 
@@ -194,6 +197,16 @@ void ComponentMaterial::ShowTexturesMenu()
 		menuSelectTex = false;
 
 	ImGui::End();
+}
+
+void ComponentMaterial::SetMaterial(Material* mat)
+{
+	material = mat;
+}
+
+Material* ComponentMaterial::GetMaterial()
+{
+	return material;
 }
 
 void ComponentMaterial::AddTexture(std::shared_ptr<Texture> tex, int modelUuid)
@@ -264,9 +277,32 @@ void ComponentMaterial::SetCheckersTexture()
 
 void ComponentMaterial::ChangeShaderWindow()
 {
-	ImGui::Begin("Select New Shader");
+	ImGui::Begin("Select the new Shader", &closeShaderWindow);
 
-	// TODO: Display all the shaders
+	ImGui::Columns(2, 0, false);
+
+	std::vector<Shader*> shaders = app->renderer3D->GetShaders();
+
+	for (std::vector<Shader*>::const_iterator it = shaders.begin(); it != shaders.end(); it++)
+	{
+		std::string name = (*it)->GetName();
+
+		std::string nameShow = name.substr(0, name.find_last_of("_"));
+		nameShow = nameShow.substr(0, nameShow.find_last_of("_"));
+
+		if (ImGui::Button(name.c_str(), { 100,100 }))
+		{
+			material->SetShader((*it));
+			// Maybe need to change the path
+		}
+
+		ImGui::Text(nameShow.c_str());
+
+		ImGui::NextColumn();
+	}
+
+	if (!ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left || ImGuiMouseButton_Right))
+		closeShaderWindow = true;
 
 	ImGui::End();
 }

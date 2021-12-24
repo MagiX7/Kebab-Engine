@@ -27,6 +27,9 @@ public:
 
 	void ShowTexturesMenu();
 
+	void SetMaterial(Material* mat);
+	Material* GetMaterial();
+
 	void AddTexture(std::shared_ptr<Texture>tex, int modelUuid);
 
 	inline Texture* GetCurrentTexture() { return currentTexture; }
@@ -53,5 +56,6 @@ private:
 	std::vector<Texture*> textures;
 
 	float updateShaderTimer;
-	char* lastTimeShaderModified;
+	bool closeShaderWindow;
+	
 };

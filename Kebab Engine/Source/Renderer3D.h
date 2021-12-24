@@ -51,6 +51,10 @@ public:
 	Material* GetDefaultMaterial();
 	Shader* GetDefaultShader();
 
+	Shader* AddShader(const std::string& path);
+	void AddMaterial(Material* material);
+	inline const std::vector<Shader*>& GetShaders() { return shaders; }
+
 private:
 	void DoRender(bool gameScene);
 	void PushCamera(ComponentCamera* cam);
@@ -79,7 +83,9 @@ private:
 	FrameBuffer* sceneFbo;
 
 	Material* defaultMaterial;
+	Shader* defaultShader;
 	std::vector<Shader*> shaders;
+	std::vector<Material*> materials;
 
 	float camsActive;
 };

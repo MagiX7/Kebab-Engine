@@ -26,6 +26,7 @@ public:
 	bool Refresh();
 
 	inline const std::string& GetName() { return name; }
+	inline void SetName(const std::string n) { name = n; }
 	char* GetLastModifiedDate();
 
 	void SetUniformBool(const std::string& name, bool b);

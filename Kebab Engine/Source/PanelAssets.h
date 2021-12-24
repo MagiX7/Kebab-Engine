@@ -24,7 +24,9 @@ public:
 
 	void RefreshAssets(float dt);
 
+public:
 	std::vector<Texture*> textures;
+
 private:
 
 	std::string currentFolder;
