@@ -208,8 +208,9 @@ void AssetsPanel::DisplayAssets()
 		std::string dragpath = currentFolder + (*it);
 		ImGui::PushID(dragpath.c_str());
 
-		std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
-		nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
+		//std::string nameToShow = (*it).substr(0, (*it).find_last_of("_"));
+		//nameToShow = nameToShow.substr(0, nameToShow.find_last_of("_"));
+		std::string nameToShow = (*it).substr(0, (*it).find_last_of("."));
 
 		std::string aux = (*it).substr((*it).find_last_of("."), (*it).length());
 		if (aux == ".fbx" || aux == ".obj" || aux == ".kbmodel")

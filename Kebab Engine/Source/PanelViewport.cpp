@@ -63,8 +63,9 @@ void ViewportPanel::OnRender(FrameBuffer* frameBuffer, const ImGuizmo::OPERATION
             std::string dragPath = (const char*)payload->Data;
             std::string name = dragPath.substr(dragPath.find_last_of("/") + 1, dragPath.size());
             std::string ext = name.substr(name.find_last_of("."), name.size());
-            name = name.substr(0, name.find_last_of("_"));
-            name = name.substr(0, name.find_last_of("_"));
+            //name = name.substr(0, name.find_last_of("_"));
+            //name = name.substr(0, name.find_last_of("_"));
+            name = name.substr(0, name.find_last_of("."));
 
             if (ext == ".kbmodel")
             {

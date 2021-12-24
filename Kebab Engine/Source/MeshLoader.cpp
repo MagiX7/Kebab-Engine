@@ -127,7 +127,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         std::shared_ptr<KbModel> model = ResourceManager::GetInstance()->CreateModel(path.c_str());
         ProcessNode(scene->mRootNode, scene, baseGO, name, path, model);
         model->SetProperties(props);
-        model->SetLibraryPath("Library/Models/" + baseGO->GetName() + "__" + std::to_string(model->uuid) + ".kbmodel");
+        model->SetLibraryPath("Library/Models/" + baseGO->GetName() + /*"__" + std::to_string(model->uuid) +*/ ".kbmodel");
         model->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, model->uuid);
     }
@@ -509,8 +509,10 @@ void MeshLoader::SaveMeshCustomFormat(KbMesh* mesh, const std::string& name, int
     memcpy(cursor, mesh->indices.data(), bytes);
     cursor += bytes;
 
-    std::string n = CUSTOM_DIR + name + "__" + std::to_string(uuid) + CUSTOM_EXTENSION;
+    std::string n = CUSTOM_DIR + name + /*"__" + std::to_string(uuid)*/ + CUSTOM_EXTENSION;
     mesh->SetLibraryPath(n);
+
+    mesh->SetName(name + CUSTOM_EXTENSION);
 
     app->fileSystem->Save(n.c_str(), fileBuffer, size);
 
@@ -656,7 +658,7 @@ void MeshLoader::SaveModelCustomFormat(GameObject* go, int modelUuid)
     json_serialize_to_buffer(modelValue, buffer, size);
 
 
-    std::string path = "Library/Models/" + go->GetName() + "__" + std::to_string(modelUuid) + ".kbmodel";
+    std::string path = "Library/Models/" + go->GetName() + /*"__" + std::to_string(modelUuid) +*/ ".kbmodel";
 
     json_serialize_to_file_pretty(modelValue, path.c_str());
 

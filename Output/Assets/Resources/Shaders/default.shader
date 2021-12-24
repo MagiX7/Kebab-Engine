@@ -25,7 +25,7 @@ void main()
 	vNormal = normalize((model * vec4(normal, 0.0)).xyz);
 	vAmbientColor = ambientColor;
 
-	gl_Position = projection * model * view * vec4(position, 1);
+	gl_Position = projection * view * model * vec4(position, 1);
 }
 
 
