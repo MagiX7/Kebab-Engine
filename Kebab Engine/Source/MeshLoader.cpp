@@ -77,7 +77,8 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
 
         for (auto& mesh : model->GetMeshes())
         {
-            GameObject* go = new GameObject(mesh->GetName());
+            std::string name = mesh->GetName().substr(0, mesh->GetName().find_last_of("."));
+            GameObject* go = new GameObject(name);
             ComponentMesh* meshComp = (ComponentMesh*)go->CreateComponent(ComponentType::MESH);
             meshComp->SetMesh(mesh);
             meshComp->SetModel(model);

@@ -287,6 +287,7 @@ void ComponentMaterial::ChangeShaderWindow()
 
 		std::string nameShow = name.substr(0, name.find_last_of("_"));
 		nameShow = nameShow.substr(0, nameShow.find_last_of("_"));
+		nameShow = nameShow.substr(0, nameShow.find_last_of("."));
 
 		if (ImGui::Button(name.c_str(), { 100,100 }))
 		{
