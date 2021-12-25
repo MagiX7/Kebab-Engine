@@ -9,6 +9,7 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Timer.h"
 
 Material::Material() : Resource(ResourceType::MATERIAL)
 {
@@ -19,6 +20,11 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	uuid = ResourceManager::GetInstance()->GenerateUUID();
 
 	ambientColor = { 0.4,0.4,0.4 };
+	frequency = 2.0f;
+	speed = 0.05f;
+	amplitude = 0.2f;
+
+	timer = Timer();
 }
 
 Material::~Material()
@@ -61,6 +67,12 @@ void Material::Bind(const float4x4& transform)
 
 	shader->SetUniform1f("shininess", shininess);
 	shader->SetUniformVec3f("ambientColor", ambientColor);
+
+	shader->SetUniform1i("time", timer.Read());
+	shader->SetUniform1f("amplitude", amplitude);
+	shader->SetUniform1f("frequency", frequency);
+	shader->SetUniform1f("speed", speed);
+
 
 }
 

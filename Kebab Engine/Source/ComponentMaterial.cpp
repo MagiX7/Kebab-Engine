@@ -150,13 +150,9 @@ void ComponentMaterial::DrawOnInspector()
 		
 		//static float3 col = material->ambientColor;
 		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
-		{
-			//material->ambientColor = col;
-		}
-		if (ImGui::DragFloat("Shininess", &material->shininess))
-		{
-
-		}
+		ImGui::DragFloat("Frequency", &material->frequency, 0.1, -2, 2);
+		ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
+		ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
 
 		if (ImGui::Button("Change Shader"))
 		{
@@ -304,7 +300,7 @@ void ComponentMaterial::ChangeShaderWindow()
 	}
 
 	if (!ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left || ImGuiMouseButton_Right))
-		closeShaderWindow = true;
+		closeShaderWindow = false;
 
 	ImGui::End();
 }

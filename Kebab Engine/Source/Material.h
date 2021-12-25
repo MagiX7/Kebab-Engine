@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Resource.h"
+#include "Timer.h"
 
 #include <string>
 
 class Shader;
+class Timer;
 
 class Material : public Resource
 {
@@ -24,7 +26,11 @@ public:
 public:
 	float shininess;
 	float3 ambientColor;
+	float frequency;
+	float speed;
+	float amplitude;
 
+	Timer timer;
 
 private:
 	std::string name;
