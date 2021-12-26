@@ -46,7 +46,11 @@ void main()
 	vec3 pos = position;
 	pos.y = amplitude * 2 * pi * sin((time/10) * speed * 0.1 - pos.x * frequency);
 
-	pos.y += noise(pos);
+	pos.y += noise(tan(pos));
+
+	// Line below makes waves not go deep equaly
+	pos.zy += sin(pos.zx);
+
 
 	gl_Position = projection * view * model * vec4(pos, 1.0);
 
@@ -88,7 +92,6 @@ void main()
 	vec3 ambient = vec3(0.8, 0.2, 0.2);
 	vec3 result = (ambient + diffuse) * vAmbientColor;
 
-	//float col = step(vAmplitude, -vAmbientColor.y);
 	vec3 col = mix(vec3(0.0, 0.0, 0.4), -vAmbientColor, -1.0); // -1.0 its for white intesnity
 
 	fragColor = texture(tex, vTexCoords) * vec4(col, 1.0);
