@@ -7,7 +7,7 @@ Hope you like it and it's useful for your projects.
 
 # Team members
 
-<img src="/docs/Images/David_image.jfif" width="400" height="450" />
+<img src="https://github.com/MagiX7/Kebab-Engine/blob/main/docs/Images/David_image.jfif" width="400" height="450" />
 
 ### David Jesus González López
 
@@ -17,7 +17,7 @@ Programmer
 
 [Github](https://github.com/MagiX7)
 
-<img src="/docs/Images/Carlos_image.jpeg" width="350" height="450" />
+<img src="https://github.com/MagiX7/Kebab-Engine/blob/main/docs/Images/Carlos_image.jpeg" width="350" height="450" />
 
 ### Carlos Megia Zubillaga
 
