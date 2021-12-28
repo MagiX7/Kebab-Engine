@@ -7,23 +7,23 @@ Hope you like it and it's useful for your projects.
 
 # Team members
 
-![David Jesus González López]()
+<img src="/docs/Images/David_image.jfif" width="400" height="450" />
 
 ### David Jesus González López
 
 Programmer
 
-[Linked In]()
+[Linked In](https://www.linkedin.com/in/david-jes%C3%BAs-gonz%C3%A1lez-l%C3%B3pez-03a2041b1/)
 
 [Github](https://github.com/MagiX7)
 
-![Carlos Megia Zubillaga]()
+<img src="/docs/Images/Carlos_image.jpeg" width="350" height="450" />
 
 ### Carlos Megia Zubillaga
 
 Programmer
 
-[Linked In]()
+[Linked In](https://www.linkedin.com/in/carlos-megia-zubillaga-b64bb31b7/)
 
 [Github](https://github.com/Chuchocoronel)
 
