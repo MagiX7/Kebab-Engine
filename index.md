@@ -7,7 +7,7 @@ Hope you like it and it's useful for your projects.
 
 # Team members
 
-![David](docs/Images/David_image.png)
+![David](/docs/Images/David_image.png)
 
 ### David Jesus González López
 
@@ -17,7 +17,7 @@ Programmer
 
 [Github](https://github.com/MagiX7)
 
-![Carlos](docs/Images/Carlos_image.png)
+![Carlos](/docs/Images/Carlos_image.png)
 
 ### Carlos Megia Zubillaga
 
@@ -48,15 +48,21 @@ The base to create all the game objects, because all game objects have component
 
 The base for the camera viewport, it allows to modify easily the characteristics of the camera view, and also is the main part for the **Camera Culling** that discart gameobjects from rendering if they aren't inside the frustum/camera, optimizing the engine.
 
+![Frustum](/docs/Images/Frustum_image.png)
+
 ### File resources manager and explorer
 
 The engine controls all the things related with meshes, textures, shaders and scenes. The resource manager regenerate missing files, create custom files for optimization and use reference counting on all of the resources used by the gameobjects.
 
 On the other way, the file explorer allows the user to navigate through the files, drag and use them to the scene or eliminate them if not necessary.
 
+![File Explorer](/docs/Images/File_explorer_image.png)
+
 ### Quadtree
 
 The quadtree is used for optimization in collisions, when a gameobject is set static enters the quadtree and when the cube is full it divides in 4 parts. The collisions only works on cubes that are inside the camera frustum and the other are discarted. In our engine is used for mouse picking raycast and frustum culling.
+
+![Quadtree](/docs/Gifs/Quadtree_gif.gif)
 
 ### Bounding boxes 
 
