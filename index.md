@@ -7,7 +7,7 @@ Hope you like it and it's useful for your projects.
 
 # Team members
 
-<img src="https://github.com/MagiX7/Kebab-Engine/blob/main/docs/Images/David_image.jfif" width="400" height="450" />
+![David](docs/Images/David_image.png)
 
 ### David Jesus González López
 
@@ -17,7 +17,7 @@ Programmer
 
 [Github](https://github.com/MagiX7)
 
-<img src="https://github.com/MagiX7/Kebab-Engine/blob/main/docs/Images/Carlos_image.jpeg" width="350" height="450" />
+![Carlos](docs/Images/Carlos_image.png)
 
 ### Carlos Megia Zubillaga
 
@@ -29,7 +29,46 @@ Programmer
 
 # Core sub-systems
 
+### GameObjects
+
+Based on an entity and component system, every gameobject is unique and it could have different components attached to it: transform, mesh, material and camera, all inherit from a component base class.
+
+All the game objects have a parent and it allow to have children, creating a tree structure and as a consequence, a hierarchy.
+
+### Components
+
+The base to create all the game objects, because all game objects have components:
+
+- **Transform:** allow the gameobject to move around the scene with a local or global transformation.
+- **Mesh:** enable to include 3D meshes to render on the scene.
+- **Material:** give the ability to renderize 2D textures on the mesh of the gameobject and also shaders.
+- **Camera:** allow to create a camera and renderize the in-game from that point of view.
+
+### Frustum
+
+The base for the camera viewport, it allows to modify easily the characteristics of the camera view, and also is the main part for the **Camera Culling** that discart gameobjects from rendering if they aren't inside the frustum/camera, optimizing the engine.
+
+### File resources manager and explorer
+
+The engine controls all the things related with meshes, textures, shaders and scenes. The resource manager regenerate missing files, create custom files for optimization and use reference counting on all of the resources used by the gameobjects.
+
+On the other way, the file explorer allows the user to navigate through the files, drag and use them to the scene or eliminate them if not necessary.
+
+### Quadtree
+
+The quadtree is used for optimization in collisions, when a gameobject is set static enters the quadtree and when the cube is full it divides in 4 parts. The collisions only works on cubes that are inside the camera frustum and the other are discarted. In our engine is used for mouse picking raycast and frustum culling.
+
+### Bounding boxes 
+
+Bounding boxes are a very important system to detect collisions between gameobjects and optimize things, like quadtree or camera culling. Using AABB, a container used to create boxes based on the mesh of the model, is how we create the bounding boxes or colliders.
+
+### Scenes simulation and serialization
+
+Kebab engine can save and load diferent scenes, using it's own custom format. Not only that, also can start/stop a simulation or advance frame by frame, being the start to create videogames.
+
 # Shaders
+
+For the third and last assigment we decide to create the Shader pipeline using OpenGL. All the new meshes with materials have a basic shader, from there you can modify them.
 
 ![Editors]()
 
@@ -37,7 +76,7 @@ Programmer
 
 # Video demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/YajGmOBEBCY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Links
 
