@@ -37,6 +37,7 @@ public:
 
 private:
 	void DrawOnInspector();
+	void ShowMeshesMenu();
 
 	void BeginDraw(ComponentMaterial* mat);
 	void EndDraw(ComponentMaterial* mat);
@@ -56,4 +57,6 @@ protected:
 	
 	float normalsTriangleSize;
 	float3 normalsTriangleColor;
+
+	bool menuSelectMesh;
 };

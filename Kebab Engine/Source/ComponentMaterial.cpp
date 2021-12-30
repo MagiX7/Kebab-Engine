@@ -54,8 +54,6 @@ ComponentMaterial::~ComponentMaterial()
 	currentTexture = nullptr;
 	
 	delete material;
-
-	textures.clear();
 }
 
 void ComponentMaterial::Update(float dt)
@@ -116,14 +114,7 @@ void ComponentMaterial::DrawOnInspector()
 
 		
 		if (ImGui::Button("Change Texture"))
-		{
 			menuSelectTex = !menuSelectTex;
-
-			if (menuSelectTex)
-			{
-				textures = app->editor->assetsPanel->textures;
-			}
-		}
 
 		if (menuSelectTex)
 			ShowTexturesMenu();
@@ -173,6 +164,8 @@ void ComponentMaterial::ShowTexturesMenu()
 
 	ImGui::Begin("Select Texture", &menuSelectTex);
 	
+	std::vector<Texture*> textures = app->editor->assetsPanel->textures;
+
 	ImGui::Columns(2, 0, false);
 
 	for (std::vector<Texture*>::const_iterator it = textures.begin(); it != textures.end(); it++)

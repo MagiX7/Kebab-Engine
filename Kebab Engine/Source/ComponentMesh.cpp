@@ -1,10 +1,14 @@
 #include "Application.h"
 
+#include "Editor.h"
+
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+
+#include "PanelAssets.h"
 
 #include "ResourceManager.h"
 
@@ -112,7 +116,49 @@ void ComponentMesh::DrawOnInspector()
 				ImGui::TreePop();
 			}
 		}
+
+		if (ImGui::Button("Change Mesh"))
+			menuSelectMesh = !menuSelectMesh;
+
+		if (menuSelectMesh)
+			ShowMeshesMenu();
 	}
+}
+
+void ComponentMesh::ShowMeshesMenu()
+{
+	//ImGui::SetNextWindowPos(ImVec2(2, 2));
+
+	ImGui::Begin("Select Mesh", &menuSelectMesh);
+
+	std::vector<KbMesh*> meshes = app->editor->assetsPanel->meshes;
+
+	ImGui::Columns(2, 0, false);
+
+	for (std::vector<KbMesh*>::const_iterator it = meshes.begin(); it != meshes.end(); it++)
+	{
+		std::string name = (*it)->GetName();
+
+		/*std::string nameShow = name.substr(0, name.find_last_of("_"));
+		nameShow = nameShow.substr(0, nameShow.find_last_of("_"));*/
+		std::string nameShow = name.substr(0, name.find_last_of("."));
+
+		ImGui::ImageButton((ImTextureID)app->editor->assetsPanel->meshTex->GetID(), { 100,100 });
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			SetMesh((*it));
+			SetMeshPath((*it)->GetLibraryPath());
+		}
+
+		ImGui::Text(nameShow.c_str());
+
+		ImGui::NextColumn();
+	}
+
+	if (!ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left || ImGuiMouseButton_Right))
+		menuSelectMesh = false;
+
+	ImGui::End();
 }
 
 void ComponentMesh::Draw(ComponentMaterial* mat, ComponentCamera* cam)
@@ -156,7 +202,8 @@ void ComponentMesh::SetMeshPath(const std::string& path)
 
 void ComponentMesh::SetMesh(KbMesh* newMesh)
 {
-	delete mesh; mesh = nullptr;
+	//delete mesh; 
+	mesh = nullptr;
 	mesh = newMesh;
 
 	AABB aabb;

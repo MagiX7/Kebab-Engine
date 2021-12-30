@@ -24,10 +24,6 @@ public:
 	void Enable();
 	void Disable();
 
-	void DrawOnInspector();
-
-	void ShowTexturesMenu();
-
 	void SetMaterial(Material* mat);
 	Material* GetMaterial();
 
@@ -39,6 +35,10 @@ public:
 	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
 
 private:
+
+	void DrawOnInspector();
+	void ShowTexturesMenu();
+
 	void SetCheckersTexture();
 	void ChangeShaderWindow();
 
@@ -54,7 +54,6 @@ private:
 	std::shared_ptr<Texture> checkersTexture;
 
 	bool menuSelectTex;
-	std::vector<Texture*> textures;
 
 	float updateShaderTimer;
 	bool closeShaderWindow;

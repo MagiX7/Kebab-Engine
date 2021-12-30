@@ -21,6 +21,7 @@
 
 #include "TextureLoader.h"
 #include "MeshLoader.h"
+#include "KbMesh.h"
 
 #include <vector>
 #include <queue>
@@ -46,11 +47,14 @@ AssetsPanel::AssetsPanel()
 	folderTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/folder_icon.kbtexture");
 	modelTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/model_icon.kbtexture");
 	pngTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/texture_icon.kbtexture");
+	meshTex = TextureLoader::GetInstance()->LoadTextureCustomFormat("Library/Textures/mesh_icon.kbtexture");
 
 	if (folderTex == nullptr)
 		folderTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/folder_icon.png");
 	if (modelTex == nullptr)
 		modelTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/model_icon.png");
+	if (meshTex == nullptr)
+		meshTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/mesh_icon.png");
 	if (pngTex == nullptr)
 		pngTex = TextureLoader::GetInstance()->LoadTexture("Assets/Resources/Icons/texture_icon.png");
 }
@@ -145,7 +149,7 @@ void AssetsPanel::LoadAssetsToCustom()
 			else if (ext == ".fbx" || ext == ".obj")
 			{
 				// Resource managed inside this function
-				MeshLoader::GetInstance()->LoadModel(completePath);
+				GameObject* go = MeshLoader::GetInstance()->LoadModel(completePath);
 			}
 			else if (ext == ".png" || ext == ".dds" || ext == ".jpg" || ext == ".tga")
 			{
@@ -246,6 +250,8 @@ void AssetsPanel::DisplayAssets()
 
 			ImGui::ImageButton(id, { 100,100 });
 		}
+		else if (aux == ".kbmesh")
+			ImGui::ImageButton((ImTextureID)meshTex->GetID(), { 100,100 });
 		else
 			ImGui::Button((*it).c_str(), { 100,100 });
 
@@ -421,20 +427,26 @@ void AssetsPanel::DisplayItemPopMenu()
 			if (ext == ".kbmodel")
 			{
 				std::shared_ptr<KbModel> mod = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(path));
-				std::vector<KbMesh*> meshes = mod->GetMeshes();
+				std::vector<KbMesh*> modMeshes = mod->GetMeshes();
 
 				status += remove(mod->GetLibraryPath().c_str());
 				status += remove(mod->GetAssetsPath().c_str());
 				status += remove(mod->GetMetaPath().c_str());
 
-				for (std::vector<KbMesh*>::iterator it = meshes.begin(); it != meshes.end(); it++)
+				for (std::vector<KbMesh*>::iterator it = modMeshes.begin(); it != modMeshes.end(); it++)
 				{
 					status += remove((*it)->GetLibraryPath().c_str());
 					status += remove((*it)->GetAssetsPath().c_str());
 					status += remove((*it)->GetMetaPath().c_str());
+
+					for (std::vector<KbMesh*>::iterator it2 = meshes.begin(); it2 != meshes.end(); it2++)
+					{
+						if ((*it2) == (*it))
+							meshes.erase(it2);
+					}
 				}
 
-				meshes.clear();
+				modMeshes.clear();
 
 				if (status == 0) { LOG_CONSOLE("%s Deleted Successfully!", popUpItem.c_str()); }
 				else { LOG_CONSOLE("Error to Delete %s", popUpItem.c_str()); }

@@ -7,6 +7,7 @@
 
 class GameObject;
 class Texture;
+class KbMesh;
 
 class AssetsPanel : public Panel
 {
@@ -24,8 +25,12 @@ public:
 
 	void RefreshAssets(float dt);
 
+	Texture* meshTex;
+
 public:
 	std::vector<Texture*> textures;
+
+	std::vector<KbMesh*> meshes;
 
 private:
 

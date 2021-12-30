@@ -86,7 +86,7 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
             go->SetParent(baseGO);
 
             ComponentMaterial* matComp = (ComponentMaterial*)go->CreateComponent(ComponentType::MATERIAL);
-            
+
             std::shared_ptr<Texture> tex = 0;
 
             if (!mesh->GetTextureMetaPath().empty())
@@ -100,14 +100,39 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
 
             //if (std::shared_ptr<Texture> tex = ResourceManager::GetInstance()->LoadTextureMetaData(mesh->GetTextureMetaPath().c_str()))
             //{
-                matComp->AddTexture(tex, model->uuid);
+            matComp->AddTexture(tex, model->uuid);
             //}
+
+            bool repeated = false;
+            for (std::vector<KbMesh*>::iterator it2 = app->editor->assetsPanel->meshes.begin(); it2 != app->editor->assetsPanel->meshes.end(); it2++)
+            {
+                if ((*it2) == mesh)
+                    repeated = true;
+            }
+
+            if (!repeated)
+                app->editor->assetsPanel->meshes.push_back(mesh);
         }
     }
     else if (app->fileSystem->Exists(metaPath.c_str()))
     {
         model = ResourceManager::GetInstance()->LoadModelMetaData(metaPath.c_str());
         baseGO = LoadModelCustomFormat(model->GetLibraryPath(), model);
+
+        std::vector<KbMesh*> meshes = model->GetMeshes();
+
+        for (std::vector<KbMesh*>::iterator it = meshes.begin(); it != meshes.end(); it++)
+        {
+            bool repeated = false;
+            for (std::vector<KbMesh*>::iterator it2 = app->editor->assetsPanel->meshes.begin(); it2 != app->editor->assetsPanel->meshes.end(); it2++)
+            {
+                if ((*it2) == (*it))
+                    repeated = true;
+            }
+
+            if (!repeated)
+                app->editor->assetsPanel->meshes.push_back((*it));
+        }
     }
     else
     {
@@ -131,6 +156,21 @@ GameObject* MeshLoader::LoadModel(const std::string& path, bool loadOnScene, con
         model->SetLibraryPath("Library/Models/" + baseGO->GetName() + /*"__" + std::to_string(model->uuid) +*/ ".kbmodel");
         model->CreateMetaDataFile(path.c_str());
         SaveModelCustomFormat(baseGO, model->uuid);
+
+        std::vector<KbMesh*> meshes = model->GetMeshes();
+
+        for (std::vector<KbMesh*>::iterator it = meshes.begin(); it != meshes.end(); it++)
+        {
+            bool repeated = false;
+            for (std::vector<KbMesh*>::iterator it2 = app->editor->assetsPanel->meshes.begin(); it2 != app->editor->assetsPanel->meshes.end(); it2++)
+            {
+                if ((*it2) == (*it))
+                    repeated = true;
+            }
+
+            if (!repeated)
+                app->editor->assetsPanel->meshes.push_back((*it));
+        }
     }
 
     if (loadOnScene)
