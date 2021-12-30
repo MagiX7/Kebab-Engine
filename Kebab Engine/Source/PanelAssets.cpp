@@ -64,8 +64,10 @@ AssetsPanel::~AssetsPanel()
 	delete folderTex;
 	delete modelTex;
 	delete pngTex;
+	delete meshTex;
 
 	textures.clear();
+	meshes.clear();
 }
 
 void AssetsPanel::OnRender(float dt)
@@ -442,8 +444,12 @@ void AssetsPanel::DisplayItemPopMenu()
 					for (std::vector<KbMesh*>::iterator it2 = meshes.begin(); it2 != meshes.end(); it2++)
 					{
 						if ((*it2) == (*it))
+						{
 							meshes.erase(it2);
+							break;
+						}
 					}
+					meshes.shrink_to_fit();
 				}
 
 				modMeshes.clear();
