@@ -195,13 +195,13 @@ bool Renderer3D::Draw(float dt)
 	if (app->editor->debugQT)
 		app->scene->rootQT->DrawTree();
 
-	glPopMatrix();
-	glPopMatrix();
-
 	if (app->camera->gameCam)
 	{
 		DoRender(true);
 	}
+
+	glPopMatrix();
+	glPopMatrix();
 
 	sceneFbo->Unbind();
 
@@ -221,13 +221,12 @@ bool Renderer3D::Draw(float dt)
 
 	if (ComponentCamera* c = app->camera->gameCam)
 		c->DrawFrustum();
-
-	glPopMatrix();
-	glPopMatrix();
-
 	
 	DoRender(false);
 	editorFbo->Unbind();
+
+	glPopMatrix();
+	glPopMatrix();
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -521,13 +520,13 @@ void Renderer3D::DoRender(bool gameScene)
 		{
 			if (mesh && mat && !app->editor->frustumCulling)
 			{
-				mesh->Draw(mat);
+				mesh->Draw(mat, app->camera->gameCam);
 				if (drawAABB)
 					DrawAABB(*go->GetGlobalAABB());
 			}
 			else if (mesh && mat && go->insideFrustum && app->editor->frustumCulling)
 			{
-				mesh->Draw(mat);
+				mesh->Draw(mat, app->camera->gameCam);
 				if (drawAABB)
 					DrawAABB(*go->GetGlobalAABB());
 			}
@@ -536,13 +535,13 @@ void Renderer3D::DoRender(bool gameScene)
 		{
 			if (mesh && mat && !app->editor->frustumCulling)
 			{
-				mesh->Draw(mat);
+				mesh->Draw(mat, app->camera->editorCam);
 				if (drawAABB)
 					DrawAABB(*go->GetGlobalAABB());
 			}
 			else if (mesh && mat && go->insideFrustum && app->editor->frustumCulling)
 			{
-				mesh->Draw(mat);
+				mesh->Draw(mat, app->camera->editorCam);
 				if (drawAABB)
 					DrawAABB(*go->GetGlobalAABB());
 			}

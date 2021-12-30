@@ -7,6 +7,7 @@
 
 class Shader;
 class Timer;
+class ComponentCamera;
 
 class Material : public Resource
 {
@@ -14,7 +15,7 @@ public:
 	Material();
 	virtual ~Material();
 
-	void Bind(const float4x4& transform);
+	void Bind(const float4x4& transform, ComponentCamera* cam);
 	void Unbind();
 
 	inline void SetName(const std::string& newName) { name = newName; }

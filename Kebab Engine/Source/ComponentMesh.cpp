@@ -4,6 +4,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 #include "ResourceManager.h"
 
@@ -114,10 +115,10 @@ void ComponentMesh::DrawOnInspector()
 	}
 }
 
-void ComponentMesh::Draw(ComponentMaterial* mat)
+void ComponentMesh::Draw(ComponentMaterial* mat, ComponentCamera* cam)
 {
 	//BeginDraw(mat);
-	mat->Bind();
+	mat->Bind(cam);
 	mesh->GetVertexArray()->Bind();
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
@@ -231,7 +232,7 @@ void ComponentMesh::BeginDraw(ComponentMaterial* mat)
 		glMultMatrixf(mat.Transposed().ptr());
 	}*/
 	
-	mat->Bind();
+	mat->Bind(nullptr);
 
 	//glEnableClientState(GL_VERTEX_ARRAY);
 	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);

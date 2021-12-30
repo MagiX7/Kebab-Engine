@@ -32,33 +32,38 @@ Material::~Material()
 	// Shader is deleted in renderer
 }
 
-void Material::Bind(const float4x4& transform)
+void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 {
 	if (!shader)
 		return;
 
-	ComponentCamera* cam = 0;
-	switch (app->editor->GetSceneState())
-	{
-		case SceneState::EDIT:
-		{
-			cam = app->camera->editorCam;
-			break;
-		}
-		case SceneState::PAUSE:
-		case SceneState::PLAY:
-		case SceneState::STEP_ONE_FRAME:
-		{
-			cam = app->camera->gameCam;
-			break;
-		}
-	}
-		
+	//ComponentCamera* cam = 0;
+	//switch (app->editor->GetSceneState())
+	//{
+	//	case SceneState::EDIT:
+	//	{
+	//		cam = app->camera->editorCam;
+	//		break;
+	//	}
+	//	case SceneState::PAUSE:
+	//	case SceneState::PLAY:
+	//	case SceneState::STEP_ONE_FRAME:
+	//	{
+	//		cam = app->camera->gameCam;
+	//		break;
+	//	}
+	//}
+
+	ComponentCamera* matCam = cam;
+
+	if (cam == nullptr)
+		matCam = app->camera->editorCam;
+
 	shader->Bind();
 	shader->SetUniformMatrix4f("model", transform.Transposed());
-	float4x4 view = cam->frustum.ViewMatrix();
+	float4x4 view = matCam->frustum.ViewMatrix();
 	shader->SetUniformMatrix4f("view", view.Transposed());
-	shader->SetUniformMatrix4f("projection", cam->frustum.ProjectionMatrix().Transposed());
+	shader->SetUniformMatrix4f("projection", matCam->frustum.ProjectionMatrix().Transposed());
 	float4x4 normalMat = view;
 	normalMat.Inverse();
 	shader->SetUniformMatrix3f("normalMatrix", normalMat.Float3x3Part().Transposed());

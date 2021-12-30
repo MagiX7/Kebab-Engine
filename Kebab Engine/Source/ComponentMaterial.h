@@ -8,6 +8,7 @@
 
 class Texture;
 class Material;
+class ComponentCamera;
 
 class ComponentMaterial : public Component
 {
@@ -17,7 +18,7 @@ public:
 
 	void Update(float dt) override;
 
-	void Bind();
+	void Bind(ComponentCamera* cam);
 	void Unbind();
 
 	void Enable();

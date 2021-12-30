@@ -8,6 +8,7 @@
 #include "Vertex.h"
 
 class ComponentMaterial;
+class ComponentCamera;
 class KbModel;
 
 class ComponentMesh : public Component
@@ -21,7 +22,7 @@ public:
 	void Disable();
 
 	void Update();
-	void Draw(ComponentMaterial* mat);
+	void Draw(ComponentMaterial* mat, ComponentCamera* cam);
 
 	void SetData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Texture* tex = nullptr);
 	void SetMeshPath(const std::string& path);

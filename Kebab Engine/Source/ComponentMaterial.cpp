@@ -11,6 +11,7 @@
 #include "PanelAssets.h"
 
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "Material.h"
 #include "Shader.h"
 
@@ -70,13 +71,13 @@ void ComponentMaterial::Update(float dt)
 	}
 }
 
-void ComponentMaterial::Bind()
+void ComponentMaterial::Bind(ComponentCamera* cam)
 {
 	if(texture && currentTexture == texture.get())
 		texture->Bind();
 	ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	float4x4 mat = trans->GetGlobalMatrix();	
-	material->Bind(mat);
+	material->Bind(mat, cam);
 }
 
 void ComponentMaterial::Unbind()
@@ -168,6 +169,8 @@ void ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::ShowTexturesMenu()
 {
+	//ImGui::SetNextWindowPos(ImVec2(2, 2));
+
 	ImGui::Begin("Select Texture", &menuSelectTex);
 	
 	ImGui::Columns(2, 0, false);
