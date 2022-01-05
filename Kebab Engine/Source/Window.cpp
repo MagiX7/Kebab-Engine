@@ -3,8 +3,6 @@
 
 #include "Globals.h"
 
-#include "imgui/imgui.h"
-
 #include "mmgr/mmgr.h"
 
 Window::Window(bool startEnabled) : Module(startEnabled)
