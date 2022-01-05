@@ -7,25 +7,97 @@ Hope you like it and it's useful for your projects.
 
 # Team members
 
+## David Jesus González López
+
 ![David](/docs/Images/David_image.png)
 
-### David Jesus González López
-
-Programmer
+### Programmer
 
 [Linked In](https://www.linkedin.com/in/david-jes%C3%BAs-gonz%C3%A1lez-l%C3%B3pez-03a2041b1/)
 
 [Github](https://github.com/MagiX7)
 
+### Work on Engine
+
+- FBX importer by drag & drop
+
+- Mesh & Material Components
+
+- Gameobject Hierarchy
+
+- Hierarchy Panel
+
+- Render Buffers
+
+- Geometry & Textures Drawing
+
+- Wireframe shapes
+
+- Preview camera, game & scene panels
+
+- Scene guizmos
+
+- Dockspace
+
+- Integration JSON parser, PhysFS, mmgr, Optick, Assimp, glew, ImGuizmo, ImGui & MathGeoLib
+
+- Mousepicking
+
+- Resource Manager
+
+- Scene serialization
+
+- Play/Pause/Stop simulation
+
+- Shader Drawing
+
+- Water Shader Demo
+
+## Carlos Megia Zubillaga
+
 ![Carlos](/docs/Images/Carlos_image.png)
 
-### Carlos Megia Zubillaga
-
-Programmer
+### Programmer
 
 [Linked In](https://www.linkedin.com/in/carlos-megia-zubillaga-b64bb31b7/)
 
 [Github](https://github.com/Chuchocoronel)
+
+## Work on Engine
+
+- Camera logic and controls
+
+- AABB/Boundig Boxes
+
+- GameObject Class
+
+- Console Panel
+
+- Inspector Panel
+
+- Assets Panel
+
+- Window Configurations
+
+- Configuration & About Panels
+
+- Icons
+
+- Transform Component
+
+- Integration DevIL
+
+- Frustum Camera
+
+- Camera Culling
+
+- Panels Basic Logic and Organization
+
+- Right Click Menus
+
+- Quadtree
+
+- All Multimedia (Trailer, Web, Demo, etc.)
 
 # Core sub-systems
 
