@@ -3,6 +3,8 @@
 
 #include "Globals.h"
 
+#include "imgui/imgui.h"
+
 #include "mmgr/mmgr.h"
 
 Window::Window(bool startEnabled) : Module(startEnabled)
@@ -79,7 +81,7 @@ bool Window::Init(JSON_Object* root)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 		if (titleName.size() > 0) SetTitle(titleName.c_str());
 		else titleName = TITLE;
 
