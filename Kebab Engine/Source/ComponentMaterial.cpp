@@ -244,6 +244,17 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_number(obj, "uuid", texture->uuid);
 		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
 	}
+	if (material->GetShader())
+	{
+		json_object_set_string(obj, "shader", material->GetShader()->GetPath().c_str());
+		json_object_set_number(obj, "color_r", material->ambientColor.x);
+		json_object_set_number(obj, "color_g", material->ambientColor.y);
+		json_object_set_number(obj, "color_b", material->ambientColor.z);
+		json_object_set_number(obj, "freq", material->frequency);
+		json_object_set_number(obj, "speed", material->speed);
+		json_object_set_number(obj, "amplitude", material->amplitude);
+		json_object_set_number(obj, "alpha", material->textureAlpha);
+	}
 
 	return value;
 }
@@ -262,6 +273,25 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 		{
 			texture = tex;
 			currentTexture = texture.get();
+		}
+
+		std::string shaderPath = json_object_get_string(obj, "shader");
+		material->ambientColor.x = json_object_get_number(obj, "color_r");
+		material->ambientColor.y = json_object_get_number(obj, "color_g");
+		material->ambientColor.z = json_object_get_number(obj, "color_b");
+		material->frequency = json_object_get_number(obj, "freq");
+		material->speed = json_object_get_number(obj, "speed");
+		material->amplitude = json_object_get_number(obj, "amplitude");
+		material->textureAlpha = json_object_get_number(obj, "alpha");
+
+		std::vector<Shader*> shaders = app->renderer3D->GetShaders();
+		for (std::vector<Shader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
+		{
+			if ((*it)->GetPath() == shaderPath)
+			{
+				material->SetShader((*it));
+				break;
+			}
 		}
 	}
 }
