@@ -23,6 +23,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	frequency = 2.0f;
 	speed = 0.05f;
 	amplitude = 0.2f;
+	textureAlpha = 1.0f;
 
 	timer = Timer();
 }

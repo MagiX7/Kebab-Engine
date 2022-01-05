@@ -160,13 +160,17 @@ The shader system allows you to refresh a shader when it is edited outside the e
 
 To test if the implementation of the shader system worked as expected, we were required to do a water simulation.
 
-You can find it under the folder Shaders in the Resources folder with the name "wave".
+You can find the shader for it under the folder Shaders in the Resources folder with the name "wave".
 
 This shader simulates a straight wave with foam at the top and deep blue at the bottom. In between, both colors interpolate with the mix method from GLSL.
 
 In order to achieve the wave movement we used the wave equation, and on top of it we added some noise using a random/hash.
 
 After all this we made the waves not go equally deep modifying the position with the sinus of position.zx.
+
+For this shader you can edit the amplitude of the wave, the frequency of the waves on the plane and the speed of them.
+
+We also provided four textures to give it more realism. You can change them through in the inspector panel. (In case you want to see it without textures, use the white texture). 
 
 
 ![Editors]()
