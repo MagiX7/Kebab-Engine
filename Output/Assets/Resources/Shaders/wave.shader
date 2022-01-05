@@ -15,12 +15,14 @@ uniform int time;
 uniform float amplitude;
 uniform float frequency;
 uniform float speed;
+uniform float textureAlpha;
 
 out vec3 vPosition;
 out vec3 vNormal;
 out vec3 vAmbientColor;
 out vec2 vTexCoords;
 out float vAmplitude;
+out float vTextureAlpha;
 
 float pi = 3.14159265359;
 
@@ -62,6 +64,7 @@ void main()
 	//vNormal = normalMatrix * normal;
 	vNormal = normalize((model * vec4(normal, 0.0)).xyz);
 	vAmplitude = amplitude;
+	vTextureAlpha = textureAlpha;
 	//vAmbientColor = ambientColor;	
 
 }
@@ -75,6 +78,7 @@ in vec3 vNormal;
 in vec3 vAmbientColor;
 in vec2 vTexCoords;
 in float vAmplitude;
+in float vTextureAlpha;
 
 out vec4 fragColor;
 
@@ -95,5 +99,5 @@ void main()
 
 	vec3 col = mix(vec3(0.0, 0.0, 0.4), -vAmbientColor, -1.0); // -1.0 its for white intesnity
 
-	fragColor = texture(tex, vTexCoords) * vec4(col, 1.0);
+	fragColor = texture(tex, vTexCoords) * vec4(col, vTextureAlpha);
 }

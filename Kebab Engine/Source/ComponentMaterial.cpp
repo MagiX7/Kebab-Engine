@@ -123,7 +123,10 @@ void ComponentMaterial::DrawOnInspector()
 		ImGui::NewLine();
 		ImGui::BulletText("Current Texture: ");
 		if (texture)
+		{
 			ImGui::Image((void*)texture->GetID(), { 150,150 });
+			ImGui::DragFloat("Alpha", &material->textureAlpha, 0.01f, 0.0, 1.0);
+		}
 		else
 		{
 			ImGui::SameLine();
@@ -137,21 +140,29 @@ void ComponentMaterial::DrawOnInspector()
 		ImGui::Separator();
 		ImGui::Separator();
 
+		ImGui::Spacing();
+
 		ImGui::Text("Material: %s", material->GetName().c_str());
 		ImGui::BulletText("Shader: %s", material->GetShader()->GetName().c_str());
-		
-		//static float3 col = material->ambientColor;
-		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
-		ImGui::DragFloat("Frequency", &material->frequency, 0.1, -2, 2);
-		ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
-		ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
-
 		if (ImGui::Button("Change Shader"))
 		{
 			closeShaderWindow = !closeShaderWindow;
 		}
-		if(closeShaderWindow)
+		if (closeShaderWindow)
 			ChangeShaderWindow();
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		
+		//static float3 col = material->ambientColor;
+		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
+
+		if (material->GetShader()->GetName() == "wave.shader")
+		{
+			ImGui::DragFloat("Frequency", &material->frequency, 0.1, -2, 2);
+			ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
+			ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
+		}
 
 		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 

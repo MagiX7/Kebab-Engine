@@ -70,15 +70,16 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 
 	shader->SetUniformVec3f("lightPos", { 10,20,0 });
 
-	shader->SetUniform1f("shininess", shininess);
 	shader->SetUniformVec3f("ambientColor", ambientColor);
+	
+	shader->SetUniform1f("shininess", shininess);
 
 	shader->SetUniform1i("time", timer.Read());
 	shader->SetUniform1f("amplitude", amplitude);
 	shader->SetUniform1f("frequency", frequency);
 	shader->SetUniform1f("speed", speed);
 
-
+	shader->SetUniform1f("textureAlpha", textureAlpha);
 }
 
 void Material::Unbind()

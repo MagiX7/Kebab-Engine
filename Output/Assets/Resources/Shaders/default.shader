@@ -9,24 +9,25 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat3 normalMatrix;
-
+uniform float textureAlpha;
 uniform vec3 ambientColor;
 
 out vec3 vPosition;
 out vec3 vAmbientColor;
 out vec2 vTexCoords;
+out float vTextureAlpha;
 
 void main()
 {
+	gl_Position = projection * view * model * vec4(position, 1);
+
 	vTexCoords = texCoords;
 	vPosition = vec3(model * vec4(position, 1));
 	//vNormal = normalMatrix * normal;
 	//vNormal = normalize((model * vec4(normal, 0.0)).xyz);
 	vAmbientColor = ambientColor;
-
-	gl_Position = projection * view * model * vec4(position, 1);
+	vTextureAlpha = textureAlpha;
 }
-
 
 
 #type fragment
@@ -35,6 +36,7 @@ void main()
 in vec3 vPosition;
 in vec3 vAmbientColor;
 in vec2 vTexCoords;
+in float vTextureAlpha;
 
 out vec4 fragColor;
 
@@ -42,16 +44,5 @@ uniform sampler2D tex;
 
 void main()
 {
-	//vec3 norm = normalize(vNormal);
-	//vec3 lightPos = vec3(20, 10, 5);
-	//vec3 lightDir = normalize(lightPos - vPosition);
-
-	/*float diff = max(dot(norm, lightDir), 0.0);
-	vec3 lightColor = vec3(1, 1, 0.1);
-	vec3 diffuse = diff * lightColor;*/
-
-	//vec3 ambient = vec3(0.8, 0.2, 0.2) ;
-	//vec3 result = (ambient + diffuse) * vAmbientColor;
-
-	fragColor = texture(tex, vTexCoords) * vec4(vAmbientColor, 1.0);
+	fragColor = texture(tex, vTexCoords) * vec4(vAmbientColor, vTextureAlpha);
 }

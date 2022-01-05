@@ -30,6 +30,7 @@ public:
 	float frequency;
 	float speed;
 	float amplitude;
+	float textureAlpha;
 
 	Timer timer;
 
