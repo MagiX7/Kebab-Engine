@@ -67,6 +67,8 @@ private:
 	std::string source;
 	std::string path;
 
+	bool created;
+
 	std::unordered_map<std::string, int> uniformsLocation;
 
 	struct _stat lastStat;

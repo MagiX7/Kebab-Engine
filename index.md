@@ -19,7 +19,7 @@ Hope you like it and it's useful for your projects.
 
 ### Work on Engine
 
-- FBX importer by drag & drop
+- 3D Models and textures importer (also supports drag & drop)
 
 - Mesh & Material Components
 
@@ -27,7 +27,7 @@ Hope you like it and it's useful for your projects.
 
 - Hierarchy Panel
 
-- Render Buffers
+- OpenGL full integration and abstraction
 
 - Geometry & Textures Drawing
 
@@ -146,7 +146,28 @@ Kebab engine can save and load diferent scenes, using it's own custom format. No
 
 # Shaders
 
-For the third and last assigment we decide to create the Shader pipeline using OpenGL. All the new meshes with materials have a basic shader, from there you can modify them.
+For the third and last assigment we decided to create the Shader pipeline using OpenGL. All the new meshes with materials have a basic shader, from there you can modify them at your own risk.
+
+Each shader comes in one single file with the extension .shader. There you can find both the vertex and the fragment shader, they are divided by using #type vertex or #type fragment.
+
+There is a default shader, which has the minimum implementation to compile and it supports textures, so you can still change it through the editor.
+
+By default each mesh has a 1x1 pixel texture, so you can modify the color in the editor (it is passed to the shader as a uniform). This is used because if the mesh does not have a texture, the sahder does not work and it renders all black.
+
+The shader system allows you to refresh a shader when it is edited outside the engine. So you can work on it and, when you save, the engine will automatically detect checking each five seconds if the last modified date of the file changed, and the shader will automatically be recompiled and a message on the console will show to give feedback.
+
+## Water demo
+
+To test if the implementation of the shader system worked as expected, we were required to do a water simulation.
+
+You can find it under the folder Shaders in the Resources folder with the name "wave".
+
+This shader simulates a straight wave with foam at the top and deep blue at the bottom. In between, both colors interpolate with the mix method from GLSL.
+
+In order to achieve the wave movement we used the wave equation, and on top of it we added some noise using a random/hash.
+
+After all this we made the waves not go equally deep modifying the position with the sinus of position.zx.
+
 
 ![Editors]()
 

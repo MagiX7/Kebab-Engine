@@ -44,6 +44,8 @@ Shader::Shader(const std::string& path) : path(path), rendererID(0)
 	int s = path.find_last_of("/");
 	int e = path.find_last_of(".");
 	name = path.substr(s + 1);
+
+	created = true;
 }
 
 Shader::~Shader()
@@ -214,7 +216,16 @@ unsigned int Shader::CreateShader(const std::string& vertexSource, const std::st
 	}
 	else
 	{
-		LOG_CONSOLE("Program Linking created successfully!");
+		if (created)
+		{
+			std::string n = name = name.substr(0, name.find("."));
+			LOG_CONSOLE("%s Shader refreshed!", n.c_str());
+		}
+		else
+		{
+			LOG_CONSOLE("Program Linking created successfully!");
+		}
+
 	}
 
 	//glDetachShader(rendererID, vs);

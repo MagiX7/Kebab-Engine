@@ -50,6 +50,7 @@ void main()
 
 	// Line below makes waves not go deep equaly
 	pos.zy += sin(pos.zx);
+	//pos.zy += mix(sin(pos.zx), cos(pos.xx), 1.50);
 
 
 	gl_Position = projection * view * model * vec4(pos, 1.0);
