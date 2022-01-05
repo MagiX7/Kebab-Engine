@@ -156,6 +156,8 @@ By default each mesh has a 1x1 pixel texture, so you can modify the color in the
 
 The shader system allows you to refresh a shader when it is edited outside the engine. So you can work on it and, when you save, the engine will automatically detect checking each five seconds if the last modified date of the file changed, and the shader will automatically be recompiled and a message on the console will show to give feedback.
 
+![Functionality](/docs/Gifs/ShaderFuncionality_gif.gif)
+
 ### Water demo
 
 To test if the implementation of the shader system worked as expected, we were required to do a water simulation.
@@ -172,10 +174,7 @@ For this shader you can edit the amplitude of the wave, the frequency of the wav
 
 We also provided four textures to give it more realism. You can change them through in the inspector panel. (In case you want to see it without textures, use the white texture). 
 
-
-![Editors]()
-
-![Functionality]()
+![Editors](/docs/Gifs/ShaderEditor_gif.gif)
 
 # Video demo
 
