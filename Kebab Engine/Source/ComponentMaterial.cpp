@@ -157,12 +157,23 @@ void ComponentMaterial::DrawOnInspector()
 		//static float3 col = material->ambientColor;
 		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
 
-		if (material->GetShader()->GetName() == "wave.shader")
+
+		//std::unordered_map<std::string, float> uniforms = material->GetShader()->GetUniforms();
+		std::list<UniformData> uniforms = material->GetShader()->GetUniforms();
+
+		std::list<UniformData>::iterator it = uniforms.begin();
+		for (; it != uniforms.end(); it++)
+		{	
+			ImGui::DragFloat(it->name.c_str(), &it->data);
+		}
+
+
+		/*if (material->GetShader()->GetName() == "wave.shader")
 		{
 			ImGui::DragFloat("Frequency", &material->frequency, 0.1, -2, 2);
 			ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
 			ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
-		}
+		}*/
 
 		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 

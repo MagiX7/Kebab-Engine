@@ -14,6 +14,13 @@ enum class ShaderType
 	GEOMETRY
 };
 
+struct UniformData
+{
+	unsigned int type;
+	float data;
+	std::string name;
+};
+
 class Shader
 {
 public:
@@ -49,6 +56,7 @@ public:
 	inline const std::string& GetPath() { return path; }
 	//inline const std::string& GetName() { return name; }
 
+	std::list<UniformData> GetUniforms();
 
 private:
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
