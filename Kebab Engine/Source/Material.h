@@ -31,6 +31,9 @@ public:
 	float speed;
 	float amplitude;
 	float textureAlpha;
+	float foamSpeed;
+	float2 foamDir;
+	float noiseAmount;
 
 	Timer timer;
 

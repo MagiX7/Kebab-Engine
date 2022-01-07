@@ -24,6 +24,9 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	speed = 0.05f;
 	amplitude = 0.2f;
 	textureAlpha = 1.0f;
+	foamSpeed = 0.0f;
+	noiseAmount = 1.0f;
+	foamDir = { 0.001,0.0 };
 
 	timer = Timer();
 }
@@ -79,6 +82,9 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniform1f("amplitude", amplitude);
 	shader->SetUniform1f("frequency", frequency);
 	shader->SetUniform1f("speed", speed);
+	shader->SetUniform1f("foamSpeed", foamSpeed);
+	shader->SetUniform1f("noiseAmount", noiseAmount);
+	shader->SetUnifromVec2f("foamDir", foamDir);
 
 	shader->SetUniform1f("textureAlpha", textureAlpha);
 }
