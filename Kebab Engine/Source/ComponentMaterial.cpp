@@ -257,10 +257,12 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_number(obj, "uuid", texture->uuid);
 		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
 	}
-	//if (material->GetShader())
-	if(material->GetName() == "Wave")
+
+	if (material->GetShader())
+	//if(material->GetName() == "Wave")
 	{
 		json_object_set_string(obj, "shader", material->GetShader()->GetPath().c_str());
+		json_object_set_string(obj, "material_name", material->GetName().c_str());
 		json_object_set_number(obj, "color_r", material->ambientColor.x);
 		json_object_set_number(obj, "color_g", material->ambientColor.y);
 		json_object_set_number(obj, "color_b", material->ambientColor.z);
@@ -291,7 +293,12 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 			currentTexture = texture.get();
 		}
 
-		std::string shaderPath = json_object_get_string(obj, "shader");
+		std::string shaderPath = "";
+
+		if (json_object_get_string(obj, "shader") != nullptr)
+			shaderPath = json_object_get_string(obj, "shader");
+
+		material->SetName(json_object_get_string(obj, "material_name"));
 		material->ambientColor.x = json_object_get_number(obj, "color_r");
 		material->ambientColor.y = json_object_get_number(obj, "color_g");
 		material->ambientColor.z = json_object_get_number(obj, "color_b");
