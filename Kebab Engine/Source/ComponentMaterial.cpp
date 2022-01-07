@@ -162,6 +162,7 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::DragFloat("Frequency", &material->frequency, 0.1);
 			ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
 			ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
+			ImGui::DragFloat("Noise Amount", &material->noiseAmount, 0.05);
 			ImGui::DragFloat("Foam Speed", &material->foamSpeed, 0.01, -2, 2);
 			ImGui::SameLine(0, -10.0f);
 			ImGui::TextDisabled("(?)");
@@ -267,8 +268,8 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_number(obj, "speed", material->speed);
 		json_object_set_number(obj, "amplitude", material->amplitude);
 		json_object_set_number(obj, "alpha", material->textureAlpha);
-		json_object_set_number(obj, "foamSpeed", material->foamSpeed);
 		json_object_set_number(obj, "noiseAmount", material->noiseAmount);
+		json_object_set_number(obj, "foamSpeed", material->foamSpeed);
 	}
 
 	return value;
@@ -298,8 +299,8 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 		material->speed = json_object_get_number(obj, "speed");
 		material->amplitude = json_object_get_number(obj, "amplitude");
 		material->textureAlpha = json_object_get_number(obj, "alpha");
-		material->foamSpeed = json_object_get_number(obj, "foamSpeed");
 		material->noiseAmount = json_object_get_number(obj, "noiseAmount");
+		material->foamSpeed = json_object_get_number(obj, "foamSpeed");
 
 
 		std::vector<Shader*> shaders = app->renderer3D->GetShaders();
