@@ -71,11 +71,11 @@ void ComponentMaterial::Update(float dt)
 
 void ComponentMaterial::Bind(ComponentCamera* cam)
 {
-	/*if(texture && currentTexture == texture.get())
-		texture->Bind();*/
+	if(texture && currentTexture == texture.get())
+		texture->Bind();
 	ComponentTransform* trans = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
 	float4x4 mat = trans->GetGlobalMatrix();	
-	material->Bind(mat, cam, texture.get());
+	material->Bind(mat, cam);
 }
 
 void ComponentMaterial::Unbind()

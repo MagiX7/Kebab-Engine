@@ -36,7 +36,7 @@ Material::~Material()
 	// Shader is deleted in renderer
 }
 
-void Material::Bind(const float4x4& transform, ComponentCamera* cam, Texture* tex)
+void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 {
 	if (!shader)
 		return;
@@ -64,10 +64,6 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam, Texture* te
 		matCam = app->camera->editorCam;
 
 	shader->Bind();
-
-	tex->Bind();
-	shader->SetUniform1i("texture", tex->GetID());
-
 
 	shader->SetUniformMatrix4f("model", transform.Transposed());
 	float4x4 view = matCam->frustum.ViewMatrix();
