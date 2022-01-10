@@ -16,6 +16,9 @@ uniform float amplitude;
 uniform float frequency;
 uniform float speed;
 uniform float textureAlpha;
+uniform float foamSpeed;
+uniform vec2 foamDir;
+uniform float noiseAmount;
 
 out vec3 vPosition;
 out vec3 vNormal;
@@ -43,12 +46,27 @@ float noise(in vec3 x)
 			mix(hash(n + 170.0), hash(n + 171.0), f.x), f.y), f.z);
 }
 
+
+float random(vec2 p)
+{
+	vec2 K1 = vec2(23.14069263277926, 2.665144142690225);
+
+	//return fract( cos( mod( 12345678., 256. * dot(p,K1) ) ) ); // ver1
+	return fract(cos(dot(p, K1)) * 12345.6789); // ver3
+}
+
+float random2(vec2 co)
+{
+	return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 void main()
 {
 	vec3 pos = position;
-	pos.y = amplitude * 2 * pi * sin((time/10) * speed * 0.1 - pos.x * frequency);
+	pos.y = amplitude * 2 * pi * sin((time * 0.1) * speed * 0.1 - pos.x * frequency);
 
-	pos.y += noise(tan(pos));
+	//pos.y += noise(pos)
+	pos.y += random(tan(pos.xz)) * noiseAmount;
 
 	// Line below makes waves not go deep equaly
 	pos.zy += sin(pos.zx);
@@ -59,7 +77,13 @@ void main()
 
 	vAmbientColor = pos.y * ambientColor;
 
-	vTexCoords = texCoords;
+	vec2 tcDir = normalize(foamDir);
+
+	vec2 tc = texCoords;
+	tc.x -= foamSpeed * time * 0.001; //* tcDir.x;
+	tc.y -= foamSpeed * time * 0.001; //* tcDir.y;
+	vTexCoords = tc;
+
 	vPosition = vec3(model * vec4(position, 1));
 	//vNormal = normalMatrix * normal;
 	vNormal = normalize((model * vec4(normal, 0.0)).xyz);

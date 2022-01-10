@@ -250,11 +250,20 @@ void ComponentMesh::Load(JSON_Object* obj, GameObject* parent)
 	meshName += "__" + std::to_string(uuid);*/
 	if (model = std::static_pointer_cast<KbModel>(ResourceManager::GetInstance()->IsAlreadyLoaded(modelPath)))
 	{
-		static int it = 0;
+		for (int i = 0; i < model->GetMeshes().size(); ++i)
+		{
+			if (model->GetMeshes()[i]->GetLibraryPath() == path)
+			{
+				mesh = model->GetMeshes()[i];
+				mesh->uuid = uuid;
+			}
+		}
+
+		/*static int it = 0;
 		if (it >= model->GetMeshes().size())
 			it = 0;
 		mesh = model->GetMeshes()[it++];
-		mesh->uuid = uuid;
+		mesh->uuid = uuid;*/
 	}
 
 

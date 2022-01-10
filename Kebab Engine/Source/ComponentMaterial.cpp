@@ -169,11 +169,26 @@ void ComponentMaterial::DrawOnInspector()
 
 
 		/*if (material->GetShader()->GetName() == "wave.shader")
+		if (material->GetName() == "Wave")
 		{
-			ImGui::DragFloat("Frequency", &material->frequency, 0.1, -2, 2);
+			ImGui::DragFloat("Frequency", &material->frequency, 0.1);
 			ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
 			ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
 		}*/
+		// 	ImGui::DragFloat("Noise Amount", &material->noiseAmount, 0.05);
+		// 	ImGui::DragFloat("Foam Speed", &material->foamSpeed, 0.01, -2, 2);
+		// 	ImGui::SameLine(0, -10.0f);
+		// 	ImGui::TextDisabled("(?)");
+		// 	if (ImGui::IsItemHovered())
+		// 	{
+		// 		ImGui::BeginTooltip();
+		// 		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		// 		ImGui::TextUnformatted("Only works when there is a texture different than white");
+		// 		ImGui::PopTextWrapPos();
+		// 		ImGui::EndTooltip();
+		// 	}
+		// 	//ImGui::DragFloat2("Foam Direction", material->foamDir.ptr());
+		// }
 
 		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 
@@ -255,9 +270,12 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_number(obj, "uuid", texture->uuid);
 		json_object_set_string(obj, "path", texture->GetLibraryPath().c_str());
 	}
+
 	if (material->GetShader())
+	//if(material->GetName() == "Wave")
 	{
 		json_object_set_string(obj, "shader", material->GetShader()->GetPath().c_str());
+		json_object_set_string(obj, "material_name", material->GetName().c_str());
 		json_object_set_number(obj, "color_r", material->ambientColor.x);
 		json_object_set_number(obj, "color_g", material->ambientColor.y);
 		json_object_set_number(obj, "color_b", material->ambientColor.z);
@@ -265,6 +283,8 @@ JSON_Value* ComponentMaterial::Save()
 		json_object_set_number(obj, "speed", material->speed);
 		json_object_set_number(obj, "amplitude", material->amplitude);
 		json_object_set_number(obj, "alpha", material->textureAlpha);
+		json_object_set_number(obj, "noiseAmount", material->noiseAmount);
+		json_object_set_number(obj, "foamSpeed", material->foamSpeed);
 	}
 
 	return value;
@@ -286,7 +306,12 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 			currentTexture = texture.get();
 		}
 
-		std::string shaderPath = json_object_get_string(obj, "shader");
+		std::string shaderPath = "";
+
+		if (json_object_get_string(obj, "shader") != nullptr)
+			shaderPath = json_object_get_string(obj, "shader");
+
+		material->SetName(json_object_get_string(obj, "material_name"));
 		material->ambientColor.x = json_object_get_number(obj, "color_r");
 		material->ambientColor.y = json_object_get_number(obj, "color_g");
 		material->ambientColor.z = json_object_get_number(obj, "color_b");
@@ -294,6 +319,9 @@ void ComponentMaterial::Load(JSON_Object* obj, GameObject* parent)
 		material->speed = json_object_get_number(obj, "speed");
 		material->amplitude = json_object_get_number(obj, "amplitude");
 		material->textureAlpha = json_object_get_number(obj, "alpha");
+		material->noiseAmount = json_object_get_number(obj, "noiseAmount");
+		material->foamSpeed = json_object_get_number(obj, "foamSpeed");
+
 
 		std::vector<Shader*> shaders = app->renderer3D->GetShaders();
 		for (std::vector<Shader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
@@ -340,6 +368,10 @@ void ComponentMaterial::ChangeShaderWindow()
 		if (ImGui::Button(name.c_str(), { 100,100 }))
 		{
 			material->SetShader((*it));
+			if (nameShow == "wave")
+				material->SetName("Wave");
+			else
+				material->SetName("Default");
 			// Maybe need to change the path
 		}
 
