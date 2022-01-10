@@ -15,7 +15,7 @@ public:
 	Material();
 	virtual ~Material();
 
-	void Bind(const float4x4& transform, ComponentCamera* cam);
+	void Bind(const float4x4& transform, ComponentCamera* cam, Texture* tex);
 	void Unbind();
 
 	inline void SetName(const std::string& newName) { name = newName; }
