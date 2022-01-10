@@ -4,8 +4,8 @@
         "max fps": 62
     },
     "window": {
-        "width": 1024,
-        "height": 768,
+        "width": 1666,
+        "height": 872,
         "brightness": 1,
         "fullscreen": false,
         "fulldesktop": false,
@@ -36,8 +36,6 @@
         "lighting": true,
         "color material": true,
         "texture2D": true,
-        "wireframe": false,
-        "blend": true,
-        "drawaabb": true
+        "wireframe": false
     }
 }

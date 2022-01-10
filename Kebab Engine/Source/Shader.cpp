@@ -214,6 +214,12 @@ std::list<UniformData> Shader::GetUniforms()
 	return ret;
 }
 
+void Shader::UpdateSourceCode(const std::string& newSource)
+{
+	source = newSource;
+	ReCompile();
+}
+
 unsigned int Shader::CreateShader(const std::string& vertexSource, const std::string& fragmentSource)
 {
 	unsigned int vs = glCreateShader(GL_VERTEX_SHADER);

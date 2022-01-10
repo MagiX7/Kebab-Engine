@@ -184,6 +184,12 @@
     <ClCompile Include="Source\Shader.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Source\External\ImGuiColorTextEdit\TextEditor.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelEditShader.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -398,6 +404,12 @@
     </ClInclude>
     <ClInclude Include="Source\Shader.h">
       <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGuiColorTextEdit\TextEditor.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelEditShader.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

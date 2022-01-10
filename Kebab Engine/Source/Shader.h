@@ -57,6 +57,7 @@ public:
 	//inline const std::string& GetName() { return name; }
 
 	std::list<UniformData> GetUniforms();
+	void UpdateSourceCode(const std::string& newSource);
 
 private:
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);

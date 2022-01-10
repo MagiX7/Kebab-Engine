@@ -26,6 +26,7 @@
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\External\ImGuiColorTextEdit\TextEditor.cpp" />
     <ClCompile Include="Source\FileDialog.cpp" />
     <ClCompile Include="Source\KbCube.cpp" />
     <ClCompile Include="Source\KbCylinder.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="Source\Camera3D.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\PanelConsole.cpp" />
+    <ClCompile Include="Source\PanelEditShader.cpp" />
     <ClCompile Include="Source\PanelGameDebugInfo.cpp" />
     <ClCompile Include="Source\PanelHierarchy.cpp" />
     <ClCompile Include="Source\PanelImportModel.cpp" />
@@ -90,6 +92,7 @@
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
+    <ClInclude Include="Source\External\ImGuiColorTextEdit\TextEditor.h" />
     <ClInclude Include="Source\FileDialog.h" />
     <ClInclude Include="Source\KbCube.h" />
     <ClInclude Include="Source\KbCylinder.h" />
@@ -108,6 +111,7 @@
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\ModelProperties.h" />
     <ClInclude Include="Source\PanelAssets.h" />
+    <ClInclude Include="Source\PanelEditShader.h" />
     <ClInclude Include="Source\PanelGameDebugInfo.h" />
     <ClInclude Include="Source\PanelHierarchy.h" />
     <ClInclude Include="Source\PanelImportModel.h" />
@@ -228,7 +232,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>USE_OPTICK;USE_IMGUI_API;GLEW_STATIC;_WIN32;_CRT_SECURE_NO_WARNINGS;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Optick\src;$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\DevIL\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Optick\src;$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\DevIL\include;$(ProjectDir)Source\External\ImGuiColorTextEdit;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -246,7 +250,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>USE_OPTICK;USE_IMGUI_API;GLEW_STATIC;_WIN32;_CRT_SECURE_NO_WARNINGS;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Optick\src;$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\DevIL\include;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Optick\src;$(ProjectDir)Source\External\assimp\include;$(ProjectDir)Source\External\PhysFS\include;$(ProjectDir)Source\External\parson\src;$(ProjectDir)Source\External\MathGeoLib\src;$(ProjectDir)Source\External\glew\include;$(ProjectDir)Source\External;$(ProjectDir)Source\External\DevIL\include;$(ProjectDir)Source\External\ImGuiColorTextEdit;$(ProjectDir)Source\External\glut;$(ProjectDir)Source\External\SDL_mixer\include;$(ProjectDir)Source\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

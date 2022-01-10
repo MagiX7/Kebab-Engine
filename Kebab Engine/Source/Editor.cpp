@@ -13,6 +13,9 @@
 #include "TextureLoader.h"
 
 #include "ComponentCamera.h"
+#include "ComponentMaterial.h"
+#include "Material.h"
+#include "Shader.h"
 
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
@@ -24,6 +27,7 @@
 #include "PanelGameDebugInfo.h"
 #include "PanelImportTexture.h"
 #include "PanelImportModel.h"
+#include "PanelEditShader.h"
 
 #include "FileDialog.h"
 
@@ -51,6 +55,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     gameDebugInfoPanel = new GameDebugInfoPanel();
     panelImportTexture = new ImportTexturePanel();
     panelImportModel = new PanelImportModel();
+    //panelEditShader = new PanelEditShader();
 
     showAboutPanel = false;
     showWindows = true;
@@ -96,6 +101,15 @@ bool Editor::Start()
 
     assetsPanel->LoadAssetsToCustom();
 
+    /*if (hierarchyPanel->currentGO)
+    {
+        ComponentMaterial* matComp = (ComponentMaterial*)hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL);
+        if (matComp)
+        {
+            panelEditShader->SetFileToEdit(matComp->GetMaterial()->GetShader()->GetPath().c_str());
+        }
+    }*/
+
 	return true;
 }
 
@@ -107,8 +121,6 @@ bool Editor::Update(float dt)
 
 bool Editor::Draw(float dt)
 {
-
-
 	return true;
 }
 
@@ -259,6 +271,8 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
         if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         if (panelImportModel->active) panelImportModel->OnRender(dt);
+        //if (panelEditShader->active) panelEditShader->OnRender(dt);
+
     }
 
     if (wantsToQuit)

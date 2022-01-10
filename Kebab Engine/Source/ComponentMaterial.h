@@ -9,6 +9,7 @@
 class Texture;
 class Material;
 class ComponentCamera;
+class PanelEditShader;
 
 class ComponentMaterial : public Component
 {
@@ -42,10 +43,13 @@ private:
 	void SetCheckersTexture();
 	void ChangeShaderWindow();
 
+	void ShowEditShaderWindow();
+
 private:
 	Material* material;
 	float3 ambientColor;
 
+	PanelEditShader* panelEditShader;
 
 	std::shared_ptr<Texture> texture;
 	bool unselect = false;
