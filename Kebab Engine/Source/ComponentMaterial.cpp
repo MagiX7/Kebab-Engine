@@ -157,6 +157,8 @@ void ComponentMaterial::DrawOnInspector()
 			panelEditShader->SetFileToEdit(material->GetShader()->GetPath().c_str());
 			panelEditShader->SetShader(material->GetShader());
 		}
+		if (panelEditShader->active)
+			panelEditShader->OnRender(0);
 
 		if (ImGui::Button("Change Shader"))
 			closeShaderWindow = !closeShaderWindow;
@@ -172,38 +174,35 @@ void ComponentMaterial::DrawOnInspector()
 
 
 		//std::unordered_map<std::string, float> uniforms = material->GetShader()->GetUniforms();
-		std::list<UniformData> uniforms = material->GetShader()->GetUniforms();
+		/*std::list<UniformData> uniforms = material->GetShader()->GetUniforms();
 
 		std::list<UniformData>::iterator it = uniforms.begin();
 		for (; it != uniforms.end(); it++)
 		{	
 			ImGui::DragFloat(it->name.c_str(), &it->data);
-		}
+		}*/
+				
 
-		if (panelEditShader->active)
-			panelEditShader->OnRender(0);
-
-		/*if (material->GetShader()->GetName() == "wave.shader")
+		//if (material->GetShader()->GetName() == "wave.shader")
 		if (material->GetName() == "Wave")
 		{
 			ImGui::DragFloat("Frequency", &material->frequency, 0.1);
 			ImGui::DragFloat("Speed", &material->speed, 0.01, -2, 2);
 			ImGui::DragFloat("Amplitude", &material->amplitude, 0.01, -2, 2);
-		}*/
-		// 	ImGui::DragFloat("Noise Amount", &material->noiseAmount, 0.05);
-		// 	ImGui::DragFloat("Foam Speed", &material->foamSpeed, 0.01, -2, 2);
-		// 	ImGui::SameLine(0, -10.0f);
-		// 	ImGui::TextDisabled("(?)");
-		// 	if (ImGui::IsItemHovered())
-		// 	{
-		// 		ImGui::BeginTooltip();
-		// 		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		// 		ImGui::TextUnformatted("Only works when there is a texture different than white");
-		// 		ImGui::PopTextWrapPos();
-		// 		ImGui::EndTooltip();
-		// 	}
-		// 	//ImGui::DragFloat2("Foam Direction", material->foamDir.ptr());
-		// }
+		 	ImGui::DragFloat("Noise Amount", &material->noiseAmount, 0.05);
+		 	ImGui::DragFloat("Foam Speed", &material->foamSpeed, 0.01, -2, 2);
+		 	ImGui::SameLine(0, -10.0f);
+		 	ImGui::TextDisabled("(?)");
+		 	if (ImGui::IsItemHovered())
+		 	{
+		 		ImGui::BeginTooltip();
+		 		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		 		ImGui::TextUnformatted("Only works when there is a texture different than white");
+		 		ImGui::PopTextWrapPos();
+		 		ImGui::EndTooltip();
+		 	}
+		 	//ImGui::DragFloat2("Foam Direction", material->foamDir.ptr());
+		 }
 
 		ImGui::BulletText("Last time modified: %s", material->GetShader()->GetLastModifiedDate());
 
