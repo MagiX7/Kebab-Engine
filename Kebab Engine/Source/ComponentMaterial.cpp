@@ -155,6 +155,7 @@ void ComponentMaterial::DrawOnInspector()
 		{
 			panelEditShader->active = true;
 			panelEditShader->SetFileToEdit(material->GetShader()->GetPath().c_str());
+			panelEditShader->SetShader(material->GetShader());
 		}
 
 		if (ImGui::Button("Change Shader"))

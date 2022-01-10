@@ -65,7 +65,7 @@ private:
 	std::string ReadFile();
 	std::unordered_map<unsigned int, std::string> SplitShaders(const std::string& source);
 
-	void ReCompile();
+	void ReCompile(bool reReadSource = true);
 
 
 	int GetUniform(const std::string& name);

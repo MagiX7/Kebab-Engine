@@ -63,9 +63,10 @@ void Shader::Unbind()
 	glUseProgram(0);
 }
 
-void Shader::ReCompile()
+void Shader::ReCompile(bool reReadSource)
 {
-	source = ReadFile();
+	if(reReadSource)
+		source = ReadFile();
 
 	auto shaderSources = SplitShaders(source);
 
@@ -217,7 +218,7 @@ std::list<UniformData> Shader::GetUniforms()
 void Shader::UpdateSourceCode(const std::string& newSource)
 {
 	source = newSource;
-	ReCompile();
+	ReCompile(false);
 }
 
 unsigned int Shader::CreateShader(const std::string& vertexSource, const std::string& fragmentSource)

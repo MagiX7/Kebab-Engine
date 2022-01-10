@@ -4,6 +4,8 @@
 
 #include "TextEditor.h"
 
+class Shader;
+
 class PanelEditShader : public Panel
 {
 public:
@@ -13,6 +15,7 @@ public:
 	void OnRender(float dt) override;
 
 	void SetFileToEdit(const char* file);
+	void SetShader(Shader* s);
 
 private:
 	TextEditor editor;
@@ -20,4 +23,5 @@ private:
 	
 	const char* fileToEdit;
 
+	Shader* shader;
 };

@@ -1,5 +1,8 @@
 #include "Application.h"
+#include "Input.h"
 #include "Editor.h"
+#include "FileSystem.h"
+
 #include "PanelHierarchy.h"
 #include "Shader.h"
 
@@ -26,9 +29,23 @@ void PanelEditShader::OnRender(float dt)
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
 
+	const std::string title = "Editing " + shader->GetName();
+
 	auto cpos = editor.GetCursorPosition();
-	ImGui::Begin("Text Editor Demo", &active, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
+	ImGui::Begin(title.c_str(), &active, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
 	ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+
+	if (ImGui::IsItemFocused())
+	{
+		if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+		{
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+			{
+				std::string textToSave = editor.GetText();
+				shader->UpdateSourceCode(textToSave);
+			}
+		}
+	}
 
 	if (ImGui::BeginMenuBar())
 	{
@@ -37,10 +54,11 @@ void PanelEditShader::OnRender(float dt)
 			if (ImGui::MenuItem("Save"))
 			{
 				std::string textToSave = editor.GetText();
+				shader->UpdateSourceCode(textToSave);
 
-				ComponentMaterial* matComp = (ComponentMaterial*)app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL);
-				matComp->GetMaterial()->GetShader()->UpdateSourceCode(textToSave);
-				
+				const char* a = "Assets/Resources/Shaders/test.shader";
+				app->fileSystem->Save(a, (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
+
 			}
 			ImGui::EndMenu();
 		}
@@ -87,7 +105,7 @@ void PanelEditShader::OnRender(float dt)
 			ImGui::EndMenu();
 		}
 		
-		ImGui::Separator();
+		/*ImGui::Separator();
 
 		if (ImGui::Button("Set Current GameObject Shader"))
 		{
@@ -97,7 +115,7 @@ void PanelEditShader::OnRender(float dt)
 				SetFileToEdit(matComp->GetMaterial()->GetShader()->GetPath().c_str());
 			}
 			else LOG("Select a Game Object with shader on it");
-		}
+		}*/
 		ImGui::EndMenuBar();
 	}
 
@@ -106,7 +124,7 @@ void PanelEditShader::OnRender(float dt)
 		editor.CanUndo() ? "*" : " ",
 		editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
 
-	editor.Render("TextEditor");
+	editor.Render(title.c_str());
 	ImGui::End();
 }
 
@@ -119,4 +137,9 @@ void PanelEditShader::SetFileToEdit(const char* file)
 		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 		editor.SetText(str);
 	}
+}
+
+void PanelEditShader::SetShader(Shader* s)
+{
+	shader = s;
 }
