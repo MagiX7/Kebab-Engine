@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "ComponentLight.h"
 
 #include "ResourceManager.h"
 
@@ -18,8 +19,10 @@
 #include "Shader.h"
 
 #include "QdTree.h"
+#include "KbPyramid.h"
 
 #include "Math/float4x4.h"
+
 #include "SDL_opengl.h"
 
 #include <gl/GL.h>
@@ -100,12 +103,17 @@ bool Renderer3D::Init(JSON_Object* root)
 		GLfloat LightModelAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
 		
+		dirLight = new DirectionalLight();
+
 		lights[0].ref = GL_LIGHT0;
-		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
-		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		//lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[0].ambient.Set(dirLight->ambient.x, dirLight->ambient.y, dirLight->ambient.z, 1.0f);
+		//lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[0].diffuse.Set(dirLight->diffuse.x, dirLight->diffuse.x, dirLight->diffuse.x, 1.0f);
 		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
-		
+		lights[0].Active(true);
+
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
 
@@ -127,7 +135,6 @@ bool Renderer3D::Init(JSON_Object* root)
 
 	SetDepth();
 	SetCullFace();
-	lights[0].Active(true);
 	SetLighting();
 	SetColorMaterial();
 	SetTexture2D();
@@ -155,6 +162,37 @@ bool Renderer3D::Init(JSON_Object* root)
 	return ret;
 }
 
+bool Renderer3D::Start()
+{
+	goDirLight = new GameObject("Directional Light");
+	ComponentLight* lightComp = new ComponentLight();
+	lightComp->SetLight(dirLight);
+	goDirLight->AddComponent(lightComp);
+	lightComp->SetParent(goDirLight);
+	app->scene->AddGameObject(goDirLight);
+
+	ComponentTransform* tr = (ComponentTransform*)goDirLight->GetComponent(ComponentType::TRANSFORM);
+	tr->SetRotation({ 173, 0, -63 });
+	tr->SetTranslation({ -8, 17, -0.45 });
+
+	GameObject* go = MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID, true);
+	goDirLight->AddChild(go);
+	go->SetParent(goDirLight);
+	ComponentTransform* childTr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	childTr->SetGlobalMatrix(tr->GetGlobalMatrix());
+
+	// TODO: It draws in game scene, should we create another list for go's
+	// that only are for dev purposes?
+	// Draw it with UI when it is done?
+	Submit(goDirLight);
+
+	lights[0].position.x = tr->GetTranslation().x;
+	lights[0].position.y = tr->GetTranslation().y;
+	lights[0].position.z = tr->GetTranslation().z;
+
+	return true;
+}
+
 // PreUpdate: clear buffer
 bool Renderer3D::PreUpdate(float dt)
 {
@@ -169,6 +207,9 @@ bool Renderer3D::PreUpdate(float dt)
 
 	// light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
+
+	lights[0].ambient.Set(dirLight->ambient.x, dirLight->ambient.y, dirLight->ambient.z, 1.0f);
+	lights[0].diffuse.Set(dirLight->diffuse.x, dirLight->diffuse.x, dirLight->diffuse.x, 1.0f);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -195,14 +236,13 @@ bool Renderer3D::Draw(float dt)
 	if (app->editor->debugQT)
 		app->scene->rootQT->DrawTree();
 
+	glPopMatrix();
+	glPopMatrix();
+
 	if (app->camera->gameCam)
 	{
 		DoRender(true);
 	}
-
-	glPopMatrix();
-	glPopMatrix();
-
 	sceneFbo->Unbind();
 
 
@@ -222,11 +262,11 @@ bool Renderer3D::Draw(float dt)
 	if (ComponentCamera* c = app->camera->gameCam)
 		c->DrawFrustum();
 	
+	glPopMatrix();
+	glPopMatrix();
+
 	DoRender(false);
 	editorFbo->Unbind();
-
-	glPopMatrix();
-	glPopMatrix();
 
 	SDL_GL_SwapWindow(app->window->window);
 	return true;
@@ -252,6 +292,9 @@ bool Renderer3D::CleanUp()
 		s = 0;
 	}
 	shaders.clear();
+
+	delete dirLight;
+	dirLight = 0;
 
 	SDL_GL_DeleteContext(context);
 

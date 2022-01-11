@@ -34,9 +34,9 @@ public:
 
 	ComponentCamera* GetCamera() { return camera; }
 
-	QdTree* rootQT;
 public:
 	ComponentCamera* camera;
+	QdTree* rootQT;
 
 private:
 	GameObject* root;

@@ -1,11 +1,11 @@
 
 #pragma once
 #include "Color.h"
-#include "glmath.h"
-
-struct Light
+//#include "glmath.h"
+#include "Math/float3.h"
+struct OldLight
 {
-	Light();
+	OldLight();
 
 	void Init();
 	void SetPos(float x, float y, float z);
@@ -14,7 +14,7 @@ struct Light
 
 	Color ambient;
 	Color diffuse;
-	vec3 position;
+	float3 position;
 
 	int ref;
 	bool on;

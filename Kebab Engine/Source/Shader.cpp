@@ -28,6 +28,10 @@ GLenum GetShaderTypeFromString(const std::string& type)
 
 Shader::Shader(const std::string& path) : path(path), rendererID(0)
 {
+	int s = path.find_last_of("/");
+	int e = path.find_last_of(".");
+	name = path.substr(s + 1);
+
 	struct _stat nowStat;
 	if (_stat(path.c_str(), &nowStat) == 0)
 	{
@@ -40,10 +44,6 @@ Shader::Shader(const std::string& path) : path(path), rendererID(0)
 	
 	//CreateShader(shaderSources[GL_VERTEX_SHADER], shaderSources[GL_FRAGMENT_SHADER]);
 	CreateShader(shaderSources[GL_VERTEX_SHADER], shaderSources[GL_FRAGMENT_SHADER]);
-
-	int s = path.find_last_of("/");
-	int e = path.find_last_of(".");
-	name = path.substr(s + 1);
 
 	created = true;
 }
@@ -274,7 +274,7 @@ unsigned int Shader::CreateShader(const std::string& vertexSource, const std::st
 		}
 		else
 		{
-			LOG_CONSOLE("Program Linking created successfully!");
+			LOG_CONSOLE("Linked program %s successfully!", name.c_str());
 		}
 
 	}

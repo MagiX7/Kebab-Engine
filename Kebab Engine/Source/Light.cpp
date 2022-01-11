@@ -4,23 +4,23 @@
 #include <gl/GL.h>
 //#include <gl/GLU.h>
 
-Light::Light() : ref(-1), on(false), position(0.0f, 0.0f, 0.0f)
+OldLight::OldLight() : ref(-1), on(false), position(0.0f, 0.0f, 0.0f)
 {}
 
-void Light::Init()
+void OldLight::Init()
 {
 	glLightfv(ref, GL_AMBIENT, &ambient);
 	glLightfv(ref, GL_DIFFUSE, &diffuse);
 }
 
-void Light::SetPos(float x, float y, float z)
+void OldLight::SetPos(float x, float y, float z)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
 }
 
-void Light::Render()
+void OldLight::Render()
 {
 	if(on)
 	{
@@ -29,7 +29,7 @@ void Light::Render()
 	}
 }
 
-void Light::Active(bool active)
+void OldLight::Active(bool active)
 {
 	if(on != active)
 	{

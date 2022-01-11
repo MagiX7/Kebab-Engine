@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Buffer.cpp" />
     <ClCompile Include="Source\ComponentCamera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\ComponentLight.cpp" />
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Source\External\par\par_shapes.cpp" />
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Lights.cpp" />
     <ClCompile Include="Source\Material.cpp" />
     <ClCompile Include="Source\KbMesh.cpp" />
     <ClCompile Include="Source\MeshLoader.cpp" />
@@ -89,6 +91,7 @@
     <ClInclude Include="Source\ComponentCamera.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentLight.h" />
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
@@ -105,6 +108,7 @@
     <ClInclude Include="Source\External\par\par_shapes.h" />
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Lights.h" />
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\KbMesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />

@@ -11,6 +11,8 @@
 #include "MeshLoader.h"
 #include "QdTree.h"
 
+#include "ComponentLight.h"
+
 #include "KbCube.h"
 #include "KbSphere.h"
 
@@ -61,7 +63,7 @@ bool MainScene::Start()
     aabbAux.minPoint = min;
     aabbAux.maxPoint = max;
     rootQT->Create(aabbAux);
-    
+
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Plane.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx", true));

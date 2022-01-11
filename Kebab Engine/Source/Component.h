@@ -24,6 +24,7 @@ public:
 	virtual void Update(float dt) {};
 
 	virtual void DrawOnInspector() {};
+	virtual void DrawOnScene() {};
 
 	virtual inline bool IsActive() { return active; }
 	virtual inline void SetActive(bool value) { active = value; }

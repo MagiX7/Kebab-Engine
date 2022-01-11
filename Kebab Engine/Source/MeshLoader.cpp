@@ -440,7 +440,7 @@ unsigned int MeshLoader::GetModelFlags(const ModelProperties& props)
     return ret;
 }
 
-GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
+GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type, bool willHaveParent)
 {
     GameObject* go = nullptr;
     KbMesh* mesh = nullptr;
@@ -521,7 +521,8 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
         go->CreateComponent(ComponentType::MATERIAL);    
 
-        app->scene->AddGameObject(go);
+        if(!willHaveParent)
+            app->scene->AddGameObject(go);
     }
     
 

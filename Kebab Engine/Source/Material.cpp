@@ -9,6 +9,8 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Lights.h"
+
 #include "Timer.h"
 
 Material::Material() : Resource(ResourceType::MATERIAL)
@@ -20,6 +22,10 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	uuid = ResourceManager::GetInstance()->GenerateUUID();
 
 	ambientColor = { 0.4,0.4,0.4 };
+	diffuseColor = ambientColor;
+	specularColor = { 0.5,0.5,0.5 };
+	shininess = 32.0f;
+
 	frequency = 2.0f;
 	speed = 0.05f;
 	amplitude = 0.2f;
@@ -72,22 +78,34 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	float4x4 normalMat = view;
 	normalMat.Inverse();
 	shader->SetUniformMatrix3f("normalMatrix", normalMat.Float3x3Part().Transposed());
-
-	shader->SetUniformVec3f("lightPos", { 10,20,0 });
+	shader->SetUniformVec3f("camPos", app->camera->GetCurrentCamera()->GetPosition());
 
 	shader->SetUniformVec3f("ambientColor", ambientColor);
-	
-	shader->SetUniform1f("shininess", shininess);
-
-	shader->SetUniform1i("time", timer.Read());
-	shader->SetUniform1f("amplitude", amplitude);
-	shader->SetUniform1f("frequency", frequency);
-	shader->SetUniform1f("speed", speed);
-	shader->SetUniform1f("foamSpeed", foamSpeed);
-	shader->SetUniform1f("noiseAmount", noiseAmount);
-	shader->SetUnifromVec2f("foamDir", foamDir);
-
 	shader->SetUniform1f("textureAlpha", textureAlpha);
+
+	shader->SetUniformVec3f("material.ambient", ambientColor);
+	shader->SetUniformVec3f("material.diffuse", diffuseColor);
+	shader->SetUniformVec3f("material.specular", specularColor);
+	shader->SetUniform1f("material.shinnines", shininess);
+
+	ComponentTransform* tr = (ComponentTransform*)app->renderer3D->goDirLight->GetComponent(ComponentType::TRANSFORM);
+	float4 dir = tr->GetRotation().CastToFloat4();
+	shader->SetUniformVec3f("dirLight.direction", dir.Float3Part());
+	shader->SetUniformVec3f("dirLight.ambient", app->renderer3D->dirLight->ambient);
+	shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
+	shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
+
+	if (shader->GetName() == "wave.shader")
+	{
+		shader->SetUniform1i("time", timer.Read());
+		shader->SetUniform1f("amplitude", amplitude);
+		shader->SetUniform1f("frequency", frequency);
+		shader->SetUniform1f("speed", speed);
+		shader->SetUniform1f("foamSpeed", foamSpeed);
+		shader->SetUniform1f("noiseAmount", noiseAmount);
+		shader->SetUnifromVec2f("foamDir", foamDir);
+	}
+
 }
 
 void Material::Unbind()

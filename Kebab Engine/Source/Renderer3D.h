@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "Light.h"
+#include "Lights.h"
 
 #define MAX_LIGHTS 8
 
@@ -23,6 +24,7 @@ public:
 	~Renderer3D();
 
 	bool Init(JSON_Object* root);
+	bool Start() override;
 	bool PreUpdate(float dt);
 	bool Draw(float dt);
 	bool CleanUp();
@@ -61,7 +63,7 @@ private:
 
 public:
 
-	Light lights[MAX_LIGHTS];
+	OldLight lights[MAX_LIGHTS];
 	SDL_GLContext context;
 
 	bool depth;
@@ -74,6 +76,9 @@ public:
 
 	bool drawAABB;
 	bool drawGrid;
+
+	GameObject* goDirLight;
+	DirectionalLight* dirLight;
 
 private:
 	std::vector<ComponentMesh*> meshes;

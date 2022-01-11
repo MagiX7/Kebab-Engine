@@ -190,6 +190,12 @@
     <ClCompile Include="Source\PanelEditShader.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Lights.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentLight.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -410,6 +416,12 @@
     </ClInclude>
     <ClInclude Include="Source\PanelEditShader.h">
       <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lights.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentLight.h">
+      <Filter>Source Files\GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
