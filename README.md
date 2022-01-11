@@ -1,5 +1,7 @@
 # Kebab Engine
 
+![David](/docs/Images/Kebab_engine_image.png)
+
 ## Description
 
 This is an 3D Game Engine made for the subject Game Engines at CITM - UPC Terrassa (2021) by David González and Carlos Megia.
