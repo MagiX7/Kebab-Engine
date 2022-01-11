@@ -84,6 +84,7 @@
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\ComponentCamera.h" />
@@ -157,6 +158,12 @@
     <ClInclude Include="Source\VertexArray.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kebab Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Output\Settings\Kebab-Engine.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

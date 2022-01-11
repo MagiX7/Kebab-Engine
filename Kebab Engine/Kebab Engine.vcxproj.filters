@@ -411,6 +411,7 @@
     <ClInclude Include="Source\PanelEditShader.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -464,5 +465,11 @@
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{bcd7c564-7380-49c8-a1e3-0973e7377868}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kebab Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Output\Settings\Kebab-Engine.ico" />
   </ItemGroup>
 </Project>
