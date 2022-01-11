@@ -94,3 +94,4 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - 2 frame buffers to show game and editor with their respective cameras on imgui windows and can visualize both at the same time.
 - Game camera changeable.
 - Resource management to optimize and show assets properly.
+- Editable shaders
