@@ -14,6 +14,7 @@
 
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "ComponentLight.h"
 #include "Material.h"
 #include "Shader.h"
 
@@ -487,36 +488,57 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu("GameObject"))
+        if (ImGui::BeginMenu("Create"))
         {
-            if (ImGui::BeginMenu("Primitives"))
+            if (ImGui::BeginMenu("GameObject"))
             {
-                if (ImGui::MenuItem("Cube"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+                if (ImGui::BeginMenu("Primitives"))
+                {
+                    if (ImGui::MenuItem("Cube"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
 
-                if (ImGui::MenuItem("Pyramid"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+                    if (ImGui::MenuItem("Pyramid"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
 
-                if (ImGui::MenuItem("Plane"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
+                    if (ImGui::MenuItem("Plane"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
 
-                if (ImGui::MenuItem("Sphere"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+                    if (ImGui::MenuItem("Sphere"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
 
-                if (ImGui::MenuItem("Cylinder"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
-                
+                    if (ImGui::MenuItem("Cylinder"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
+
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::MenuItem("Empty GameObject"))
+                {
+                    GameObject* go = new GameObject("Empty Game Object");
+                    app->scene->AddGameObject(go);
+                }
                 ImGui::EndMenu();
             }
 
-            if (ImGui::MenuItem("Empty GameObject"))
+            if (ImGui::BeginMenu("Lights"))
             {
-                GameObject* go = new GameObject("Empty Game Object");
-                app->scene->AddGameObject(go);
+                if (ImGui::Button("Point Light"))
+                {
+                    GameObject* go = new GameObject("Point Light");
+                    ComponentLight* compLight = new ComponentLight();
+                    PointLight* pl = new PointLight();
+                    compLight->SetLight(pl);
+                    go->AddComponent(compLight);
+                    compLight->SetParent(go);
+
+                    app->scene->AddGameObject(go);
+                    app->renderer3D->Submit(go);
+                }
+                ImGui::EndMenu();
             }
+
             ImGui::EndMenu();
         }
-
         if (ImGui::BeginMenu("View"))
         {
             if (ImGui::BeginMenu("Panels"))

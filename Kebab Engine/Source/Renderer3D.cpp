@@ -552,6 +552,14 @@ void Renderer3D::AddMaterial(Material* material)
 	materials.push_back(material);
 }
 
+void Renderer3D::AddPointLight(PointLight* pl)
+{
+	if(pLights.size() < MAX_POINT_LIGHTS)
+		pLights.push_back(pl);
+	else
+		LOG_CONSOLE("Max number of point lights reached");
+}
+
 void Renderer3D::DoRender(bool gameScene)
 {
 	for (const auto& go : gameObjects)

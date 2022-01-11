@@ -95,6 +95,16 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
 	shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
 
+	std::vector<PointLight*> pls = app->renderer3D->GetPointLights();
+	for (int i = 0; i < pls.size(); ++i)
+	{
+		std::string name = "pointLights[" + i + std::string("]");
+		shader->SetUniformVec3f(name + ".ambient", pls[i]->ambient);
+		shader->SetUniformVec3f(name + ".diffuse", pls[i]->diffuse);
+		shader->SetUniformVec3f(name + ".specular", pls[i]->specular);
+
+	}
+
 	if (shader->GetName() == "wave.shader")
 	{
 		shader->SetUniform1i("time", timer.Read());

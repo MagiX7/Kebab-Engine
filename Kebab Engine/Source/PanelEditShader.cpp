@@ -56,8 +56,8 @@ void PanelEditShader::OnRender(float dt)
 				std::string textToSave = editor.GetText();
 				shader->UpdateSourceCode(textToSave);
 
-				const char* a = "Assets/Resources/Shaders/test.shader";
-				app->fileSystem->Save(a, (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
+				//const char* a = "Assets/Resources/Shaders/test.shader";
+				app->fileSystem->Save(shader->GetPath().c_str(), (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
 
 			}
 			ImGui::EndMenu();

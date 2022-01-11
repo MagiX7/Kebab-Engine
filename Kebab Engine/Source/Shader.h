@@ -67,9 +67,6 @@ private:
 
 	void ReCompile(bool reReadSource = true);
 
-
-	int GetUniform(const std::string& name);
-
 private:
 	std::string name;
 	unsigned int rendererID;

@@ -34,6 +34,15 @@ void ComponentLight::DrawOnInspector()
 		
 		case LightType::POINT:
 		{
+			if (ImGui::CollapsingHeader("Light"))
+			{
+				PointLight* l = (PointLight*)light;
+
+				ImGui::ColorEdit3("Ambient Color", l->ambient.ptr());
+				ImGui::ColorEdit3("Diffuse Color", l->diffuse.ptr());
+				ImGui::ColorEdit3("Specular Color", l->specular.ptr());
+
+			}
 
 			break;
 		}
