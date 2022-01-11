@@ -288,11 +288,6 @@ unsigned int Shader::CreateShader(const std::string& vertexSource, const std::st
 	return 0;
 }
 
-bool Shader::Compile()
-{
-	return false;
-}
-
 std::string Shader::ReadFile()
 {
 	std::string ret;
@@ -300,15 +295,15 @@ std::string Shader::ReadFile()
 
 	if (in)
 	{
-		//We seek for the end of file so we can set the returning string size
+		// We seek for the end of file so we can set the returning string size
 		in.seekg(0, std::ios::end);
 		ret.resize(in.tellg());
 
-		//We now seek for the file beginning to put it at the string (passing the string's first position and its size)
+		// We now seek for the file beginning to put it at the string (passing the string's first position and its size)
 		in.seekg(0, std::ios::beg);
 		in.read(&ret[0], ret.size());
 
-		//Finally close the file
+		// Finally close the file
 		in.close();
 	}
 	
@@ -326,61 +321,15 @@ std::unordered_map<GLenum, std::string> Shader::SplitShaders(const std::string& 
 	while (pos != std::string::npos)
 	{
 		size_t lineEnding = source.find_first_of("\r\n", pos);
-		//CRONOS_ASSERT(end_of_line != std::string::npos, "Shader Syntax Error");
 
 		size_t beginPos = pos + typeTokenLength + 1;
 		std::string shaderType = source.substr(beginPos, lineEnding - beginPos);
-		//CRONOS_ASSERT(StringToShaderType(shaderType), "Invalid Shader Type");
 
 		size_t nextLine = source.find_first_not_of("\r\n", lineEnding);
 		pos = source.find(typeToken, nextLine);
 
 		ret[GetShaderTypeFromString(shaderType)] = pos == std::string::npos ? source.substr(nextLine) : source.substr(nextLine, pos - nextLine);
-		/*ret[GetShaderTypeFromString(shaderType)] = source.substr(nextLine,
-			pos - (nextLine == std::string::npos ? source.size() - 1 : nextLine));*/
 	}
 
 	return ret;
-
-
-	//std::unordered_map<GLenum, std::string> shaderSources;
-
-
-	//const char* type = "#type";
-	//size_t typeLen = strlen(type);
-
-	//// Declaration Start
-	//size_t pos = source.find(type, 0);
-
-	//while (pos != std::string::npos)
-	//{
-	//	size_t end = source.find_first_of("\r\n", pos);
-
-	//	if (end == std::string::npos)
-	//		LOG_CONSOLE("syntax error when calculating end(end of line)");
-	//	//assert(end != std::string::npos, "syntax error when calculating end (end of line)");
-
-	//	size_t newBegin = pos + typeLen + 1;
-
-	//	std::string type = source.substr(newBegin, end - newBegin);
-	//	// Should assert the type
-
-	//	// Next Shader
-	//	size_t nextLine = source.find_first_not_of("\r\n", end);
-	//	assert(nextLine != std::string::npos, "syntax error in nextLine");
-
-	//	pos = source.find(type, nextLine);
-
-	//	//shaderSources[GetShaderTypeFromString(type)] = pos == std::string::npos ? source.substr(nextLine) : source.substr(nextLine, pos - nextLine);
-	//	shaderSources[GetShaderTypeFromString(type)] = source.substr(nextLine, pos - (nextLine == std::string::npos ? source.size() - 1 : nextLine));
-
-	//}
-
-	//return shaderSources;
-}
-
-int Shader::GetUniform(const std::string& name)
-{
-	//if()
-	return 0;
 }

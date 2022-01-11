@@ -56,8 +56,8 @@ void PanelEditShader::OnRender(float dt)
 				std::string textToSave = editor.GetText();
 				shader->UpdateSourceCode(textToSave);
 
-				const char* a = "Assets/Resources/Shaders/test.shader";
-				app->fileSystem->Save(a, (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
+				//const char* a = "Assets/Resources/Shaders/test.shader";
+				app->fileSystem->Save(shader->GetPath().c_str(), (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
 
 			}
 			ImGui::EndMenu();
@@ -104,18 +104,7 @@ void PanelEditShader::OnRender(float dt)
 				editor.SetPalette(TextEditor::GetRetroBluePalette());
 			ImGui::EndMenu();
 		}
-		
-		/*ImGui::Separator();
 
-		if (ImGui::Button("Set Current GameObject Shader"))
-		{
-			ComponentMaterial* matComp = (ComponentMaterial*)app->editor->hierarchyPanel->currentGO->GetComponent(ComponentType::MATERIAL);
-			if (matComp)
-			{
-				SetFileToEdit(matComp->GetMaterial()->GetShader()->GetPath().c_str());
-			}
-			else LOG("Select a Game Object with shader on it");
-		}*/
 		ImGui::EndMenuBar();
 	}
 
@@ -123,6 +112,28 @@ void PanelEditShader::OnRender(float dt)
 		editor.IsOverwrite() ? "Ovr" : "Ins",
 		editor.CanUndo() ? "*" : " ",
 		editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
+
+
+	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+		{
+			std::string textToSave = editor.GetText();
+			shader->UpdateSourceCode(textToSave);
+
+			app->fileSystem->Save(shader->GetPath().c_str(), (void*)editor.GetText().c_str(), sizeof(char) * editor.GetText().size());
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+		{
+			editor.SelectAll();
+		}
+		/*else if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			TextEditor::Breakpoints bpts;
+			bpts.insert(editor.GetCursorPosition().mLine + 1);
+			editor.SetBreakpoints(bpts);
+		}*/
+	}
 
 	editor.Render(title.c_str());
 	ImGui::End();
