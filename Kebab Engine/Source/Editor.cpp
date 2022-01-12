@@ -29,6 +29,7 @@
 #include "PanelImportTexture.h"
 #include "PanelImportModel.h"
 #include "PanelEditShader.h"
+#include "PanelLightSettings.h"
 
 #include "FileDialog.h"
 
@@ -56,7 +57,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     gameDebugInfoPanel = new GameDebugInfoPanel();
     panelImportTexture = new ImportTexturePanel();
     panelImportModel = new PanelImportModel();
-    //panelEditShader = new PanelEditShader();
+    panelLightSettings = new PanelLightSettings();
 
     showAboutPanel = false;
     showWindows = true;
@@ -149,6 +150,8 @@ bool Editor::CleanUp()
     panelImportTexture = nullptr;
     delete(panelImportModel);
     panelImportModel = nullptr;
+    delete(panelLightSettings);
+    panelLightSettings = nullptr;
 
     delete playTex;
     delete pauseTex;
@@ -272,7 +275,7 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
 
         if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         if (panelImportModel->active) panelImportModel->OnRender(dt);
-        //if (panelEditShader->active) panelEditShader->OnRender(dt);
+        if (panelLightSettings->active) panelLightSettings->OnRender(dt);
 
     }
 
@@ -586,6 +589,10 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
                 if (ImGui::MenuItem("Game Debug Info"))
                 {
                     gameDebugInfoPanel->active = !gameDebugInfoPanel->active;
+                }
+                if (ImGui::MenuItem("Lightning Settings"))
+                {
+                    panelLightSettings->active = !panelLightSettings->active;
                 }
 
                 ImGui::EndMenu();

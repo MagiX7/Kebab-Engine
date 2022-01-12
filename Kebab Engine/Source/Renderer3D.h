@@ -88,6 +88,9 @@ public:
 	GameObject* goDirLight;
 	DirectionalLight* dirLight;
 
+	bool gammaCorrection;
+	float gammaCorrectionAmount;
+
 private:
 	std::vector<PointLight*> pLights;
 	std::vector<SpotLight*> spotLights;

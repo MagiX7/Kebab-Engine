@@ -26,9 +26,6 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	specularColor = { 0.5,0.5,0.5 };
 	shininess = 5.0f;
 
-	gammaCorrection = true;
-	gammaCorrectionAmount = 1.0f;
-
 	frequency = 2.0f;
 	speed = 0.05f;
 	amplitude = 0.2f;
@@ -90,8 +87,8 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniformVec3f("material.diffuse", diffuseColor);
 	shader->SetUniformVec3f("material.specular", specularColor);
 	shader->SetUniform1f("material.shininess", shininess);
-	shader->SetUniform1f("material.gammaCorrection", gammaCorrection);
-	shader->SetUniform1f("material.gammaCorrectionAmount", gammaCorrectionAmount);
+	shader->SetUniform1f("material.gammaCorrection", app->renderer3D->gammaCorrection);
+	shader->SetUniform1f("material.gammaCorrectionAmount", app->renderer3D->gammaCorrectionAmount);
 
 
 	if (app->renderer3D->goDirLight)

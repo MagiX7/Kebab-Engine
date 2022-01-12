@@ -30,9 +30,6 @@ public:
 	float3 specularColor;
 	float shininess;
 
-	bool gammaCorrection;
-	float gammaCorrectionAmount;
-
 	float frequency;
 	float speed;
 	float amplitude;

@@ -67,6 +67,7 @@
     <ClCompile Include="Source\PanelImportModel.cpp" />
     <ClCompile Include="Source\PanelImportTexture.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
+    <ClCompile Include="Source\PanelLightSettings.cpp" />
     <ClCompile Include="Source\PanelScene.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Parser.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Source\PanelImportModel.h" />
     <ClInclude Include="Source\PanelImportTexture.h" />
     <ClInclude Include="Source\PanelInspector.h" />
+    <ClInclude Include="Source\PanelLightSettings.h" />
     <ClInclude Include="Source\PanelScene.h" />
     <ClInclude Include="Source\PanelViewport.h" />
     <ClInclude Include="Source\Parser.h" />

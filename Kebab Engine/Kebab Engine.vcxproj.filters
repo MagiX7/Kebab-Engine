@@ -193,6 +193,9 @@
     <ClCompile Include="Source\ComponentLight.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelLightSettings.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -419,6 +422,9 @@
     </ClInclude>
     <ClInclude Include="Source\ComponentLight.h">
       <Filter>Source Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelLightSettings.h">
+      <Filter>Source Files\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

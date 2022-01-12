@@ -162,6 +162,9 @@ bool Renderer3D::Init(JSON_Object* root)
 	defaultMaterial = new Material();
 	defaultMaterial->SetShader(defaultShader);
 
+	gammaCorrection = true;
+	gammaCorrectionAmount = 1.0f;
+
 	return ret;
 }
 
