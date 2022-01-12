@@ -269,13 +269,13 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (consolePanel->active) consolePanel->OnRender(dt);
         if (configPanel->active) configPanel->OnRender(dt);
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
+        if (panelLightSettings->active) panelLightSettings->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
         if (gameDebugInfoPanel->active) gameDebugInfoPanel->OnRender(dt);
 
         if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         if (panelImportModel->active) panelImportModel->OnRender(dt);
-        if (panelLightSettings->active) panelLightSettings->OnRender(dt);
 
     }
 

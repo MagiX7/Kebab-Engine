@@ -132,6 +132,9 @@ bool Renderer3D::Init(JSON_Object* root)
 			LOG_CONSOLE("Error loading GLEW: %s", glewGetErrorString(err));
 		}
 		else LOG_CONSOLE("GLEW initialization correct. Version %s", glewGetString(GLEW_VERSION));
+
+		// Theorically for anti-aliasing (MSAA)
+		//glEnable(GL_MULTISAMPLE);
 	}
 
 	Load(root);
