@@ -172,6 +172,11 @@ void ComponentMaterial::DrawOnInspector()
 		//static float3 col = material->ambientColor;
 		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
 		ImGui::DragFloat("Shininess", &material->shininess, 0.1f);
+		ImGui::Checkbox("Enable Gamma Correction", &material->gammaCorrection);
+		if (material->gammaCorrection)
+		{
+			ImGui::DragFloat("Gamma Correction Amount", &material->gammaCorrectionAmount, 0.01f);
+		}
 
 
 		//std::unordered_map<std::string, float> uniforms = material->GetShader()->GetUniforms();
