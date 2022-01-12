@@ -48,7 +48,6 @@
     <ClCompile Include="Source\External\par\par_shapes.cpp" />
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
-    <ClCompile Include="Source\Lights.cpp" />
     <ClCompile Include="Source\Material.cpp" />
     <ClCompile Include="Source\KbMesh.cpp" />
     <ClCompile Include="Source\MeshLoader.cpp" />

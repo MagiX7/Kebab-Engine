@@ -190,9 +190,6 @@
     <ClCompile Include="Source\PanelEditShader.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Lights.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ComponentLight.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>

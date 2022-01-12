@@ -124,8 +124,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 	// Attenuation
 	float distance = length(light.position - fragPos);
+	//float attenuation = 1.0 / (light.constant + 1 * distance + 1 * (distance * distance));
 	float attenuation = 1.0 / (light.constant + light.lin * distance + light.quadratic * (distance * distance));
-
+	
 	attenuation *= light.intensity;
 
 	// Combine results
@@ -137,9 +138,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	vec3 diffuse = light.diffuse * diff * material.diffuse;
 	vec3 specular = light.specular * spec * material.specular;
 
-	//ambient *= attenuation;
-	//diffuse *= attenuation;
-	//specular *= attenuation;
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
 
 	return (ambient + diffuse + specular);
 }
@@ -163,6 +164,7 @@ void main()
 		fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(result, 1);
 	}
 }
+
 
 
 
