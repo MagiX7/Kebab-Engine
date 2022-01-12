@@ -175,16 +175,16 @@ bool Renderer3D::Start()
 	tr->SetRotation({ 173, 0, -63 });
 	tr->SetTranslation({ -8, 17, -0.45 });
 
-	GameObject* go = MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID, true);
-	goDirLight->AddChild(go);
-	go->SetParent(goDirLight);
-	ComponentTransform* childTr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
-	childTr->SetGlobalMatrix(tr->GetGlobalMatrix());
+	//GameObject* go = MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID, true);
+	//goDirLight->AddChild(go);
+	//go->SetParent(goDirLight);
+	//ComponentTransform* childTr = (ComponentTransform*)go->GetComponent(ComponentType::TRANSFORM);
+	//childTr->SetGlobalMatrix(tr->GetGlobalMatrix());
 
 	// TODO: It draws in game scene, should we create another list for go's
 	// that only are for dev purposes?
 	// Draw it with UI when it is done?
-	Submit(goDirLight);
+	//Submit(goDirLight);
 
 	lights[0].position.x = tr->GetTranslation().x;
 	lights[0].position.y = tr->GetTranslation().y;

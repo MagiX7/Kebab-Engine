@@ -14,6 +14,9 @@ public:
 
 	void SetLight(Light* light);
 
+	JSON_Value* Save() override;
+	void Load(JSON_Object* obj, GameObject* parent = nullptr) override;
+
 private:
 	Light* light;
 

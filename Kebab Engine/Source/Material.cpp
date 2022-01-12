@@ -88,12 +88,18 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniformVec3f("material.specular", specularColor);
 	shader->SetUniform1f("material.shininess", shininess);
 
-	ComponentTransform* tr = (ComponentTransform*)app->renderer3D->goDirLight->GetComponent(ComponentType::TRANSFORM);
-	float4 dir = tr->GetRotation().CastToFloat4();
-	shader->SetUniformVec3f("dirLight.direction", dir.Float3Part());
-	shader->SetUniformVec3f("dirLight.ambient", app->renderer3D->dirLight->ambient);
-	shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
-	shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
+	if (app->renderer3D->goDirLight)
+	{
+		ComponentTransform* tr = (ComponentTransform*)app->renderer3D->goDirLight->GetComponent(ComponentType::TRANSFORM);
+		if (tr)
+		{
+			float4 dir = tr->GetRotation().CastToFloat4();
+			shader->SetUniformVec3f("dirLight.direction", dir.Float3Part());
+			shader->SetUniformVec3f("dirLight.ambient", app->renderer3D->dirLight->ambient);
+			shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
+			shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
+		}
+	}
 
 	std::vector<PointLight*> pls = app->renderer3D->GetPointLights();
 	for (int i = 0; i < pls.size(); ++i)
