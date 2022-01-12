@@ -73,7 +73,7 @@ struct PointLight {
 	vec3 position;
 
 	float constant;
-	float linear;
+	float lin;
 	float quadratic;
 
 	vec3 ambient;
@@ -121,7 +121,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 	// Attenuation
 	float distance = length(light.position - fragPos);
-	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+	float attenuation = 1.0 / (light.constant + light.lin * distance + light.quadratic * (distance * distance));
 
 	// Combine results
 	//vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
@@ -132,9 +132,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	vec3 diffuse = light.diffuse * diff * material.diffuse;
 	vec3 specular = light.specular * spec * material.specular;
 
-	ambient *= attenuation;
-	diffuse *= attenuation;
-	specular *= attenuation;
+	//ambient *= attenuation;
+	//diffuse *= attenuation;
+	//specular *= attenuation;
 
 	return (ambient + diffuse + specular);
 }
@@ -146,8 +146,8 @@ void main()
 	vec3 viewDir = normalize(camPos - vPosition);
 	vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
-	//for (int i = 0; i < MAX_POINT_LIGHTS; i++)
-	//	result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
+	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
+		result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
 
 	fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(result, 1);
 }

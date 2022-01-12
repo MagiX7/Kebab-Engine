@@ -10,6 +10,8 @@ public:
 	ComponentLight();
 	virtual ~ComponentLight();
 
+	void Update(float dt) override;
+
 	void DrawOnInspector() override;
 
 	void SetLight(Light* light);

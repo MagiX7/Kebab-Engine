@@ -48,7 +48,8 @@ public:
     float3 position = { 0,0,0 };
 
     float constant = 1.0f;
-    float linear = 0.09f;
+    // Linear
+    float lin = 0.09f;
     float quadratic = 0.032f;
 
     float3 ambient = { 1,0,0 };

@@ -104,8 +104,13 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	std::vector<PointLight*> pls = app->renderer3D->GetPointLights();
 	for (int i = 0; i < pls.size(); ++i)
 	{
-		std::string name = "pointLights[" + std::to_string(i);
-		name += "]";
+		std::string name = "pointLights[" + std::to_string(i) + "]";
+		shader->SetUniformVec3f(name + ".position", pls[i]->position);
+		
+		shader->SetUniform1f(name + ".constant", pls[i]->constant);
+		shader->SetUniform1f(name + ".lin", pls[i]->lin);
+		shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);
+
 		shader->SetUniformVec3f(name + ".ambient", pls[i]->ambient);
 		shader->SetUniformVec3f(name + ".diffuse", pls[i]->diffuse);
 		shader->SetUniformVec3f(name + ".specular", pls[i]->specular);

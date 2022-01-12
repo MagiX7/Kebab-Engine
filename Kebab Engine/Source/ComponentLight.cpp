@@ -14,6 +14,22 @@ ComponentLight::~ComponentLight()
 {
 }
 
+void ComponentLight::Update(float dt)
+{
+	if (light->type == LightType::POINT)
+	{
+		if (ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM))
+		{
+			PointLight* l = (PointLight*)light;
+			if (tr->GetTranslation().x != l->position.x || tr->GetTranslation().y != l->position.y || tr->GetTranslation().z != l->position.z)
+			{
+				l->position = tr->GetTranslation();
+				light = l;
+			}
+		}
+	}
+}
+
 void ComponentLight::DrawOnInspector()
 {
 	switch (light->type)
@@ -114,7 +130,7 @@ JSON_Value* ComponentLight::Save()
 			json_object_dotset_number(obj, "specular.z", l->specular.z);
 
 			json_object_set_number(obj, "constant", l->constant);
-			json_object_set_number(obj, "linear", l->linear);
+			json_object_set_number(obj, "linear", l->lin);
 			json_object_set_number(obj, "quadratic", l->quadratic);
 
 
@@ -187,7 +203,7 @@ void ComponentLight::Load(JSON_Object* obj, GameObject* parent)
 			l->specular.z = json_object_dotget_number(obj, "specular.z");
 
 			l->constant = json_object_get_number(obj, "constant");
-			l->linear = json_object_get_number(obj, "linear");
+			l->lin = json_object_get_number(obj, "linear");
 			l->quadratic = json_object_get_number(obj, "quadratic");
 
 			light = l;
