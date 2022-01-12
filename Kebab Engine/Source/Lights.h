@@ -47,6 +47,7 @@ public:
 public:
     float3 position = { 0,0,0 };
 
+    float intensity = 1.0f;
     float constant = 1.0f;
     // Linear
     float lin = 0.09f;

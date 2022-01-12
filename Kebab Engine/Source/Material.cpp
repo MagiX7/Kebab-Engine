@@ -100,6 +100,12 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 			shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
 		}
 	}
+	else
+	{
+		shader->SetUniformVec3f("dirLight.ambient", float3::zero);
+		shader->SetUniformVec3f("dirLight.diffuse", float3::zero);
+		shader->SetUniformVec3f("dirLight.specular", float3::zero);
+	}
 
 	std::vector<PointLight*> pls = app->renderer3D->GetPointLights();
 	for (int i = 0; i < pls.size(); ++i)
@@ -107,6 +113,7 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		std::string name = "pointLights[" + std::to_string(i) + "]";
 		shader->SetUniformVec3f(name + ".position", pls[i]->position);
 		
+		shader->SetUniform1f(name + ".intensity", pls[i]->intensity);
 		shader->SetUniform1f(name + ".constant", pls[i]->constant);
 		shader->SetUniform1f(name + ".lin", pls[i]->lin);
 		shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);

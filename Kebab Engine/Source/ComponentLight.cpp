@@ -12,6 +12,23 @@ ComponentLight::ComponentLight()
 
 ComponentLight::~ComponentLight()
 {
+	switch (light->type)
+	{
+		case LightType::DIRECTIONAL:
+		{
+			delete app->renderer3D->dirLight;
+			app->renderer3D->dirLight = 0;
+
+			break;
+		}
+
+		case LightType::POINT:
+		{
+			app->renderer3D->DeletePointLight((PointLight*)light);
+	
+			break;
+		}
+	}
 }
 
 void ComponentLight::Update(float dt)
@@ -61,6 +78,7 @@ void ComponentLight::DrawOnInspector()
 				ImGui::ColorEdit3("Diffuse Color", l->diffuse.ptr());
 				ImGui::ColorEdit3("Specular Color", l->specular.ptr());
 
+				ImGui::DragFloat("Intensity", &l->intensity);
 			}
 
 			break;

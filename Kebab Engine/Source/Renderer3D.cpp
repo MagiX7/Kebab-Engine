@@ -205,11 +205,19 @@ bool Renderer3D::PreUpdate(float dt)
 		SetWireframe();
 	}
 
-	// light 0 on cam pos
+	// Light 0 on cam pos
 	lights[0].SetPos(app->camera->position.x, app->camera->position.y, app->camera->position.z);
 
-	lights[0].ambient.Set(dirLight->ambient.x, dirLight->ambient.y, dirLight->ambient.z, 1.0f);
-	lights[0].diffuse.Set(dirLight->diffuse.x, dirLight->diffuse.x, dirLight->diffuse.x, 1.0f);
+	if (dirLight)
+	{
+		lights[0].ambient.Set(dirLight->ambient.x, dirLight->ambient.y, dirLight->ambient.z, 1.0f);
+		lights[0].diffuse.Set(dirLight->diffuse.x, dirLight->diffuse.x, dirLight->diffuse.x, 1.0f);
+	}
+	else
+	{
+		lights[0].ambient.Set(0,0,0, 1.0f);
+		lights[0].diffuse.Set(0,0,0, 1.0f);
+	}
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -558,6 +566,20 @@ void Renderer3D::AddPointLight(PointLight* pl)
 		pLights.push_back(pl);
 	else
 		LOG_CONSOLE("Max number of point lights reached");
+}
+
+void Renderer3D::DeletePointLight(PointLight* pl)
+{
+	for (auto& l : pLights)
+	{
+		if (l == pl)
+		{
+			delete l;
+			l = 0;
+
+			break;
+		}
+	}
 }
 
 void Renderer3D::DoRender(bool gameScene)

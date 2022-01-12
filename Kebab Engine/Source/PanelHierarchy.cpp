@@ -184,6 +184,7 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				}
 
 				app->scene->DeleteGameObject(go);
+				go = nullptr;
 			}
 			else
 			{

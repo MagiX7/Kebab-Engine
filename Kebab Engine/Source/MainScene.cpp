@@ -119,9 +119,9 @@ void MainScene::AddGameObject(GameObject* go)
 
 void MainScene::DeleteGameObject(GameObject* go)
 {
-    std::vector<GameObject*>::iterator it;
+    std::vector<GameObject*>::iterator it = root->GetChilds().begin();
 
-    for (it = root->GetChilds().begin(); it != root->GetChilds().end(); ++it)
+    for (; it != root->GetChilds().end(); ++it)
     {
         if (*it == go)
         {
@@ -132,6 +132,7 @@ void MainScene::DeleteGameObject(GameObject* go)
             app->editor->hierarchyPanel->currentGO = nullptr;
             delete(go);
             go = nullptr;
+
             break;
         }
     }

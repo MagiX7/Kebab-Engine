@@ -59,6 +59,7 @@ public:
 	inline const std::vector<Shader*>& GetShaders() { return shaders; }
 
 	void AddPointLight(PointLight* pl = &PointLight());
+	void DeletePointLight(PointLight* pl);
 	inline const std::vector<PointLight*>& GetPointLights() { return pLights; }
 
 private:

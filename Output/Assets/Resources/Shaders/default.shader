@@ -72,6 +72,7 @@ uniform DirLight dirLight;
 struct PointLight {
 	vec3 position;
 
+	float intensity;
 	float constant;
 	float lin;
 	float quadratic;
@@ -123,6 +124,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	float distance = length(light.position - fragPos);
 	float attenuation = 1.0 / (light.constant + light.lin * distance + light.quadratic * (distance * distance));
 
+	attenuation *= light.intensity;
+
 	// Combine results
 	//vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
 	//vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
@@ -151,6 +154,7 @@ void main()
 
 	fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(result, 1);
 }
+
 
 
 
