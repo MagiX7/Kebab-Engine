@@ -47,9 +47,9 @@ public:
 public:
     float3 position = { 0,0,0 };
 
-    float constant;
-    float linear;
-    float quadratic;
+    float constant = 1.0f;
+    float linear = 0.09f;
+    float quadratic = 0.032f;
 
     float3 ambient = { 1,0,0 };
     float3 diffuse = { 1,1,1 };

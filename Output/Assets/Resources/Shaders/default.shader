@@ -86,13 +86,14 @@ uniform PointLight pointLights[MAX_POINT_LIGHTS];
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
 	vec3 lightDir = normalize(light.direction);
+	//vec3 lightDir = normalize(-light.direction);
 	
 	// Diffuse shading
 	float diff = max(dot(normal, lightDir), 0.0);
 	
 	// Specular shading
-	//vec3 reflectDir = reflect(-lightDir, normal);
-	vec3 reflectDir = normalize(lightDir + viewDir);
+	vec3 reflectDir = reflect(-lightDir, normal);
+	//vec3 reflectDir = normalize(lightDir + viewDir);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	
 	// Combine results -> ONLY WITH TEXTURES !!!
@@ -134,6 +135,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
+
 	return (ambient + diffuse + specular);
 }
 
@@ -144,10 +146,12 @@ void main()
 	vec3 viewDir = normalize(camPos - vPosition);
 	vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
-	for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
-		result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
+	//for (int i = 0; i < MAX_POINT_LIGHTS; i++)
+	//	result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
 
 	fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(result, 1);
 }
+
+
 
 

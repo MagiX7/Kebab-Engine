@@ -171,6 +171,7 @@ void ComponentMaterial::DrawOnInspector()
 		
 		//static float3 col = material->ambientColor;
 		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
+		ImGui::DragFloat("Shininess", &material->shininess, 0.1f);
 
 
 		//std::unordered_map<std::string, float> uniforms = material->GetShader()->GetUniforms();

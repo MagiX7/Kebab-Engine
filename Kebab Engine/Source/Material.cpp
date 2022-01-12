@@ -24,7 +24,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	ambientColor = { 0.4,0.4,0.4 };
 	diffuseColor = ambientColor;
 	specularColor = { 0.5,0.5,0.5 };
-	shininess = 32.0f;
+	shininess = 5.0f;
 
 	frequency = 2.0f;
 	speed = 0.05f;
@@ -32,7 +32,7 @@ Material::Material() : Resource(ResourceType::MATERIAL)
 	textureAlpha = 1.0f;
 	foamSpeed = 0.0f;
 	noiseAmount = 1.0f;
-	foamDir = { 0.001,0.0 };
+	foamDir = { 0.001, 0.0 };
 
 	timer = Timer();
 }
@@ -86,7 +86,7 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniformVec3f("material.ambient", ambientColor);
 	shader->SetUniformVec3f("material.diffuse", diffuseColor);
 	shader->SetUniformVec3f("material.specular", specularColor);
-	shader->SetUniform1f("material.shinnines", shininess);
+	shader->SetUniform1f("material.shininess", shininess);
 
 	ComponentTransform* tr = (ComponentTransform*)app->renderer3D->goDirLight->GetComponent(ComponentType::TRANSFORM);
 	float4 dir = tr->GetRotation().CastToFloat4();
@@ -98,7 +98,8 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	std::vector<PointLight*> pls = app->renderer3D->GetPointLights();
 	for (int i = 0; i < pls.size(); ++i)
 	{
-		std::string name = "pointLights[" + i + std::string("]");
+		std::string name = "pointLights[" + std::to_string(i);
+		name += "]";
 		shader->SetUniformVec3f(name + ".ambient", pls[i]->ambient);
 		shader->SetUniformVec3f(name + ".diffuse", pls[i]->diffuse);
 		shader->SetUniformVec3f(name + ".specular", pls[i]->specular);

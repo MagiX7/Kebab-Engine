@@ -533,6 +533,7 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
 
                     app->scene->AddGameObject(go);
                     app->renderer3D->Submit(go);
+                    app->renderer3D->AddPointLight(pl);
                 }
                 ImGui::EndMenu();
             }
