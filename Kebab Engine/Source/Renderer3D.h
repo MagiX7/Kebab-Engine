@@ -10,7 +10,6 @@
 #include "Lights.h"
 
 #define MAX_LIGHTS 8
-#define MAX_POINT_LIGHTS 4
 
 class ComponentMesh;
 class ComponentCamera;
@@ -61,6 +60,10 @@ public:
 	void AddPointLight(PointLight* pl = &PointLight());
 	void DeletePointLight(PointLight* pl);
 	inline const std::vector<PointLight*>& GetPointLights() { return pLights; }
+	
+	void AddSpotLight(SpotLight* sl = &SpotLight());
+	inline const std::vector<SpotLight*>& GetSpotLights() { return spotLights; }
+	
 
 private:
 	void DoRender(bool gameScene);
@@ -87,6 +90,9 @@ public:
 
 private:
 	std::vector<PointLight*> pLights;
+	std::vector<SpotLight*> spotLights;
+
+
 	std::vector<ComponentMesh*> meshes;
 	std::vector<GameObject*> gameObjects;
 	

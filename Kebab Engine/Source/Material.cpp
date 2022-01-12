@@ -130,6 +130,21 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 
 	}
 
+	std::vector<SpotLight*> sls = app->renderer3D->GetSpotLights();
+	for (int i = 0; i < sls.size(); ++i)
+	{
+		std::string name = "spotLights[" + std::to_string(i) + "]";
+		shader->SetUniformVec3f(name + ".position", sls[i]->position);
+		
+		shader->SetUniform1f(name + ".intensity", sls[i]->intensity);
+		shader->SetUniform1f(name + ".cutOff", sls[i]->cutOff);
+		shader->SetUniform1f(name + ".outerCutOff", sls[i]->outerCutOff);
+
+		shader->SetUniformVec3f(name + ".ambient", sls[i]->ambient);
+		shader->SetUniformVec3f(name + ".diffuse", sls[i]->diffuse);
+		shader->SetUniformVec3f(name + ".specular", sls[i]->specular);
+	}
+
 	if (shader->GetName() == "wave.shader")
 	{
 		shader->SetUniform1i("time", timer.Read());

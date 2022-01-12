@@ -45,6 +45,18 @@ void ComponentLight::Update(float dt)
 			}
 		}
 	}
+	else if (light->type == LightType::SPOT)
+	{
+		if (ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM))
+		{
+			SpotLight* l = (SpotLight*)light;
+			if (tr->GetTranslation().x != l->position.x || tr->GetTranslation().y != l->position.y || tr->GetTranslation().z != l->position.z)
+			{
+				l->position = tr->GetTranslation();
+				light = l;
+			}
+		}
+	}
 }
 
 void ComponentLight::DrawOnInspector()
@@ -53,7 +65,7 @@ void ComponentLight::DrawOnInspector()
 	{
 		case LightType::DIRECTIONAL:
 		{
-			if (ImGui::CollapsingHeader("Light"))
+			if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				ImGui::Separator();
 				ImGui::Dummy({ 10,10 });
@@ -70,7 +82,7 @@ void ComponentLight::DrawOnInspector()
 		
 		case LightType::POINT:
 		{
-			if (ImGui::CollapsingHeader("Light"))
+			if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				PointLight* l = (PointLight*)light;
 
@@ -86,6 +98,19 @@ void ComponentLight::DrawOnInspector()
 			}
 
 			break;
+		}
+
+		case LightType::SPOT:
+		{
+			SpotLight* l = (SpotLight*)light;
+
+			ImGui::ColorEdit3("Ambient Color", l->ambient.ptr());
+			ImGui::ColorEdit3("Diffuse Color", l->diffuse.ptr());
+			ImGui::ColorEdit3("Specular Color", l->specular.ptr());
+
+			ImGui::DragFloat("Intensity", &l->intensity, 0.1f);
+			ImGui::DragFloat("CutOff", &l->cutOff, 0.1f);
+			ImGui::DragFloat("Outer CutOff", &l->outerCutOff, 0.1f);
 		}
 	}
 }

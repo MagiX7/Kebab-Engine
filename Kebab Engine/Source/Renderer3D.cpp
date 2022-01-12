@@ -32,6 +32,9 @@
 
 #include "mmgr/mmgr.h"
 
+#define MAX_POINT_LIGHTS 4
+#define MAX_SPOT_LIGHTS 4
+
 Renderer3D::Renderer3D(bool startEnabled) : Module(true)
 {
 	name = "renderer";
@@ -565,7 +568,15 @@ void Renderer3D::AddPointLight(PointLight* pl)
 	if(pLights.size() < MAX_POINT_LIGHTS)
 		pLights.push_back(pl);
 	else
-		LOG_CONSOLE("Max number of point lights reached");
+		LOG_CONSOLE("Max number of Point Lights reached");
+}
+
+void Renderer3D::AddSpotLight(SpotLight* sl)
+{
+	if (spotLights.size() < MAX_SPOT_LIGHTS)
+		spotLights.push_back(sl);
+	else
+		LOG_CONSOLE("Max number of Spot Lights reached");
 }
 
 void Renderer3D::DeletePointLight(PointLight* pl)
