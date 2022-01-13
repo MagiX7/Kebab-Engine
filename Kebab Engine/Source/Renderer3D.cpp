@@ -587,16 +587,32 @@ void Renderer3D::AddSpotLight(SpotLight* sl)
 
 void Renderer3D::DeletePointLight(PointLight* pl)
 {
-	for (auto& l : pLights)
+	std::vector<PointLight*>::iterator it = pLights.begin();
+
+	for (; it != pLights.end(); ++it)
+	{
+		if ((*it) == pl)
+		{
+			delete pl;
+			pl = 0;
+			*it = 0;
+			pLights.erase(it);
+			
+			break;
+		}
+	}
+
+	/*for (auto& l : pLights)
 	{
 		if (l == pl)
 		{
+			pLights.erase();
 			delete l;
 			l = 0;
 
 			break;
 		}
-	}
+	}*/
 }
 
 void Renderer3D::DoRender(bool gameScene)

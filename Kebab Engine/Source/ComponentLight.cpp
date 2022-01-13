@@ -33,7 +33,17 @@ ComponentLight::~ComponentLight()
 
 void ComponentLight::Update(float dt)
 {
-	if (light->type == LightType::POINT)
+	if (light->type == LightType::DIRECTIONAL)
+	{
+		DirectionalLight* l = (DirectionalLight*)light;
+		
+		if (ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM))
+		{
+			l->dir = tr->GetRotation().CastToFloat4().Float3Part();
+			l->dir.Normalize();
+		}
+	}
+	else if (light->type == LightType::POINT)
 	{
 		if (ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM))
 		{
@@ -190,52 +200,61 @@ JSON_Value* ComponentLight::Save()
 
 void ComponentLight::Load(JSON_Object* obj, GameObject* parent)
 {
-	light = new Light();
+	//light = new Light();
+
+	LightType type;
 
 	std::string lightType = json_object_get_string(obj, "lightType");
 	if (lightType == "directional")
 	{
-		light->type = LightType::DIRECTIONAL;
-		light = app->renderer3D->dirLight;
-		return;
+		type = LightType::DIRECTIONAL;
+		//light = app->renderer3D->dirLight;
 	}
 	else if (lightType == "point")
-		light->type = LightType::POINT;
+		type = LightType::POINT;
 
 
-	switch (light->type)
+	switch (type)
 	{
 		case LightType::DIRECTIONAL:
 		{
-			DirectionalLight* l = (DirectionalLight*)light;
+			float3 dir;
+			dir.x = json_object_dotget_number(obj, "dir.x");
+			dir.y = json_object_dotget_number(obj, "dir.y");
+			dir.z = json_object_dotget_number(obj, "dir.z");
+			
+			app->renderer3D->dirLight->dir = dir;
+			light = app->renderer3D->dirLight;
 
-			l->dir.x = json_object_dotget_number(obj, "dir.x");
-			l->dir.y = json_object_dotget_number(obj, "dir.y");
-			l->dir.z = json_object_dotget_number(obj, "dir.z");
+			//l->ambient.x = json_object_dotget_number(obj, "ambient.x");
+			//l->ambient.y = json_object_dotget_number(obj, "ambient.y");
+			//l->ambient.z = json_object_dotget_number(obj, "ambient.z");
+			//
+			//l->diffuse.x = json_object_dotget_number(obj, "diffuse.x");
+			//l->diffuse.y = json_object_dotget_number(obj, "diffuse.y");
+			//l->diffuse.z = json_object_dotget_number(obj, "diffuse.z");
+			//
+			//l->specular.x = json_object_dotget_number(obj, "specular.x");
+			//l->specular.y = json_object_dotget_number(obj, "specular.y");
+			//l->specular.z = json_object_dotget_number(obj, "specular.z");
 
-			l->ambient.x = json_object_dotget_number(obj, "ambient.x");
-			l->ambient.y = json_object_dotget_number(obj, "ambient.y");
-			l->ambient.z = json_object_dotget_number(obj, "ambient.z");
-
-			l->diffuse.x = json_object_dotget_number(obj, "diffuse.x");
-			l->diffuse.y = json_object_dotget_number(obj, "diffuse.y");
-			l->diffuse.z = json_object_dotget_number(obj, "diffuse.z");
-
-			l->specular.x = json_object_dotget_number(obj, "specular.x");
-			l->specular.y = json_object_dotget_number(obj, "specular.y");
-			l->specular.z = json_object_dotget_number(obj, "specular.z");
-
-			light = l;
+			//app->renderer3D->goDirLight = new GameObject("Directional Light");
+			
 
 			break;
 		}
 		case LightType::POINT:
 		{
-			PointLight* l = (PointLight*)light;
+			//PointLight* l = (PointLight*)light;
+			PointLight* l = new PointLight();
 
-			l->position.x = json_object_dotget_number(obj, "position.x");
-			l->position.y = json_object_dotget_number(obj, "position.y");
-			l->position.z = json_object_dotget_number(obj, "position.z");
+			ComponentTransform* tr = (ComponentTransform*)parent->GetComponent(ComponentType::TRANSFORM);
+
+			l->position = tr->GetTranslation();
+
+			//l->position.x = json_object_dotget_number(obj, "position.x");
+			//l->position.y = json_object_dotget_number(obj, "position.y");
+			//l->position.z = json_object_dotget_number(obj, "position.z");
 
 			l->ambient.x = json_object_dotget_number(obj, "ambient.x");
 			l->ambient.y = json_object_dotget_number(obj, "ambient.y");
@@ -253,8 +272,12 @@ void ComponentLight::Load(JSON_Object* obj, GameObject* parent)
 			l->lin = json_object_get_number(obj, "linear");
 			l->quadratic = json_object_get_number(obj, "quadratic");
 
+
+			app->renderer3D->AddPointLight(l);
 			light = l;
 
+			bool a;
+			a = true;
 			break;
 		}
 	}

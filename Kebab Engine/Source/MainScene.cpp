@@ -156,6 +156,9 @@ void MainScene::DeleteAllGameObjects()
 {
     for (auto& go : root->GetChilds())
     {
+        if (go->GetName() == "Directional Light")
+            continue;
+
         delete go;
         go = nullptr;
     }
