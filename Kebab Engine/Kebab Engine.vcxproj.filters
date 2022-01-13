@@ -157,9 +157,6 @@
     <ClCompile Include="Source\PanelGameDebugInfo.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\KbMesh.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
@@ -195,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="Source\PanelLightSettings.cpp">
       <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceManager.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,9 +372,6 @@
     <ClInclude Include="Source\PanelGameDebugInfo.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResourceManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\KbMesh.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
@@ -425,6 +422,9 @@
     </ClInclude>
     <ClInclude Include="Source\PanelLightSettings.h">
       <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager.h">
+      <Filter>Source Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

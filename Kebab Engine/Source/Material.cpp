@@ -117,9 +117,12 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		shader->SetUniformVec3f(name + ".position", pls[i]->position);
 		
 		shader->SetUniform1f(name + ".intensity", pls[i]->intensity);
-		shader->SetUniform1f(name + ".constant", pls[i]->constant);
-		shader->SetUniform1f(name + ".lin", pls[i]->lin);
-		shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);
+		//shader->SetUniform1f(name + ".constant", pls[i]->constant);
+		//shader->SetUniform1f(name + ".lin", pls[i]->lin);
+		//shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);
+
+		float3 props = { pls[i]->constant, pls[i]->lin, pls[i]->quadratic };
+		shader->SetUniformVec3f(name + ".properties", props);
 
 		shader->SetUniformVec3f(name + ".ambient", pls[i]->ambient);
 		shader->SetUniformVec3f(name + ".diffuse", pls[i]->diffuse);

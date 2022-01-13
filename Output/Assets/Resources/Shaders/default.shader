@@ -74,16 +74,19 @@ uniform DirLight dirLight;
 struct PointLight {
 	vec3 position;
 
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+
+	// 0 -> constant, 1 -> linear (lin), 2 -> quadratic
+	vec3 properties;
+
 	float intensity;
 	float constant;
 	float lin;
 	float quadratic;
-
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
 };
-#define MAX_POINT_LIGHTS 4  
+#define MAX_POINT_LIGHTS 4
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 
 struct SpotLight
@@ -102,17 +105,18 @@ struct SpotLight
 #define MAX_SPOT_LIGHTS 4
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
-	vec3 lightDir = normalize(light.direction);
-	//vec3 lightDir = normalize(-light.direction);
+	//vec3 lightDir = normalize(light.direction);
+	vec3 lightDir = normalize(-light.direction);
 	
 	// Diffuse shading
 	float diff = max(dot(normal, lightDir), 0.0);
 	
 	// Specular shading
-	vec3 reflectDir = reflect(-lightDir, normal);
-	//vec3 reflectDir = normalize(lightDir + viewDir);
+	//vec3 reflectDir = reflect(-lightDir, normal);
+	vec3 reflectDir = normalize(lightDir + viewDir);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	
 	// Combine results -> ONLY WITH TEXTURES !!!
@@ -140,8 +144,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 	// Attenuation
 	float distance = length(light.position - fragPos);
-	float attenuation = 1.0 / (light.constant + 1 * distance + 1 * (distance * distance));
+	float attenuation = 1.0 / (light.constant + 0.5 * distance + 0.5 * (distance * distance));
 	//float attenuation = 1.0 / (light.constant + light.lin * distance + light.quadratic * (distance * distance));
+	//float attenuation = 1.0 / (light.properties[0] + light.properties[1] * distance + light.properties[2] * (distance * distance));
 	
 	attenuation *= light.intensity;
 
@@ -204,23 +209,27 @@ void main()
 {
 	vec3 norm = normalize(vNormal);
 	vec3 viewDir = normalize(camPos - vPosition);
+
 	vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
 	for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
 		result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
 
-	for (int i = 0; i < MAX_SPOT_LIGHTS; ++i)
-		result += CalcSpotLight(spotLights[i], norm, vPosition, viewDir);
+	// Spot Light not working
+	//for (int i = 0; i < MAX_SPOT_LIGHTS; ++i)
+	//	result += CalcSpotLight(spotLights[i], norm, vPosition, viewDir);
 
 	if (material.gammaCorrection)
 	{
-		fragColor = texture(tex, vTexCoords) * vTextureAlpha * vec4(pow(result, vec3(1.0 / material.gammaCorrectionAmount)), 1);
+		fragColor = vec4(pow(texture(tex, vTexCoords) * vTextureAlpha * vec4(result, 1), vec4(vec3(1.0 / material.gammaCorrectionAmount), 1.0)));
+		//fragColor = texture(tex, vTexCoords) * vTextureAlpha * vec4(pow(result, vec3(1.0 / material.gammaCorrectionAmount)), 1);
 	}
 	else
 	{
 		fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(result, 1);
 	}
 }
+
 
 
 

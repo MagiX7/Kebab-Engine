@@ -21,7 +21,7 @@ void PanelLightSettings::OnRender(float dt)
 	ImGui::Checkbox("Enable Gamma Correction", &app->renderer3D->gammaCorrection);
 	if (app->renderer3D->gammaCorrection)
 	{
-		ImGui::DragFloat("Gamma Correction Amount", &app->renderer3D->gammaCorrectionAmount, 0.01f);
+		ImGui::DragFloat("Gamma Correction Amount", &app->renderer3D->gammaCorrectionAmount, 0.01f, 0.0f, 20.0f);
 	}
 
 	ImGui::Separator();
