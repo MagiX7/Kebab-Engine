@@ -581,8 +581,8 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
     KbMesh* mesh = new KbMesh(name.c_str());
 
     char* buffer = nullptr;
-    if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
-        LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
+    app->fileSystem->Load(name.c_str(), &buffer);
+        //LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
 
     char* cursor = buffer;
     unsigned int ranges[2];

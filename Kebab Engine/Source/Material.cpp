@@ -87,7 +87,7 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 	shader->SetUniformVec3f("material.diffuse", diffuseColor);
 	shader->SetUniformVec3f("material.specular", specularColor);
 	shader->SetUniform1f("material.shininess", shininess);
-	shader->SetUniform1f("material.gammaCorrection", app->renderer3D->gammaCorrection);
+	shader->SetUniform1i("material.gammaCorrection", app->renderer3D->gammaCorrection);
 	shader->SetUniform1f("material.gammaCorrectionAmount", app->renderer3D->gammaCorrectionAmount);
 
 
@@ -117,9 +117,9 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		shader->SetUniformVec3f(name + ".position", pls[i]->position);
 		
 		shader->SetUniform1f(name + ".intensity", pls[i]->intensity);
-		//shader->SetUniform1f(name + ".constant", pls[i]->constant);
-		//shader->SetUniform1f(name + ".lin", pls[i]->lin);
-		//shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);
+		shader->SetUniform1f(name + ".constant", pls[i]->constant);
+		shader->SetUniform1f(name + ".lin", pls[i]->lin);
+		shader->SetUniform1f(name + ".quadratic", pls[i]->quadratic);
 
 		float3 props = { pls[i]->constant, pls[i]->lin, pls[i]->quadratic };
 		shader->SetUniformVec3f(name + ".properties", props);
@@ -130,12 +130,12 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 
 	}
 
-	std::vector<SpotLight*> sls = app->renderer3D->GetSpotLights();
+	/*std::vector<SpotLight*> sls = app->renderer3D->GetSpotLights();
 	for (int i = 0; i < sls.size(); ++i)
 	{
 		std::string name = "spotLights[" + std::to_string(i) + "]";
 		shader->SetUniformVec3f(name + ".position", sls[i]->position);
-		
+
 		shader->SetUniform1f(name + ".intensity", sls[i]->intensity);
 		shader->SetUniform1f(name + ".cutOff", sls[i]->cutOff);
 		shader->SetUniform1f(name + ".outerCutOff", sls[i]->outerCutOff);
@@ -143,7 +143,7 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		shader->SetUniformVec3f(name + ".ambient", sls[i]->ambient);
 		shader->SetUniformVec3f(name + ".diffuse", sls[i]->diffuse);
 		shader->SetUniformVec3f(name + ".specular", sls[i]->specular);
-	}
+	}*/
 
 	if (shader->GetName() == "wave.shader")
 	{
@@ -155,7 +155,6 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		shader->SetUniform1f("noiseAmount", noiseAmount);
 		shader->SetUnifromVec2f("foamDir", foamDir);
 	}
-
 }
 
 void Material::Unbind()
