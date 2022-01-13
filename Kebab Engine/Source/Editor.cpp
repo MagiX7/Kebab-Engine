@@ -525,7 +525,7 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
 
             if (ImGui::BeginMenu("Lights"))
             {
-                if (ImGui::Button("Point Light"))
+                if (ImGui::MenuItem("Point Light"))
                 {
                     GameObject* go = new GameObject("Point Light");
                     ComponentLight* compLight = new ComponentLight();
@@ -538,20 +538,20 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
                     app->renderer3D->Submit(go);
                     app->renderer3D->AddPointLight(pl);
                 }
-                else if (ImGui::Button("Spot Light"))
-                {
-                    GameObject* go = new GameObject("Spot Light");
-                    ComponentLight* compLight = new ComponentLight();
-                    SpotLight* sl = new SpotLight();
+				/*else if (ImGui::Button("Spot Light"))
+				{
+					GameObject* go = new GameObject("Spot Light");
+					ComponentLight* compLight = new ComponentLight();
+					SpotLight* sl = new SpotLight();
 
-                    compLight->SetLight(sl);
-                    go->AddComponent(compLight);
-                    compLight->SetParent(go);
+					compLight->SetLight(sl);
+					go->AddComponent(compLight);
+					compLight->SetParent(go);
 
-                    app->scene->AddGameObject(go);
-                    app->renderer3D->Submit(go);
-                    app->renderer3D->AddSpotLight(sl);
-                }
+					app->scene->AddGameObject(go);
+					app->renderer3D->Submit(go);
+					app->renderer3D->AddSpotLight(sl);
+				}*/
 
                 ImGui::EndMenu();
             }
