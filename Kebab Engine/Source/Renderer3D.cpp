@@ -145,6 +145,7 @@ bool Renderer3D::Init(JSON_Object* root)
 	SetColorMaterial();
 	SetTexture2D();
 	SetWireframe();
+	SetBlending();
 
 	drawAABB = false;
 	drawGrid = true;

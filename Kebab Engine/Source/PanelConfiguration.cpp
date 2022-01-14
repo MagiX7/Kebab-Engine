@@ -240,6 +240,9 @@ void ConfigPanel::OnRender(float dt)
                 if (ImGui::Checkbox("Wireframe", &app->renderer3D->wireframe))
                     app->renderer3D->SetWireframe();
 
+				if (ImGui::Checkbox("Blending", &app->renderer3D->blend))
+					app->renderer3D->SetBlending();
+
                 ImGui::TableNextColumn();
 
                 ImGui::EndTable();

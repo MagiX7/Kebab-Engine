@@ -142,7 +142,7 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 		shader->SetUniformVec3f(name + ".specular", sls[i]->specular);
 	}*/
 
-	if (shader->GetName() == "wave.shader")
+	if (shader->GetName() == "wave")
 	{
 		shader->SetUniform1i("time", timer.Read());
 		shader->SetUniform1f("amplitude", amplitude);
