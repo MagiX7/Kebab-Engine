@@ -20,6 +20,7 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - [PhysFS](https://github.com/icculus/physfs)
 - [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
 - [Optick](https://github.com/bombomby/optick)
+- [ImGuiTextEditor](https://github.com/BalazsJako/ImGuiColorTextEdit)
 
 ## Team Members
 
@@ -29,7 +30,17 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 
 ## How to use
 
-#### Create new gameobjects:
+### Create:
+
+In the Main Menu bar, you can find a menu item named "Create" where you can create the following:
+
+#### Lights
+
+By default a directional light comes in the scene. In the inspector you can tweak the values such as the color (ambient, diffuse and specular) or the direction.
+
+Point Lights can be also created. You can edit the colors (just like in the directional) and adjust the constant, linearity and quadratic properties of the light.
+
+#### GameObjects
 
 - On GameObject section there're some geometries you can create on the scene.
 - Drag and drop the fbx, it will load the mesh and the texture (if it has one, on diffuse chanel and it comes with the model).
@@ -94,4 +105,5 @@ The objective is to create a useful 3D Engine that fits all the basic aspects to
 - 2 frame buffers to show game and editor with their respective cameras on imgui windows and can visualize both at the same time.
 - Game camera changeable.
 - Resource management to optimize and show assets properly.
-- Editable shaders
+- Editable shaders.
+- Lightning system.
