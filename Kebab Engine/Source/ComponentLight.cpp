@@ -85,6 +85,8 @@ void ComponentLight::DrawOnInspector()
 				ImGui::ColorEdit3("Ambient Color", l->ambient.ptr());
 				ImGui::ColorEdit3("Diffuse Color", l->diffuse.ptr());
 				ImGui::ColorEdit3("Specular Color", l->specular.ptr());
+
+				ImGui::Text("%f %f %f", l->dir.x, l->dir.y, l->dir.z);
 			}
 
 			break;
@@ -105,6 +107,7 @@ void ComponentLight::DrawOnInspector()
 				ImGui::DragFloat("Constant", &l->constant, 0.001f, 0.1f, 100.0f);
 				ImGui::DragFloat("Linear", &l->lin, 0.001f);
 				ImGui::DragFloat("Quadratic", &l->quadratic, 0.001f, 0.0f, 1.0f);
+
 			}
 
 			break;

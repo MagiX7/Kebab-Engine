@@ -2,7 +2,9 @@
 #include "Renderer3D.h"
 #include "Editor.h"
 #include "Camera3D.h"
+
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
 
 #include "ResourceManager.h"
 #include "Material.h"
@@ -93,15 +95,10 @@ void Material::Bind(const float4x4& transform, ComponentCamera* cam)
 
 	if (app->renderer3D->goDirLight)
 	{
-		ComponentTransform* tr = (ComponentTransform*)app->renderer3D->goDirLight->GetComponent(ComponentType::TRANSFORM);
-		if (tr)
-		{
-			float4 dir = tr->GetRotation().CastToFloat4();
-			shader->SetUniformVec3f("dirLight.direction", dir.Float3Part());
-			shader->SetUniformVec3f("dirLight.ambient", app->renderer3D->dirLight->ambient);
-			shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
-			shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
-		}
+		shader->SetUniformVec3f("dirLight.direction", app->renderer3D->dirLight->dir);
+		shader->SetUniformVec3f("dirLight.ambient", app->renderer3D->dirLight->ambient);
+		shader->SetUniformVec3f("dirLight.diffuse", app->renderer3D->dirLight->diffuse);
+		shader->SetUniformVec3f("dirLight.specular", app->renderer3D->dirLight->specular);
 	}
 	else
 	{
