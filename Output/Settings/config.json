@@ -4,8 +4,8 @@
         "max fps": 62
     },
     "window": {
-        "width": 1649,
-        "height": 881,
+        "width": 1024,
+        "height": 768,
         "brightness": 1,
         "fullscreen": false,
         "fulldesktop": false,

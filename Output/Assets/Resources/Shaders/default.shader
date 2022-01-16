@@ -55,7 +55,7 @@ struct Material {
 	vec3 diffuse;
 	vec3 specular;
 	float shininess;
-	int gammaCorrection; // It is a boolean
+	bool gammaCorrection;
 	float gammaCorrectionAmount;
 };
 
@@ -164,7 +164,11 @@ void main()
 	for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
 		result += CalcPointLight(pointLights[i], norm, vPosition, viewDir);
 
-	
-	vec3 finalColor = pow(result, vec3(1.0 / material.gammaCorrectionAmount)) * material.gammaCorrection;
+	vec3 finalColor = result;
+	if (material.gammaCorrection)
+	{
+		finalColor = pow(result, vec3(1.0 / material.gammaCorrectionAmount));
+	}
+
 	fragColor = texture(tex , vTexCoords) * vTextureAlpha * vec4(finalColor, 1);
 }
