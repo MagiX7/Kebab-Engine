@@ -203,7 +203,11 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 				}
 				ImGui::CloseCurrentPopup();
 			}
+
+			if (ImGui::Button("Rename"))
+				rename = !rename;
 		}
+
 		if (ImGui::Button("Empty Child"))
 		{
 			optionsPopup = false;
@@ -303,11 +307,7 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 			app->renderer3D->Submit(go);
 		}
 
-		if (go->GetName() != "Directional Light")
-		{
-			if (ImGui::Button("Rename"))
-				rename = !rename;
-		}
+
 		if (rename)
 		{
 			static char name[32] = "name";
