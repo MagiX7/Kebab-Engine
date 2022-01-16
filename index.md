@@ -206,9 +206,9 @@ The gamma correction can be activated, deactivated and adjusted in the panel "Li
 
 # Links
 
-Download the last release of Kebab Engine [Here]()
+Download the last release of Kebab Engine [Here](https://github.com/MagiX7/Kebab-Engine/releases/download/v1.0/KebabEngine_v1.0.zip).
 
-Github link to the engine repository [Here](https://github.com/MagiX7/Kebab-Engine)
+Github link to the engine repository [Here](https://github.com/MagiX7/Kebab-Engine).
 
 # License
 
