@@ -188,9 +188,9 @@ By now only one directional light is supported, and there is a limit of 4 point 
 
 You can create the point lights under the main menu bar item "Create", and "Lights". The directional light is created by default.
 
-You can tweak some parameters such as:
-    - Directional Light: Ambient, diffuse and specular colors and direction.
-    - Point light: Ambient, diffuse and specular colors, position, intensity, and the properties constant, linear and quadratic (they affect to the intensity).
+In the directional light you can tweak some parameters such as the ambient, diffuse and specular colors besides the direction.
+
+Point lights attributes that can be edited are ambient, diffuse and specular colors, the position, and three properties that are constant, linear and quadratic.
 
 The gamma correction can be activated, deactivated and adjusted in the panel "Lightning System", found in the Inspector Panel part of the screen (right).
 
