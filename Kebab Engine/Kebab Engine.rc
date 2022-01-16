@@ -52,7 +52,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON                    "E:\\Uni\\Kebab-Engine\\Output\\Settings\\Kebab-Engine.ico"
+IDI_ICON1               ICON                    "..\\Output\\Settings\\Kebab-Engine.ico"
 
 #endif    // Español (España, alfabetización internacional) resources
 /////////////////////////////////////////////////////////////////////////////

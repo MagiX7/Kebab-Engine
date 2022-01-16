@@ -51,7 +51,11 @@ Hope you like it and it's useful for your projects.
 
 - Shader Drawing
 
+- Shader Editor In-Engine
+
 - Water Shader Demo
+
+- Lightning System and Gamma Correction
 
 ## Carlos Megia Zubillaga
 
@@ -176,9 +180,24 @@ We also provided four textures to give it more realism. You can change them thro
 
 ![Editors](/docs/Gifs/ShaderEditor_gif.gif)
 
+### Lightning System
+
+At the moment there is a very basic lightning system, which allows you to have a directional light and some point lights.
+
+By now only one directional light is supported, and there is a limit of 4 point lights per scene.
+
+You can create the point lights under the main menu bar item "Create", and "Lights".
+
+You can tweak some parameters such as:
+    - Directional Light: Ambient, diffuse and specular colors and direction.
+    - Point light: Ambient, diffuse and specular colors, position, intensity, and the properties constant, linear and quadratic (they affect to the intensity).
+
+The gamma correction can be activated, deactivated and adjusted in the panel "Lightning System", found in the Inspector Panel part of the screen.
+
 # Video demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qPKLjScBu3Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Links
 

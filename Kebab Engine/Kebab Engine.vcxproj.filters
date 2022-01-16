@@ -7,137 +7,23 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera3D.cpp">
-      <Filter>Source Files\Modules</Filter>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MainScene.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Renderer3D.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Window.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelConfiguration.cpp">
-      <Filter>Source Files\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelConsole.cpp">
-      <Filter>Source Files\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelHierarchy.cpp">
-      <Filter>Source Files\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelViewport.cpp">
-      <Filter>Source Files\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\VertexArray.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Buffer.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FileSystem.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Color.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Light.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_demo.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_draw.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_tables.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\mmgr\mmgr.cpp">
-      <Filter>Source Files\3rd Parties\mmgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\parson\src\parson.c">
-      <Filter>Source Files\3rd Parties\JParson</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentTransform.cpp">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentMesh.cpp">
-      <Filter>Source Files\GameObjects\Components</Filter>
+    <ClCompile Include="Source\ComponentLight.cpp">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\ComponentMaterial.cpp">
-      <Filter>Source Files\GameObjects\Components</Filter>
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PanelInspector.cpp">
-      <Filter>Source Files\Panels</Filter>
+    <ClCompile Include="Source\ComponentMesh.cpp">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MeshLoader.cpp">
-      <Filter>Source Files\Importers</Filter>
+    <ClCompile Include="Source\ComponentTransform.cpp">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TextureLoader.cpp">
-      <Filter>Source Files\Importers</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentCamera.cpp">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\par\par_shapes.cpp">
-      <Filter>Source Files\3rd Parties\par</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelAssets.cpp">
-      <Filter>Source Files\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Parser.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuizmo\GraphEditor.cpp">
-      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuizmo\ImCurveEdit.cpp">
-      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuizmo\ImGradient.cpp">
-      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuizmo\ImGuizmo.cpp">
-      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuizmo\ImSequencer.cpp">
-      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\QuadTree.cpp">
-      <Filter>Source Files\Space Partition</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelScene.cpp">
-      <Filter>Source Files\Panels</Filter>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Source\KbCube.cpp">
       <Filter>Source Files\Geometry</Filter>
@@ -154,75 +40,213 @@
     <ClCompile Include="Source\KbSphere.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MeshLoader.cpp">
+      <Filter>Source Files\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureLoader.cpp">
+      <Filter>Source Files\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelAssets.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelConfiguration.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelConsole.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelEditShader.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
     <ClCompile Include="Source\PanelGameDebugInfo.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\KbMesh.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Material.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Texture.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FileDialog.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Model.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelImportTexture.cpp">
+    <ClCompile Include="Source\PanelHierarchy.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\PanelImportModel.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGuiColorTextEdit\TextEditor.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PanelEditShader.cpp">
+    <ClCompile Include="Source\PanelImportTexture.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentLight.cpp">
-      <Filter>Source Files\GameObjects\Components</Filter>
+    <ClCompile Include="Source\PanelInspector.cpp">
+      <Filter>Source Files\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\PanelLightSettings.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PanelScene.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PanelViewport.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera3D.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FileSystem.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MainScene.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer3D.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\QuadTree.cpp">
+      <Filter>Source Files\Space Partition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Buffer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VertexArray.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_demo.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_draw.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_impl_sdl.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_tables.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\GraphEditor.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImGradient.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuizmo\ImSequencer.cpp">
+      <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\parson\src\parson.c">
+      <Filter>Source Files\3rd Parties\Parson</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\par\par_shapes.cpp">
+      <Filter>Source Files\3rd Parties\par</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\mmgr\mmgr.cpp">
+      <Filter>Source Files\3rd Parties\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ResourceManager.cpp">
       <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KbMesh.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FileDialog.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\log.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Parser.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGuiColorTextEdit\TextEditor.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera3D.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Editor.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\ComponentLight.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MainScene.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\ComponentMaterial.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\ComponentMesh.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer3D.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\ComponentTransform.h">
+      <Filter>Source Files\Game Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Window.h">
-      <Filter>Source Files\Modules</Filter>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Source Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbCube.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbCylinder.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbPlane.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbPyramid.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KbSphere.h">
+      <Filter>Source Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshLoader.h">
+      <Filter>Source Files\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureLoader.h">
+      <Filter>Source Files\Importers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Panel.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelAssets.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\PanelConfiguration.h">
@@ -231,104 +255,95 @@
     <ClInclude Include="Source\PanelConsole.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PanelEditShader.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelGameDebugInfo.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
     <ClInclude Include="Source\PanelHierarchy.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelImportModel.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelImportTexture.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelInspector.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelLightSettings.h">
+      <Filter>Source Files\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelScene.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\PanelViewport.h">
       <Filter>Source Files\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\VertexArray.h">
-      <Filter>Source Files\Render</Filter>
+    <ClInclude Include="Source\Camera3D.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Buffer.h">
-      <Filter>Source Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClInclude Include="Source\Editor.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileSystem.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Color.h">
-      <Filter>Source Files\Utils</Filter>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Globals.h">
-      <Filter>Source Files\Utils</Filter>
+    <ClInclude Include="Source\MainScene.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Source Files\Utils</Filter>
+    <ClInclude Include="Source\Renderer3D.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\External\imgui\imconfig.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+    <ClInclude Include="Source\QdTree.h">
+      <Filter>Source Files\Space Partition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Buffer.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lights.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader.h">
+      <Filter>Source Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VertexArray.h">
+      <Filter>Source Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_opengl3.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_impl_sdl.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imgui_internal.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\imgui\imconfig.h">
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_rectpack.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_textedit.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\imgui\imstb_truetype.h">
-      <Filter>Source Files\3rd Parties\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\mmgr\mmgr.h">
-      <Filter>Source Files\3rd Parties\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\mmgr\nommgr.h">
-      <Filter>Source Files\3rd Parties\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\parson\src\parson.h">
-      <Filter>Source Files\3rd Parties\JParson</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentTransform.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMesh.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMaterial.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelInspector.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MeshLoader.h">
-      <Filter>Source Files\Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureLoader.h">
-      <Filter>Source Files\Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentCamera.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\par\par_shapes.h">
-      <Filter>Source Files\3rd Parties\par</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelAssets.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Parser.h">
-      <Filter>Source Files\Utils</Filter>
+      <Filter>Source Files\3rd Parties\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\ImGuizmo\GraphEditor.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
@@ -348,34 +363,22 @@
     <ClInclude Include="Source\External\ImGuizmo\ImZoomSlider.h">
       <Filter>Source Files\3rd Parties\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="Source\QdTree.h">
-      <Filter>Source Files\Space Partition</Filter>
+    <ClInclude Include="Source\External\parson\src\parson.h">
+      <Filter>Source Files\3rd Parties\Parson</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PanelScene.h">
-      <Filter>Source Files\Panels</Filter>
+    <ClInclude Include="Source\External\par\par_shapes.h">
+      <Filter>Source Files\3rd Parties\par</Filter>
     </ClInclude>
-    <ClInclude Include="Source\KbCube.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbCylinder.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbPlane.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbPyramid.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbSphere.h">
-      <Filter>Source Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelGameDebugInfo.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KbMesh.h">
-      <Filter>Source Files\Resources</Filter>
+    <ClInclude Include="Source\External\mmgr\mmgr.h">
+      <Filter>Source Files\3rd Parties\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="Source\Material.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
@@ -384,108 +387,104 @@
     <ClInclude Include="Source\Resource.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vertex.h">
-      <Filter>Source Files\Render</Filter>
+    <ClInclude Include="Source\KbMesh.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileDialog.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PanelImportTexture.h">
-      <Filter>Source Files\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureProperties.h">
+    <ClInclude Include="Source\Globals.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PanelImportModel.h">
-      <Filter>Source Files\Panels</Filter>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModelProperties.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader.h">
-      <Filter>Source Files\Render</Filter>
+    <ClInclude Include="Source\Parser.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\ImGuiColorTextEdit\TextEditor.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PanelEditShader.h">
-      <Filter>Source Files\Panels</Filter>
+    <ClInclude Include="Source\TextureProperties.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Lights.h">
+    <ClInclude Include="Source\Vertex.h">
       <Filter>Source Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentLight.h">
-      <Filter>Source Files\GameObjects\Components</Filter>
+    <ClInclude Include="Source\External\mmgr\nommgr.h">
+      <Filter>Source Files\3rd Parties\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PanelLightSettings.h">
-      <Filter>Source Files\Panels</Filter>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResourceManager.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{e7a2786e-96ba-414f-a303-fde5ed68c715}</UniqueIdentifier>
+      <UniqueIdentifier>{a5b66a40-5a10-46bd-b5c5-637828163875}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Modules">
-      <UniqueIdentifier>{023b35e4-e565-4de1-b817-0981ab9fdb05}</UniqueIdentifier>
+    <Filter Include="Source Files\Game Objects">
+      <UniqueIdentifier>{5199df2e-b91e-46ec-b94b-7f44ed9b2be6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Panels">
-      <UniqueIdentifier>{21225385-a4b1-456d-9792-cf6a1876baf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\3rd Parties">
-      <UniqueIdentifier>{7985a8ca-00b1-415b-9d95-45c8ec6ebe5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObjects">
-      <UniqueIdentifier>{e4a05aae-ece8-43d3-9479-76dd8ca8e2d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{393d9790-7d84-465f-9e05-58165118f97d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObjects\Components">
-      <UniqueIdentifier>{1e7ab376-1166-47e5-b87a-7a7717a3e9dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\3rd Parties\Imgui">
-      <UniqueIdentifier>{82cb710c-faed-4838-aec1-b2d54d79d0f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\3rd Parties\mmgr">
-      <UniqueIdentifier>{12a8fcd0-272f-4a79-aa60-6c3360f159fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\3rd Parties\JParson">
-      <UniqueIdentifier>{6b924778-a3d2-4920-8c87-518559a9e652}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Render">
-      <UniqueIdentifier>{38dd1f13-1032-412a-870f-5681c901d474}</UniqueIdentifier>
+    <Filter Include="Source Files\Game Objects\Components">
+      <UniqueIdentifier>{2394d657-4db1-4726-a5e5-9053264cc825}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Geometry">
-      <UniqueIdentifier>{387320ae-f485-47e5-a5de-e8175a4d36f6}</UniqueIdentifier>
+      <UniqueIdentifier>{2df700c6-e32e-4764-9515-b6387b6823fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Importers">
-      <UniqueIdentifier>{f9f029b5-c7f4-4d59-af55-a8df763fe04f}</UniqueIdentifier>
+      <UniqueIdentifier>{f2f63a4e-ab69-4f64-b988-baea3fdec3ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3rd Parties\par">
-      <UniqueIdentifier>{55b5e136-9c8d-4466-ad0b-80e12d90e867}</UniqueIdentifier>
+    <Filter Include="Source Files\Panels">
+      <UniqueIdentifier>{e3b5e1ae-fef0-4133-a0d0-ef9fe8d95105}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\3rd Parties\ImGuizmo">
-      <UniqueIdentifier>{5a7db031-16b8-4dce-bad8-93826c156368}</UniqueIdentifier>
+    <Filter Include="Source Files\Modules">
+      <UniqueIdentifier>{4f14dfb7-2750-464e-954a-b70c02c36a1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Space Partition">
-      <UniqueIdentifier>{c885deab-4f4c-4461-8643-f0c3e8129fdf}</UniqueIdentifier>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{22671bcf-2a11-468d-9e9d-77c52828f3a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Resources">
-      <UniqueIdentifier>{bcd7c564-7380-49c8-a1e3-0973e7377868}</UniqueIdentifier>
+      <UniqueIdentifier>{58e195f2-4965-47b8-b897-761a49e6c582}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Kebab Engine.rc" />
+    <Filter Include="Source Files\Space Partition">
+      <UniqueIdentifier>{6526d757-22c6-4bfd-a819-0ac689672802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties">
+      <UniqueIdentifier>{2eaf6d1a-5ef7-4c8e-96ae-3d8e30145599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\ImGui">
+      <UniqueIdentifier>{14c485ca-417c-42f1-8874-6b1c0c349776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\ImGuizmo">
+      <UniqueIdentifier>{be57ea20-b2d1-48ed-b530-68485c883aa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\Parson">
+      <UniqueIdentifier>{bf8714e9-d9ac-473a-bcbf-276026c79ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\mmgr">
+      <UniqueIdentifier>{63af3f85-d4bf-4510-85d9-38bc63cd8377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd Parties\par">
+      <UniqueIdentifier>{114e7d58-8acf-40a6-81be-7089a760f76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{f3dcfdc7-e231-4d46-8b4d-0d88f80ab61e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Output\Settings\Kebab-Engine.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kebab Engine.rc" />
   </ItemGroup>
 </Project>
