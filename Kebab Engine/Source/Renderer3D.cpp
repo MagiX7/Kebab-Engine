@@ -196,6 +196,8 @@ bool Renderer3D::Start()
 	// Draw it with UI when it is done?
 	//Submit(goDirLight);
 
+	// Set the water shader to the plane
+
 	lights[0].position.x = tr->GetTranslation().x;
 	lights[0].position.y = tr->GetTranslation().y;
 	lights[0].position.z = tr->GetTranslation().z;

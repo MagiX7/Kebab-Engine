@@ -107,3 +107,9 @@ Point Lights can be also created. You can edit the colors (just like in the dire
 - Resource management to optimize and show assets properly.
 - Editable shaders.
 - Lightning system.
+
+### Water Demo
+
+In order to get the water demo working, you will need to select the plane (the child with name "pPlane2") that comes by default (can be seen in the hierarchy) and, in the Inspector Panel, in the "Material" section, change the shader to the wave.shader.
+Important to not change the name of the file, or otherwise it won't work as expected.
+
