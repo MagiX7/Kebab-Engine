@@ -141,6 +141,7 @@ bool Input::PreUpdate(float dt)
 			case SDL_QUIT:
 			{
 				app->editor->wantsToQuit = true;
+
 				break;
 			}
 			case SDL_WINDOWEVENT:

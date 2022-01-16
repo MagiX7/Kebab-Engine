@@ -14,6 +14,7 @@
 
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "ComponentLight.h"
 #include "Material.h"
 #include "Shader.h"
 
@@ -28,6 +29,7 @@
 #include "PanelImportTexture.h"
 #include "PanelImportModel.h"
 #include "PanelEditShader.h"
+#include "PanelLightSettings.h"
 
 #include "FileDialog.h"
 
@@ -55,7 +57,7 @@ Editor::Editor(bool startEnabled) : Module(startEnabled)
     gameDebugInfoPanel = new GameDebugInfoPanel();
     panelImportTexture = new ImportTexturePanel();
     panelImportModel = new PanelImportModel();
-    //panelEditShader = new PanelEditShader();
+    panelLightSettings = new PanelLightSettings();
 
     showAboutPanel = false;
     showWindows = true;
@@ -148,6 +150,8 @@ bool Editor::CleanUp()
     panelImportTexture = nullptr;
     delete(panelImportModel);
     panelImportModel = nullptr;
+    delete(panelLightSettings);
+    panelLightSettings = nullptr;
 
     delete playTex;
     delete pauseTex;
@@ -265,13 +269,13 @@ bool Editor::OnImGuiRender(float dt, FrameBuffer* editorFbo, FrameBuffer* sceneF
         if (consolePanel->active) consolePanel->OnRender(dt);
         if (configPanel->active) configPanel->OnRender(dt);
         if (hierarchyPanel->active) hierarchyPanel->OnRender(dt);
+        if (panelLightSettings->active) panelLightSettings->OnRender(dt);
         if (inspectorPanel->active) inspectorPanel->OnRender(dt);
         if (assetsPanel->active) assetsPanel->OnRender(dt);
         if (gameDebugInfoPanel->active) gameDebugInfoPanel->OnRender(dt);
 
         if (panelImportTexture->active) panelImportTexture->OnRender(dt);
         if (panelImportModel->active) panelImportModel->OnRender(dt);
-        //if (panelEditShader->active) panelEditShader->OnRender(dt);
 
     }
 
@@ -487,36 +491,73 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
             
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu("GameObject"))
+        if (ImGui::BeginMenu("Create"))
         {
-            if (ImGui::BeginMenu("Primitives"))
+            if (ImGui::BeginMenu("GameObject"))
             {
-                if (ImGui::MenuItem("Cube"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
+                if (ImGui::BeginMenu("Primitives"))
+                {
+                    if (ImGui::MenuItem("Cube"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CUBE));
 
-                if (ImGui::MenuItem("Pyramid"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
+                    if (ImGui::MenuItem("Pyramid"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PYRAMID));
 
-                if (ImGui::MenuItem("Plane"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
+                    if (ImGui::MenuItem("Plane"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::PLANE));
 
-                if (ImGui::MenuItem("Sphere"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
+                    if (ImGui::MenuItem("Sphere"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::SPHERE));
 
-                if (ImGui::MenuItem("Cylinder"))
-                    app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
-                
+                    if (ImGui::MenuItem("Cylinder"))
+                        app->renderer3D->Submit(MeshLoader::GetInstance()->LoadKbGeometry(KbGeometryType::CYLINDER));
+
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::MenuItem("Empty GameObject"))
+                {
+                    GameObject* go = new GameObject("Empty Game Object");
+                    app->scene->AddGameObject(go);
+                }
                 ImGui::EndMenu();
             }
 
-            if (ImGui::MenuItem("Empty GameObject"))
+            if (ImGui::BeginMenu("Lights"))
             {
-                GameObject* go = new GameObject("Empty Game Object");
-                app->scene->AddGameObject(go);
+                if (ImGui::MenuItem("Point Light"))
+                {
+                    GameObject* go = new GameObject("Point Light");
+                    ComponentLight* compLight = new ComponentLight();
+                    PointLight* pl = new PointLight();
+                    compLight->SetLight(pl);
+                    go->AddComponent(compLight);
+                    compLight->SetParent(go);
+
+                    app->scene->AddGameObject(go);
+                    app->renderer3D->Submit(go);
+                    app->renderer3D->AddPointLight(pl);
+                }
+				/*else if (ImGui::Button("Spot Light"))
+				{
+					GameObject* go = new GameObject("Spot Light");
+					ComponentLight* compLight = new ComponentLight();
+					SpotLight* sl = new SpotLight();
+
+					compLight->SetLight(sl);
+					go->AddComponent(compLight);
+					compLight->SetParent(go);
+
+					app->scene->AddGameObject(go);
+					app->renderer3D->Submit(go);
+					app->renderer3D->AddSpotLight(sl);
+				}*/
+
+                ImGui::EndMenu();
             }
+
             ImGui::EndMenu();
         }
-
         if (ImGui::BeginMenu("View"))
         {
             if (ImGui::BeginMenu("Panels"))
@@ -548,6 +589,10 @@ void Editor::OnMainMenuRender(bool& showDemoWindow)
                 if (ImGui::MenuItem("Game Debug Info"))
                 {
                     gameDebugInfoPanel->active = !gameDebugInfoPanel->active;
+                }
+                if (ImGui::MenuItem("Lightning Settings"))
+                {
+                    panelLightSettings->active = !panelLightSettings->active;
                 }
 
                 ImGui::EndMenu();

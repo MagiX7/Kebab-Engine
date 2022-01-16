@@ -440,7 +440,7 @@ unsigned int MeshLoader::GetModelFlags(const ModelProperties& props)
     return ret;
 }
 
-GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
+GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type, bool willHaveParent)
 {
     GameObject* go = nullptr;
     KbMesh* mesh = nullptr;
@@ -521,7 +521,8 @@ GameObject* MeshLoader::LoadKbGeometry(KbGeometryType type)
 
         go->CreateComponent(ComponentType::MATERIAL);    
 
-        app->scene->AddGameObject(go);
+        if(!willHaveParent)
+            app->scene->AddGameObject(go);
     }
     
 
@@ -580,8 +581,8 @@ KbMesh* MeshLoader::LoadMeshCustomFormat(const std::string& fileName)
     KbMesh* mesh = new KbMesh(name.c_str());
 
     char* buffer = nullptr;
-    if (app->fileSystem->Load(name.c_str(), &buffer) > 0)
-        LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
+    app->fileSystem->Load(name.c_str(), &buffer);
+        //LOG_CONSOLE("KBMESH LOADED SUCCESSFULLY");
 
     char* cursor = buffer;
     unsigned int ranges[2];

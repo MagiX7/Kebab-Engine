@@ -120,22 +120,25 @@ void ComponentMaterial::DrawOnInspector()
 		if (ImGui::Button("Change Texture"))
 			menuSelectTex = !menuSelectTex;
 
-		if (menuSelectTex)
-			ShowTexturesMenu();
-
-
-		ImGui::NewLine();
+		//ImGui::NewLine();
 		ImGui::BulletText("Current Texture: ");
 		if (texture)
 		{
-			ImGui::Image((void*)texture->GetID(), { 150,150 });
-			ImGui::DragFloat("Alpha", &material->textureAlpha, 0.01f, 0.0, 1.0);
+			if(ImGui::ImageButton((void*)texture->GetID(), { 150,150 }))
+				menuSelectTex = !menuSelectTex;
+
+			// TODO: Not sure, i think it does not work as it should. We must sort the objects in the scene because with alpha = 0 the object disappears and the one behind doesnt get drawn
+			//ImGui::DragFloat("Alpha", &material->textureAlpha, 0.01f, 0.0, 1.0);
 		}
 		else
 		{
 			ImGui::SameLine();
 			ImGui::Text("No texture.");
 		}
+
+		if (menuSelectTex)
+			ShowTexturesMenu();
+
 		if (currentTexture == texture.get())
 		{
 			ImGui::BulletText("References to texture %i", texture.use_count() - 1); // -1 because of the resources map
@@ -171,7 +174,7 @@ void ComponentMaterial::DrawOnInspector()
 		
 		//static float3 col = material->ambientColor;
 		ImGui::ColorEdit3("Material Color", material->ambientColor.ptr());
-
+		ImGui::DragFloat("Shininess", &material->shininess, 0.1f);
 
 		//std::unordered_map<std::string, float> uniforms = material->GetShader()->GetUniforms();
 		/*std::list<UniformData> uniforms = material->GetShader()->GetUniforms();

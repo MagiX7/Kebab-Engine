@@ -25,8 +25,11 @@ public:
 	void SetShader(Shader* s);
 
 public:
-	float shininess;
 	float3 ambientColor;
+	float3 diffuseColor;
+	float3 specularColor;
+	float shininess;
+
 	float frequency;
 	float speed;
 	float amplitude;

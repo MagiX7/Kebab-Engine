@@ -170,35 +170,39 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 	ImGui::OpenPopup(go->GetName().c_str());
 	if (ImGui::BeginPopup(go->GetName().c_str()))
 	{
-		if (ImGui::Button("Delete"))
+		if (go->GetName() != "Directional Light")
 		{
-			optionsPopup = false;
-
-			if (go->GetParent() == app->scene->GetRoot())
+			if (ImGui::Button("Delete"))
 			{
-				ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
-				if (auxCam)
+				optionsPopup = false;
+
+				if (go->GetParent() == app->scene->GetRoot())
 				{
-					if (auxCam == app->camera->gameCam)
-						app->camera->gameCam = nullptr;
+					ComponentCamera* auxCam = (ComponentCamera*)go->GetComponent(ComponentType::CAMERA);
+					if (auxCam)
+					{
+						if (auxCam == app->camera->gameCam)
+							app->camera->gameCam = nullptr;
+					}
+
+					app->scene->DeleteGameObject(go);
+					go = nullptr;
 				}
+				else
+				{
+					ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
+					if (mesh) app->renderer3D->EraseGameObject(go);
 
-				app->scene->DeleteGameObject(go);
-			}
-			else
-			{
-				ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(ComponentType::MESH);
-				if (mesh) app->renderer3D->EraseGameObject(go);
+					GameObject* parent = go->GetParent();
+					parent->EraseChild(go);
+					if (go != nullptr) go = nullptr;
 
-				GameObject* parent = go->GetParent();
-				parent->EraseChild(go);
-				if (go != nullptr) go = nullptr;
-				
-				go = parent;
-				currentGO = parent;
-				goClicked = nullptr;
+					go = parent;
+					currentGO = parent;
+					goClicked = nullptr;
+				}
+				ImGui::CloseCurrentPopup();
 			}
-			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::Button("Empty Child"))
 		{
@@ -299,9 +303,11 @@ void HierarchyPanel::DisplayGameObjectMenu(GameObject* go)
 			app->renderer3D->Submit(go);
 		}
 
-		if (ImGui::Button("Rename"))
-			rename = !rename;
-
+		if (go->GetName() != "Directional Light")
+		{
+			if (ImGui::Button("Rename"))
+				rename = !rename;
+		}
 		if (rename)
 		{
 			static char name[32] = "name";

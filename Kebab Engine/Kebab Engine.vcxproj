@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Buffer.cpp" />
     <ClCompile Include="Source\ComponentCamera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\ComponentLight.cpp" />
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
@@ -66,6 +67,7 @@
     <ClCompile Include="Source\PanelImportModel.cpp" />
     <ClCompile Include="Source\PanelImportTexture.cpp" />
     <ClCompile Include="Source\PanelInspector.cpp" />
+    <ClCompile Include="Source\PanelLightSettings.cpp" />
     <ClCompile Include="Source\PanelScene.cpp" />
     <ClCompile Include="Source\PanelViewport.cpp" />
     <ClCompile Include="Source\Parser.cpp" />
@@ -90,6 +92,7 @@
     <ClInclude Include="Source\ComponentCamera.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentLight.h" />
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
@@ -106,6 +109,7 @@
     <ClInclude Include="Source\External\par\par_shapes.h" />
     <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Lights.h" />
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\KbMesh.h" />
     <ClInclude Include="Source\MeshLoader.h" />
@@ -118,6 +122,7 @@
     <ClInclude Include="Source\PanelImportModel.h" />
     <ClInclude Include="Source\PanelImportTexture.h" />
     <ClInclude Include="Source\PanelInspector.h" />
+    <ClInclude Include="Source\PanelLightSettings.h" />
     <ClInclude Include="Source\PanelScene.h" />
     <ClInclude Include="Source\PanelViewport.h" />
     <ClInclude Include="Source\Parser.h" />

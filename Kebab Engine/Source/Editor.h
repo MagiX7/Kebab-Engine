@@ -17,6 +17,7 @@ class ScenePreviewPanel;
 class GameDebugInfoPanel;
 class ImportTexturePanel;
 class PanelImportModel;
+class PanelLightSettings;
 class FrameBuffer;
 class Texture;
 
@@ -78,6 +79,7 @@ public:
 	GameDebugInfoPanel* gameDebugInfoPanel;
 	ImportTexturePanel* panelImportTexture;
 	PanelImportModel* panelImportModel;
+	PanelLightSettings* panelLightSettings;
 
 	bool showAboutPanel;
 	bool wireframe;

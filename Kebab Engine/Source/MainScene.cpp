@@ -11,6 +11,8 @@
 #include "MeshLoader.h"
 #include "QdTree.h"
 
+#include "ComponentLight.h"
+
 #include "KbCube.h"
 #include "KbSphere.h"
 
@@ -61,7 +63,7 @@ bool MainScene::Start()
     aabbAux.minPoint = min;
     aabbAux.maxPoint = max;
     rootQT->Create(aabbAux);
-    
+
     app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Plane.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Baker House.fbx", true));
     //app->renderer3D->Submit(MeshLoader::GetInstance()->LoadModel("Assets/Resources/Avril.fbx", true));
@@ -117,9 +119,9 @@ void MainScene::AddGameObject(GameObject* go)
 
 void MainScene::DeleteGameObject(GameObject* go)
 {
-    std::vector<GameObject*>::iterator it;
+    std::vector<GameObject*>::iterator it = root->GetChilds().begin();
 
-    for (it = root->GetChilds().begin(); it != root->GetChilds().end(); ++it)
+    for (; it != root->GetChilds().end(); ++it)
     {
         if (*it == go)
         {
@@ -130,6 +132,7 @@ void MainScene::DeleteGameObject(GameObject* go)
             app->editor->hierarchyPanel->currentGO = nullptr;
             delete(go);
             go = nullptr;
+
             break;
         }
     }
@@ -153,6 +156,9 @@ void MainScene::DeleteAllGameObjects()
 {
     for (auto& go : root->GetChilds())
     {
+        if (go->GetName() == "Directional Light")
+            continue;
+
         delete go;
         go = nullptr;
     }

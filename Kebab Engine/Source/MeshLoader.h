@@ -30,7 +30,7 @@ public:
 
 	GameObject* LoadModel(const std::string& path, bool loadOnScene = false, const ModelProperties& props = ModelProperties());
 
-	GameObject* LoadKbGeometry(KbGeometryType type);
+	GameObject* LoadKbGeometry(KbGeometryType type, bool willHaveParent = false);
 
 	void SaveMeshCustomFormat(KbMesh* mesh, const std::string& name, int uuid);
 	void SaveMeshCustomFormat(ComponentMesh* mesh, int uuid);

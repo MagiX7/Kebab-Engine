@@ -29,7 +29,7 @@ void PanelEditShader::OnRender(float dt)
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
 
-	const std::string title = "Editing " + shader->GetName();
+	const std::string title = "Editing " + shader->GetName() + ".shader";
 
 	auto cpos = editor.GetCursorPosition();
 	ImGui::Begin(title.c_str(), &active, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);

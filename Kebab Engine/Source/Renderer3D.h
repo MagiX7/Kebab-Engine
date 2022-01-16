@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "Light.h"
+#include "Lights.h"
 
 #define MAX_LIGHTS 8
 
@@ -23,6 +24,7 @@ public:
 	~Renderer3D();
 
 	bool Init(JSON_Object* root);
+	bool Start() override;
 	bool PreUpdate(float dt);
 	bool Draw(float dt);
 	bool CleanUp();
@@ -55,13 +57,21 @@ public:
 	void AddMaterial(Material* material);
 	inline const std::vector<Shader*>& GetShaders() { return shaders; }
 
+	void AddPointLight(PointLight* pl = &PointLight());
+	void DeletePointLight(PointLight* pl);
+	inline const std::vector<PointLight*>& GetPointLights() { return pLights; }
+	
+	void AddSpotLight(SpotLight* sl = &SpotLight());
+	inline const std::vector<SpotLight*>& GetSpotLights() { return spotLights; }
+	
+
 private:
 	void DoRender(bool gameScene);
 	void PushCamera(ComponentCamera* cam);
 
 public:
 
-	Light lights[MAX_LIGHTS];
+	OldLight lights[MAX_LIGHTS];
 	SDL_GLContext context;
 
 	bool depth;
@@ -75,7 +85,17 @@ public:
 	bool drawAABB;
 	bool drawGrid;
 
+	GameObject* goDirLight;
+	DirectionalLight* dirLight;
+
+	bool gammaCorrection;
+	float gammaCorrectionAmount;
+
 private:
+	std::vector<PointLight*> pLights;
+	std::vector<SpotLight*> spotLights;
+
+
 	std::vector<ComponentMesh*> meshes;
 	std::vector<GameObject*> gameObjects;
 	

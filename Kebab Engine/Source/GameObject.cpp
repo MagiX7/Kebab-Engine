@@ -9,6 +9,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
 
 #include "QdTree.h"
 
@@ -339,6 +340,13 @@ void GameObject::LoadComponents(JSON_Array* compsArray, GameObject* parent)
 			ComponentCamera* cam = new ComponentCamera(parent, CameraType::GAME);
 			cam->Load(compObj, parent);
 			parent->AddComponent(cam);
+		}
+		else if (type == 5)
+		{
+			ComponentLight* l = new ComponentLight();
+			l->SetParent(parent);
+			l->Load(compObj, parent);
+			parent->AddComponent(l);
 		}
 	}
 }
